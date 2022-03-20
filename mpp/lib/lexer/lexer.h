@@ -9,9 +9,11 @@
 #define lexer_h
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "../file.h"
 
 typedef enum {
+    NO_SENTENCE_TYPE = 0,
     ARITHMETIC,
     LOGICAL,
     FLOW_CONTROL,
@@ -33,9 +35,12 @@ typedef enum {
     ADD,
 } TokenName;
 
+typedef enum { NO_PARAM_TYPE = 0, INM, REG, AC, REG_OR_AC, INM_OR_REG_OR_AC } ParamType;
+
 typedef struct {
     TokenType type;
-    TokenName name; // only if type == ID
+    TokenName type_name; // only if type == ID
+    ParamType param_type; // only if type == PARAM
     char *content;
 } Token;
 
@@ -46,12 +51,29 @@ typedef struct {
 
 typedef struct {
     Token *tokens;
+    int tokens_count;
     SentenceType type;
-    unsigned int params_count;
     ParamT paramT;
     RawSentence *raw;
+    int row;
 } Sentence;
 
-void run_lexer(RawSentenceT *rst);
+typedef struct {
+    int count;
+    Sentence *sencences;
+} SentenceT;
+
+typedef struct {
+    Token *token;
+    ParamT *paramT;
+} Sentence_template;
+
+typedef struct {
+    bool success;
+    char *message;
+
+} CheckParamsR;
+
+SentenceT *run_lexer(RawSentenceT *rst);
 
 #endif /* lexer_h */

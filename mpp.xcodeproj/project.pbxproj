@@ -14,6 +14,8 @@
 		57DA08E927E67C9D00DA2BB1 /* arithmetic.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08E827E67C9D00DA2BB1 /* arithmetic.c */; };
 		57DA08EC27E728E600DA2BB1 /* logger.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08EB27E728E600DA2BB1 /* logger.c */; };
 		57DA08EF27E72B4800DA2BB1 /* motd.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08EE27E72B4800DA2BB1 /* motd.c */; };
+		57DA08F327E7948600DA2BB1 /* parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08F227E7948600DA2BB1 /* parser.c */; };
+		57DA08F627E79F6D00DA2BB1 /* arithmetic.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08F527E79F6D00DA2BB1 /* arithmetic.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -44,6 +46,10 @@
 		57DA08EB27E728E600DA2BB1 /* logger.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = logger.c; sourceTree = "<group>"; };
 		57DA08ED27E72B4800DA2BB1 /* motd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = motd.h; sourceTree = "<group>"; };
 		57DA08EE27E72B4800DA2BB1 /* motd.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = motd.c; sourceTree = "<group>"; };
+		57DA08F127E7948600DA2BB1 /* parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = parser.h; sourceTree = "<group>"; };
+		57DA08F227E7948600DA2BB1 /* parser.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = parser.c; sourceTree = "<group>"; };
+		57DA08F427E79F6D00DA2BB1 /* arithmetic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = arithmetic.h; sourceTree = "<group>"; };
+		57DA08F527E79F6D00DA2BB1 /* arithmetic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = arithmetic.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +92,7 @@
 		57DA08DB27E661B500DA2BB1 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				57DA08F027E7947600DA2BB1 /* parser */,
 				57DA08E627E67BE300DA2BB1 /* lexer */,
 				57DA08DF27E6671700DA2BB1 /* file.h */,
 				57DA08E027E6671700DA2BB1 /* file.c */,
@@ -108,6 +115,17 @@
 				57DA08E827E67C9D00DA2BB1 /* arithmetic.c */,
 			);
 			path = lexer;
+			sourceTree = "<group>";
+		};
+		57DA08F027E7947600DA2BB1 /* parser */ = {
+			isa = PBXGroup;
+			children = (
+				57DA08F127E7948600DA2BB1 /* parser.h */,
+				57DA08F227E7948600DA2BB1 /* parser.c */,
+				57DA08F427E79F6D00DA2BB1 /* arithmetic.h */,
+				57DA08F527E79F6D00DA2BB1 /* arithmetic.c */,
+			);
+			path = parser;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -173,6 +191,8 @@
 				57DA08DE27E6622C00DA2BB1 /* lexer.c in Sources */,
 				57DA08D527E6618A00DA2BB1 /* main.c in Sources */,
 				57DA08E427E6687600DA2BB1 /* error.c in Sources */,
+				57DA08F327E7948600DA2BB1 /* parser.c in Sources */,
+				57DA08F627E79F6D00DA2BB1 /* arithmetic.c in Sources */,
 				57DA08E127E6671700DA2BB1 /* file.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

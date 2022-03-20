@@ -6,6 +6,7 @@
 //
 
 #include "error.h"
+#include "logger.h"
 
 #include <stdio.h>
 #include <errno.h>
@@ -16,10 +17,10 @@ void fatal(Error *err) {
     if (err->show_errno == true) {
         perror(err->message);
     } else {
-        fprintf(stderr, "%s", err->message);
+        log_error(err->message == NULL ? "An error ocurred" : err->message);
     }
     
-    free(err->message);
+end:
     exit(EXIT_FAILURE);
 }
 

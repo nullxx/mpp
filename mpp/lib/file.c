@@ -56,7 +56,6 @@ void read_file(const char *path, RawSentenceT *raw_sentence_t) {
         rm_breaklines(line_buffer);
         if (line_buffer == NULL) continue;
 
-        log_debug("Line: %s", line_buffer);
         RawSentence *rs = malloc(sizeof(RawSentence));
         rs->row = row++;
         rs->content = malloc(sizeof(char) * strlen(line_buffer) + 1);

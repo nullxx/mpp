@@ -7,63 +7,79 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "70D45E34-B427-4694-8733-EE0CDFF53E4E"
+            uuid = "A35E3626-803C-4F86-9229-401F752E8D5C"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "mpp/lib/lexer.c"
+            filePath = "mpp/lib/parser/parser.c"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "run_parser(sentencest)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "05E050C4-DB4D-4698-A31C-2C18D1F4C02D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "mpp/lib/parser/arithmetic.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "18"
             endingLineNumber = "18"
-            landmarkName = "rm_breaklines(content)"
+            landmarkName = "is_param_type_supported(token_id_name, t)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5FAE62B7-9F12-4533-96AE-B07B63ECB983"
+            uuid = "BB8E258E-3B9E-4500-B99D-D37842148D67"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "mpp/lib/lexer.c"
+            filePath = "mpp/lib/parser/parser.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
-            landmarkName = "run_lexer(rst)"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "parse_sentence(st)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "CA5F0F41-0AF9-4115-8201-FD4850A66E17"
+            uuid = "E82F5FA0-813E-4B83-B160-925B795CC943"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "mpp/lib/types/arithmetic.c"
+            filePath = "mpp/lib/parser/parser.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
-            landmarkName = "is_arithmetic(rs)"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "validate_param_inm(hex_str)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "3828D646-418E-4ED5-848F-A0671926F0FD"
+            uuid = "04E01EBE-B0FC-4E35-941C-06BB45B0A8AA"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "mpp/lib/lexer/lexer.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
             landmarkName = "process_line(rs)"
             landmarkType = "9">
          </BreakpointContent>
@@ -71,48 +87,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "22D2E0F6-D27A-4EE2-B7CF-6296FD6A577B"
+            uuid = "2CCD2751-2232-43A8-B831-1F659A44D504"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "mpp/lib/lexer/lexer.c"
+            filePath = "mpp/lib/lexer/arithmetic.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
-            landmarkName = "process_line(rs)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D45EB922-2EF8-4391-B4AA-17615AC8A293"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "mpp/lib/file.c"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
-            landmarkName = "read_file(path, raw_sentence_t)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F06F8689-CACD-46B0-BEE6-4F9DA5057E31"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "mpp/lib/lexer/lexer.c"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
-            landmarkName = "get_tokens(rs, count)"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "check_arithmetic_params(token_id_name, st)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
