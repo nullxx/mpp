@@ -9,13 +9,13 @@
 #define error_h
 
 typedef enum {
-    FATAL,
+	FATAL,
 } ErrorType;
 
 typedef struct {
-    ErrorType type;
-    char *message;
-    unsigned int show_errno;
+	ErrorType type;
+	char *message;
+	unsigned int show_errno;
 } Error;
 
 void process_error(Error *err);
