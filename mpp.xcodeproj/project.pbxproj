@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		572DD46D27E906B300974272 /* bus.c in Sources */ = {isa = PBXBuildFile; fileRef = 572DD46C27E906B300974272 /* bus.c */; };
 		57DA08D527E6618A00DA2BB1 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08D427E6618A00DA2BB1 /* main.c */; };
 		57DA08DE27E6622C00DA2BB1 /* lexer.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08DD27E6622C00DA2BB1 /* lexer.c */; };
 		57DA08E127E6671700DA2BB1 /* file.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08E027E6671700DA2BB1 /* file.c */; };
@@ -45,6 +46,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		572DD46B27E906B300974272 /* bus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bus.h; sourceTree = "<group>"; };
+		572DD46C27E906B300974272 /* bus.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = bus.c; sourceTree = "<group>"; };
 		57DA08D127E6618A00DA2BB1 /* mpp-compiler */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "mpp-compiler"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57DA08D427E6618A00DA2BB1 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		57DA08DC27E6622C00DA2BB1 /* lexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lexer.h; sourceTree = "<group>"; };
@@ -95,6 +98,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		572DD46A27E906A200974272 /* bus */ = {
+			isa = PBXGroup;
+			children = (
+				572DD46B27E906B300974272 /* bus.h */,
+				572DD46C27E906B300974272 /* bus.c */,
+			);
+			path = bus;
+			sourceTree = "<group>";
+		};
 		57DA08C827E6618A00DA2BB1 = {
 			isa = PBXGroup;
 			children = (
@@ -187,6 +199,7 @@
 		57FFCAEA27E885FC00B86438 /* components */ = {
 			isa = PBXGroup;
 			children = (
+				572DD46A27E906A200974272 /* bus */,
 				57FFCAEB27E8861700B86438 /* mem.h */,
 				57FFCAEC27E8861700B86438 /* mem.c */,
 				57FFCAEF27E886AE00B86438 /* components.h */,
@@ -289,6 +302,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				572DD46D27E906B300974272 /* bus.c in Sources */,
 				57FFCAF127E886AE00B86438 /* components.c in Sources */,
 				57FFCAF427E88E7900B86438 /* utils.c in Sources */,
 				57FFCAE527E8858900B86438 /* main.c in Sources */,

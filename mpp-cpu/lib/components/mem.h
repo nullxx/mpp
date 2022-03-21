@@ -21,7 +21,6 @@ typedef struct {
 } Mem;
 
 void init_mem(on_component_change on_component_change_fn);
-void mem_step(void);
 
 ComponentActionReturn get_mem_value(char *offset);
 ComponentActionReturn set_mem_value(MemValue mem_value);

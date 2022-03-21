@@ -24,20 +24,22 @@ Flag l_e_flag = {false, OUTPUT, 0};
 
 bool is_mem_value_valid(char *hex) {
 	const int num = hex_to_int(hex);
-	if (num < 0 || num > MEM_VALUE_SIZE_BYTES * 8 - 1) return false;
+	if (num < 0 || num > pow(2, MEM_VALUE_SIZE_BITS) - 1) return false;
 	return true;
 }
 
 void fill_memory(void) {
-	const int mem_size_bytes = MEM_SIZE_KB * 1024;
+    const int mem_size_bits = MEM_SIZE_KB * 1024 * 8;
+	const int mem_size = mem_size_bits / MEM_VALUE_SIZE_BITS;
 
-	mem.values = malloc(sizeof(MemValue) * mem_size_bytes);
+	mem.values = malloc(sizeof(MemValue) * mem_size);
 	mem.values_count = 0;
+
 	// TODO free mem.values
-	for (int i = MEM_START_VALUE; i < mem_size_bytes; i++) {
+	for (int i = MEM_START_VALUE; i < mem_size; i++) {
 		MemValue mem_value;
 		mem_value.offset = int_to_hex(i);
-		mem_value.value_hex = int_to_hex(random_int(MEM_VALUE_SIZE_BYTES * 8));
+		mem_value.value_hex = int_to_hex(random_int(pow(2, MEM_VALUE_SIZE_BITS) - 1));
 		mem.values[i] = mem_value;
 		mem.values_count++;
 		// TODO free mem_value.offset, mem_value.value_hex
@@ -89,7 +91,7 @@ ComponentActionReturn set_mem_value(MemValue mem_value) {
 		car.success = false;
 		car.err.show_errno = false;
 		const char *msg = "[set_mem_value] Value %s invalid. Must be between 0-%d";
-		const int end_bound_mem_value = MEM_VALUE_SIZE_BYTES * 8 - 1;
+		const int end_bound_mem_value = pow(2, MEM_VALUE_SIZE_BITS) - 1;
 		const int end_bound_mem_value_size = (int)log10((end_bound_mem_value + 1) + 1) + 1;
 		const size_t size = (size_t) sizeof(char) * (strlen(msg) + strlen(mem_value.value_hex) + end_bound_mem_value_size - 2*2 + 1);
 		car.err.message = malloc(size);
@@ -114,8 +116,6 @@ ComponentActionReturn set_mem_value(MemValue mem_value) {
 	target_mem_value->value_hex = mem_value.value_hex;
 	target_mem_value->offset = mem_value.offset;
 
-	set_l_e_flag();
-
 	return car;
 }
 
@@ -134,12 +134,5 @@ ComponentActionReturn get_mem_value(char *offset) {
 
 	car.return_value = (void *) target_mem_value;
 
-	reset_l_e_flag();
-
 	return car;
-}
-
-
-void mem_step(void) {
-	reset_l_e_flag();
 }
