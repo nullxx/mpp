@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "57DA08D027E6618A00DA2BB1"
                BuildableName = "mpp"
-               BlueprintName = "mpp"
+               BlueprintName = "mpp-compiler"
                ReferencedContainer = "container:mpp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,7 +46,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "57DA08D027E6618A00DA2BB1"
             BuildableName = "mpp"
-            BlueprintName = "mpp"
+            BlueprintName = "mpp-compiler"
             ReferencedContainer = "container:mpp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -69,7 +69,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "57DA08D027E6618A00DA2BB1"
             BuildableName = "mpp"
-            BlueprintName = "mpp"
+            BlueprintName = "mpp-compiler"
             ReferencedContainer = "container:mpp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
