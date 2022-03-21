@@ -6,16 +6,17 @@
 //
 
 #include "file.h"
+
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "error.h"
 #include "logger.h"
 
-#include <errno.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-
-const unsigned MAX_FILE_SIZE = 500 * 1024 * 1024; // 500 MB
-const unsigned MAX_FILE_LINE_SIZE = 1 * 1024 * 1024; // 1 MB
+const unsigned MAX_FILE_SIZE = 500 * 1024 * 1024;     // 500 MB
+const unsigned MAX_FILE_LINE_SIZE = 1 * 1024 * 1024;  // 1 MB
 
 const char EOL = '\n';
 const char NULL_TERMINATOR = '\0';
@@ -43,13 +44,12 @@ void read_file(const char *path, RawSentenceT *raw_sentence_t) {
 
     char *buffer = malloc(MAX_FILE_SIZE);
     char *line_buffer = malloc(MAX_FILE_LINE_SIZE);
-    RawSentence *raw_sentences = malloc(sizeof(RawSentence) * 1); // 1 by default
+    RawSentence *raw_sentences = malloc(sizeof(RawSentence) * 1);  // 1 by default
     if (buffer == NULL || line_buffer == NULL || raw_sentences == NULL) {
         err.type = FATAL;
         err.message = "Error reading file";
         goto error;
     }
-
 
     int row = 0;
     while (fgets(line_buffer, MAX_FILE_LINE_SIZE, fp)) {
@@ -61,7 +61,7 @@ void read_file(const char *path, RawSentenceT *raw_sentence_t) {
         rs->content = malloc(sizeof(char) * strlen(line_buffer) + 1);
         strcpy(rs->content, line_buffer);
 
-        raw_sentences = realloc(raw_sentences, sizeof(RawSentence) * (rs->row + 1));
+        raw_sentences = realloc(raw_sentences, sizeof(RawSentence) * (rs->row + 1)); // FIXME raw_sentences nulled but not freed
         raw_sentences[rs->row] = *rs;
     }
 
@@ -72,9 +72,9 @@ void read_file(const char *path, RawSentenceT *raw_sentence_t) {
 
     free(buffer);
     free(line_buffer);
-    
+
     return;
 
-    error:
-        process_error(&err);
+error:
+    process_error(&err);
 }

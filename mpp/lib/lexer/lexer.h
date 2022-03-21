@@ -8,8 +8,9 @@
 #ifndef lexer_h
 #define lexer_h
 
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
+
 #include "../file.h"
 
 typedef enum {
@@ -19,10 +20,7 @@ typedef enum {
     FLOW_CONTROL,
 } SentenceType;
 
-typedef enum {
-    ID,
-    PARAM
-} TokenType;
+typedef enum { ID, PARAM } TokenType;
 
 typedef enum {
     MOV,
@@ -39,13 +37,13 @@ typedef enum { NO_PARAM_TYPE = 0, INM, REG, AC, REG_OR_AC, INM_OR_REG_OR_AC } Pa
 
 typedef struct {
     TokenType type;
-    TokenName type_name; // only if type == ID
-    ParamType param_type; // only if type == PARAM
+    TokenName type_name;   // only if type == ID
+    ParamType param_type;  // only if type == PARAM
     char *content;
 } Token;
 
 typedef struct {
-    unsigned int count;
+    int count;
     char *params;
 } ParamT;
 

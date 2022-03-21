@@ -6,12 +6,13 @@
 //
 
 #include "error.h"
-#include "logger.h"
 
-#include <stdio.h>
 #include <errno.h>
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "logger.h"
 
 void fatal(Error *err) {
     if (err->show_errno == true) {
@@ -19,8 +20,7 @@ void fatal(Error *err) {
     } else {
         log_error(err->message == NULL ? "An error ocurred" : err->message);
     }
-    
-end:
+
     exit(EXIT_FAILURE);
 }
 

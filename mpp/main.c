@@ -7,14 +7,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "lib/error.h"
 #include "lib/file.h"
 #include "lib/lexer/lexer.h"
-#include "lib/parser/parser.h"
-#include "lib/motd.h"
-#include "lib/error.h"
 #include "lib/logger.h"
+#include "lib/motd.h"
+#include "lib/parser/parser.h"
 
-int main(int argc, const char * argv[]) {
+int main(int argc, const char *argv[]) {
     print_welcome();
 
     if (argc < 2) {
@@ -25,12 +26,12 @@ int main(int argc, const char * argv[]) {
         process_error(&err);
         return 1;
     };
-    
+
     RawSentenceT *raw_sentence_t = malloc(sizeof(RawSentence));
-    
+
     log_debug("Reading file");
     read_file(argv[1], raw_sentence_t);
-    
+
     log_debug("Running lexer");
     SentenceT *sentencest = run_lexer(raw_sentence_t);
 

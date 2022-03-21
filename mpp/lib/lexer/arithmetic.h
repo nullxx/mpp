@@ -9,9 +9,9 @@
 #define arithmetic_h
 
 #include <stdbool.h>
+
 #include "../file.h"
 #include "lexer.h"
-
 
 bool check_arithmetic_token_id(Token *token_id);
 CheckParamsR check_arithmetic_params(TokenName token_id_name, Sentence st);

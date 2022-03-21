@@ -6,12 +6,13 @@
 //
 
 #include "lexer.h"
-#include "arithmetic.h"
-#include "../error.h"
 
-#include <string.h>
-#include <stdlib.h>
 #include <math.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "../error.h"
+#include "arithmetic.h"
 
 SentenceType get_id_token(Token *token_id) {
     bool is_arithmetic = check_arithmetic_token_id(token_id);
@@ -20,8 +21,8 @@ SentenceType get_id_token(Token *token_id) {
 }
 
 CheckParamsR check_params(TokenName token_id_name, Sentence st) {
-    CheckParamsR cpr = { false, NULL };
-    
+    CheckParamsR cpr = {false, NULL};
+
     cpr = check_arithmetic_params(token_id_name, st);
     if (cpr.success) return cpr;
 
@@ -30,13 +31,13 @@ CheckParamsR check_params(TokenName token_id_name, Sentence st) {
 
 Token *get_tokens(RawSentence *rs, int *count) {
     Token *tokens = malloc(sizeof(Token) * 0);
-    char *token = strtok(rs->content, " "); // "       SOMETHING" => { "SOMETHING" } // It does like a trim
+    char *token = strtok(rs->content, " ");  // "       SOMETHING" => { "SOMETHING" } // It does like a trim
 
     unsigned i = 0;
     while (token != NULL) {
-        tokens = realloc(tokens, sizeof(Token) * (i + 1));
+        tokens = realloc(tokens, sizeof(Token) * (i + 1)); // FIXME tokens nulled but not freed
         tokens[i].type = i == 0 ? ID : PARAM;
-        
+
         tokens[i].content = malloc(sizeof(char) * strlen(token) + 1);
         strcpy(tokens[i].content, token);
 
@@ -69,9 +70,9 @@ Sentence process_line(RawSentence *rs) {
         const char *detail_message = "Couldn't find token (id) at line %d\n";
 
         const size_t detail_message_len = strlen(detail_message);
-        const int row_num_len = (int) log10(rs->row + 1) + 1;
+        const int row_num_len = (int)log10(rs->row + 1) + 1;
 
-        char *message = malloc(sizeof(char) * (detail_message_len + row_num_len) - 2*1);
+        char *message = malloc(sizeof(char) * (detail_message_len + row_num_len) - 2 * 1);
         sprintf(message, detail_message, rs->row + 1);
 
         err.message = message;
@@ -85,10 +86,10 @@ Sentence process_line(RawSentence *rs) {
         const char *detail_message = "Unexpected token (ID) '%s' at line %d\n";
 
         const size_t detail_message_len = strlen(detail_message);
-        const int row_num_len = (int) log10(rs->row + 1) + 1;
+        const int row_num_len = (int)log10(rs->row + 1) + 1;
         const size_t token_len = strlen(token_id->content);
 
-        char *message = malloc(sizeof(char) * (detail_message_len + row_num_len + token_len) - 2*2);
+        char *message = malloc(sizeof(char) * (detail_message_len + row_num_len + token_len) - 2 * 2);
 
         sprintf(message, detail_message, token_id->content, rs->row + 1);
 
@@ -107,10 +108,10 @@ Sentence process_line(RawSentence *rs) {
         goto exception;
     }
 
-//    free(st.tokens);
-//    // TODO free(st.tokens[0..n].content)
-//    free(st.paramT.params);
-//    free(rs->content);
+    //    free(st.tokens);
+    //    // TODO free(st.tokens[0..n].content)
+    //    free(st.paramT.params);
+    //    free(rs->content);
     return st;
 exception:
     process_error(&err);

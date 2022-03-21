@@ -8,7 +8,7 @@
 #ifndef error_h
 #define error_h
 
-typedef enum  {
+typedef enum {
     FATAL,
 } ErrorType;
 

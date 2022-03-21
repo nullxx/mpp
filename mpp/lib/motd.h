@@ -8,6 +8,6 @@
 #ifndef motd_h
 #define motd_h
 
-
 void print_welcome(void);
+
 #endif /* motd_h */
