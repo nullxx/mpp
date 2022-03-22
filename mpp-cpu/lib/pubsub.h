@@ -10,6 +10,10 @@
 
 #include <stdbool.h>
 
+// types PubSubMessage value
+typedef unsigned long long BusData_t;
+// -- types PubSubMessage value
+
 typedef enum {
     NONE_PUBSUB_TOPIC = 0,
     DATA_BUS_TOPIC

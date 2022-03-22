@@ -55,7 +55,7 @@ ParamType get_param_type(Token t) {
 
 	return NO_PARAM_TYPE;
 }
-
+// recursive descent parse
 void parse_sentence(Sentence *st) {
 	Error err;
 	TokenName token_id_name = st->tokens[0].type_name;

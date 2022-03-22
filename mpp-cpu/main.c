@@ -8,14 +8,17 @@
 #include <stdio.h>
 #include "lib/utils.h"
 #include "lib/components/components.h"
+#include <stdlib.h>
 
-//int main(int argc, const char * argv[]) {
-//    // insert code here...
-//    printf("Hello, World!\n");
-//    
-//    char *hex = int_to_hex(999999999);
-//    
-//    printf("Hello, World! %s\n", hex);
-//    init_components();
-//    return 0;
-//}
+void fnExit(void) {
+	shutdown_components();
+}
+
+int main(int argc, const char * argv[]) {
+	printf("Hello, World!\n");
+
+	init_components();
+
+	atexit(fnExit);
+	return 0;
+}

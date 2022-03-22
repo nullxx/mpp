@@ -9,16 +9,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
 
 PubSubSubscription **subscriptions = NULL;
 unsigned int subscription_count = 0;
 
 PubSubSubscription *subscribe_to(PubSubTopic topic, on_message on_message_fn) {
 	PubSubSubscription *subscription = malloc(sizeof(PubSubSubscription));
-    if (subscription == NULL) {
-        return NULL;
-    }
+	if (subscription == NULL) {
+		return NULL;
+	}
 
 	subscription->id = subscription_count++; // id is also the index inside subscriptions
 	subscription->topic = topic;
@@ -32,6 +31,8 @@ PubSubSubscription *subscribe_to(PubSubTopic topic, on_message on_message_fn) {
 }
 
 bool unsubscribe_for(PubSubSubscription *sub) {
+	if (sub == NULL) return false;
+
 	if (sub->id >= subscription_count) {
 		return false;
 	}
@@ -46,16 +47,16 @@ int publish_message_to(PubSubTopic topic, void *value) {
 		.topic = topic,
 		.value = value
 	};
-    
-    int sent = 0;
+
+	int sent = 0;
 
 	// find the subs subscribed to this topic
 	for (int i = 0; i < subscription_count; i++) {
 		PubSubSubscription *sub = subscriptions[i];
 		if (sub == NULL || sub->topic != topic) continue;
 		sub->on_message_fn(message);
-        sent++;
+		sent++;
 	}
 
-    return sent;
+	return sent;
 }
