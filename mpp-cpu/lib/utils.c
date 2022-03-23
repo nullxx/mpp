@@ -19,7 +19,7 @@ int hex_to_int(const char *hex) {
 
 char *int_to_hex(int num) {  // TODO check malloc failures
     int size = 4;
-    char *result = malloc(sizeof(char) * size + 1);
+    char *result = malloc(sizeof(char) * (size + 1));
     if (result == NULL) {
         goto error;
     }
@@ -28,7 +28,7 @@ char *int_to_hex(int num) {  // TODO check malloc failures
 
     while (1) {
         const int next_size = size + 1;
-        char *result2 = malloc(sizeof(char) * next_size + 1);
+        char *result2 = malloc(sizeof(char) * (next_size + 1));
         snprintf(result2, next_size, "%x", num);
 
         if (!strcmp(result, result2)) break;
@@ -64,7 +64,7 @@ int get_bin_len(unsigned long long bin) {
 char *bin_to_str(unsigned long long bin) {
     const int bin_len = get_bin_len(bin);
 
-    const size_t size = sizeof(char) * bin_len + 1;
+    const size_t size = sizeof(char) * (bin_len + 1);
     char *str = malloc(size);
 
     snprintf(str, size, "%llu", bin);
