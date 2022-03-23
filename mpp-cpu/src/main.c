@@ -18,14 +18,16 @@ void fnExit(void) {
 }
 
 int main(int argc, const char* argv[]) {
+    (void) argc;
+    (void) argv;
+
     log_info("Turning on...");
 
     atexit(fnExit);
 
     init_components();
-
-    int len = get_bin_len(1111001111111111);
-    log_debug("%d bits", len);
-    
+//
+//    int len = get_bin_len(1111001111111111);
+//    log_debug("%d bits", len);
     return 0;
 }

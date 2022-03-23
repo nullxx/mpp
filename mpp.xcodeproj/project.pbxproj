@@ -7,11 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		572DD47027E9AB9C00974272 /* pubsub.c in Sources */ = {isa = PBXBuildFile; fileRef = 572DD46F27E9AB9B00974272 /* pubsub.c */; };
-		572DD47227E9B29700974272 /* pubsubtest.c in Sources */ = {isa = PBXBuildFile; fileRef = 572DD47127E9B29700974272 /* pubsubtest.c */; };
-		572DD48427EA746D00974272 /* logger.c in Sources */ = {isa = PBXBuildFile; fileRef = 572DD48227EA746D00974272 /* logger.c */; };
-		572DD48727EB26B000974272 /* mxdir.c in Sources */ = {isa = PBXBuildFile; fileRef = 572DD48627EB26B000974272 /* mxdir.c */; };
-		572DD48B27EB2A2900974272 /* multiplexer.c in Sources */ = {isa = PBXBuildFile; fileRef = 572DD48A27EB2A2900974272 /* multiplexer.c */; };
+		57D74EA527EB773400F2AA49 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 57D74EA027EB773400F2AA49 /* Makefile */; };
+		57D74EA627EB773400F2AA49 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 57D74EA427EB773400F2AA49 /* main.c */; };
 		57DA08D527E6618A00DA2BB1 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08D427E6618A00DA2BB1 /* main.c */; };
 		57DA08DE27E6622C00DA2BB1 /* lexer.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08DD27E6622C00DA2BB1 /* lexer.c */; };
 		57DA08E127E6671700DA2BB1 /* file.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08E027E6671700DA2BB1 /* file.c */; };
@@ -21,11 +18,6 @@
 		57DA08EF27E72B4800DA2BB1 /* motd.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08EE27E72B4800DA2BB1 /* motd.c */; };
 		57DA08F327E7948600DA2BB1 /* parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08F227E7948600DA2BB1 /* parser.c */; };
 		57DA08F627E79F6D00DA2BB1 /* arithmetic.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08F527E79F6D00DA2BB1 /* arithmetic.c */; };
-		57FFCAE527E8858900B86438 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 57FFCAE427E8858900B86438 /* main.c */; };
-		57FFCAED27E8861700B86438 /* mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 57FFCAEC27E8861700B86438 /* mem.c */; };
-		57FFCAF127E886AE00B86438 /* components.c in Sources */ = {isa = PBXBuildFile; fileRef = 57FFCAF027E886AE00B86438 /* components.c */; };
-		57FFCAF427E88E7900B86438 /* utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 57FFCAF327E88E7900B86438 /* utils.c */; };
-		57FFCAF727E89F0D00B86438 /* error.c in Sources */ = {isa = PBXBuildFile; fileRef = 57FFCAF527E89F0D00B86438 /* error.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -50,15 +42,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		572DD46E27E9AB9B00974272 /* pubsub.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pubsub.h; sourceTree = "<group>"; };
-		572DD46F27E9AB9B00974272 /* pubsub.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pubsub.c; sourceTree = "<group>"; };
-		572DD47127E9B29700974272 /* pubsubtest.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pubsubtest.c; sourceTree = "<group>"; };
-		572DD48227EA746D00974272 /* logger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = logger.c; path = "mpp-compiler/lib/logger.c"; sourceTree = SOURCE_ROOT; };
-		572DD48327EA746D00974272 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = logger.h; path = "mpp-compiler/lib/logger.h"; sourceTree = SOURCE_ROOT; };
-		572DD48527EB26B000974272 /* mxdir.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mxdir.h; sourceTree = "<group>"; };
-		572DD48627EB26B000974272 /* mxdir.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mxdir.c; sourceTree = "<group>"; };
-		572DD48927EB2A2900974272 /* multiplexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = multiplexer.h; sourceTree = "<group>"; };
-		572DD48A27EB2A2900974272 /* multiplexer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = multiplexer.c; sourceTree = "<group>"; };
+		57D74EA027EB773400F2AA49 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		57D74EA127EB773400F2AA49 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; path = src; sourceTree = "<group>"; };
+		57D74EA227EB773400F2AA49 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
+		57D74EA327EB773400F2AA49 /* output */ = {isa = PBXFileReference; lastKnownFileType = folder; path = output; sourceTree = "<group>"; };
+		57D74EA427EB773400F2AA49 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		57DA08D127E6618A00DA2BB1 /* mpp-compiler */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "mpp-compiler"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57DA08D427E6618A00DA2BB1 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		57DA08DC27E6622C00DA2BB1 /* lexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lexer.h; sourceTree = "<group>"; };
@@ -79,16 +67,6 @@
 		57DA08F427E79F6D00DA2BB1 /* arithmetic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = arithmetic.h; sourceTree = "<group>"; };
 		57DA08F527E79F6D00DA2BB1 /* arithmetic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = arithmetic.c; sourceTree = "<group>"; };
 		57FFCAE227E8858900B86438 /* mpp-cpu */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "mpp-cpu"; sourceTree = BUILT_PRODUCTS_DIR; };
-		57FFCAE427E8858900B86438 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		57FFCAEB27E8861700B86438 /* mem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mem.h; sourceTree = "<group>"; };
-		57FFCAEC27E8861700B86438 /* mem.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mem.c; sourceTree = "<group>"; };
-		57FFCAEE27E8862700B86438 /* constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
-		57FFCAEF27E886AE00B86438 /* components.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = components.h; sourceTree = "<group>"; };
-		57FFCAF027E886AE00B86438 /* components.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = components.c; sourceTree = "<group>"; };
-		57FFCAF227E88E7900B86438 /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
-		57FFCAF327E88E7900B86438 /* utils.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = utils.c; sourceTree = "<group>"; };
-		57FFCAF527E89F0D00B86438 /* error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = error.c; sourceTree = "<group>"; };
-		57FFCAF627E89F0D00B86438 /* error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = error.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,15 +87,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		572DD48827EB2A1200974272 /* electronic */ = {
-			isa = PBXGroup;
-			children = (
-				572DD48927EB2A2900974272 /* multiplexer.h */,
-				572DD48A27EB2A2900974272 /* multiplexer.c */,
-			);
-			path = electronic;
-			sourceTree = "<group>";
-		};
 		57DA08C827E6618A00DA2BB1 = {
 			isa = PBXGroup;
 			children = (
@@ -188,42 +157,13 @@
 		57FFCAE327E8858900B86438 /* mpp-cpu */ = {
 			isa = PBXGroup;
 			children = (
-				57FFCAE927E8859F00B86438 /* lib */,
-				57FFCAE427E8858900B86438 /* main.c */,
+				57D74EA227EB773400F2AA49 /* lib */,
+				57D74EA427EB773400F2AA49 /* main.c */,
+				57D74EA027EB773400F2AA49 /* Makefile */,
+				57D74EA327EB773400F2AA49 /* output */,
+				57D74EA127EB773400F2AA49 /* src */,
 			);
 			path = "mpp-cpu";
-			sourceTree = "<group>";
-		};
-		57FFCAE927E8859F00B86438 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				572DD48827EB2A1200974272 /* electronic */,
-				57FFCAEA27E885FC00B86438 /* components */,
-				57FFCAEE27E8862700B86438 /* constants.h */,
-				57FFCAF227E88E7900B86438 /* utils.h */,
-				57FFCAF327E88E7900B86438 /* utils.c */,
-				57FFCAF527E89F0D00B86438 /* error.c */,
-				57FFCAF627E89F0D00B86438 /* error.h */,
-				572DD46E27E9AB9B00974272 /* pubsub.h */,
-				572DD47127E9B29700974272 /* pubsubtest.c */,
-				572DD46F27E9AB9B00974272 /* pubsub.c */,
-				572DD48227EA746D00974272 /* logger.c */,
-				572DD48327EA746D00974272 /* logger.h */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
-		57FFCAEA27E885FC00B86438 /* components */ = {
-			isa = PBXGroup;
-			children = (
-				57FFCAEB27E8861700B86438 /* mem.h */,
-				57FFCAEC27E8861700B86438 /* mem.c */,
-				57FFCAEF27E886AE00B86438 /* components.h */,
-				57FFCAF027E886AE00B86438 /* components.c */,
-				572DD48527EB26B000974272 /* mxdir.h */,
-				572DD48627EB26B000974272 /* mxdir.c */,
-			);
-			path = components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -320,16 +260,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				572DD47027E9AB9C00974272 /* pubsub.c in Sources */,
-				572DD48427EA746D00974272 /* logger.c in Sources */,
-				57FFCAF127E886AE00B86438 /* components.c in Sources */,
-				572DD48727EB26B000974272 /* mxdir.c in Sources */,
-				57FFCAF427E88E7900B86438 /* utils.c in Sources */,
-				57FFCAE527E8858900B86438 /* main.c in Sources */,
-				57FFCAED27E8861700B86438 /* mem.c in Sources */,
-				572DD48B27EB2A2900974272 /* multiplexer.c in Sources */,
-				57FFCAF727E89F0D00B86438 /* error.c in Sources */,
-				572DD47227E9B29700974272 /* pubsubtest.c in Sources */,
+				57D74EA627EB773400F2AA49 /* main.c in Sources */,
+				57D74EA527EB773400F2AA49 /* Makefile in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

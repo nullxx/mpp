@@ -15,5 +15,7 @@ int random_int(const int end_bound);
 unsigned long long str_to_bin(const char *s);
 int get_bin_len(unsigned long long bin);
 char *bin_to_str(unsigned long long bin);
+int bin_to_int(unsigned long long bin);
+unsigned long long int_to_bin(int n);
 
 #endif /* utils_h */

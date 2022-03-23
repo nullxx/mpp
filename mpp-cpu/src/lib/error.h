@@ -14,7 +14,7 @@ typedef enum {
 
 typedef struct {
     ErrorType type;
-    char *message;
+    const char *message;
     unsigned int show_errno;
 } Error;
 

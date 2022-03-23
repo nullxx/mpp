@@ -1,0 +1,46 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug",
+        "type": "lldb",
+        "request": "launch",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "environment": [],
+        "externalConsole": false,
+        "linux": {
+          "MIMode": "gdb",
+          "miDebuggerPath": "gdb",
+          "program": "${workspaceFolder}/output/main"
+        },
+        "osx": {
+          "MIMode": "lldb",
+          "MIDebuggerPath": "lldb-mi",
+          "program": "${workspaceFolder}/output/main"
+        },
+        "windows": {
+          "MIMode": "gdb",
+          "miDebuggerPath": "gdb.exe",
+          "program": "${workspaceFolder}/output/main.exe"
+        },
+        "preLaunchTask": "build"
+      },
+      {
+        "name": "C/C++ Runner: Debug Session",
+        "type": "lldb",
+        "request": "launch",
+        "args": [
+          ""
+        ],
+        "stopAtEntry": true,
+        "cwd": "/Users/nullx/Desktop/express-c",
+        "environment": [],
+        "program": "/Users/nullx/Desktop/express-c/build/Debug/outDebug",
+        "internalConsoleOptions": "openOnSessionStart",
+        "MIMode": "lldb",
+        "externalConsole": false
+      }
+    ]
+  }
