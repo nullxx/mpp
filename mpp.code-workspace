@@ -1,33 +1,59 @@
 {
-	"folders": [
-		{
-			"path": "mpp-cpu"
-		},
-		{
-			"path": "mpp-compiler"
-		}
-	],
-	"settings": {
-		"files.associations": {
-			"utils.h": "c",
-			"constants.h": "c",
-			"stdbool.h": "c",
-			"mxdir.h": "c",
-			"addsub.h": "c",
-			"__hash_table": "c",
-			"__split_buffer": "c",
-			"array": "c",
-			"bitset": "c",
-			"deque": "c",
-			"initializer_list": "c",
-			"iterator": "c",
-			"queue": "c",
-			"random": "c",
-			"string": "c",
-			"string_view": "c",
-			"unordered_map": "c",
-			"utility": "c",
-			"vector": "c"
-		}
-	}
+  "folders": [
+    {
+      "path": "mpp-cpu"
+    },
+    {
+      "path": "mpp-compiler"
+    }
+  ],
+  "settings": {
+    "files.associations": {
+      "utils.h": "c",
+      "constants.h": "c",
+      "stdbool.h": "c",
+      "mxdir.h": "c",
+      "addsub.h": "c",
+      "__hash_table": "c",
+      "__split_buffer": "c",
+      "array": "c",
+      "bitset": "c",
+      "deque": "c",
+      "initializer_list": "c",
+      "iterator": "c",
+      "queue": "c",
+      "random": "c",
+      "string": "c",
+      "string_view": "c",
+      "unordered_map": "c",
+      "utility": "c",
+      "vector": "c"
+    },
+    "psi-header.templates": [
+      {
+        "language": "*",
+        "template": [
+          "File: <<filename>>",
+          "Project: <<projectname>>",
+          "File Created: <<filecreated('dddd, Do MMMM YYYY h:mm:ss a')>>",
+          "Author: <<author>> (<<authoremail>>)",
+          "-----",
+          "Last Modified: <<dateformat('dddd, Do MMMM YYYY h:mm:ss a')>>",
+          "Modified By: <<author>> (<<authoremail>>>)"
+        ]
+      }
+    ],
+    "psi-header.config": {
+      "author": "https://github.com/nullxx",
+      "authorEmail": "mail@nullx.me"
+    },
+    "c-cpp-flylint.cppcheck.enable": false,
+    "c-cpp-flylint.flawfinder.enable": false,
+    "c-cpp-flylint.lizard.enable": false,
+    "c-cpp-flylint.flexelint.enable": false,
+    "c-cpp-flylint.clang.enable": true
+  },
+  "extensions": {
+    "recommendations": ["psioniq.psi-header", "jbenden.c-cpp-flylint"]
+  }
 }
