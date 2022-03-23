@@ -9,9 +9,10 @@
 #define component_h
 
 #include <stdbool.h>
+
 #include "../error.h"
 
-typedef  struct {
+typedef struct {
     bool success;
     Error err;
     void *return_value;
@@ -21,10 +22,7 @@ typedef struct {
     int value;
 } LoadBit;
 
-typedef enum {
-    NONE_EVENT_TYPE = 0,
-    FLAG_CHANGE
-} CallbackEventType;
+typedef enum { NONE_EVENT_TYPE = 0, FLAG_CHANGE } CallbackEventType;
 
 void init_components(void);
 void shutdown_components(void);

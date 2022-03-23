@@ -15,21 +15,21 @@
 #include "logger.h"
 
 void fatal(Error *err) {
-	if (err->show_errno == true) {
-		perror(err->message);
-	} else {
+    if (err->show_errno == true) {
+        perror(err->message);
+    } else {
         fprintf(stderr, "%s", err->message == NULL ? "An error ocurred" : err->message);
-	}
+    }
 
-	exit(EXIT_FAILURE);
+    exit(EXIT_FAILURE);
 }
 
 void process_error(Error *err) {
-	switch (err->type) {
-	case FATAL:
-		fatal(err);
-		break;
-	default:
-		break;
-	}
+    switch (err->type) {
+        case FATAL:
+            fatal(err);
+            break;
+        default:
+            break;
+    }
 }

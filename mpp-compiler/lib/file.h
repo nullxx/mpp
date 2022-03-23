@@ -9,13 +9,13 @@
 #define file_h
 
 typedef struct {
-	int row;
-	char *content;
+    int row;
+    char *content;
 } RawSentence;
 
 typedef struct {
-	unsigned int count;
-	RawSentence *raw_sentences;
+    unsigned int count;
+    RawSentence *raw_sentences;
 } RawSentenceT;
 
 void read_file(const char *path, RawSentenceT *raw_sentence_t);

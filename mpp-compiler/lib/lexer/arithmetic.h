@@ -14,6 +14,6 @@
 #include "lexer.h"
 
 bool check_arithmetic_token_id(Token *token_id);
-CheckParamsR check_arithmetic_params(TokenName token_id_name, Sentence st);
+CheckParamsR check_arithmetic_params(TokenName token_id_name, Sentence *st);
 
 #endif /* arithmetic_h */

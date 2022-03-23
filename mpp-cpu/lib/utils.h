@@ -8,8 +8,6 @@
 #ifndef utils_h
 #define utils_h
 
-#include <stdio.h>
-
 int hex_to_int(const char *hex);
 char *int_to_hex(int num);
 

@@ -14,10 +14,7 @@
 typedef unsigned long long BusData_t;
 // -- types PubSubMessage value
 
-typedef enum {
-    NONE_PUBSUB_TOPIC = 0,
-    DATA_BUS_TOPIC
-} PubSubTopic;
+typedef enum { NONE_PUBSUB_TOPIC = 0, DATA_BUS_TOPIC } PubSubTopic;
 
 typedef struct {
     PubSubTopic topic;

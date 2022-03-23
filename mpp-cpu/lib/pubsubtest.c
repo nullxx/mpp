@@ -9,12 +9,12 @@
 //
 //#include "pubsub.h"
 //
-//void on_message_fn(PubSubMessage message) {
+// void on_message_fn(PubSubMessage message) {
 //    printf("Message Topic: %d\n", message.topic);
 //    printf("Message Value: %s\n", (char*)message.value);
 //}
 //
-//int main(void) {
+// int main(void) {
 //    PubSubSubscription *sub = subscribe_to(DATA_BUS_TOPIC, &on_message_fn);
 //    int published_to1 = publish_message_to(DATA_BUS_TOPIC, (void*) "Message");
 //    unsubscribe_for(sub);

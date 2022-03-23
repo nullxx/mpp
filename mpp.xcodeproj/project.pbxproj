@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		572DD47027E9AB9C00974272 /* pubsub.c in Sources */ = {isa = PBXBuildFile; fileRef = 572DD46F27E9AB9B00974272 /* pubsub.c */; };
 		572DD47227E9B29700974272 /* pubsubtest.c in Sources */ = {isa = PBXBuildFile; fileRef = 572DD47127E9B29700974272 /* pubsubtest.c */; };
+		572DD48427EA746D00974272 /* logger.c in Sources */ = {isa = PBXBuildFile; fileRef = 572DD48227EA746D00974272 /* logger.c */; };
 		57DA08D527E6618A00DA2BB1 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08D427E6618A00DA2BB1 /* main.c */; };
 		57DA08DE27E6622C00DA2BB1 /* lexer.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08DD27E6622C00DA2BB1 /* lexer.c */; };
 		57DA08E127E6671700DA2BB1 /* file.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08E027E6671700DA2BB1 /* file.c */; };
@@ -50,6 +51,8 @@
 		572DD46E27E9AB9B00974272 /* pubsub.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pubsub.h; sourceTree = "<group>"; };
 		572DD46F27E9AB9B00974272 /* pubsub.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pubsub.c; sourceTree = "<group>"; };
 		572DD47127E9B29700974272 /* pubsubtest.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pubsubtest.c; sourceTree = "<group>"; };
+		572DD48227EA746D00974272 /* logger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = logger.c; path = "mpp-compiler/lib/logger.c"; sourceTree = SOURCE_ROOT; };
+		572DD48327EA746D00974272 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = logger.h; path = "mpp-compiler/lib/logger.h"; sourceTree = SOURCE_ROOT; };
 		57DA08D127E6618A00DA2BB1 /* mpp-compiler */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "mpp-compiler"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57DA08D427E6618A00DA2BB1 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		57DA08DC27E6622C00DA2BB1 /* lexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lexer.h; sourceTree = "<group>"; };
@@ -188,6 +191,8 @@
 				572DD46E27E9AB9B00974272 /* pubsub.h */,
 				572DD47127E9B29700974272 /* pubsubtest.c */,
 				572DD46F27E9AB9B00974272 /* pubsub.c */,
+				572DD48227EA746D00974272 /* logger.c */,
+				572DD48327EA746D00974272 /* logger.h */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -298,6 +303,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				572DD47027E9AB9C00974272 /* pubsub.c in Sources */,
+				572DD48427EA746D00974272 /* logger.c in Sources */,
 				57FFCAF127E886AE00B86438 /* components.c in Sources */,
 				57FFCAF427E88E7900B86438 /* utils.c in Sources */,
 				57FFCAE527E8858900B86438 /* main.c in Sources */,

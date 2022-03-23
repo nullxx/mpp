@@ -11,13 +11,13 @@
 #include "components.h"
 
 typedef struct {
-	char *value_hex;
-	char *offset;
+    char *value_hex;
+    char *offset;
 } MemValue;
 
 typedef struct {
-	int values_count;
-	MemValue *values;
+    int values_count;
+    MemValue *values;
 } Mem;
 
 void init_mem(void);

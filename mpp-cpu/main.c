@@ -6,19 +6,22 @@
 //
 
 #include <stdio.h>
-#include "lib/utils.h"
-#include "lib/components/components.h"
 #include <stdlib.h>
 
+#include "lib/components/components.h"
+#include "lib/logger.h"
+#include "lib/utils.h"
+
 void fnExit(void) {
-	shutdown_components();
+    log_info("Shuting down...");
+    shutdown_components();
 }
 
-int main(int argc, const char * argv[]) {
-	printf("Hello, World!\n");
+int main(int argc, const char* argv[]) {
+    log_debug("Hello World!");
 
-	init_components();
+    atexit(fnExit);
 
-	atexit(fnExit);
-	return 0;
+    init_components();
+    return 0;
 }
