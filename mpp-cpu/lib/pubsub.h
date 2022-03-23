@@ -11,22 +11,39 @@
 #include <stdbool.h>
 
 // types PubSubMessage value
-typedef unsigned long long BusData_t;
+typedef unsigned long long DataBus_t;
+typedef unsigned long long DirBus_t;
+
+typedef unsigned long long PCOutputBus_t;
+typedef unsigned long long SPOutputBus_t;
+typedef unsigned long long HLOutputBus_t;
+typedef unsigned long long FFFCOutputBus_t;
+
 // -- types PubSubMessage value
 
-typedef enum { NONE_PUBSUB_TOPIC = 0, DATA_BUS_TOPIC } PubSubTopic;
+typedef enum {
+	NONE_PUBSUB_TOPIC = 0,
+	DATA_BUS_TOPIC,
+	DIR_BUS_TOPIC,
+	PC_OUTPUT_BUS_TOPIC,
+	SP_OUTPUT_BUS_TOPIC,
+	HL_OUTPUT_BUS_TOPIC,
+	FFFC_OUTPUT_BUS_TOPIC // <===== TODO FFFC is a single component
+} PubSubTopic;
 
 typedef struct {
-    PubSubTopic topic;
-    void *value;
+	PubSubTopic topic;
+	void *value;
 } PubSubMessage;
+
+char *pubsub_topic_tostring(PubSubTopic topic);
 
 typedef void (*on_message)(PubSubMessage);
 
 typedef struct {
-    unsigned int id;
-    PubSubTopic topic;
-    on_message on_message_fn;
+	unsigned int id;
+	PubSubTopic topic;
+	on_message on_message_fn;
 } PubSubSubscription;
 
 PubSubSubscription *subscribe_to(PubSubTopic topic, on_message on_message_fn);

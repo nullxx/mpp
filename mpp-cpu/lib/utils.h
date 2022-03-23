@@ -13,6 +13,7 @@ char *int_to_hex(int num);
 
 int random_int(const int end_bound);
 unsigned long long str_to_bin(const char *s);
+int get_bin_len(unsigned long long bin);
 char *bin_to_str(unsigned long long bin);
 
 #endif /* utils_h */

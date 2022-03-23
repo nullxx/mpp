@@ -56,8 +56,13 @@ unsigned long long str_to_bin(const char *s) {
     return i;
 }
 
+int get_bin_len(unsigned long long bin) {
+    const int bin_len = (int) log10(bin + 1) + 1;
+    return bin_len;
+}
+
 char *bin_to_str(unsigned long long bin) {
-    const int bin_len = (int)log10(bin + 1) + 1;
+    const int bin_len = get_bin_len(bin);
 
     const size_t size = sizeof(char) * bin_len + 1;
     char *str = malloc(size);

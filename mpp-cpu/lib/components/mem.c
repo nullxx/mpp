@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "../constants.h"
 #include "../error.h"
@@ -26,7 +27,8 @@ Mem mem;
 LoadBit l_e_lb = {.value = 0};
 LoadBit mem_bus_lb = {.value = 0};
 
-BusData_t last_bus_data;
+DataBus_t last_bus_data;
+DirBus_t last_bus_dir;
 
 bool is_mem_value_valid(char *hex) {
     const int num = hex_to_int(hex);
@@ -48,13 +50,19 @@ void fill_memory(void) {
 }
 
 void on_bus_data_message(PubSubMessage m) {
-    // no condition to receive data from bus --> always receiving data
-    last_bus_data = (BusData_t)m.value;
+    // no condition to receive data from data bus --> always receiving data
+    last_bus_data = (DataBus_t)m.value;
+}
+
+void on_bus_dir_message(PubSubMessage m) {
+    // no condition to receive data from dir bus --> always receiving data
+    last_bus_dir = (DirBus_t) m.value;
 }
 
 void init_mem(void) {
     fill_memory();
     subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
+    subscribe_to(DIR_BUS_TOPIC, on_bus_dir_message);
 }
 
 void shutdown_mem(void) {
@@ -95,7 +103,7 @@ ComponentActionReturn set_mem_value(MemValue mem_value) {
         car.err.show_errno = false;
         const char *msg = "[set_mem_value] Value %s invalid. Must be between 0-%d";
         const int end_bound_mem_value = pow(2, MEM_VALUE_SIZE_BITS) - 1;
-        const int end_bound_mem_value_size = (int)log10((end_bound_mem_value + 1) + 1) + 1;
+        const int end_bound_mem_value_size = (int) log10((end_bound_mem_value + 1) + 1) + 1;
         const size_t size = (size_t)sizeof(char) * (strlen(msg) + strlen(mem_value.value_hex) + end_bound_mem_value_size - 2 * 2 + 1);
         car.err.message = malloc(size);
         snprintf(car.err.message, size, msg, mem_value.value_hex, end_bound_mem_value);
@@ -140,9 +148,9 @@ ComponentActionReturn get_mem_value(char *offset) {
     return car;
 }
 
-void run_mem(unsigned long long mx_dir) {
+void run_mem(void) {
     Error err;
-    char *dir_bin_str = bin_to_str(mx_dir);
+    char *dir_bin_str = bin_to_str(last_bus_dir);
     char *value_bin_str = bin_to_str(last_bus_data);
 
     switch (l_e_lb.value) {

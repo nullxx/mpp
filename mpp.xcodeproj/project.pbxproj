@@ -10,6 +10,8 @@
 		572DD47027E9AB9C00974272 /* pubsub.c in Sources */ = {isa = PBXBuildFile; fileRef = 572DD46F27E9AB9B00974272 /* pubsub.c */; };
 		572DD47227E9B29700974272 /* pubsubtest.c in Sources */ = {isa = PBXBuildFile; fileRef = 572DD47127E9B29700974272 /* pubsubtest.c */; };
 		572DD48427EA746D00974272 /* logger.c in Sources */ = {isa = PBXBuildFile; fileRef = 572DD48227EA746D00974272 /* logger.c */; };
+		572DD48727EB26B000974272 /* mxdir.c in Sources */ = {isa = PBXBuildFile; fileRef = 572DD48627EB26B000974272 /* mxdir.c */; };
+		572DD48B27EB2A2900974272 /* multiplexer.c in Sources */ = {isa = PBXBuildFile; fileRef = 572DD48A27EB2A2900974272 /* multiplexer.c */; };
 		57DA08D527E6618A00DA2BB1 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08D427E6618A00DA2BB1 /* main.c */; };
 		57DA08DE27E6622C00DA2BB1 /* lexer.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08DD27E6622C00DA2BB1 /* lexer.c */; };
 		57DA08E127E6671700DA2BB1 /* file.c in Sources */ = {isa = PBXBuildFile; fileRef = 57DA08E027E6671700DA2BB1 /* file.c */; };
@@ -53,6 +55,10 @@
 		572DD47127E9B29700974272 /* pubsubtest.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pubsubtest.c; sourceTree = "<group>"; };
 		572DD48227EA746D00974272 /* logger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = logger.c; path = "mpp-compiler/lib/logger.c"; sourceTree = SOURCE_ROOT; };
 		572DD48327EA746D00974272 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = logger.h; path = "mpp-compiler/lib/logger.h"; sourceTree = SOURCE_ROOT; };
+		572DD48527EB26B000974272 /* mxdir.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mxdir.h; sourceTree = "<group>"; };
+		572DD48627EB26B000974272 /* mxdir.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mxdir.c; sourceTree = "<group>"; };
+		572DD48927EB2A2900974272 /* multiplexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = multiplexer.h; sourceTree = "<group>"; };
+		572DD48A27EB2A2900974272 /* multiplexer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = multiplexer.c; sourceTree = "<group>"; };
 		57DA08D127E6618A00DA2BB1 /* mpp-compiler */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "mpp-compiler"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57DA08D427E6618A00DA2BB1 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		57DA08DC27E6622C00DA2BB1 /* lexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lexer.h; sourceTree = "<group>"; };
@@ -103,6 +109,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		572DD48827EB2A1200974272 /* electronic */ = {
+			isa = PBXGroup;
+			children = (
+				572DD48927EB2A2900974272 /* multiplexer.h */,
+				572DD48A27EB2A2900974272 /* multiplexer.c */,
+			);
+			path = electronic;
+			sourceTree = "<group>";
+		};
 		57DA08C827E6618A00DA2BB1 = {
 			isa = PBXGroup;
 			children = (
@@ -182,6 +197,7 @@
 		57FFCAE927E8859F00B86438 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				572DD48827EB2A1200974272 /* electronic */,
 				57FFCAEA27E885FC00B86438 /* components */,
 				57FFCAEE27E8862700B86438 /* constants.h */,
 				57FFCAF227E88E7900B86438 /* utils.h */,
@@ -204,6 +220,8 @@
 				57FFCAEC27E8861700B86438 /* mem.c */,
 				57FFCAEF27E886AE00B86438 /* components.h */,
 				57FFCAF027E886AE00B86438 /* components.c */,
+				572DD48527EB26B000974272 /* mxdir.h */,
+				572DD48627EB26B000974272 /* mxdir.c */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -305,9 +323,11 @@
 				572DD47027E9AB9C00974272 /* pubsub.c in Sources */,
 				572DD48427EA746D00974272 /* logger.c in Sources */,
 				57FFCAF127E886AE00B86438 /* components.c in Sources */,
+				572DD48727EB26B000974272 /* mxdir.c in Sources */,
 				57FFCAF427E88E7900B86438 /* utils.c in Sources */,
 				57FFCAE527E8858900B86438 /* main.c in Sources */,
 				57FFCAED27E8861700B86438 /* mem.c in Sources */,
+				572DD48B27EB2A2900974272 /* multiplexer.c in Sources */,
 				57FFCAF727E89F0D00B86438 /* error.c in Sources */,
 				572DD47227E9B29700974272 /* pubsubtest.c in Sources */,
 			);
@@ -453,6 +473,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MKCUYH3782;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_MASTER_OBJECT_FILE = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -463,6 +484,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MKCUYH3782;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_MASTER_OBJECT_FILE = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

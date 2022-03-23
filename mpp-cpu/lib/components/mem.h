@@ -22,6 +22,7 @@ typedef struct {
 
 void init_mem(void);
 void shutdown_mem(void);
+void run_mem(void); // <==
 
 // control loadbits
 void set_l_e_lb(void);
