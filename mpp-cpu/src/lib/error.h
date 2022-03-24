@@ -9,6 +9,7 @@
 #define error_h
 
 typedef enum {
+    NONE_ERROR_TYPE = 0,
     FATAL,
 } ErrorType;
 
@@ -18,7 +19,9 @@ typedef struct {
     unsigned int show_errno;
 } Error;
 
-void process_error(Error *err);
-void fatal(Error *err);
+// void process_error(Error *err);
+void init_err_hanlder(void);
+void throw_error(Error err);
+void fatal(Error err);
 
 #endif /* error_h */

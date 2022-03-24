@@ -12,5 +12,6 @@
 #define MEM_SIZE_KB 64
 #define MEM_START_VALUE 0x00
 
+#define BUS_DIR_SIZE_BITS 16
 #define LOAD_BIT_ID_BITS 2
 #endif /* constants_h */

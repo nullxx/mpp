@@ -202,5 +202,5 @@ void run_mem(void) {
 
     return;
 error:
-    process_error(&err);
+    return throw_error(err);
 }

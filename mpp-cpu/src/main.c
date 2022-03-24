@@ -7,14 +7,19 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "lib/components/components.h"
 #include "lib/logger.h"
 #include "lib/utils.h"
 
-void fnExit(void) {
+void fn_exit(void) {
     log_info("Shuting down...");
     shutdown_components();
+}
+
+void on_error_fn(Error err) {
+    log_error(err.message);
 }
 
 int main(int argc, const char* argv[]) {
@@ -23,11 +28,10 @@ int main(int argc, const char* argv[]) {
 
     log_info("Turning on...");
 
-    atexit(fnExit);
+    atexit(fn_exit);
 
     init_components();
-//
-//    int len = get_bin_len(1111001111111111);
-//    log_debug("%d bits", len);
+    init_err_hanlder();
+
     return 0;
 }

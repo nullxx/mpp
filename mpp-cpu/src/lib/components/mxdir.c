@@ -61,7 +61,7 @@ void run_mxdir(void) {
         err.type = FATAL;
         err.show_errno = false;
 
-        return process_error(&err);
+        return throw_error(err);
     }
 
     publish_message_to(DIR_BUS_TOPIC, (void *)output);

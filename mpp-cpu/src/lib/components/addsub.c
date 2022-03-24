@@ -18,6 +18,14 @@ LoadBit id_lb = {.value = 00};
 DirBus_t last_bus_dir;
 PubSubSubscription *dir_bus_topic_subscription = NULL;
 
+bool check_dir_bus_overflow(DirBus_t dir) {
+    if (get_bin_len(dir) > BUS_DIR_SIZE_BITS) {
+        return false;
+    }
+
+    return true;
+}
+
 bool set_id_lb(unsigned long bin) {
     const int bin_len = get_bin_len(bin);
     if (bin_len != LOAD_BIT_ID_BITS) {
@@ -52,6 +60,17 @@ void run_addsub(void) {
             break;
     }
 
+    // check overflow
     const unsigned long long next_bin_bus_dir = int_to_bin(dir_bus_int);
+    if (!check_dir_bus_overflow(next_bin_bus_dir)) {
+        Error err = {
+            .show_errno = false,
+            // .type = FATAL, // TODO not fatal
+            .message = "Dir bus has overflowed"
+        };
+
+        return throw_error(err);
+    }
+
     publish_message_to(DIR_BUS_TOPIC, (void *)next_bin_bus_dir);
 }
