@@ -16,6 +16,9 @@
 
 // TODO check in all files that use subscribe and unsubscribe if they check return of those functions
 
+PubSubMiddleware **topics_with_middleware;
+unsigned int topic_with_middleware_count = 0;
+
 PubSubSubscription **subscriptions = NULL;
 unsigned int subscription_count = 0;
 
@@ -52,9 +55,8 @@ PubSubSubscription *subscribe_to(PubSubTopic topic, on_message on_message_fn) {
     subscription->on_message_fn = on_message_fn;
 
     // allocate for n subscriptions
-    PubSubSubscription **subscriptions_rllc = (PubSubSubscription **)realloc(subscriptions, sizeof(PubSubSubscription) * subscription_count);
+    PubSubSubscription **subscriptions_rllc = (PubSubSubscription **)realloc(subscriptions, sizeof(PubSubSubscription *) * subscription_count);
     if (subscriptions_rllc == NULL) {
-        free(subscriptions);
         return NULL;
     }
     subscriptions = subscriptions_rllc;
@@ -76,6 +78,52 @@ PubSubSubscription *subscribe_to(PubSubTopic topic, on_message on_message_fn) {
     free(constructed_msg);
 #endif
     return subscription;
+}
+
+PubSubMiddleware *add_topic_middleware(PubSubTopic topic, PubSubMiddlewareFn middleware_fn) {
+    if (middleware_fn == NULL) {
+        return NULL;
+    }
+
+    PubSubMiddleware **topics_with_middleware_rllc = (PubSubMiddleware **)realloc(topics_with_middleware, sizeof(PubSubMiddleware *) * ++topic_with_middleware_count);
+    if (topics_with_middleware_rllc == NULL) {
+        return NULL;
+    }
+    topics_with_middleware = topics_with_middleware_rllc;
+
+    PubSubMiddleware *m = (PubSubMiddleware *)malloc(sizeof(PubSubMiddleware));
+
+    m->middlware = middleware_fn;
+    m->topic = topic;
+
+    topics_with_middleware[topic_with_middleware_count-1] = m;
+
+#ifdef DEBUG
+    const char *msg = "Adding middleware for topic %s";
+    const char *topic_str = pubsub_topic_tostring(topic);
+
+    const size_t size = sizeof(char) * (strlen(msg) + strlen(topic_str) - 2 * 1 + 1);
+
+    char *constructed_msg = malloc(size);
+    snprintf(constructed_msg, size, msg, topic_str);
+
+    log_debug(constructed_msg);
+
+    free(constructed_msg);
+#endif
+    return m;
+}
+
+bool rm_topic_middleware(PubSubMiddleware *middleware) {
+    if (middleware == NULL) {
+        return false;
+    }
+
+    free(middleware);
+    middleware = NULL;
+    subscriptions[topic_with_middleware_count] = NULL;
+
+    return true;
 }
 
 bool unsubscribe_for(PubSubSubscription *sub) {
@@ -108,12 +156,39 @@ bool unsubscribe_for(PubSubSubscription *sub) {
     return true;
 }
 
+/**
+ * @brief Publishes a mesage to a topic
+ *
+ * @param topic
+ * @param value
+ * @return int -1 if middleware doesn't pass
+ */
 int publish_message_to(PubSubTopic topic, void *value) {
     PubSubMessage message = {.topic = topic, .value = value};
 
-    int sent = 0;
+    // executing middlewares
+    for (size_t i = 0; i < topic_with_middleware_count; i++) {
+        if (topics_with_middleware[i] == NULL || topics_with_middleware[i]->topic != topic) continue;
+        bool middleware_passes = topics_with_middleware[i]->middlware(value);
+#ifdef DEBUG
+        const char *msg = "Executed middleware for topic %s with result %s";
+        const char *result = middleware_passes ? "true" : "false";
+        const char *topic_str = pubsub_topic_tostring(topic);
+
+        const size_t size = sizeof(char) * (strlen(msg) + strlen(result) + strlen(topic_str) - 2 * 2 + 1);
+
+        char *constructed_msg = malloc(size);
+        snprintf(constructed_msg, size, msg, topic_str, result);
+
+        log_debug(constructed_msg);
+
+        free(constructed_msg);
+#endif
+        if (!middleware_passes) return -1;
+    }
 
     // find the subs subscribed to this topic
+    int sent = 0;
     for (unsigned int i = 0; i < subscription_count; i++) {
         PubSubSubscription *sub = subscriptions[i];
         if (sub == NULL || sub->topic != topic) continue;

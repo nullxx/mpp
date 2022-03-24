@@ -46,8 +46,19 @@ typedef struct {
     on_message on_message_fn;
 } PubSubSubscription;
 
+typedef bool (*PubSubMiddlewareFn)(void *);
+
+typedef struct {
+    PubSubTopic topic;
+    PubSubMiddlewareFn middlware;
+} PubSubMiddleware;
+
 PubSubSubscription *subscribe_to(PubSubTopic, on_message);
 bool unsubscribe_for(PubSubSubscription *);
+
 int publish_message_to(PubSubTopic, void *);
+
+PubSubMiddleware *add_topic_middleware(PubSubTopic topic, PubSubMiddlewareFn middleware_fn);
+bool rm_topic_middleware(PubSubMiddleware *middleware);
 
 #endif /* pubsub_h */

@@ -17,27 +17,27 @@
 
 LoadBit seldir_lb = {.value = 00};  // 2 bits
 
-PCOutputBus_t last_bus_pc_output;
-SPOutputBus_t last_bus_sp_output;
-HLOutputBus_t last_bus_hl_output;
-FFFCOutputBus_t last_bus_fffc_output;
+static PCOutputBus_t last_bus_pc_output;
+static SPOutputBus_t last_bus_sp_output;
+static HLOutputBus_t last_bus_hl_output;
+static FFFCOutputBus_t last_bus_fffc_output;
 
-PubSubSubscription *pc_output_topic_subscription = NULL;
-PubSubSubscription *sp_output_topic_subscription = NULL;
-PubSubSubscription *hl_output_topic_subscription = NULL;
-PubSubSubscription *fffc_output_topic_subscription = NULL;
+static PubSubSubscription *pc_output_topic_subscription = NULL;
+static PubSubSubscription *sp_output_topic_subscription = NULL;
+static PubSubSubscription *hl_output_topic_subscription = NULL;
+static PubSubSubscription *fffc_output_topic_subscription = NULL;
 
 void set_seldir_lb(void) { seldir_lb.value = 1; }
 
 void reset_seldir_lb(void) { seldir_lb.value = 0; }
 
-void on_bus_pc_output(PubSubMessage m) { last_bus_pc_output = (DataBus_t)m.value; }
+static void on_bus_pc_output(PubSubMessage m) { last_bus_pc_output = (DataBus_t)m.value; }
 
-void on_bus_sp_output(PubSubMessage m) { last_bus_sp_output = (DataBus_t)m.value; }
+static void on_bus_sp_output(PubSubMessage m) { last_bus_sp_output = (DataBus_t)m.value; }
 
-void on_bus_hl_output(PubSubMessage m) { last_bus_hl_output = (DataBus_t)m.value; }
+static void on_bus_hl_output(PubSubMessage m) { last_bus_hl_output = (DataBus_t)m.value; }
 
-void on_bus_fffc_output(PubSubMessage m) { last_bus_fffc_output = (DataBus_t)m.value; }
+static void on_bus_fffc_output(PubSubMessage m) { last_bus_fffc_output = (DataBus_t)m.value; }
 
 void init_mxdir(void) {
     pc_output_topic_subscription = subscribe_to(PC_OUTPUT_BUS_TOPIC, on_bus_pc_output);

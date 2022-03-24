@@ -7,18 +7,16 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 #include "lib/components/components.h"
 #include "lib/logger.h"
 #include "lib/utils.h"
+#include "lib/electronic/bus.h"
 
-void fn_exit(void) {
+static void fn_exit(void) {
     log_info("Shuting down...");
     shutdown_components();
 }
-
-void on_error_fn(Error err) { log_error(err.message); }
 
 int main(int argc, const char* argv[]) {
     (void)argc;
@@ -26,6 +24,9 @@ int main(int argc, const char* argv[]) {
 
     log_info("Turning on...");
 
+    atexit(fn_exit);
+
+    // THIS IS TEMPORAL HERE UNTIL unit control is coded
     jmp_buf error_buffer;
     init_err_hanlder(&error_buffer);
     ErrorType err_type = (ErrorType)setjmp(error_buffer);
@@ -33,10 +34,10 @@ int main(int argc, const char* argv[]) {
     if (err_type != NONE_ERROR_TYPE) {
         process_error(NULL);
     } else {
-        atexit(fn_exit);
-
+        init_buses();
         init_components();
     }
+    // -- THIS IS TEMPORAL HERE UNTIL unit control is coded
 
     return 0;
 }

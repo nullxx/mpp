@@ -33,13 +33,13 @@ DirBus_t last_bus_dir;
 PubSubSubscription *bus_data_subscription = NULL;
 PubSubSubscription *bus_dir_subscription = NULL;
 
-bool is_mem_value_valid(char *hex) {
+static bool is_mem_value_valid(char *hex) {
     const int num = hex_to_int(hex);
     if (num < 0 || num > pow(2, MEM_VALUE_SIZE_BITS) - 1) return false;
     return true;
 }
 
-void fill_memory(void) {
+static void fill_memory(void) {
     mem.values = (MemValue *)malloc(sizeof(MemValue) * mem_size);
     mem.values_count = 0;
 
@@ -52,7 +52,7 @@ void fill_memory(void) {
     }
 }
 
-void unfill_memory(void) {
+static void unfill_memory(void) {
     for (int i = MEM_START_VALUE; i < mem_size; i++) {
         free(mem.values[i].offset);
         free(mem.values[i].value_hex);
@@ -60,12 +60,12 @@ void unfill_memory(void) {
     free(mem.values);
 }
 
-void on_bus_data_message(PubSubMessage m) {
+static void on_bus_data_message(PubSubMessage m) {
     // no condition to receive data from data bus --> always receiving data
     last_bus_data = (DataBus_t)m.value;
 }
 
-void on_bus_dir_message(PubSubMessage m) {
+static void on_bus_dir_message(PubSubMessage m) {
     // no condition to receive data from dir bus --> always receiving data
     last_bus_dir = (DirBus_t)m.value;
 }
@@ -92,7 +92,7 @@ void set_mem_bus_lb(void) { mem_bus_lb.value = 1; }
 void reset_mem_bus_lb(void) { mem_bus_lb.value = 0; }
 // -- control loadbits functions
 
-MemValue *get_value_by_offset(char *offset) {
+static MemValue *get_value_by_offset(char *offset) {
     for (int i = 0; i < mem.values_count; i++) {
         if (!strcmp(mem.values[i].offset, offset)) {
             return &mem.values[i];
@@ -104,7 +104,7 @@ MemValue *get_value_by_offset(char *offset) {
 
 // -- INTERNAL
 
-ComponentActionReturn set_mem_value(MemValue mem_value) {
+static ComponentActionReturn set_mem_value(MemValue mem_value) {
     ComponentActionReturn car;
     car.success = false;
 
@@ -142,7 +142,7 @@ ComponentActionReturn set_mem_value(MemValue mem_value) {
     return car;
 }
 
-ComponentActionReturn get_mem_value(char *offset) {
+static ComponentActionReturn get_mem_value(char *offset) {
     ComponentActionReturn car;
     car.success = false;
 

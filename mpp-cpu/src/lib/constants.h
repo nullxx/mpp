@@ -12,6 +12,10 @@
 #define MEM_SIZE_KB 64
 #define MEM_START_VALUE 0x00
 
-#define BUS_DIR_SIZE_BITS 16
-#define LOAD_BIT_ID_BITS 2
+#define DATA_BUS_SIZE_BITS 16
+#define DIR_BUS_SIZE_BITS 16
+
+#define ID_LOAD_BIT_SIZE_BITS 2
+
+#define SP_REG_SIZE_BIT 16
 #endif /* constants_h */

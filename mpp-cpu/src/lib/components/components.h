@@ -22,6 +22,11 @@ typedef struct {
     int value;
 } LoadBit;
 
+typedef struct {
+    int bit_length;
+    unsigned long long bin_value;
+} Register;
+
 typedef enum { NONE_EVENT_TYPE = 0, FLAG_CHANGE } CallbackEventType;
 
 void init_components(void);

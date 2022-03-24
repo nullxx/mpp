@@ -62,5 +62,5 @@ void init_err_hanlder(jmp_buf *error_buffer) {
 
 void throw_error(Error err) {
     last_error = err;
-    longjmp(err_buffer, err.type);
+    longjmp(*err_buffer, err.type);
 }

@@ -17,7 +17,7 @@ int hex_to_int(const char *hex) {
     return number;
 }
 
-char *int_to_hex(int num) {  // TODO check malloc failures
+char *int_to_hex(int num) {
     int size = 4;
     char *result = (char *)malloc(sizeof(char) * (size + 1));
     if (result == NULL) {
