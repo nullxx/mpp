@@ -18,20 +18,20 @@
 #include "../utils.h"
 
 // INTERNAL
-const int mem_size_bits = MEM_SIZE_KB * 1024 * 8;
-const int mem_size = mem_size_bits / MEM_VALUE_SIZE_BITS;
+static const int mem_size_bits = MEM_SIZE_KB * 1024 * 8;
+static const int mem_size = mem_size_bits / MEM_VALUE_SIZE_BITS;
 
-Mem mem;
+static Mem mem;
 
 // READ by default
-LoadBit l_e_lb = {.value = 0};
-LoadBit mem_bus_lb = {.value = 0};
+static LoadBit l_e_lb = {.value = 0};
+static LoadBit mem_bus_lb = {.value = 0};
 
-DataBus_t last_bus_data;
-DirBus_t last_bus_dir;
+static DataBus_t last_bus_data;
+static DirBus_t last_bus_dir;
 
-PubSubSubscription *bus_data_subscription = NULL;
-PubSubSubscription *bus_dir_subscription = NULL;
+static PubSubSubscription *bus_data_subscription = NULL;
+static PubSubSubscription *bus_dir_subscription = NULL;
 
 static bool is_mem_value_valid(char *hex) {
     const int num = hex_to_int(hex);

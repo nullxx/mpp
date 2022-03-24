@@ -83,5 +83,5 @@
   },
   "extensions": {
     "recommendations": ["psioniq.psi-header", "jbenden.c-cpp-flylint"]
-  }
+  },
 }

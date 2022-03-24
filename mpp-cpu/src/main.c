@@ -9,9 +9,9 @@
 #include <stdlib.h>
 
 #include "lib/components/components.h"
+#include "lib/electronic/bus.h"
 #include "lib/logger.h"
 #include "lib/utils.h"
-#include "lib/electronic/bus.h"
 
 static void fn_exit(void) {
     log_info("Shuting down...");
