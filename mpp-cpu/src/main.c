@@ -18,20 +18,25 @@ void fn_exit(void) {
     shutdown_components();
 }
 
-void on_error_fn(Error err) {
-    log_error(err.message);
-}
+void on_error_fn(Error err) { log_error(err.message); }
 
 int main(int argc, const char* argv[]) {
-    (void) argc;
-    (void) argv;
+    (void)argc;
+    (void)argv;
 
     log_info("Turning on...");
 
-    atexit(fn_exit);
+    jmp_buf error_buffer;
+    init_err_hanlder(&error_buffer);
+    ErrorType err_type = (ErrorType)setjmp(error_buffer);
 
-    init_components();
-    init_err_hanlder();
+    if (err_type != NONE_ERROR_TYPE) {
+        process_error(NULL);
+    } else {
+        atexit(fn_exit);
+
+        init_components();
+    }
 
     return 0;
 }

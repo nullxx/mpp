@@ -38,7 +38,9 @@ bool set_id_lb(unsigned long bin) {
 
 void on_dir_bus_topic(PubSubMessage m) { last_bus_dir = (DirBus_t)m.value; }
 
-void init_addsub(void) { dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, on_dir_bus_topic); }
+void init_addsub(void) {
+    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, on_dir_bus_topic);
+}
 void shutdown_addsub(void) { unsubscribe_for(dir_bus_topic_subscription); }
 
 void run_addsub(void) {
@@ -63,11 +65,7 @@ void run_addsub(void) {
     // check overflow
     const unsigned long long next_bin_bus_dir = int_to_bin(dir_bus_int);
     if (!check_dir_bus_overflow(next_bin_bus_dir)) {
-        Error err = {
-            .show_errno = false,
-            // .type = FATAL, // TODO not fatal
-            .message = "Dir bus has overflowed"
-        };
+        Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Dir bus has overflowed"};
 
         return throw_error(err);
     }

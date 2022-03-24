@@ -58,7 +58,7 @@ void run_mxdir(void) {
     MXInput output = run_4x1_mx(seldir_lb.value, last_bus_pc_output, last_bus_sp_output, last_bus_hl_output, last_bus_fffc_output);
     if (output == (MXInput)-1) {
         err.message = "Couldn't run multiplexer";
-        err.type = FATAL;
+        err.type = NOTICE_ERROR;
         err.show_errno = false;
 
         return throw_error(err);

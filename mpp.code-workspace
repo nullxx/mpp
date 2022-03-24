@@ -28,7 +28,8 @@
       "unordered_map": "c",
       "utility": "c",
       "vector": "c",
-      "error.h": "c"
+      "error.h": "c",
+      "logger.h": "c"
     },
     "psi-header.templates": [
       {
