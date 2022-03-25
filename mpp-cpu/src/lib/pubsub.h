@@ -53,7 +53,12 @@ typedef struct {
     PubSubMiddlewareFn middlware;
 } PubSubMiddleware;
 
+#ifndef DEBUG // this is for debugging. I don't know if is the best practice. Btw is very ougly
 PubSubSubscription *subscribe_to(PubSubTopic, on_message);
+#else
+PubSubSubscription *subscribe_to_internal(PubSubTopic topic, on_message on_message_fn, const char *caller);
+#define subscribe_to(topic, on_message_fn) subscribe_to_internal(topic, on_message_fn, __func__);
+#endif
 bool unsubscribe_for(PubSubSubscription *);
 
 int publish_message_to(PubSubTopic, void *);

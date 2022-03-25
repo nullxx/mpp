@@ -8,16 +8,6 @@
 #ifndef component_h
 #define component_h
 
-#include <stdbool.h>
-
-#include "../error.h"
-
-typedef struct {
-    bool success;
-    Error err;
-    void *return_value;
-} ComponentActionReturn;
-
 typedef struct {
     int value;
 } LoadBit;

@@ -18,6 +18,12 @@
 #include "../utils.h"
 
 // INTERNAL
+typedef struct {  // temporal
+    bool success;
+    Error err;
+    void *return_value;
+} ComponentActionReturn;
+
 static const int mem_size_bits = MEM_SIZE_KB * 1024 * 8;
 static const int mem_size = mem_size_bits / MEM_VALUE_SIZE_BITS;
 

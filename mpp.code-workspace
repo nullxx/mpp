@@ -72,7 +72,7 @@
     "psi-header.lang-config": [
       {
         "rootDirFileName": "src",
-        "language": "c",
+        "language": "*",
       }
     ],
     "c-cpp-flylint.cppcheck.enable": false,

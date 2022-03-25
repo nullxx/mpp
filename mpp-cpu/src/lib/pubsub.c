@@ -44,7 +44,11 @@ const char *pubsub_topic_tostring(PubSubTopic topic) {
     }
 }
 
+#ifndef DEBUG
 PubSubSubscription *subscribe_to(PubSubTopic topic, on_message on_message_fn) {
+#else
+PubSubSubscription *subscribe_to_internal(PubSubTopic topic, on_message on_message_fn, const char *caller) {
+#endif
     PubSubSubscription *subscription = (PubSubSubscription *)malloc(sizeof(PubSubSubscription));
     if (subscription == NULL) {
         return NULL;
@@ -64,14 +68,14 @@ PubSubSubscription *subscribe_to(PubSubTopic topic, on_message on_message_fn) {
     subscriptions[subscription->id] = subscription;
 
 #ifdef DEBUG
-    const char *msg = "Created subscription for %s with id %d";
+    const char *msg = "[%s] Created subscription for %s with id %d";
     const char *topic_str = pubsub_topic_tostring(topic);
 
     const int sub_id_len = (int)log10(subscription->id + 1) + 1;
-    const size_t size = sizeof(char) * (strlen(msg) + strlen(topic_str) + sub_id_len - 2 * 2 + 1);
+    const size_t size = sizeof(char) * (strlen(msg) + strlen(topic_str) + sub_id_len + strlen(caller) - 2 * 3 + 1);
 
     char *constructed_msg = malloc(size);
-    snprintf(constructed_msg, size, msg, topic_str, subscription->id);
+    snprintf(constructed_msg, size, msg, caller, topic_str, subscription->id);
 
     log_debug(constructed_msg);
 
@@ -96,7 +100,7 @@ PubSubMiddleware *add_topic_middleware(PubSubTopic topic, PubSubMiddlewareFn mid
     m->middlware = middleware_fn;
     m->topic = topic;
 
-    topics_with_middleware[topic_with_middleware_count-1] = m;
+    topics_with_middleware[topic_with_middleware_count - 1] = m;
 
 #ifdef DEBUG
     const char *msg = "Adding middleware for topic %s";

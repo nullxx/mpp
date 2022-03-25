@@ -12,6 +12,7 @@
 #include "lib/electronic/bus.h"
 #include "lib/logger.h"
 #include "lib/utils.h"
+#include "lib/error.h"
 
 static void fn_exit(void) {
     log_info("Shuting down...");

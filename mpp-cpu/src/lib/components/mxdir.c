@@ -11,6 +11,7 @@
 #include <stdlib.h>
 
 #include "../electronic/multiplexer.h"
+#include "../error.h"
 #include "../pubsub.h"
 #include "../utils.h"
 #include "components.h"

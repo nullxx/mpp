@@ -16,6 +16,7 @@
 #include "../pubsub.h"
 #include "../utils.h"
 #include "components.h"
+#include "../error.h"
 
 static Register sp_reg = {.bin_value = 0, .bit_length = SP_REG_SIZE_BIT};
 
