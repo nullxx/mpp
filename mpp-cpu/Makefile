@@ -14,6 +14,8 @@ CFLAGS	:= -Wall -Wextra -g
 #   their path using -Lpath, something like:
 LFLAGS = -lm
 
+LFLAGSTESTS = $(LFLAGS) -lcriterion
+
 # define output directory
 OUTPUT	:= output
 
@@ -37,6 +39,7 @@ endif
 
 ifeq ($(OS),Windows_NT)
 MAIN	:= main.exe
+TEST	:= test.exe
 SOURCEDIRS	:= $(SRC)
 INCLUDEDIRS	:= $(INCLUDE)
 LIBDIRS		:= $(LIB)
@@ -45,6 +48,7 @@ RM			:= del /q /f
 MD	:= mkdir
 else
 MAIN	:= main
+TEST	:= test
 SOURCEDIRS	:= $(shell find $(SRC) -type d)
 INCLUDEDIRS	:= $(shell find -L $(INCLUDE) -type d)
 LIBDIRS		:= $(shell find $(LIB) -type d)
@@ -62,8 +66,14 @@ LIBS		:= $(patsubst %,-L%, $(LIBDIRS:%/=%))
 # define the C source files
 SOURCES		:= $(wildcard $(patsubst %,%/*.c, $(SOURCEDIRS)))
 
+# define the C source test files
+TESTSOURCES := $(wildcard $(patsubst %,%/*test.c, $(SOURCEDIRS)))
+
 # define the C object files
 OBJECTS		:= $(SOURCES:.c=.o)
+
+# define the C object test files
+OBJECTSTEST := $(TESTSOURCES:.c=.o)
 
 #
 # The following part of the makefile is generic; it can be used to
@@ -72,6 +82,7 @@ OBJECTS		:= $(SOURCES:.c=.o)
 #
 
 OUTPUTMAIN	:= $(call FIXPATH,$(OUTPUT)/$(MAIN))
+OUTPUTTEST	:= $(call FIXPATH,$(OUTPUT)/$(TEST))
 
 all: $(OUTPUT) $(MAIN)
 	@echo Executing 'all' complete!
@@ -81,6 +92,9 @@ $(OUTPUT):
 
 $(MAIN): $(OBJECTS)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(OUTPUTMAIN) $(OBJECTS) $(LFLAGS) $(LIBS)
+
+$(TEST): $(OBJECTSTEST)
+	$(CC) $(CFLAGS) -o $(OUTPUTTEST) $(OBJECTSTEST) $(LFLAGSTESTS) $(LIBS)
 
 # this is a suffix replacement rule for building .o's from .c's
 # it uses automatic variables $<: the name of the prerequisite of
@@ -98,3 +112,6 @@ clean:
 run: all
 	./$(OUTPUTMAIN)
 	@echo Executing 'run: all' complete!%
+
+runtest:
+	./$(OUTPUTTEST)
