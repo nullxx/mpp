@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "linkedlist.h"
 #include "logger.h"
 
 // TODO check in all files that use subscribe and unsubscribe if they check return of those functions
@@ -19,7 +20,8 @@
 PubSubMiddleware **topics_with_middleware;
 unsigned int topic_with_middleware_count = 0;
 
-PubSubSubscription **subscriptions = NULL;
+// PubSubSubscription **subscriptions = NULL;
+LlNode *subscriptions_head = NULL;
 unsigned int subscription_count = 0;
 
 const char *pubsub_topic_tostring(PubSubTopic topic) {
@@ -58,14 +60,11 @@ PubSubSubscription *subscribe_to_internal(PubSubTopic topic, on_message on_messa
     subscription->topic = topic;
     subscription->on_message_fn = on_message_fn;
 
-    // allocate for n subscriptions
-    PubSubSubscription **subscriptions_rllc = (PubSubSubscription **)realloc(subscriptions, sizeof(PubSubSubscription *) * subscription_count);
-    if (subscriptions_rllc == NULL) {
-        return NULL;
+    if (subscriptions_head == NULL) {
+        subscriptions_head = create_ll_node((void *)subscription, NULL);
+    } else {
+        push_ll_node(subscriptions_head, subscription, NULL);
     }
-    subscriptions = subscriptions_rllc;
-
-    subscriptions[subscription->id] = subscription;
 
 #ifdef DEBUG
     const char *msg = "[%s] Created subscription for %s with id %d";
@@ -125,38 +124,38 @@ bool rm_topic_middleware(PubSubMiddleware *middleware) {
 
     free(middleware);
     middleware = NULL;
-    subscriptions[topic_with_middleware_count] = NULL;
+    topics_with_middleware[topic_with_middleware_count] = NULL;
 
     return true;
 }
 
 bool unsubscribe_for(PubSubSubscription *sub) {
-    const int sub_id = sub->id;  // it is used
-
     if (sub == NULL) return false;
+    if (subscriptions_head == NULL) return false;
 
     if (sub->id >= subscription_count) {
         return false;
     }
 
-    free(sub);
-    sub = NULL;
-    subscriptions[sub_id] = NULL;
+    int deleted = delete_node_from_value(&subscriptions_head, (void *)sub);
+    if (!deleted) {
+        return false;
+    }
 
 #ifdef DEBUG
     const char *msg = "Deleting subscription with id %d";
 
-    const int sub_id_len = (int)log10(sub_id + 1) + 1;
+    const int sub_id_len = (int)log10(sub->id + 1) + 1;
     const size_t size = sizeof(char) * (strlen(msg) + sub_id_len - 2 * 1 + 1);
 
     char *constructed_msg = malloc(size);
-    snprintf(constructed_msg, size, msg, sub_id);
+    snprintf(constructed_msg, size, msg, sub->id);
 
     log_debug(constructed_msg);
 
     free(constructed_msg);
 #endif
-
+    free(sub);
     return true;
 }
 
@@ -193,10 +192,12 @@ int publish_message_to(PubSubTopic topic, void *value) {
 
     // find the subs subscribed to this topic
     int sent = 0;
-    for (unsigned int i = 0; i < subscription_count; i++) {
-        PubSubSubscription *sub = subscriptions[i];
-        if (sub == NULL || sub->topic != topic) continue;
+    LlNode *current_node = subscriptions_head;
+    while (current_node != NULL) {
+        PubSubSubscription *sub = (PubSubSubscription *)current_node->value;
+        if (sub->topic != topic) continue;
         sub->on_message_fn(message);
+        current_node = current_node->next;
         sent++;
     }
 
