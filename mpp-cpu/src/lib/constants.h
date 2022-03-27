@@ -21,5 +21,7 @@
 #define PCH_REG_SIZE_BIT 8
 #define PCL_REG_SIZE_BIT 8
 #define PC_REG_SIZE_BIT 16
+#define H_REG_SIZE_BIT 8
+#define L_REG_SIZE_BIT 8
 
 #endif /* constants_h */

@@ -47,7 +47,8 @@
       "bus.h": "c",
       "sp.h": "c",
       "unistd.h": "c",
-      "__locale": "c"
+      "__locale": "c",
+      "stdlib.h": "c"
     },
     "psi-header.templates": [
       {
@@ -59,7 +60,7 @@
           "Author: <<author>> (<<authoremail>>)",
           "-----",
           "Last Modified: <<dateformat('dddd, Do MMMM YYYY h:mm:ss a')>>",
-          "Modified By: <<author>> (<<authoremail>>>)"
+          "Modified By: <<author>> (<<authoremail>>)"
         ]
       }
     ],

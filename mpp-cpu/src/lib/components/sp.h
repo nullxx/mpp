@@ -5,7 +5,7 @@
  * Author: https://github.com/nullxx (mail@nullx.me)
  * -----
  * Last Modified: Thursday, 24th March 2022 7:12:07 pm
- * Modified By: https://github.com/nullxx (mail@nullx.me>)
+ * Modified By: https://github.com/nullxx (mail@nullx.me)
  */
 
 #ifndef sp_h

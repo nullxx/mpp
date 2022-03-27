@@ -5,7 +5,7 @@
  * Author: https://github.com/nullxx (mail@nullx.me)
  * -----
  * Last Modified: Thursday, 24th March 2022 8:07:00 pm
- * Modified By: https://github.com/nullxx (mail@nullx.me>)
+ * Modified By: https://github.com/nullxx (mail@nullx.me)
  */
 
 #ifndef bus_h

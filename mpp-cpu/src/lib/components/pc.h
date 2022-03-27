@@ -5,7 +5,7 @@
  * Author: https://github.com/nullxx (mail@nullx.me)
  * -----
  * Last Modified: Thursday, 25th March 2022 7:12:02 pm
- * Modified By: https://github.com/nullxx (mail@nullx.me>)
+ * Modified By: https://github.com/nullxx (mail@nullx.me)
  */
 
 #ifndef pc_h
