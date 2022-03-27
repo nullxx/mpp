@@ -15,6 +15,7 @@
 #include "mxdir.h"
 #include "pc.h"
 #include "sp.h"
+#include "hl.h"
 
 void init_components(void) {
     init_mem();
@@ -22,6 +23,7 @@ void init_components(void) {
     init_addsub();
     init_sp();
     init_pc();
+    init_hl();
 }
 
 void shutdown_components(void) {
@@ -30,4 +32,5 @@ void shutdown_components(void) {
     shutdown_addsub();
     shutdown_sp();
     shutdown_pc();
+    shutdown_hl();
 }

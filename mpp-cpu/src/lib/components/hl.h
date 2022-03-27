@@ -11,4 +11,13 @@
 #ifndef hl_h
 #define hl_h
 
+void init_hl(void);
+void shutdown_hl(void);
+void run_hl(void);
+
+void set_h_lb(void);
+void reset_h_lb(void);
+void set_l_lb(void) ;
+void reset_l_lb(void);
+
 #endif
