@@ -48,7 +48,10 @@
       "sp.h": "c",
       "unistd.h": "c",
       "__locale": "c",
-      "stdlib.h": "c"
+      "stdlib.h": "c",
+      "alu.h": "c",
+      "acumm.h": "c",
+      "components.h": "c"
     },
     "psi-header.templates": [
       {

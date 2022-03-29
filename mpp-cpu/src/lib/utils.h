@@ -18,4 +18,5 @@ char *bin_to_str(unsigned long long bin);
 int bin_to_int(unsigned long long bin);
 unsigned long long int_to_bin(int n);
 
+char *slice_str(const char *str, int start, int end);
 #endif /* utils_h */

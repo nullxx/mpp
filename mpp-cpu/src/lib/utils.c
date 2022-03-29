@@ -85,15 +85,28 @@ int bin_to_int(unsigned long long bin) {
 }
 
 unsigned long long int_to_bin(int n) {
-  long long bin = 0;
-  int rem, i = 1;
+    long long bin = 0;
+    int rem, i = 1;
 
-  while (n!=0) {
-    rem = n % 2;
-    n /= 2;
-    bin += rem * i;
-    i *= 10;
-  }
+    while (n != 0) {
+        rem = n % 2;
+        n /= 2;
+        bin += rem * i;
+        i *= 10;
+    }
 
-  return bin;
+    return bin;
+}
+
+char *slice_str(const char *str, int start, int end) {
+    char *result = (char *)malloc(sizeof(char) * (end - start) + 1);
+    int j = 0;
+
+    for (int i = start; i <= end; ++i) {
+        result[j++] = str[i];
+    }
+
+    result[j] = 0;
+
+    return result;
 }

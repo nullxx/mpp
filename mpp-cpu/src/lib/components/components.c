@@ -10,12 +10,17 @@
 #include <stdio.h>
 
 #include "../error.h"
+#include "acumm.h"
 #include "addsub.h"
+#include "alu.h"
+#include "fffc.h"
+#include "hl.h"
 #include "mem.h"
 #include "mxdir.h"
 #include "pc.h"
 #include "sp.h"
-#include "hl.h"
+
+// TODO review the order of init and shutdown of components. Firt the ones that doesn't depend on any.
 
 void init_components(void) {
     init_mem();
@@ -24,6 +29,9 @@ void init_components(void) {
     init_sp();
     init_pc();
     init_hl();
+    init_fffc();
+    init_alu();
+    init_acumm();
 }
 
 void shutdown_components(void) {
@@ -33,4 +41,7 @@ void shutdown_components(void) {
     shutdown_sp();
     shutdown_pc();
     shutdown_hl();
+    shutdown_fffc();
+    shutdown_alu();
+    shutdown_acumm();
 }

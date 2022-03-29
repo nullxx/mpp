@@ -19,16 +19,28 @@ typedef unsigned long long SPOutputBus_t;
 typedef unsigned long long HLOutputBus_t;
 typedef unsigned long long FFFCOutputBus_t;
 
+typedef unsigned long long ACUMMOutputBus_t;
+typedef unsigned long long OP2OutputBus_t;
+
+typedef unsigned int ALUFCOutputBus_t;
+typedef unsigned int ALUFZOutputBus_t;
 // -- types PubSubMessage value
 
 typedef enum {
     NONE_PUBSUB_TOPIC = 0,
     DATA_BUS_TOPIC,
     DIR_BUS_TOPIC,
+
     PC_OUTPUT_BUS_TOPIC,
     SP_OUTPUT_BUS_TOPIC,
     HL_OUTPUT_BUS_TOPIC,
-    FFFC_OUTPUT_BUS_TOPIC  // <===== TODO FFFC is a single component
+    FFFC_OUTPUT_BUS_TOPIC,
+
+    ACUMM_OUTPUT_BUS_TOPIC,
+    OP2_OUTPUT_BUS_TOPIC,
+
+    ALU_FC_OUTPUT_BUS_TOPIC,
+    ALU_FZ_OUTPUT_BUS_TOPIC
 } PubSubTopic;
 
 typedef struct {
@@ -53,7 +65,7 @@ typedef struct {
     PubSubMiddlewareFn middlware;
 } PubSubMiddleware;
 
-#ifndef DEBUG // this is for debugging. I don't know if is the best practice. Btw is very ougly
+#ifndef DEBUG  // this is for debugging. I don't know if is the best practice. Btw is very ougly
 PubSubSubscription *subscribe_to(PubSubTopic, on_message);
 #else
 PubSubSubscription *subscribe_to_internal(PubSubTopic topic, on_message on_message_fn, const char *caller);
