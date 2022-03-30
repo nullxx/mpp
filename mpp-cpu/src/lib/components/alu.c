@@ -51,7 +51,7 @@ void set_alubus_lb(void) { alubus_lb.value = 1; }
 void reset_alubus_lb(void) { alubus_lb.value = 0; }
 
 static void on_bus_acumm_output_message(PubSubMessage m) { last_bus_acumm_output = (DataBus_t)m.value; }
-static void on_bus_op2_output_message(PubSubMessage m) { last_bus_op2_output = (DataBus_t)m.value; }
+static void on_bus_op2_output_message(PubSubMessage m) { last_bus_op2_output = (OP2OutputBus_t)m.value; }
 
 void init_alu(void) {
     acumm_output_bus_topic_subscription = subscribe_to(ACUMM_OUTPUT_BUS_TOPIC, on_bus_acumm_output_message);

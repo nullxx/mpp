@@ -25,7 +25,7 @@ typedef unsigned long long OP2OutputBus_t;
 typedef unsigned int ALUFCOutputBus_t;
 typedef unsigned int ALUFZOutputBus_t;
 
-typedef unsigned int SelRegOutputBus_t;
+typedef unsigned long long SelRegOutputBus_t;
 // -- types PubSubMessage value
 
 typedef enum {

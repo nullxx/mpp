@@ -18,6 +18,7 @@
 #define ID_LOAD_BIT_SIZE_BITS 2
 #define SELALU_LOAD_BIT_SIZE_BITS 3
 #define SELREG_LOAD_BIT_SIZE_BITS 2
+#define REGCAR_LOAD_BIT_SIZE_BITS 2
 
 #define SP_REG_SIZE_BIT 16
 #define PCH_REG_SIZE_BIT 8
@@ -27,5 +28,6 @@
 #define L_REG_SIZE_BIT 8
 #define ACUMM_REG_SIZE_BIT 8
 #define OP2_REG_SIZE_BIT 8
+#define REG_SIZE_BIT 8 // A, B, C, D
 
 #endif /* constants_h */

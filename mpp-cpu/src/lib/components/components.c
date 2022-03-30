@@ -21,6 +21,7 @@
 #include "sp.h"
 #include "op2.h"
 #include "mxdir.h"
+#include "greg.h"
 // TODO review the order of init and shutdown of components. Firt the ones that doesn't depend on any.
 
 void init_components(void) {
@@ -35,6 +36,7 @@ void init_components(void) {
     init_acumm();
     init_op2();
     init_mxdir();
+    init_greg();
 }
 
 void shutdown_components(void) {
@@ -49,4 +51,5 @@ void shutdown_components(void) {
     shutdown_acumm();
     shutdown_op2();
     shutdown_mxdir();
+    shutdown_greg();
 }
