@@ -20,14 +20,14 @@
 #include "../utils.h"
 #include "components.h"
 
-Register h_reg = {.bin_value = 0, .bit_length = H_REG_SIZE_BIT};
-Register l_reg = {.bin_value = 0, .bit_length = L_REG_SIZE_BIT};
+static Register h_reg = {.bin_value = 0, .bit_length = H_REG_SIZE_BIT};
+static Register l_reg = {.bin_value = 0, .bit_length = L_REG_SIZE_BIT};
 
-LoadBit hcar_lb = {.value = 0};
+static LoadBit hcar_lb = {.value = 0};
 
-LoadBit lcar_lb = {.value = 0};
+static LoadBit lcar_lb = {.value = 0};
 static PubSubSubscription *data_bus_topic_subscription = NULL;
-DataBus_t last_bus_data;
+static DataBus_t last_bus_data;
 
 static void on_bus_data_message(PubSubMessage m) { last_bus_data = (DataBus_t)m.value; }
 

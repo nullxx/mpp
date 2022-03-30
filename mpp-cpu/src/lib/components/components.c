@@ -19,7 +19,7 @@
 #include "mxdir.h"
 #include "pc.h"
 #include "sp.h"
-
+#include "op2.h"
 // TODO review the order of init and shutdown of components. Firt the ones that doesn't depend on any.
 
 void init_components(void) {
@@ -32,6 +32,7 @@ void init_components(void) {
     init_fffc();
     init_alu();
     init_acumm();
+    init_op2();
 }
 
 void shutdown_components(void) {
@@ -44,4 +45,5 @@ void shutdown_components(void) {
     shutdown_fffc();
     shutdown_alu();
     shutdown_acumm();
+    shutdown_op2();
 }

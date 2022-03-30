@@ -25,5 +25,6 @@
 #define H_REG_SIZE_BIT 8
 #define L_REG_SIZE_BIT 8
 #define ACUMM_REG_SIZE_BIT 8
+#define OP2_REG_SIZE_BIT 8
 
 #endif /* constants_h */
