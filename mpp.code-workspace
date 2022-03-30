@@ -51,7 +51,9 @@
       "stdlib.h": "c",
       "alu.h": "c",
       "acumm.h": "c",
-      "components.h": "c"
+      "components.h": "c",
+      "multiplexer.h": "c",
+      "mxreg.h": "c"
     },
     "psi-header.templates": [
       {
