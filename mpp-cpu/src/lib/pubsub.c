@@ -40,6 +40,16 @@ const char *pubsub_topic_tostring(PubSubTopic topic) {
             return "HL_OUTPUT_BUS_TOPIC";
         case FFFC_OUTPUT_BUS_TOPIC:
             return "FFFC_OUTPUT_BUS_TOPIC";
+        case ACUMM_OUTPUT_BUS_TOPIC:
+            return "ACUMM_OUTPUT_BUS_TOPIC";
+        case OP2_OUTPUT_BUS_TOPIC:
+            return "OP2_OUTPUT_BUS_TOPIC";
+        case ALU_FC_OUTPUT_BUS_TOPIC:
+            return "ALU_FC_OUTPUT_BUS_TOPIC";
+        case ALU_FZ_OUTPUT_BUS_TOPIC:
+            return "ALU_FZ_OUTPUT_BUS_TOPIC";
+        case SELREG_OUTPUT_BUS_TOPIC:
+            return "SELREG_OUTPUT_BUS_TOPIC";
 
         default:
             return NULL;
