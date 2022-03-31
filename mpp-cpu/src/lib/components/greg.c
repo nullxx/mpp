@@ -46,8 +46,8 @@ static void on_bus_data_message(PubSubMessage m) { last_bus_data = (DataBus_t)m.
 static void on_bus_selreg_output_message(PubSubMessage m) { last_bus_selreg_output = (SelRegOutputBus_t)m.value; }
 
 void init_greg(void) {
-    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, (void *)on_bus_data_message);
-    selreg_output_bus_topic_subscription = subscribe_to(SELREG_OUTPUT_BUS_TOPIC, (void *)on_bus_selreg_output_message);
+    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
+    selreg_output_bus_topic_subscription = subscribe_to(SELREG_OUTPUT_BUS_TOPIC, on_bus_selreg_output_message);
 }
 
 void shutdown_greg(void) {
