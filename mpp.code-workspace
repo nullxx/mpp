@@ -85,7 +85,10 @@
     "c-cpp-flylint.flawfinder.enable": false,
     "c-cpp-flylint.lizard.enable": false,
     "c-cpp-flylint.flexelint.enable": false,
-    "c-cpp-flylint.clang.enable": true
+    "c-cpp-flylint.clang.enable": true,
+    "C_Cpp.default.defines": [
+      "DEBUG"
+    ]
   },
   "extensions": {
     "recommendations": ["psioniq.psi-header", "jbenden.c-cpp-flylint"]
