@@ -10,6 +10,7 @@
 
 #include "mxreg.h"
 
+#include <stdint.h>
 #include <stdio.h>
 
 #include "../constants.h"

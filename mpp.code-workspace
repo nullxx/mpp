@@ -53,7 +53,8 @@
       "acumm.h": "c",
       "components.h": "c",
       "multiplexer.h": "c",
-      "mxreg.h": "c"
+      "mxreg.h": "c",
+      "stdint.h": "c"
     },
     "psi-header.templates": [
       {

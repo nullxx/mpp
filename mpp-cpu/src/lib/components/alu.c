@@ -10,6 +10,7 @@
 
 #include "alu.h"
 
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -26,16 +27,7 @@ static PubSubSubscription *opt_output_bus_topic_subscription = NULL;
 static ACUMMOutputBus_t last_bus_acumm_output;  // A
 static OP2OutputBus_t last_bus_op2_output;      // B
 
-enum SelAluOp {
-    SUM = 0,
-    SUB = 1,
-    AND = 2,
-    OR = 3,
-    XOR = 4,
-    NOT = 5,
-    TRANSPARENT = 6,
-    INCREMENT = 7
-};
+enum SelAluOp { SUM = 0, SUB = 1, AND = 2, OR = 3, XOR = 4, NOT = 5, TRANSPARENT = 6, INCREMENT = 7 };
 
 bool set_selalu_lb(unsigned long bin) {
     const int bin_len = get_bin_len(bin);
