@@ -7,6 +7,7 @@
 
 #ifndef utils_h
 #define utils_h
+#include "vargs.h"
 
 int hex_to_int(const char *hex);
 char *int_to_hex(int num);
@@ -19,4 +20,9 @@ int bin_to_int(unsigned long long bin);
 unsigned long long int_to_bin(int n);
 
 char *slice_str(const char *str, int start, int end);
+
+char *create_str_internal(const int n, ...);
+#define create_str(...) create_str_internal(VAR_COUNT(__VA_ARGS__), __VA_ARGS__)
+
+char *itoa(int num);
 #endif /* utils_h */

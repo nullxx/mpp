@@ -54,7 +54,12 @@
       "components.h": "c",
       "multiplexer.h": "c",
       "mxreg.h": "c",
-      "stdint.h": "c"
+      "stdint.h": "c",
+      "cstdarg": "c",
+      "cstdio": "c",
+      "cwchar": "c",
+      "util.h": "c",
+      "vargs.h": "c"
     },
     "psi-header.templates": [
       {

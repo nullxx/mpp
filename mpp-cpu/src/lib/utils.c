@@ -8,6 +8,7 @@
 #include "utils.h"
 
 #include <math.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -109,4 +110,31 @@ char *slice_str(const char *str, int start, int end) {
     result[j] = 0;
 
     return result;
+}
+
+char *create_str_internal(const int n, ...) {
+    va_list lptr;
+    va_start(lptr, n);
+    char *str = NULL;
+
+    for (int i = 0; i < n; i++) {
+        const int _first = str == NULL;
+        const char *chunk = va_arg(lptr, char *);
+        str = realloc(str, sizeof(char) * (strlen(chunk) + (_first ? 0 : strlen(str))));
+        if (!_first) {
+            strcat(str, " ");
+        }
+        strcat(str, chunk);
+    }
+
+    va_end(lptr);
+
+    return str;
+}
+
+char *itoa(int num) {
+    const int num_len = (int)log10(num + 1) + 1;
+    char *str = (char*) malloc(sizeof(char) * num_len + 1);
+    snprintf(str, num_len, "%d", num);
+    return str;
 }

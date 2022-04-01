@@ -14,6 +14,7 @@
 
 #include "linkedlist.h"
 #include "logger.h"
+#include "utils.h"
 
 // TODO check in all files that use subscribe and unsubscribe if they check return of those functions
 
@@ -77,17 +78,10 @@ PubSubSubscription *subscribe_to_internal(PubSubTopic topic, on_message on_messa
     }
 
 #ifdef DEBUG
-    const char *msg = "[%s] Created subscription for %s with id %d";
-    const char *topic_str = pubsub_topic_tostring(topic);
-
-    const int sub_id_len = (int)log10(subscription->id + 1) + 1;
-    const size_t size = sizeof(char) * (strlen(msg) + strlen(topic_str) + sub_id_len + strlen(caller) - 2 * 3 + 1);
-
-    char *constructed_msg = malloc(size);
-    snprintf(constructed_msg, size, msg, caller, topic_str, subscription->id);
-
+    char *sub_id_str = itoa(subscription->id);
+    char *constructed_msg = create_str(caller, "Created subscription for", pubsub_topic_tostring(topic), "with id", sub_id_str);
     log_debug(constructed_msg);
-
+    free(sub_id_str);
     free(constructed_msg);
 #endif
     return subscription;
@@ -112,16 +106,8 @@ PubSubMiddleware *add_topic_middleware(PubSubTopic topic, PubSubMiddlewareFn mid
     topics_with_middleware[topic_with_middleware_count - 1] = m;
 
 #ifdef DEBUG
-    const char *msg = "Adding middleware for topic %s";
-    const char *topic_str = pubsub_topic_tostring(topic);
-
-    const size_t size = sizeof(char) * (strlen(msg) + strlen(topic_str) - 2 * 1 + 1);
-
-    char *constructed_msg = malloc(size);
-    snprintf(constructed_msg, size, msg, topic_str);
-
+    char *constructed_msg = create_str("Adding middleware for topic", pubsub_topic_tostring(topic));
     log_debug(constructed_msg);
-
     free(constructed_msg);
 #endif
     return m;
@@ -153,17 +139,12 @@ bool unsubscribe_for(PubSubSubscription *sub) {
     }
 
 #ifdef DEBUG
-    const char *msg = "Deleting subscription with id %d";
-
-    const int sub_id_len = (int)log10(sub->id + 1) + 1;
-    const size_t size = sizeof(char) * (strlen(msg) + sub_id_len - 2 * 1 + 1);
-
-    char *constructed_msg = malloc(size);
-    snprintf(constructed_msg, size, msg, sub->id);
-
+    char *sub_id_str = itoa(sub->id);
+    char *constructed_msg = create_str("Deleting subscription with id", sub_id_str);
     log_debug(constructed_msg);
-
+    free(sub_id_str);
     free(constructed_msg);
+
 #endif
     free(sub);
     return true;
@@ -184,17 +165,9 @@ int publish_message_to(PubSubTopic topic, void *value) {
         if (topics_with_middleware[i] == NULL || topics_with_middleware[i]->topic != topic) continue;
         bool middleware_passes = topics_with_middleware[i]->middlware(value);
 #ifdef DEBUG
-        const char *msg = "Executed middleware for topic %s with result %s";
         const char *result = middleware_passes ? "true" : "false";
-        const char *topic_str = pubsub_topic_tostring(topic);
-
-        const size_t size = sizeof(char) * (strlen(msg) + strlen(result) + strlen(topic_str) - 2 * 2 + 1);
-
-        char *constructed_msg = malloc(size);
-        snprintf(constructed_msg, size, msg, topic_str, result);
-
+        char *constructed_msg = create_str("Executed middleware for topic", pubsub_topic_tostring(topic), "with result", result);
         log_debug(constructed_msg);
-
         free(constructed_msg);
 #endif
         if (!middleware_passes) return -1;
@@ -212,17 +185,10 @@ int publish_message_to(PubSubTopic topic, void *value) {
     }
 
 #ifdef DEBUG
-    const char *msg = "%s published to %d subscribers";
-    const char *topic_str = pubsub_topic_tostring(topic);
-
-    const int sent_len = (int)log10(sent + 1) + 1;
-    const size_t size = sizeof(char) * (strlen(msg) + sent_len + strlen(topic_str) - 2 * 2 + 1);
-
-    char *constructed_msg = malloc(size);
-    snprintf(constructed_msg, size, msg, topic_str, sent);
-
+    char *sent_str = itoa(sent);
+    char *constructed_msg = create_str(pubsub_topic_tostring(topic), "published to", sent_str, "subscribers");
     log_debug(constructed_msg);
-
+    free(sent_str);
     free(constructed_msg);
 #endif
     return sent;
