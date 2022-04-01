@@ -26,6 +26,10 @@ typedef unsigned int ALUFCOutputBus_t;
 typedef unsigned int ALUFZOutputBus_t;
 
 typedef unsigned long long SelRegOutputBus_t;
+
+typedef unsigned int MXFlD7OutputBus_t;
+typedef unsigned int MXFlD0OutputBus_t;
+
 // -- types PubSubMessage value
 
 typedef enum {
@@ -44,7 +48,10 @@ typedef enum {
     ALU_FC_OUTPUT_BUS_TOPIC,
     ALU_FZ_OUTPUT_BUS_TOPIC,
 
-    SELREG_OUTPUT_BUS_TOPIC
+    SELREG_OUTPUT_BUS_TOPIC,
+
+    MXFLD7_OUTPUT_BUS_TOPIC,
+    MXFLD0_OUTPUT_BUS_TOPIC,
 } PubSubTopic;
 
 typedef struct {

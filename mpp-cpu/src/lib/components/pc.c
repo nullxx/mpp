@@ -73,7 +73,7 @@ void run_pc(void) {
         pch_reg.bin_value = last_bus_data;
     } else if (pch_bus.value == 1) {  // pchcar_lb.value = 0
         // read to data bus if pchbus enabled
-        publish_message_to(DATA_BUS_TOPIC, (void *)pch_reg.bin_value);
+        publish_message_to(DATA_BUS_TOPIC, &pch_reg.bin_value);
     }
     // pcl
     if (pchcar_lb.value == 1) {
@@ -86,7 +86,7 @@ void run_pc(void) {
         pcl_reg.bin_value = last_bus_data;
     } else if (pcl_bus.value == 1) {  // pchcar_lb.value = 0
         // read to data bus if pchbus enabled
-        publish_message_to(DATA_BUS_TOPIC, (void *)pcl_reg.bin_value);
+        publish_message_to(DATA_BUS_TOPIC, &pcl_reg.bin_value);
     }
 
     // mix pch + pcl => pc. If pc is set later it will be overwritten
@@ -138,5 +138,5 @@ void run_pc(void) {
         pcl_reg.bin_value = str_to_bin(next_pcl_reg_str);
     }
 
-    publish_message_to(PC_OUTPUT_BUS_TOPIC, (void *) pc_reg.bin_value);
+    publish_message_to(PC_OUTPUT_BUS_TOPIC, &pc_reg.bin_value);
 }

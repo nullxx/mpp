@@ -42,8 +42,8 @@ bool set_selalu_lb(unsigned long bin) {
 void set_alubus_lb(void) { alubus_lb.value = 1; }
 void reset_alubus_lb(void) { alubus_lb.value = 0; }
 
-static void on_bus_acumm_output_message(PubSubMessage m) { last_bus_acumm_output = (DataBus_t)m.value; }
-static void on_bus_op2_output_message(PubSubMessage m) { last_bus_op2_output = (OP2OutputBus_t)m.value; }
+static void on_bus_acumm_output_message(PubSubMessage m) { last_bus_acumm_output = *(DataBus_t *)m.value; }
+static void on_bus_op2_output_message(PubSubMessage m) { last_bus_op2_output = *(OP2OutputBus_t *)m.value; }
 
 void init_alu(void) {
     acumm_output_bus_topic_subscription = subscribe_to(ACUMM_OUTPUT_BUS_TOPIC, on_bus_acumm_output_message);
@@ -121,11 +121,12 @@ void run_alu(void) {
     const int result_bin_len = get_bin_len(result_bin);
 
     // if result == 0 => fz
-    publish_message_to(ALU_FZ_OUTPUT_BUS_TOPIC, (void *)(intptr_t)(result_bin == 0));
+    int fz = result_bin == 0;
+    publish_message_to(ALU_FZ_OUTPUT_BUS_TOPIC, &fz);
 
     // if result doesn't fit data bus => fc
-    const bool fc = result_bin_len > DATA_BUS_SIZE_BITS;
-    publish_message_to(ALU_FC_OUTPUT_BUS_TOPIC, (void *)(intptr_t)fc);
+    int fc = result_bin_len > DATA_BUS_SIZE_BITS;
+    publish_message_to(ALU_FC_OUTPUT_BUS_TOPIC, &fc);
 
     if (fc) {
         char *result_bin_str = bin_to_str(result_bin);
@@ -138,6 +139,6 @@ void run_alu(void) {
     }
 
     if (alubus_lb.value == 1) {
-        publish_message_to(DATA_BUS_TOPIC, (void *)result_bin);
+        publish_message_to(DATA_BUS_TOPIC, &result_bin);
     }
 }

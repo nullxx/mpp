@@ -28,7 +28,7 @@ bool set_id_lb(unsigned long bin) {
     return true;
 }
 
-static void on_dir_bus_topic(PubSubMessage m) { last_bus_dir = (DirBus_t)m.value; }
+static void on_dir_bus_topic(PubSubMessage m) { last_bus_dir = *(DirBus_t *)m.value; }
 
 void init_addsub(void) { dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, on_dir_bus_topic); }
 void shutdown_addsub(void) { unsubscribe_for(dir_bus_topic_subscription); }
@@ -53,7 +53,7 @@ void run_addsub(void) {
     }
 
     // check overflow
-    const unsigned long long next_bin_bus_dir = int_to_bin(dir_bus_int);
+    unsigned long long next_bin_bus_dir = int_to_bin(dir_bus_int);
 
-    publish_message_to(DIR_BUS_TOPIC, (void *)next_bin_bus_dir);
+    publish_message_to(DIR_BUS_TOPIC, &next_bin_bus_dir);
 }

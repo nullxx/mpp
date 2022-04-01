@@ -35,5 +35,5 @@ void init_mxreg(void) {}
 void shutdown_mxreg(void) {}
 void run_mxreg(void) {
     SelRegOutputBus_t result = (SelRegOutputBus_t)run_4x1_mx(selreg_lb.value, 00, 01, 10, 11);
-    publish_message_to(SELREG_OUTPUT_BUS_TOPIC, (void *)(intptr_t)result);
+    publish_message_to(SELREG_OUTPUT_BUS_TOPIC, &result);
 }

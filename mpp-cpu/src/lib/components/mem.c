@@ -68,12 +68,12 @@ static void unfill_memory(void) {
 
 static void on_bus_data_message(PubSubMessage m) {
     // no condition to receive data from data bus --> always receiving data
-    last_bus_data = (DataBus_t)m.value;
+    last_bus_data = *(DataBus_t*)m.value;
 }
 
 static void on_bus_dir_message(PubSubMessage m) {
     // no condition to receive data from dir bus --> always receiving data
-    last_bus_dir = (DirBus_t)m.value;
+    last_bus_dir = *(DirBus_t*)m.value;
 }
 
 void init_mem(void) {
@@ -185,7 +185,8 @@ void run_mem(void) {
             MemValue *m = (MemValue *)car.return_value;
 
             // if memBus ==> send data to the bus
-            if (mem_bus_lb.value == 1) publish_message_to(DATA_BUS_TOPIC, (void *)int_to_bin(hex_to_int(m->value_hex)));
+            unsigned long long bin = int_to_bin(hex_to_int(m->value_hex));
+            if (mem_bus_lb.value == 1) publish_message_to(DATA_BUS_TOPIC, &bin);
             break;
         }
         case 1: {

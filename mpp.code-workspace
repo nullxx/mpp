@@ -59,7 +59,10 @@
       "cstdio": "c",
       "cwchar": "c",
       "util.h": "c",
-      "vargs.h": "c"
+      "vargs.h": "c",
+      "mxfld7.h": "c",
+      "mxfldx.h": "c",
+      "mxfld0.h": "c"
     },
     "psi-header.templates": [
       {

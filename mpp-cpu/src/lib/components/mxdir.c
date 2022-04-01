@@ -32,13 +32,13 @@ void set_seldir_lb(void) { seldir_lb.value = 1; }
 
 void reset_seldir_lb(void) { seldir_lb.value = 0; }
 
-static void on_bus_pc_output(PubSubMessage m) { last_bus_pc_output = (DataBus_t)m.value; }
+static void on_bus_pc_output(PubSubMessage m) { last_bus_pc_output = *(DataBus_t *)m.value; }
 
-static void on_bus_sp_output(PubSubMessage m) { last_bus_sp_output = (DataBus_t)m.value; }
+static void on_bus_sp_output(PubSubMessage m) { last_bus_sp_output = *(SPOutputBus_t *)m.value; }
 
-static void on_bus_hl_output(PubSubMessage m) { last_bus_hl_output = (DataBus_t)m.value; }
+static void on_bus_hl_output(PubSubMessage m) { last_bus_hl_output = *(HLOutputBus_t *)m.value; }
 
-static void on_bus_fffc_output(PubSubMessage m) { last_bus_fffc_output = (DataBus_t)m.value; }
+static void on_bus_fffc_output(PubSubMessage m) { last_bus_fffc_output = *(FFFCOutputBus_t *)m.value; }
 
 void init_mxdir(void) {
     pc_output_topic_subscription = subscribe_to(PC_OUTPUT_BUS_TOPIC, on_bus_pc_output);
@@ -65,6 +65,6 @@ void run_mxdir(void) {
         return throw_error(err);
     }
 
-    publish_message_to(DIR_BUS_TOPIC, (void *)output);
+    publish_message_to(DIR_BUS_TOPIC, &output);
     return;
 }

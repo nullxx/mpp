@@ -48,5 +48,5 @@ void run_sp(void) {
     }
 
     // in both cases: read and after loading, we are going to transmit it
-    publish_message_to(SP_OUTPUT_BUS_TOPIC, (void *) sp_reg.bin_value);
+    publish_message_to(SP_OUTPUT_BUS_TOPIC, &sp_reg.bin_value);
 }

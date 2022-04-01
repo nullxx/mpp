@@ -23,6 +23,7 @@ char *slice_str(const char *str, int start, int end);
 
 char *create_str_internal(const int n, ...);
 #define create_str(...) create_str_internal(VAR_COUNT(__VA_ARGS__), __VA_ARGS__)
+char *initialize_str(char *str, int start, int end);
 
 char *itoa(int num);
 #endif /* utils_h */

@@ -112,6 +112,14 @@ char *slice_str(const char *str, int start, int end) {
     return result;
 }
 
+char *initialize_str(char *str, int start, int end) {
+    for (int i = start; i < end; ++i) {
+        str[i] = 0;
+    }
+
+    return str;
+}
+
 char *create_str_internal(const int n, ...) {
     va_list lptr;
     va_start(lptr, n);
@@ -120,21 +128,32 @@ char *create_str_internal(const int n, ...) {
     for (int i = 0; i < n; i++) {
         const int _first = str == NULL;
         const char *chunk = va_arg(lptr, char *);
-        str = realloc(str, sizeof(char) * (strlen(chunk) + (_first ? 0 : strlen(str))));
-        if (!_first) {
+
+        const int prev_size = _first ? 0 : strlen(str);
+        const int next_size = sizeof(char) * (strlen(chunk) + prev_size + 1);
+
+        if (_first) {
+            str = (char *)malloc(next_size);
+            if (str == NULL) return NULL;
+
+            initialize_str(str, 0, next_size);
+        } else {
+            str = (char *)realloc(str, next_size);
+            if (str == NULL) return NULL;
+
+            initialize_str(str, prev_size, next_size);
             strcat(str, " ");
         }
         strcat(str, chunk);
     }
-
     va_end(lptr);
 
     return str;
 }
 
 char *itoa(int num) {
-    const int num_len = (int)log10(num + 1) + 1;
-    char *str = (char*) malloc(sizeof(char) * num_len + 1);
-    snprintf(str, num_len, "%d", num);
+    const int num_len = (int)log10(num + 1) + 1 + 1;  // last +1 for the null terminator
+    char *str = (char *)malloc(sizeof(char) * num_len + 1);
+    snprintf(str, sizeof(char) * num_len, "%d", num);
     return str;
 }

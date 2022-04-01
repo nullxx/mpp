@@ -37,5 +37,5 @@ void run_op2(void) {
         op2_reg.bin_value = last_bus_data;
     }
 
-    publish_message_to(OP2_OUTPUT_BUS_TOPIC, (void *)op2_reg.bin_value);
+    publish_message_to(OP2_OUTPUT_BUS_TOPIC, &op2_reg.bin_value);
 }

@@ -29,7 +29,7 @@ static LoadBit lcar_lb = {.value = 0};
 static PubSubSubscription *data_bus_topic_subscription = NULL;
 static DataBus_t last_bus_data;
 
-static void on_bus_data_message(PubSubMessage m) { last_bus_data = (DataBus_t)m.value; }
+static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t *)m.value; }
 
 void set_h_lb(void) { hcar_lb.value = 1; }
 void reset_h_lb(void) { hcar_lb.value = 0; }
@@ -71,5 +71,5 @@ void run_hl(void) {
 
     free(next_hl_reg_str);
 
-    publish_message_to(HL_OUTPUT_BUS_TOPIC, (void *)hl_bin_value);
+    publish_message_to(HL_OUTPUT_BUS_TOPIC, &hl_bin_value);
 }
