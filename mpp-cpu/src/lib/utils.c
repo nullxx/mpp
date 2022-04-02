@@ -112,9 +112,9 @@ char *slice_str(const char *str, int start, int end) {
     return result;
 }
 
-char *initialize_str(char *str, int start, int end) {
-    for (int i = start; i < end; ++i) {
-        str[i] = 0;
+char *initialize_str(char *str, int start, int end, char value) {
+    for (int i = start; i <= end; ++i) {
+        str[i] = value;
     }
 
     return str;
@@ -136,12 +136,12 @@ char *create_str_internal(const int n, ...) {
             str = (char *)malloc(next_size);
             if (str == NULL) return NULL;
 
-            initialize_str(str, 0, next_size);
+            initialize_str(str, 0, next_size, 0);
         } else {
             str = (char *)realloc(str, next_size);
             if (str == NULL) return NULL;
 
-            initialize_str(str, prev_size, next_size);
+            initialize_str(str, prev_size, next_size, 0);
             strcat(str, " ");
         }
         strcat(str, chunk);

@@ -30,6 +30,8 @@ typedef unsigned long long SelRegOutputBus_t;
 typedef unsigned int MXFlD7OutputBus_t;
 typedef unsigned int MXFlD0OutputBus_t;
 
+typedef unsigned int FlagsOutputBus_t;
+
 // -- types PubSubMessage value
 
 typedef enum {

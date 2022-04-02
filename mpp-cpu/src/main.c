@@ -11,7 +11,6 @@
 #include "lib/components/components.h"
 #include "lib/electronic/bus.h"
 #include "lib/logger.h"
-#include "lib/utils.h"
 #include "lib/error.h"
 
 static void fn_exit(void) {
@@ -39,6 +38,5 @@ int main(int argc, const char* argv[]) {
         init_components();
     }
     // -- THIS IS TEMPORAL HERE UNTIL unit control is coded
-
     return 0;
 }
