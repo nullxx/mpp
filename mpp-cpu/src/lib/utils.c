@@ -44,7 +44,7 @@ error:
 }
 
 int random_int(const int end_bound) {
-    int r = rand() % end_bound + 1;
+    int r = arc4random() % end_bound + 1;
     return r;
 }
 
@@ -156,4 +156,16 @@ char *itoa(int num) {
     char *str = (char *)malloc(sizeof(char) * num_len + 1);
     snprintf(str, sizeof(char) * num_len, "%d", num);
     return str;
+}
+
+char *str_concat(const char *str1, const char *str2) {
+    const int str1_len = strlen(str1);
+    const int str2_len = strlen(str2);
+    const int total_len = str1_len + str2_len + 1;
+
+    char *result = (char *)malloc(sizeof(char) * total_len);
+    strcpy(result, str1);
+    strcat(result, str2);
+
+    return result;
 }

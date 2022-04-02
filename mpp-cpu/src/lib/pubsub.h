@@ -52,6 +52,8 @@ typedef enum {
 
     MXFLD7_OUTPUT_BUS_TOPIC,
     MXFLD0_OUTPUT_BUS_TOPIC,
+
+    FLAGS_OUTPUT_BUS_TOPIC,
 } PubSubTopic;
 
 typedef struct {
