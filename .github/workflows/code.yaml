@@ -30,7 +30,7 @@ jobs:
     # Builds your Make project using 'cpptesttrace' to collect input data for code analysis.
     # Be sure 'cpptesttrace' is available on $PATH.
     - name: Build project
-      run: cpptesttrace make clean all
+      run: make
 
     # Runs code analysis with C/C++test.
     - name: Run C/C++test
