@@ -47,7 +47,7 @@ error:
 }
 
 int random_int(const int end_bound) {
-    int r = arc4random() % end_bound + 1;
+    int r = rand() % end_bound + 1;
     return r;
 }
 
@@ -121,7 +121,9 @@ char *slice_str(const char *str, int start, int end) {
 }
 
 char *initialize_str(char *str, int start, int end, char value) {
-    for (int i = start; i <= end; ++i) {
+    if (end <= start) return NULL;
+
+    for (int i = start; i <= end; i++) {
         str[i] = value;
     }
 
@@ -138,7 +140,7 @@ char *create_str_internal(const int n, ...) {
         const char *chunk = va_arg(lptr, char *);
 
         const int prev_size = _first ? 0 : strlen(str);
-        const int next_size = sizeof(char) * (strlen(chunk) + prev_size + 1);
+        const int next_size = sizeof(char) * (strlen(chunk) + strlen(" ") + prev_size + 1);
 
         if (_first) {
             str = (char *)malloc(next_size);
@@ -176,4 +178,11 @@ char *str_concat(const char *str1, const char *str2) {
     strcat(result, str2);
 
     return result;
+}
+
+char *str_dup(char *str) {
+    const int str_size = strlen(str);
+    char *new_str = malloc(sizeof(char) * (str_size+1));
+    strncpy(new_str, str, str_size);
+    return new_str;
 }

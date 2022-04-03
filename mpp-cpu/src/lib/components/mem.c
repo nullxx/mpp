@@ -135,8 +135,8 @@ static ComponentActionReturn set_mem_value(MemValue mem_value) {
     free(target_mem_value->offset);
     free(target_mem_value->value_hex);
 
-    target_mem_value->value_hex = mem_value.value_hex;
-    target_mem_value->offset = mem_value.offset;
+    target_mem_value->value_hex = str_dup(mem_value.value_hex);
+    target_mem_value->offset = str_dup(mem_value.offset);
 
     return car;
 }
@@ -149,11 +149,8 @@ static ComponentActionReturn get_mem_value(char *offset) {
     if (target_mem_value == NULL) {
         car.success = false;
         car.err.show_errno = false;
-        const char *msg = "[get_mem_value] Couldn't find mem_value at %0x";
-        const size_t size = (size_t)sizeof(char) * (strlen(msg) + strlen(offset) - 3 + 1);
-        char *message = (char *)malloc(size);
-        snprintf(message, size, msg, offset);
-        car.err.message = message;
+        car.err.type = FATAL_ERROR;
+        car.err.message = create_str("[get_mem_value] Couldn't find mem_value at", offset);
         return car;
     }
 
@@ -197,8 +194,8 @@ void run_mem(void) {
             break;
     }
 
-    // free(dir_bin_str);
-    // free(value_bin_str);
+    free(dir_bin_str);
+    free(value_bin_str);
 
     return;
 error:

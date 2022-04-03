@@ -93,7 +93,7 @@ void run_pc(void) {
     }
 
     // mix pch + pcl => pc. If pc is set later it will be overwritten
-    char *next_pc_reg_str = (char *) malloc(sizeof(char) * (pcl_reg.bit_length + pch_reg.bit_length));
+    char *next_pc_reg_str = (char *) malloc(sizeof(char) * (pcl_reg.bit_length + pch_reg.bit_length + 1));
     if (next_pc_reg_str == NULL) {
         Error err = {
             .show_errno = false,
@@ -101,6 +101,7 @@ void run_pc(void) {
             .message = "Malloc error"
         };
         throw_error(err);
+        return;
     }
     
     char *pch_reg_bin_value_str = bin_to_str(pch_reg.bin_value);
@@ -122,6 +123,7 @@ void run_pc(void) {
         if (get_bin_len(last_bus_dir) > pc_reg.bit_length) {
             Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load PC register"};
             throw_error(err);
+            return;
         }
 
         pc_reg.bin_value = last_bus_dir;

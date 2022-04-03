@@ -434,6 +434,7 @@ void init_cu(void) {
 }
 
 void shutdown_cu(void) {
+    free(state_trace);
     unsubscribe_for(data_bus_topic_subscription);
     unsubscribe_for(flags_out_bus_topic_subscription);
 }

@@ -11,8 +11,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "../../constants.h"
+#include "../../error.h"
 #include "../../pubsub.h"
 #include "../../utils.h"
 #include "../components.h"
@@ -33,9 +35,17 @@ void cll_shutdown_flagsinta(void) { unsubscribe_for(flags_out_bus_topic_subscrip
 void cll_run_flagsinta(void) {
     // FC|INTA|X|X|X|X|X|FZ
     char *flags_str = itoa(last_bus_flags_out);
+    const int flags_str_len = strlen(flags_str);
 
-    char *bin_str = (char *)malloc(sizeof(char) * (FLAGSINTA_BUS_SIZE_BITS + 1));
+    const int bin_str_len = FLAGSINTA_BUS_SIZE_BITS;
+    char *bin_str = (char *)malloc(sizeof(char) * (bin_str_len + 1));
     initialize_str(bin_str, 0, FLAGSINTA_BUS_SIZE_BITS, 0);
+
+    if (FLAGSINTA_FC_BUS_BIT_POSITION > bin_str_len || FLAGSINTA_FZ_BUS_BIT_POSITION > bin_str_len || FLAGSINTA_FC_BUS_BIT_POSITION > flags_str_len || FLAGSINTA_FZ_BUS_BIT_POSITION > flags_str_len) {
+        free(bin_str);
+        free(flags_str);
+        return;
+    }
 
     bin_str[FLAGSINTA_FC_BUS_BIT_POSITION] = flags_str[FLAGSINTA_FC_BUS_BIT_POSITION];
     bin_str[FLAGSINTA_FZ_BUS_BIT_POSITION] = flags_str[FLAGSINTA_FZ_BUS_BIT_POSITION];
