@@ -1,10 +1,16 @@
 {
   "folders": [
     {
-      "path": "mpp-cpu"
+      "path": "mpp-cpu",
+      "name": "cpu",
     },
     {
-      "path": "mpp-compiler"
+      "path": "mpp-compiler",
+      "name": "compiler"
+    },
+    {
+      "path": "docs",
+      "name": "documents"
     }
   ],
   "settings": {

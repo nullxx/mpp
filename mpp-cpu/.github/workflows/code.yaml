@@ -1,0 +1,7 @@
+# Runs code analysis with C/C++test.
+- name: Run C/C++test
+  uses: parasoft/run-cpptest-action@1.0.1
+  with:
+    input: build/compile_commands.json
+    testConfig: 'builtin://MISRA C 2012'
+    compilerConfig: 'clang_10_0'
