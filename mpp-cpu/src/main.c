@@ -10,7 +10,7 @@
 #include <time.h>
 
 #include "lib/components/components.h"
-#include "lib/components/cu.h"
+#include "lib/components/cu/cu.h"
 #include "lib/electronic/bus.h"
 #include "lib/error.h"
 #include "lib/logger.h"
@@ -18,6 +18,11 @@
 static void fn_exit(void) {
     log_info("Shuting down...");
     shutdown_components();
+}
+
+void pause_execution(void) {
+    log_info("Press enter to continue...");
+    getchar();
 }
 
 void dispatch_clock_start(void) {
@@ -39,6 +44,8 @@ void dispatch_clock_start(void) {
 
         double seconds_spent = (double)(end - start) / CLOCKS_PER_SEC;
         log_info("Cycle time: %fs => %f KHz", seconds_spent, (1 / seconds_spent) / 1000);
+        
+        pause_execution();
     }
 }
 

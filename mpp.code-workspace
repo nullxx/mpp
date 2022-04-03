@@ -65,7 +65,15 @@
       "mxfld0.h": "c",
       "flagsinta.h": "c",
       "op2.h": "c",
-      "locale": "c"
+      "locale": "c",
+      "cu.h": "c",
+      "cu_constants.h": "c",
+      "fffc.h": "c",
+      "flags.h": "c",
+      "greg.h": "c",
+      "hl.h": "c",
+      "mem.h": "c",
+      "pc.h": "c"
     },
     "psi-header.templates": [
       {

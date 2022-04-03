@@ -68,12 +68,12 @@ static void unfill_memory(void) {
 
 static void on_bus_data_message(PubSubMessage m) {
     // no condition to receive data from data bus --> always receiving data
-    last_bus_data = *(DataBus_t*)m.value;
+    last_bus_data = *(DataBus_t *)m.value;
 }
 
 static void on_bus_dir_message(PubSubMessage m) {
     // no condition to receive data from dir bus --> always receiving data
-    last_bus_dir = *(DirBus_t*)m.value;
+    last_bus_dir = *(DirBus_t *)m.value;
 }
 
 void init_mem(void) {
@@ -112,18 +112,14 @@ static MemValue *get_value_by_offset(char *offset) {
 
 static ComponentActionReturn set_mem_value(MemValue mem_value) {
     ComponentActionReturn car;
-    car.success = false;
+    car.success = true;
 
     if (!is_mem_value_valid(mem_value.value_hex)) {
         car.success = false;
         car.err.show_errno = false;
-        const char *msg = "[set_mem_value] Value %s invalid. Must be between 0-%d";
+        car.err.type = FATAL_ERROR;
         const int end_bound_mem_value = pow(2, MEM_VALUE_SIZE_BITS) - 1;
-        const int end_bound_mem_value_size = (int)log10((end_bound_mem_value + 1) + 1) + 1;
-        const size_t size = (size_t)sizeof(char) * (strlen(msg) + strlen(mem_value.value_hex) + end_bound_mem_value_size - 2 * 2 + 1);
-        char *message = (char *)malloc(size);
-        snprintf(message, size, msg, mem_value.value_hex, end_bound_mem_value);
-        car.err.message = message;
+        car.err.message = create_str("[set_mem_value] Value", mem_value.value_hex, "invalid. Must be between 0 -", itoa(end_bound_mem_value));
         return car;
     }
 
@@ -131,11 +127,8 @@ static ComponentActionReturn set_mem_value(MemValue mem_value) {
     if (target_mem_value == NULL) {
         car.success = false;
         car.err.show_errno = false;
-        const char *msg = "[set_mem_value] Couldn't find mem_value at %0x";
-        const size_t size = (size_t)sizeof(char) * (strlen(msg) + strlen(mem_value.offset) - 3 + 1);
-        char *message = (char *)malloc(size);
-        snprintf(message, size, msg, mem_value.offset);
-        car.err.message = message;
+        car.err.type = FATAL_ERROR;
+        car.err.message = create_str("[set_mem_value] Couldn't find mem_value at", mem_value.offset);
         return car;
     }
 
@@ -204,8 +197,8 @@ void run_mem(void) {
             break;
     }
 
-    free(dir_bin_str);
-    free(value_bin_str);
+    // free(dir_bin_str);
+    // free(value_bin_str);
 
     return;
 error:

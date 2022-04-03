@@ -31,7 +31,7 @@ void notice(Error err) {
     if (err.show_errno == true) {
         perror(err.message);
     } else {
-        log_fatal(err.message == NULL ? "An error ocurred" : err.message);
+        log_error(err.message == NULL ? "An error ocurred" : err.message);
     }
 }
 

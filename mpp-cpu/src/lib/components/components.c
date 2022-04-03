@@ -25,7 +25,7 @@
 #include "controllers/mxfldx.h"
 #include "controllers/flagsinta.h"
 #include "flags.h"
-#include "cu.h"
+#include "cu/cu.h"
 // TODO review the order of init and shutdown of components. Firt the ones that doesn't depend on any.
 
 void init_components(void) {

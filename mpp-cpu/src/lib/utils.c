@@ -32,7 +32,10 @@ char *int_to_hex(int num) {
         char *result2 = (char *)malloc(sizeof(char) * (next_size + 1));
         snprintf(result2, next_size, "%x", num);
 
-        if (!strcmp(result, result2)) break;
+        if (!strcmp(result, result2)) {
+            free(result2);
+            break;
+        };
 
         free(result);
         result = result2;
