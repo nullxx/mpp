@@ -5,6 +5,7 @@
 //  Created by Jon Lara trigo on 21/3/22.
 //
 
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -15,9 +16,16 @@
 #include "lib/error.h"
 #include "lib/logger.h"
 
-static void fn_exit(void) {
-    log_info("Shuting down...");
-    shutdown_components();
+void on_signal_exit(int signal) {
+    log_info("Received signal %d.", signal);
+    printf("Do you want to exit? y/n: ");
+
+    char confirmation = getchar();
+    if (confirmation == 'y' || confirmation == '\n') {
+        log_info("Shuting down...");
+        shutdown_components();
+        exit(EXIT_SUCCESS);
+    }
 }
 
 void pause_execution(void) {
@@ -44,7 +52,7 @@ void dispatch_clock_start(void) {
 
         double seconds_spent = (double)(end - start) / CLOCKS_PER_SEC;
         log_info("Cycle time: %fs => %f KHz", seconds_spent, (1 / seconds_spent) / 1000);
-        
+
         pause_execution();
     }
 }
@@ -55,8 +63,7 @@ int main(int argc, const char* argv[]) {
 
     log_info("Turning on...");
 
-    atexit(fn_exit);
-
+    signal(SIGINT, on_signal_exit);
     init_buses();
     init_components();
     dispatch_clock_start();

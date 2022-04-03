@@ -73,7 +73,8 @@
       "greg.h": "c",
       "hl.h": "c",
       "mem.h": "c",
-      "pc.h": "c"
+      "pc.h": "c",
+      "signal.h": "c"
     },
     "psi-header.templates": [
       {
