@@ -150,7 +150,7 @@ static ComponentActionReturn set_mem_value(MemValue mem_value) {
 
 static ComponentActionReturn get_mem_value(char *offset) {
     ComponentActionReturn car;
-    car.success = false;
+    car.success = true;
 
     MemValue *target_mem_value = get_value_by_offset(offset);
     if (target_mem_value == NULL) {
@@ -171,11 +171,11 @@ static ComponentActionReturn get_mem_value(char *offset) {
 
 void run_mem(void) {
     Error err;
-    char *dir_bin_str = bin_to_str(last_bus_dir);
-    char *value_bin_str = bin_to_str(last_bus_data);
+    char *dir_bin_str = int_to_hex(bin_to_int(last_bus_dir));
+    char *value_bin_str = int_to_hex(bin_to_int(last_bus_data));
 
     switch (l_e_lb.value) {
-        case 0: {
+        case 1: {
             ComponentActionReturn car = get_mem_value(dir_bin_str);
             if (!car.success) {
                 err = car.err;
@@ -189,7 +189,7 @@ void run_mem(void) {
             if (mem_bus_lb.value == 1) publish_message_to(DATA_BUS_TOPIC, &bin);
             break;
         }
-        case 1: {
+        case 0: {
             // use the last value of DATA_BUS
             MemValue mem_value = {.offset = dir_bin_str, .value_hex = value_bin_str};
             ComponentActionReturn car = set_mem_value(mem_value);

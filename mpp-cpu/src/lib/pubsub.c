@@ -184,9 +184,10 @@ int publish_message_to(PubSubTopic topic, void *value) {
     LlNode *current_node = subscriptions_head;
     while (current_node != NULL) {
         PubSubSubscription *sub = (PubSubSubscription *)current_node->value;
+        current_node = current_node->next;
         if (sub->topic != topic) continue;
         sub->on_message_fn(message);
-        current_node = current_node->next;
+
         sent++;
     }
 

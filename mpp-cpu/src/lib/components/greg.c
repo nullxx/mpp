@@ -32,15 +32,8 @@ static SelRegOutputBus_t last_bus_selreg_output;
 void set_gregbus_lb(void) { regbus_lb.value = 1; }
 void reset_gregbus_lb(void) { regbus_lb.value = 0; }
 
-bool set_gregcar_lb(unsigned long sel) {
-    const int len = get_bin_len(sel);
-    if (len != REGCAR_LOAD_BIT_SIZE_BITS) {
-        return false;
-    }
-
-    regcar_lb.value = sel;
-    return true;
-}
+void set_gregcar_lb(void) { regcar_lb.value = 1; }
+void reset_gregcar_lb(void) { regcar_lb.value = 1; }
 
 static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t *)m.value; }
 static void on_bus_selreg_output_message(PubSubMessage m) { last_bus_selreg_output = *(SelRegOutputBus_t *)m.value; }

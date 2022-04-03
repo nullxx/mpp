@@ -23,14 +23,14 @@ static PubSubSubscription *flags_out_bus_topic_subscription = NULL;
 
 static void on_bus_flags_out_message(PubSubMessage m) { last_bus_flags_out = *(FlagsOutputBus_t *)m.value; }
 
-void set_flbus_lb(void) { flbus_lb.value = 1; }
-void reset_flbus_lb(void) { flbus_lb.value = 0; }
+void cll_set_flbus_lb(void) { flbus_lb.value = 1; }
+void cll_reset_flbus_lb(void) { flbus_lb.value = 0; }
 
-void init_flagsinta(void) { flags_out_bus_topic_subscription = subscribe_to(FLAGS_OUTPUT_BUS_TOPIC, on_bus_flags_out_message); }
+void cll_init_flagsinta(void) { flags_out_bus_topic_subscription = subscribe_to(FLAGS_OUTPUT_BUS_TOPIC, on_bus_flags_out_message); }
 
-void shutdown_flagsinta(void) { unsubscribe_for(flags_out_bus_topic_subscription); }
+void cll_shutdown_flagsinta(void) { unsubscribe_for(flags_out_bus_topic_subscription); }
 
-void run_flagsinta(void) {
+void cll_run_flagsinta(void) {
     // FC|INTA|X|X|X|X|X|FZ
     char *flags_str = itoa(last_bus_flags_out);
 
@@ -40,7 +40,7 @@ void run_flagsinta(void) {
     bin_str[FLAGSINTA_FC_BUS_BIT_POSITION] = flags_str[FLAGSINTA_FC_BUS_BIT_POSITION];
     bin_str[FLAGSINTA_FZ_BUS_BIT_POSITION] = flags_str[FLAGSINTA_FZ_BUS_BIT_POSITION];
     initialize_str(bin_str, FLAGSINTA_GND_START_BIT_POSITION, FLAGSINTA_GND_END_BIT_POSITION, FLAGSINTA_GND_CHAR_VALUE);
-    bin_str[FLAGSINTA_INTA_BUS_BIT_POSITION] = 0; // TODO: Implement INTA
+    bin_str[FLAGSINTA_INTA_BUS_BIT_POSITION] = 0;  // TODO: Implement INTA
 
     unsigned long long bin = str_to_bin(bin_str);
 

@@ -14,6 +14,12 @@ void init_pc(void);
 void shutdown_pc(void);
 void run_pc(void);
 
+void set_pchbus_lb(void);
+void reset_pchbus_lb(void);
+
+void set_pclbus_lb(void);
+void reset_pclbus_lb(void);
+
 void set_pchcar_lb(void);
 void reset_pchcar_lb(void);
 void set_pclcar_lb(void);

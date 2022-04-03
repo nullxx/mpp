@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../constants.h"
 #include "../electronic/multiplexer.h"
 #include "../error.h"
 #include "../pubsub.h"
@@ -28,9 +29,15 @@ static PubSubSubscription *sp_output_topic_subscription = NULL;
 static PubSubSubscription *hl_output_topic_subscription = NULL;
 static PubSubSubscription *fffc_output_topic_subscription = NULL;
 
-void set_seldir_lb(void) { seldir_lb.value = 1; }
+bool set_seldir_lb(unsigned int bin) {
+    const int bin_len = get_bin_len(bin);
+    if (bin_len != SELDIR_LOAD_BIT_SIZE_BITS) {
+        return false;
+    }
 
-void reset_seldir_lb(void) { seldir_lb.value = 0; }
+    seldir_lb.value = bin;
+    return true;
+}
 
 static void on_bus_pc_output(PubSubMessage m) { last_bus_pc_output = *(DataBus_t *)m.value; }
 

@@ -17,5 +17,6 @@ void run_greg(void);
 
 void set_gregbus_lb(void);
 void reset_gregbus_lb(void);
-bool set_regcar_lb(unsigned long sel);
+void set_gregcar_lb(void);
+void reset_gregcar_lb(void);
 #endif

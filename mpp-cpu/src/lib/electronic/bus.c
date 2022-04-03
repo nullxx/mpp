@@ -17,7 +17,7 @@
 #include "../utils.h"
 
 static bool check_data_bus_overflow(void *value) {
-    DataBus_t data_bus_bin = (DataBus_t)value;
+    DataBus_t data_bus_bin = *(DataBus_t*)value;
     if (get_bin_len(data_bus_bin) > DATA_BUS_SIZE_BITS) {
         return false;
     }
@@ -26,7 +26,7 @@ static bool check_data_bus_overflow(void *value) {
 }
 
 static bool check_dir_bus_overflow(void *value) {
-    DirBus_t dir_bus_bin = (DirBus_t)value;
+    DirBus_t dir_bus_bin = *(DirBus_t*)value;
     if (get_bin_len(dir_bus_bin) > DIR_BUS_SIZE_BITS) {
         return false;
     }

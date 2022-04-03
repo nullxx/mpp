@@ -23,7 +23,7 @@ static Register op2_reg = {.bin_value = 0, .bit_length = OP2_REG_SIZE_BIT};
 
 static LoadBit car2_lb = {.value = 0};
 
-static void on_bus_data_message(PubSubMessage m) { last_bus_data = (DataBus_t)m.value; }
+static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t*)m.value; }
 
 void set_car2_lb(void) { car2_lb.value = 1; }
 void reset_car2_lb(void) { car2_lb.value = 0; }

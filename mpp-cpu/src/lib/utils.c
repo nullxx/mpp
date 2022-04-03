@@ -85,18 +85,23 @@ int bin_to_int(unsigned long long bin) {
     return dec;
 }
 
-unsigned long long int_to_bin(int n) {
-    long long bin = 0;
-    int rem, i = 1;
+// unsigned long long int_to_bin(int n) {
+//     long long bin = 0;
+//     int rem, i = 1;
 
-    while (n != 0) {
-        rem = n % 2;
-        n /= 2;
-        bin += rem * i;
-        i *= 10;
-    }
+//     while (n != 0) {
+//         rem = n % 2;
+//         n /= 2;
+//         bin += rem * i;
+//         i *= 10;
+//     }
 
-    return bin;
+//     return bin;
+// }
+unsigned long long int_to_bin(unsigned k) {
+    if (k == 0) return 0;
+    if (k == 1) return 1;                       /* optional */
+    return (k % 2) + 10 * int_to_bin(k / 2);
 }
 
 char *slice_str(const char *str, int start, int end) {

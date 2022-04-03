@@ -29,7 +29,7 @@ INCLUDE	:= include
 LIB		:= lib
 
 # define debug flag
-DEBUG ?= 1
+DEBUG ?= 0
 
 ifeq ($(DEBUG), 1)
     CFLAGS +=-DDEBUG

@@ -7,13 +7,13 @@
 
 #ifndef mxdir_h
 #define mxdir_h
+#include <stdbool.h>
 
 void init_mxdir(void);
 void shutdown_mxdir(void);
 void run_mxdir(void);  // <==
 
 // control loadbits
-void set_seldir_lb(void);
-void reset_seldir_lb(void);
+bool set_seldir_lb(unsigned int bin);
 // -- control loadbits
 #endif /* mxdir_h */

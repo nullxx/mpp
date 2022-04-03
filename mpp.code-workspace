@@ -62,7 +62,10 @@
       "vargs.h": "c",
       "mxfld7.h": "c",
       "mxfldx.h": "c",
-      "mxfld0.h": "c"
+      "mxfld0.h": "c",
+      "flagsinta.h": "c",
+      "op2.h": "c",
+      "locale": "c"
     },
     "psi-header.templates": [
       {

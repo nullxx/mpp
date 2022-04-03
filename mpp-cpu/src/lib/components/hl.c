@@ -31,11 +31,11 @@ static DataBus_t last_bus_data;
 
 static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t *)m.value; }
 
-void set_h_lb(void) { hcar_lb.value = 1; }
-void reset_h_lb(void) { hcar_lb.value = 0; }
+void set_hcar_lb(void) { hcar_lb.value = 1; }
+void reset_hcar_lb(void) { hcar_lb.value = 0; }
 
-void set_l_lb(void) { lcar_lb.value = 1; }
-void reset_l_lb(void) { lcar_lb.value = 0; }
+void set_lcar_lb(void) { lcar_lb.value = 1; }
+void reset_lcar_lb(void) { lcar_lb.value = 0; }
 
 void init_hl(void) { data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message); }
 

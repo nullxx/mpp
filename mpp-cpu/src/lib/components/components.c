@@ -23,7 +23,9 @@
 #include "mxreg.h"
 #include "greg.h"
 #include "controllers/mxfldx.h"
+#include "controllers/flagsinta.h"
 #include "flags.h"
+#include "cu.h"
 // TODO review the order of init and shutdown of components. Firt the ones that doesn't depend on any.
 
 void init_components(void) {
@@ -41,6 +43,8 @@ void init_components(void) {
     init_greg();
     cll_init_mxfldx();
     init_flags();
+    cll_init_flagsinta();
+    init_cu();
 }
 
 void shutdown_components(void) {
@@ -58,4 +62,6 @@ void shutdown_components(void) {
     shutdown_greg();
     cll_shutdown_mxfldx();
     shutdown_flags();
+    cll_shutdown_flagsinta();
+    shutdown_cu();
 }

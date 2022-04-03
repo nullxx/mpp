@@ -36,8 +36,8 @@ static DataBus_t last_bus_data;
 static PubSubSubscription *dir_bus_topic_subscription = NULL;
 static PubSubSubscription *data_bus_topic_subscription = NULL;
 
-static void on_bus_dir_message(PubSubMessage m) { last_bus_dir = (DirBus_t)m.value; }
-static void on_bus_data_message(PubSubMessage m) { last_bus_data = (DataBus_t)m.value; }
+static void on_bus_dir_message(PubSubMessage m) { last_bus_dir = *(DirBus_t*)m.value; }
+static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t*)m.value; }
 
 void init_pc(void) {
     dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, on_bus_dir_message);
@@ -49,16 +49,19 @@ void shutdown_pc(void) {
     unsubscribe_for(data_bus_topic_subscription);
 }
 
-void set_pchcar_lb(void) { pchcar_lb.value = 1; }
+void set_pchbus_lb(void) { pch_bus.value = 1; }
+void reset_pchbus_lb(void) { pch_bus.value = 0; }
 
+void set_pclbus_lb(void) { pcl_bus.value = 1; }
+void reset_pclbus_lb(void) { pcl_bus.value = 0; }
+
+void set_pchcar_lb(void) { pchcar_lb.value = 1; }
 void reset_pchcar_lb(void) { pchcar_lb.value = 0; }
 
 void set_pclcar_lb(void) { pclcar_lb.value = 1; }
-
 void reset_pclcar_lb(void) { pclcar_lb.value = 0; }
 
 void set_pccar_lb(void) { pccar_lb.value = 1; }
-
 void reset_pccar_lb(void) { pccar_lb.value = 0; }
 
 void run_pc(void) {

@@ -27,7 +27,7 @@ static LoadBit spcar_lb = {
 static DirBus_t last_bus_dir;
 static PubSubSubscription *dir_bus_topic_subscription = NULL;
 
-static void on_bus_dir_message(PubSubMessage m) { last_bus_dir = (DirBus_t)m.value; }
+static void on_bus_dir_message(PubSubMessage m) { last_bus_dir = *(DirBus_t*)m.value; }
 
 void init_sp(void) { dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, on_bus_dir_message); }
 
