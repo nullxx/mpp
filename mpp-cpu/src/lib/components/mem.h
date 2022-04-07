@@ -30,4 +30,13 @@ void reset_l_e_lb(void);
 void set_mem_bus_lb(void);
 void reset_mem_bus_lb(void);
 // -- control loadbits
+
+#include "../error.h"
+typedef struct {  // temporal
+    int success;
+    Error err;
+    void *return_value;
+} ComponentActionReturn;
+
+ComponentActionReturn set_mem_value(MemValue mem_value);
 #endif /* mem_h */

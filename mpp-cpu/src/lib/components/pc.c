@@ -18,11 +18,16 @@
 #include "../error.h"
 #include "../pubsub.h"
 #include "../utils.h"
+#include "../watcher.h"
 #include "components.h"
 
 static Register pch_reg = {.bin_value = 0, .bit_length = PCH_REG_SIZE_BIT};
 static Register pcl_reg = {.bin_value = 0, .bit_length = PCL_REG_SIZE_BIT};
 static Register pc_reg = {.bin_value = 0, .bit_length = PC_REG_SIZE_BIT};
+
+RegisterWatcher pch_reg_watcher = {.name = "PCH", .reg = &pch_reg};
+RegisterWatcher pcl_reg_watcher = {.name = "PCL", .reg = &pcl_reg};
+RegisterWatcher pc_reg_watcher = {.name = "PC", .reg = &pc_reg};
 
 static LoadBit pchcar_lb = {.value = 0};
 static LoadBit pclcar_lb = {.value = 0};
@@ -40,6 +45,10 @@ static void on_bus_dir_message(PubSubMessage m) { last_bus_dir = *(DirBus_t *)m.
 static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t *)m.value; }
 
 void init_pc(void) {
+    register_watcher(&pch_reg_watcher);
+    register_watcher(&pcl_reg_watcher);
+    register_watcher(&pc_reg_watcher);
+
     dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, on_bus_dir_message);
     data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
 }
@@ -47,6 +56,10 @@ void init_pc(void) {
 void shutdown_pc(void) {
     unsubscribe_for(dir_bus_topic_subscription);
     unsubscribe_for(data_bus_topic_subscription);
+
+    unregister_watcher(&pch_reg_watcher);
+    unregister_watcher(&pcl_reg_watcher);
+    unregister_watcher(&pc_reg_watcher);
 }
 
 void set_pchbus_lb(void) { pch_bus.value = 1; }

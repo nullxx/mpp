@@ -18,11 +18,7 @@
 #include "../utils.h"
 
 // INTERNAL
-typedef struct {  // temporal
-    bool success;
-    Error err;
-    void *return_value;
-} ComponentActionReturn;
+
 
 static const int mem_size_bits = MEM_SIZE_KB * 1024 * 8;
 static const int mem_size = mem_size_bits / MEM_VALUE_SIZE_BITS;
@@ -109,8 +105,8 @@ static MemValue *get_value_by_offset(char *offset) {
 }
 
 // -- INTERNAL
-
-static ComponentActionReturn set_mem_value(MemValue mem_value) {
+// TODO add static again after debugging, and remove header
+ComponentActionReturn set_mem_value(MemValue mem_value) {
     ComponentActionReturn car;
     car.success = true;
 

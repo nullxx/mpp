@@ -14,22 +14,31 @@
 
 #include "../constants.h"
 #include "../pubsub.h"
+#include "../watcher.h"
 #include "components.h"
-
 static PubSubSubscription *data_bus_topic_subscription = NULL;
 static DataBus_t last_bus_data;
 
 static Register op2_reg = {.bin_value = 0, .bit_length = OP2_REG_SIZE_BIT};
 
+static RegisterWatcher op2_reg_watcher = {.name = "2OP", .reg = &op2_reg};
+
 static LoadBit car2_lb = {.value = 0};
 
-static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t*)m.value; }
+static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t *)m.value; }
 
 void set_car2_lb(void) { car2_lb.value = 1; }
 void reset_car2_lb(void) { car2_lb.value = 0; }
 
-void init_op2(void) { data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message); }
-void shutdown_op2(void) { unsubscribe_for(data_bus_topic_subscription); }
+void init_op2(void) {
+    register_watcher(&op2_reg_watcher);
+
+    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
+}
+void shutdown_op2(void) {
+    unsubscribe_for(data_bus_topic_subscription);
+    unregister_watcher(&op2_reg_watcher);
+}
 
 void run_op2(void) {
     if (car2_lb.value == 1) {

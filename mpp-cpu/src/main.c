@@ -12,9 +12,11 @@
 
 #include "lib/components/components.h"
 #include "lib/components/cu/cu.h"
+#include "lib/components/mem.h"
 #include "lib/electronic/bus.h"
 #include "lib/error.h"
 #include "lib/logger.h"
+#include "lib/watcher.h"
 
 void on_signal_exit(int signal) {
     log_info("Received signal %d.", signal);
@@ -28,8 +30,8 @@ void on_signal_exit(int signal) {
     }
 }
 
-void pause_execution(void) {
-    log_info("Press enter to continue...");
+void pause_execution(const char* message) {
+    log_info(message);
     getchar();
 }
 
@@ -39,6 +41,12 @@ void dispatch_clock_start(void) {
     log_info("Starting clock...");
     jmp_buf error_buffer;
     init_err_hanlder(&error_buffer);
+
+    log_info("Initial state");
+    log_watchers();
+
+    pause_execution("Press [ENTER] to start execution...");
+
     while (1) {
         ErrorType err_type = (ErrorType)setjmp(error_buffer);
 
@@ -53,7 +61,9 @@ void dispatch_clock_start(void) {
         double seconds_spent = (double)(end - start) / CLOCKS_PER_SEC;
         log_info("Cycle time: %fs => %f KHz", seconds_spent, (1 / seconds_spent) / 1000);
 
-        pause_execution();
+        log_watchers();
+
+        pause_execution("Press [ENTER] to continue...");
     }
 }
 
@@ -66,6 +76,47 @@ int main(int argc, const char* argv[]) {
     signal(SIGINT, on_signal_exit);
     init_buses();
     init_components();
+
+    // TODO remove
+
+    // MOV 22, AC
+    MemValue mem_value1 = {.offset = "0", .value_hex = "64"};
+    set_mem_value(mem_value1);
+
+    MemValue mem_value2 = {.offset = "1", .value_hex = "00"};
+    set_mem_value(mem_value2);
+    // -- MOV 22, AC
+
+    // INC AC
+    MemValue mem_value3 = {.offset = "2", .value_hex = "4B"};
+    set_mem_value(mem_value3);
+    // -- INC AC
+
+    // // CMP 05
+    // MemValue mem_value4 = {.offset = "3", .value_hex = "67"};
+    // set_mem_value(mem_value4);
+
+    // MemValue mem_value5 = {.offset = "4", .value_hex = "05"};
+    // set_mem_value(mem_value5);
+    // // -- CMP 05
+
+    // JMP 0002
+    MemValue mem_value9 = {.offset = "3", .value_hex = "74"};
+    set_mem_value(mem_value9);
+
+    MemValue mem_value10 = {.offset = "4", .value_hex = "00"};
+    set_mem_value(mem_value10);
+
+    MemValue mem_value11 = {.offset = "5", .value_hex = "02"};
+    set_mem_value(mem_value11);
+    // -- JMP 0002
+
+    // FIN
+    MemValue mem_value12 = {.offset = "6", .value_hex = "FF"};
+    set_mem_value(mem_value12);
+    // -- FIN
+
+    // -- TODO remove
     dispatch_clock_start();
 
     return 0;

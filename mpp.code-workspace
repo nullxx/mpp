@@ -83,7 +83,10 @@
       "hl.h": "c",
       "mem.h": "c",
       "pc.h": "c",
-      "signal.h": "c"
+      "signal.h": "c",
+      "variant": "c",
+      "watcher.h": "c",
+      "typeinfo": "c"
     },
     "psi-header.templates": [
       {

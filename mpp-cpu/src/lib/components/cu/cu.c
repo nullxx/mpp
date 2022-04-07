@@ -18,6 +18,7 @@
 #include "../../logger.h"
 #include "../../pubsub.h"
 #include "../../utils.h"
+#include "../../watcher.h"
 #include "../acumm.h"
 #include "../addsub.h"
 #include "../alu.h"
@@ -37,6 +38,9 @@
 #include "cu_constants.h"
 
 Register RI_reg = {.bin_value = 00000000, .bit_length = RI_REG_SIZE_BIT};
+
+RegisterWatcher RI_reg_watcher = {.name = "RI", .reg = &RI_reg};
+
 LoadBit ricar_lb = {.value = 0};
 
 static DataBus_t last_bus_data;
@@ -86,7 +90,9 @@ void process_state_loadbits(OpState state) {
     if (state.load_bits.sel_alu != -1) set_selalu_lb(state.load_bits.sel_alu);
     if (state.load_bits.mx_reg != -1) set_selreg_lb(state.load_bits.mx_reg);
     if (state.load_bits.sel_dir != -1) set_seldir_lb(state.load_bits.sel_dir);
-    if (state.load_bits.i_d != -1) set_id_lb(state.load_bits.i_d);
+
+    // state.load_bits.sel_alu != -1 ? set_selalu_lb(state.load_bits.sel_alu) : set_selalu_lb(TRANSPARENT);
+    state.load_bits.i_d != -1 ? set_id_lb(state.load_bits.i_d) : set_id_lb(0);
 
     process_loadbit_switch(state.load_bits.l_e, set_l_e_lb, reset_l_e_lb);
     process_loadbit_switch(state.load_bits.reg_bus, set_gregbus_lb, reset_gregbus_lb);
@@ -303,16 +309,14 @@ OpStateTrace *decode_step(void) {
             break;
         }
 
-        case 0x72: {
+        case 0x72: { // TODO - check this. This have to be evaluated before each microinstruction
             if (flags.fz) {
                 trace->state = s16;
                 add_next_state_trace_from(trace, s17);
                 add_next_state_trace_from(trace->next, s20);
-                add_next_state_trace_from(trace->next->next, s1);
             } else {
                 trace->state = s16;
                 add_next_state_trace_from(trace, s17);
-                add_next_state_trace_from(trace->next, s0);
             }
             break;
         }
@@ -338,11 +342,9 @@ OpStateTrace *decode_step(void) {
                 trace->state = s16;
                 add_next_state_trace_from(trace, s17);
                 add_next_state_trace_from(trace->next, s20);
-                add_next_state_trace_from(trace->next->next, s1);
             } else {
                 trace->state = s16;
                 add_next_state_trace_from(trace, s17);
-                add_next_state_trace_from(trace->next, s0);
             }
             break;
         }
@@ -351,7 +353,6 @@ OpStateTrace *decode_step(void) {
             trace->state = s16;
             add_next_state_trace_from(trace, s17);
             add_next_state_trace_from(trace->next, s20);
-            add_next_state_trace_from(trace->next->next, s1);
             break;
         }
 
@@ -418,9 +419,15 @@ OpStateTrace *decode_step(void) {
             add_next_state_trace_from(trace->next->next->next->next->next, s35);
             break;
         }
+
+        case 0xFF: {
+            log_info("HALT");
+            break;
+        }
+
         default: {
             log_warn("Unhandled opcode: 0x%02X", opcode);
-            trace->state = s0; // if not found, go to s0
+            trace->state = s0;  // if not found, go to s0
             break;
         }
     }
@@ -428,6 +435,8 @@ OpStateTrace *decode_step(void) {
 }
 
 void init_cu(void) {
+    register_watcher(&RI_reg_watcher);
+
     data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
     flags_out_bus_topic_subscription = subscribe_to(FLAGS_OUTPUT_BUS_TOPIC, on_bus_flags_out_message);
     state_trace = (OpStateTrace *)create_state_trace(&s0);
@@ -437,6 +446,8 @@ void shutdown_cu(void) {
     free(state_trace);
     unsubscribe_for(data_bus_topic_subscription);
     unsubscribe_for(flags_out_bus_topic_subscription);
+
+    unregister_watcher(&RI_reg_watcher);
 }
 
 void run_cu(void) {  // 1 opstate per run
@@ -476,11 +487,11 @@ void run_cu(void) {  // 1 opstate per run
     run_pc();
 
     run_greg();
-    run_op2();
-
-    run_acumm();
 
     run_alu();
+
+    run_acumm();
+    run_op2();
 
     cll_run_mxfldx();
 

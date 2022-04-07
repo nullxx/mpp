@@ -18,10 +18,14 @@
 #include "../error.h"
 #include "../pubsub.h"
 #include "../utils.h"
+#include "../watcher.h"
 #include "components.h"
 
 static Register h_reg = {.bin_value = 0, .bit_length = H_REG_SIZE_BIT};
 static Register l_reg = {.bin_value = 0, .bit_length = L_REG_SIZE_BIT};
+
+static RegisterWatcher h_reg_watcher = {.name = "H", .reg = &h_reg};
+static RegisterWatcher l_reg_watcher = {.name = "L", .reg = &l_reg};
 
 static LoadBit hcar_lb = {.value = 0};
 
@@ -37,9 +41,19 @@ void reset_hcar_lb(void) { hcar_lb.value = 0; }
 void set_lcar_lb(void) { lcar_lb.value = 1; }
 void reset_lcar_lb(void) { lcar_lb.value = 0; }
 
-void init_hl(void) { data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message); }
+void init_hl(void) {
+    register_watcher(&h_reg_watcher);
+    register_watcher(&l_reg_watcher);
 
-void shutdown_hl(void) { unsubscribe_for(data_bus_topic_subscription); }
+    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
+}
+
+void shutdown_hl(void) {
+    unsubscribe_for(data_bus_topic_subscription);
+
+    unregister_watcher(&h_reg_watcher);
+    unregister_watcher(&l_reg_watcher);
+}
 
 void run_hl(void) {
     if (hcar_lb.value == 1) {

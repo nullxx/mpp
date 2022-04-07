@@ -10,11 +10,13 @@
 
 #include "alu.h"
 
+#include <pthread.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "../constants.h"
+#include "../error.h"
 #include "../pubsub.h"
 #include "../utils.h"
 #include "components.h"
@@ -27,7 +29,11 @@ static PubSubSubscription *opt_output_bus_topic_subscription = NULL;
 static ACUMMOutputBus_t last_bus_acumm_output;  // A
 static OP2OutputBus_t last_bus_op2_output;      // B
 
-enum SelAluOp { SUM = 0, SUB = 1, AND = 2, OR = 3, XOR = 4, NOT = 5, TRANSPARENT = 6, INCREMENT = 7 };
+static ACUMMOutputBus_t last_last_bus_acumm_output;  // A last
+static OP2OutputBus_t last_last_bus_op2_output;      // B last
+static int last_selalu_lb;
+
+pthread_t alu_thread_id;
 
 bool set_selalu_lb(unsigned long bin) {
     const int bin_len = get_bin_len(bin);
@@ -44,16 +50,6 @@ void reset_alubus_lb(void) { alubus_lb.value = 0; }
 
 static void on_bus_acumm_output_message(PubSubMessage m) { last_bus_acumm_output = *(DataBus_t *)m.value; }
 static void on_bus_op2_output_message(PubSubMessage m) { last_bus_op2_output = *(OP2OutputBus_t *)m.value; }
-
-void init_alu(void) {
-    acumm_output_bus_topic_subscription = subscribe_to(ACUMM_OUTPUT_BUS_TOPIC, on_bus_acumm_output_message);
-    opt_output_bus_topic_subscription = subscribe_to(OP2_OUTPUT_BUS_TOPIC, on_bus_op2_output_message);
-}
-
-void shutdown_alu(void) {
-    unsubscribe_for(acumm_output_bus_topic_subscription);
-    unsubscribe_for(opt_output_bus_topic_subscription);
-}
 
 void run_alu(void) {
     int sel_alu_int = bin_to_int(selalu_lb.value);
@@ -104,6 +100,7 @@ void run_alu(void) {
 
         case TRANSPARENT: {
             // transparent step
+            result_bin = last_bus_op2_output;
             break;
         }
 
@@ -141,4 +138,34 @@ void run_alu(void) {
     if (alubus_lb.value == 1) {
         publish_message_to(DATA_BUS_TOPIC, &result_bin);
     }
+}
+
+static void *alu_thread() {
+    while (1) {
+        if (last_last_bus_acumm_output == last_bus_acumm_output && last_last_bus_op2_output == last_bus_op2_output && last_selalu_lb == selalu_lb.value) continue;
+
+        run_alu();
+        last_last_bus_acumm_output = last_bus_acumm_output;
+        last_last_bus_op2_output = last_bus_op2_output;
+        last_selalu_lb = selalu_lb.value;
+    }
+
+    return NULL;
+}
+
+void init_alu(void) {
+    // int err = pthread_create(&alu_thread_id, NULL, alu_thread, NULL);
+    // if (err != 0) {
+    //     Error err = {.show_errno = false, .type = FATAL_ERROR, .message = "Error creating alu thread"};
+    //     throw_error(err);
+    //     return;
+    // }
+
+    acumm_output_bus_topic_subscription = subscribe_to(ACUMM_OUTPUT_BUS_TOPIC, on_bus_acumm_output_message);
+    opt_output_bus_topic_subscription = subscribe_to(OP2_OUTPUT_BUS_TOPIC, on_bus_op2_output_message);
+}
+
+void shutdown_alu(void) {
+    unsubscribe_for(acumm_output_bus_topic_subscription);
+    unsubscribe_for(opt_output_bus_topic_subscription);
 }

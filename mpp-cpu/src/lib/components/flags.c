@@ -16,11 +16,15 @@
 #include "../constants.h"
 #include "../pubsub.h"
 #include "../utils.h"
+#include "../watcher.h"
 #include "components.h"
 
-LoadBit flcar_lb = {.value = 0};
-Register FC_reg = {.bit_length = FLAG_REG_SIZE_BIT, .bin_value = 0};
-Register FZ_reg = {.bit_length = FLAG_REG_SIZE_BIT, .bin_value = 0};
+static LoadBit flcar_lb = {.value = 0};
+static Register FC_reg = {.bit_length = FLAG_REG_SIZE_BIT, .bin_value = 0};
+static Register FZ_reg = {.bit_length = FLAG_REG_SIZE_BIT, .bin_value = 0};
+
+static RegisterWatcher FC_reg_watcher = {.name = "FC", .reg = &FC_reg};
+static RegisterWatcher FZ_reg_watcher = {.name = "FZ", .reg = &FZ_reg};
 
 static MXFlD7OutputBus_t last_bus_mxfld7_out;
 static MXFlD0OutputBus_t last_bus_mxfld0_out;
@@ -34,6 +38,9 @@ void set_flcar_lb(void) { flcar_lb.value = 1; }
 void reset_flcar_lb(void) { flcar_lb.value = 0; }
 
 void init_flags(void) {
+    register_watcher(&FC_reg_watcher);
+    register_watcher(&FZ_reg_watcher);
+
     mxfld7_out_bus_topic_subscription = subscribe_to(MXFLD7_OUTPUT_BUS_TOPIC, on_bus_mxfld7_out_message);
     mxfld0_out_bus_topic_subscription = subscribe_to(MXFLD0_OUTPUT_BUS_TOPIC, on_bus_mxfld0_out_message);
 }
@@ -41,6 +48,9 @@ void init_flags(void) {
 void shutdown_flags(void) {
     unsubscribe_for(mxfld7_out_bus_topic_subscription);
     unsubscribe_for(mxfld0_out_bus_topic_subscription);
+
+    unregister_watcher(&FC_reg_watcher);
+    unregister_watcher(&FZ_reg_watcher);
 }
 
 void run_flags(void) {
