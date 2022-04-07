@@ -37,7 +37,7 @@ void run_addsub(void) {
     int dir_bus_int = bin_to_int(last_bus_dir);
 
     switch (id_lb.value) {
-        case 10:
+        case 01:
             // +1
             dir_bus_int++;
             break;

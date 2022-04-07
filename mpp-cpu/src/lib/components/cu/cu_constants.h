@@ -17,7 +17,7 @@ const OpState s0 = {.id = S0,
                         .mx_reg = -1,
                         .sel_dir = 00,
                         // .i_d = -1, // <== documentation says this
-                        .i_d = 10,  // <== fix
+                        .i_d = 01,  // <== fix
                         .l_e = 1,
                         .reg_bus = 0,
                         .mem_bus = 1,
