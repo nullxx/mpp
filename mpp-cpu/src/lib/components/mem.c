@@ -52,7 +52,7 @@ static void fill_memory(void) {
     for (int i = MEM_START_VALUE; i < mem_size; i++) {
         MemValue mem_value;
         mem_value.offset = int_to_hex(i);
-        mem_value.value_hex = int_to_hex(random_int(pow(2, MEM_VALUE_SIZE_BITS) - 1));
+        mem_value.value_hex = int_to_hex(random_int(0, pow(2, MEM_VALUE_SIZE_BITS) - 1));
         mem.values[i] = mem_value;
         mem.values_count++;
     }

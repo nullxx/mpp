@@ -86,6 +86,6 @@ void run_greg(void) {
 
     if (regbus_lb.value == 1) {
         // read to databus
-        publish_message_to(DATA_BUS_TOPIC, (void *)reg->bin_value);
+        publish_message_to(DATA_BUS_TOPIC, &reg->bin_value);
     }
 }

@@ -36,8 +36,8 @@ static DataBus_t last_bus_data;
 static PubSubSubscription *dir_bus_topic_subscription = NULL;
 static PubSubSubscription *data_bus_topic_subscription = NULL;
 
-static void on_bus_dir_message(PubSubMessage m) { last_bus_dir = *(DirBus_t*)m.value; }
-static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t*)m.value; }
+static void on_bus_dir_message(PubSubMessage m) { last_bus_dir = *(DirBus_t *)m.value; }
+static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t *)m.value; }
 
 void init_pc(void) {
     dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, on_bus_dir_message);
@@ -93,29 +93,27 @@ void run_pc(void) {
     }
 
     // mix pch + pcl => pc. If pc is set later it will be overwritten
-    char *next_pc_reg_str = (char *) malloc(sizeof(char) * (pcl_reg.bit_length + pch_reg.bit_length + 1));
-    if (next_pc_reg_str == NULL) {
-        Error err = {
-            .show_errno = false,
-            .type = NOTICE_ERROR,
-            .message = "Malloc error"
-        };
-        throw_error(err);
-        return;
+    if (pchcar_lb.value == 1 && pclcar_lb.value == 1) {
+        char *next_pc_reg_str = (char *)malloc(sizeof(char) * (pcl_reg.bit_length + pch_reg.bit_length + 1));
+        if (next_pc_reg_str == NULL) {
+            Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Malloc error"};
+            throw_error(err);
+            return;
+        }
+
+        char *pch_reg_bin_value_str = bin_to_str(pch_reg.bin_value);
+        char *pcl_reg_bin_value_str = bin_to_str(pcl_reg.bin_value);
+
+        strcpy(next_pc_reg_str, pch_reg_bin_value_str);
+        strcat(next_pc_reg_str, pcl_reg_bin_value_str);
+
+        free(pch_reg_bin_value_str);
+        free(pcl_reg_bin_value_str);
+
+        pc_reg.bin_value = str_to_bin(next_pc_reg_str);
+
+        free(next_pc_reg_str);
     }
-    
-    char *pch_reg_bin_value_str = bin_to_str(pch_reg.bin_value);
-    char *pcl_reg_bin_value_str = bin_to_str(pcl_reg.bin_value);
-
-    strcpy(next_pc_reg_str, pch_reg_bin_value_str);
-    strcat(next_pc_reg_str, pcl_reg_bin_value_str);
-
-    free(pch_reg_bin_value_str);
-    free(pcl_reg_bin_value_str);
-
-    pc_reg.bin_value = str_to_bin(next_pc_reg_str);
-
-    free(next_pc_reg_str);
 
     // pc
     if (pccar_lb.value == 1) {

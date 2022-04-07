@@ -52,7 +52,7 @@ void run_hl(void) {
         l_reg.bin_value = last_bus_data;
     }
 
-    char *next_hl_reg_str = (char *)malloc(sizeof(char) * (h_reg.bit_length + l_reg.bit_length));
+    char *next_hl_reg_str = (char *)malloc(sizeof(char) * (h_reg.bit_length + l_reg.bit_length + 1));
     if (next_hl_reg_str == NULL) {
         Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Malloc error"};
         throw_error(err);

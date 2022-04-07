@@ -469,11 +469,11 @@ void run_cu(void) {  // 1 opstate per run
     run_mem();
 
     run_hl();
-    run_addsub();
     run_sp();
-    run_pc();
     run_fffc();
     run_mxdir();
+    run_addsub();
+    run_pc();
 
     run_greg();
     run_op2();

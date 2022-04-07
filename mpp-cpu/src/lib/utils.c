@@ -29,7 +29,7 @@ char *int_to_hex(int num) {
 
     while (1) {
         const int next_size = size + 1;
-        char *result2 = (char *)malloc(sizeof(char) * (next_size + 1));
+        char *result2 = (char *)malloc(sizeof(char) * (next_size));
         snprintf(result2, next_size, "%x", num);
 
         if (!strcmp(result, result2)) {
@@ -46,8 +46,8 @@ error:
     return result;
 }
 
-int random_int(const int end_bound) {
-    int r = rand() % end_bound + 1;
+int random_int(const int min, const int max) {
+    int r = min + rand() % (max - min);
     return r;
 }
 

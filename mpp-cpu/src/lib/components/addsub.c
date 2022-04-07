@@ -52,7 +52,6 @@ void run_addsub(void) {
             break;
     }
 
-    // check overflow
     unsigned long long next_bin_bus_dir = int_to_bin(dir_bus_int);
 
     publish_message_to(DIR_BUS_TOPIC, &next_bin_bus_dir);
