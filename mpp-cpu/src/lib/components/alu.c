@@ -31,7 +31,7 @@ enum SelAluOp { SUM = 0, SUB = 1, AND = 2, OR = 3, XOR = 4, NOT = 5, TRANSPARENT
 
 bool set_selalu_lb(unsigned long bin) {
     const int bin_len = get_bin_len(bin);
-    if (bin_len != SELALU_LOAD_BIT_SIZE_BITS) {
+    if (bin_len > SELALU_LOAD_BIT_SIZE_BITS) {
         return false;
     }
 

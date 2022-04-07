@@ -31,7 +31,7 @@ static PubSubSubscription *fffc_output_topic_subscription = NULL;
 
 bool set_seldir_lb(unsigned int bin) {
     const int bin_len = get_bin_len(bin);
-    if (bin_len != SELDIR_LOAD_BIT_SIZE_BITS) {
+    if (bin_len > SELDIR_LOAD_BIT_SIZE_BITS) {
         return false;
     }
 

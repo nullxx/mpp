@@ -20,7 +20,7 @@ static PubSubSubscription *dir_bus_topic_subscription = NULL;
 
 bool set_id_lb(unsigned long bin) {
     const int bin_len = get_bin_len(bin);
-    if (bin_len != ID_LOAD_BIT_SIZE_BITS) {
+    if (bin_len > ID_LOAD_BIT_SIZE_BITS) {
         return false;
     }
 
@@ -35,7 +35,7 @@ void shutdown_addsub(void) { unsubscribe_for(dir_bus_topic_subscription); }
 
 void run_addsub(void) {
     int dir_bus_int = bin_to_int(last_bus_dir);
-
+    
     switch (id_lb.value) {
         case 01:
             // +1

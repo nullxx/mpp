@@ -23,7 +23,7 @@ LoadBit selreg_lb = {.value = 00};
 
 bool set_selreg_lb(unsigned int sel) {
     const int num_len = get_bin_len(sel);
-    if (num_len != SELREG_LOAD_BIT_SIZE_BITS) {
+    if (num_len > SELREG_LOAD_BIT_SIZE_BITS) {
         return false;
     }
 
