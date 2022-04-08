@@ -13,7 +13,7 @@
 #include "components/components.h"
 typedef struct {
     Register *reg;
-    char *name;
+    const char *name;
 } RegisterWatcher;
 
 void register_watcher(RegisterWatcher *reg);

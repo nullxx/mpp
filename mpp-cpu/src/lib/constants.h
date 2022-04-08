@@ -41,4 +41,6 @@
 #define FLAGSINTA_INTA_BUS_BIT_POSITION 6
 #define FLAGSINTA_GND_CHAR_VALUE 0
 
+#define MAX_CALC_BIN_SIZE_BITS 16
+
 #endif /* constants_h */

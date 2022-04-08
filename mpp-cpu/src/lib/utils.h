@@ -17,7 +17,7 @@ unsigned long long str_to_bin(const char *s);
 int get_bin_len(unsigned long long bin);
 char *bin_to_str(unsigned long long bin);
 int bin_to_int(unsigned long long bin);
-unsigned long long int_to_bin(unsigned k);
+unsigned long long int_to_bin(int n, int max_len);
 
 char *slice_str(const char *str, int start, int end);
 
@@ -28,4 +28,6 @@ char *str_concat(const char *str1, const char *str2);
 char *str_dup(char *str);
 
 char *itoa(int num);
+unsigned concatenate(unsigned x, unsigned y);
+void beep(void);
 #endif /* utils_h */

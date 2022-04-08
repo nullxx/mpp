@@ -53,8 +53,17 @@ void shutdown_flags(void) {
     unregister_watcher(&FZ_reg_watcher);
 }
 
+static int get_flags(void) {
+    int flags = 0;
+    
+    flags = concatenate(flags, FC_reg.bin_value);
+    flags = concatenate(flags, FZ_reg.bin_value);
+
+    return flags;
+}
+
 void run_flags(void) {
-    int flags = 00;
+    int flags = get_flags();
 
     if (flcar_lb.value == 1) {
         // load
@@ -63,6 +72,9 @@ void run_flags(void) {
         char *fz_str = itoa(last_bus_mxfld0_out);
         char *flags_str = str_concat(fc_str, fz_str);
         flags = atoi(flags_str);  // 00, 01, 10, 11
+
+        FC_reg.bin_value = atoi(fc_str);
+        FZ_reg.bin_value = atoi(fz_str);
 
         free(fc_str);
         free(fz_str);

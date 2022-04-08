@@ -123,10 +123,13 @@ typedef struct {
 
 FlagsState get_flags(void) {
     FlagsState flags;
-    char *flags_out_str = bin_to_str(last_bus_flags_out);
-    flags.fc = flags_out_str[0] - '0';
-    flags.fz = flags_out_str[1] - '0';
-    free(flags_out_str);
+    int flags_int = bin_to_int(last_bus_flags_out);
+    flags.fc = flags_int == 10;
+    flags.fz = flags_int == 1;
+    if (flags_int == 11) {
+        flags.fc = 1;
+        flags.fz = 1;
+    }
     return flags;
 }
 
@@ -421,7 +424,9 @@ OpStateTrace *decode_step(void) {
         }
 
         case 0xFF: {
-            log_info("HALT");
+            log_info("-- HALT --");
+            beep();
+            trace->state = s0;
             break;
         }
 
@@ -479,8 +484,6 @@ void run_cu(void) {  // 1 opstate per run
 
     run_mem();
 
-    run_hl();
-    run_sp();
     run_fffc();
     run_mxdir();
     run_addsub();
@@ -492,6 +495,9 @@ void run_cu(void) {  // 1 opstate per run
 
     run_acumm();
     run_op2();
+
+    run_hl();
+    run_sp();
 
     cll_run_mxfldx();
 

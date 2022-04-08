@@ -10,13 +10,15 @@
 
 #include "alu.h"
 
-#include <pthread.h>
+#include <signal.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "../constants.h"
 #include "../error.h"
+#include "../logger.h"
 #include "../pubsub.h"
 #include "../utils.h"
 #include "components.h"
@@ -33,7 +35,7 @@ static ACUMMOutputBus_t last_last_bus_acumm_output;  // A last
 static OP2OutputBus_t last_last_bus_op2_output;      // B last
 static int last_selalu_lb;
 
-pthread_t alu_thread_id;
+pid_t alu_thread_id;
 
 bool set_selalu_lb(unsigned long bin) {
     const int bin_len = get_bin_len(bin);
@@ -59,14 +61,14 @@ void run_alu(void) {
         case SUM: {
             // A+B
             const int sum_result = bin_to_int(last_bus_acumm_output) + bin_to_int(last_bus_op2_output);
-            result_bin = int_to_bin(sum_result);
+            result_bin = int_to_bin(sum_result, MAX_CALC_BIN_SIZE_BITS);
             break;
         }
 
         case SUB: {
             // A-B
             const int sub_result = bin_to_int(last_bus_acumm_output) - bin_to_int(last_bus_op2_output);
-            result_bin = int_to_bin(sub_result);
+            result_bin = int_to_bin(sub_result, MAX_CALC_BIN_SIZE_BITS);
             break;
         }
 
@@ -107,7 +109,7 @@ void run_alu(void) {
         case INCREMENT: {
             // B+1
             const int sum_result = bin_to_int(last_bus_op2_output) + 1;
-            result_bin = int_to_bin(sum_result);
+            result_bin = int_to_bin(sum_result, MAX_CALC_BIN_SIZE_BITS);
             break;
         }
 
@@ -140,7 +142,15 @@ void run_alu(void) {
     }
 }
 
-static void *alu_thread() {
+static void on_signal_exit(int signal) {
+    if (signal != SIGTERM) return;
+    exit(EXIT_SUCCESS);
+}
+
+static void alu_thread() {
+    signal(SIGTERM, on_signal_exit);  // exit on SIGTERM
+    kill(getppid(), SIGUSR1);         // notify parent that we are ready
+
     while (1) {
         if (last_last_bus_acumm_output == last_bus_acumm_output && last_last_bus_op2_output == last_bus_op2_output && last_selalu_lb == selalu_lb.value) continue;
 
@@ -150,22 +160,40 @@ static void *alu_thread() {
         last_selalu_lb = selalu_lb.value;
     }
 
-    return NULL;
+    // should never reach here
 }
 
 void init_alu(void) {
-    // int err = pthread_create(&alu_thread_id, NULL, alu_thread, NULL);
-    // if (err != 0) {
-    //     Error err = {.show_errno = false, .type = FATAL_ERROR, .message = "Error creating alu thread"};
-    //     throw_error(err);
-    //     return;
-    // }
+    if ((alu_thread_id = fork()) == 0) {
+        sleep(1);
+        alu_thread();
+    } else {
+        log_debug("Forked alu_thread with PID %d", alu_thread_id);
 
-    acumm_output_bus_topic_subscription = subscribe_to(ACUMM_OUTPUT_BUS_TOPIC, on_bus_acumm_output_message);
-    opt_output_bus_topic_subscription = subscribe_to(OP2_OUTPUT_BUS_TOPIC, on_bus_op2_output_message);
+        sigset_t set;
+        int sig;
+        sigemptyset(&set);
+        sigaddset(&set, SIGUSR1);
+        sigprocmask(SIG_BLOCK, &set, NULL);
+
+        log_debug("Waiting for alu_thread to start");
+        sigwait(&set, &sig);
+        log_debug("alu_thread started ");
+
+        acumm_output_bus_topic_subscription = subscribe_to(ACUMM_OUTPUT_BUS_TOPIC, on_bus_acumm_output_message);
+        opt_output_bus_topic_subscription = subscribe_to(OP2_OUTPUT_BUS_TOPIC, on_bus_op2_output_message);
+    }
 }
 
 void shutdown_alu(void) {
     unsubscribe_for(acumm_output_bus_topic_subscription);
     unsubscribe_for(opt_output_bus_topic_subscription);
+
+    kill(alu_thread_id, SIGTERM);
+    pid_t terminated;
+    while ((terminated = wait(NULL)) == -1)
+        ;
+
+    log_debug("Terminated alu_thread with PID %d", terminated);
+    
 }

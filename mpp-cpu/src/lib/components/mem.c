@@ -171,7 +171,7 @@ void run_mem(void) {
             MemValue *m = (MemValue *)car.return_value;
 
             // if memBus ==> send data to the bus
-            unsigned long long bin = int_to_bin(hex_to_int(m->value_hex));
+            unsigned long long bin = int_to_bin(hex_to_int(m->value_hex), MAX_CALC_BIN_SIZE_BITS);
             if (mem_bus_lb.value == 1) publish_message_to(DATA_BUS_TOPIC, &bin);
             break;
         }

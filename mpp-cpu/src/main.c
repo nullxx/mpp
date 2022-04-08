@@ -92,27 +92,38 @@ int main(int argc, const char* argv[]) {
     set_mem_value(mem_value3);
     // -- INC AC
 
-    // // CMP 05
-    // MemValue mem_value4 = {.offset = "3", .value_hex = "67"};
-    // set_mem_value(mem_value4);
+    // CMP 05
+    MemValue mem_value4 = {.offset = "3", .value_hex = "67"};
+    set_mem_value(mem_value4);
 
-    // MemValue mem_value5 = {.offset = "4", .value_hex = "05"};
-    // set_mem_value(mem_value5);
-    // // -- CMP 05
+    MemValue mem_value5 = {.offset = "4", .value_hex = "05"};
+    set_mem_value(mem_value5);
+    // -- CMP 05
+
+    // CMP 05
+    MemValue mem_value6 = {.offset = "5", .value_hex = "72"};
+    set_mem_value(mem_value6);
+
+    MemValue mem_value7 = {.offset = "6", .value_hex = "00"};
+    set_mem_value(mem_value7);
+
+    MemValue mem_value8 = {.offset = "7", .value_hex = "0B"};
+    set_mem_value(mem_value8);
+    // -- CMP 05
 
     // JMP 0002
-    MemValue mem_value9 = {.offset = "3", .value_hex = "74"};
+    MemValue mem_value9 = {.offset = "8", .value_hex = "74"};
     set_mem_value(mem_value9);
 
-    MemValue mem_value10 = {.offset = "4", .value_hex = "00"};
+    MemValue mem_value10 = {.offset = "9", .value_hex = "00"};
     set_mem_value(mem_value10);
 
-    MemValue mem_value11 = {.offset = "5", .value_hex = "02"};
+    MemValue mem_value11 = {.offset = "a", .value_hex = "02"};
     set_mem_value(mem_value11);
     // -- JMP 0002
 
     // FIN
-    MemValue mem_value12 = {.offset = "6", .value_hex = "FF"};
+    MemValue mem_value12 = {.offset = "b", .value_hex = "FF"};
     set_mem_value(mem_value12);
     // -- FIN
 

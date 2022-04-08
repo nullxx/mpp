@@ -52,12 +52,16 @@ int random_int(const int min, const int max) {
 }
 
 unsigned long long str_to_bin(const char *s) {
-    unsigned long long i = 0;
-    while (*s) {
-        i <<= 1;
-        i += *s++ - '0';
+    const int len = strlen(s);
+    unsigned long long result = 0;
+    for (int i = 0; i < len; i++) {
+        if (s[i] == '0') {
+            result = concatenate(result, 0);
+        } else if (s[i] == '1') {
+            result = concatenate(result, 1);
+        }
     }
-    return i;
+    return result;
 }
 
 int get_bin_len(unsigned long long bin) {
@@ -101,10 +105,25 @@ int bin_to_int(unsigned long long bin) {
 
 //     return bin;
 // }
-unsigned long long int_to_bin(unsigned k) {
-    if (k == 0) return 0;
-    if (k == 1) return 1;                       /* optional */
-    return (k % 2) + 10 * int_to_bin(k / 2);
+// unsigned long long int_to_bin(unsigned k) {
+//     if (k == 0) return 0;
+//     if (k == 1) return 1;                       /* optional */
+//     return (k % 2) + 10 * int_to_bin(k / 2);
+// }
+
+unsigned long long int_to_bin(int n, const int max_len) {
+    unsigned long long result = 0;
+
+    for (int c = max_len-1; c >= 0; c--) {
+        int d = n >> c;
+        if (d & 1) {
+            result = concatenate(result, 1);
+        } else {
+            result = concatenate(result, 0);
+        }
+    }
+
+    return result;
 }
 
 char *slice_str(const char *str, int start, int end) {
@@ -182,7 +201,17 @@ char *str_concat(const char *str1, const char *str2) {
 
 char *str_dup(char *str) {
     const int str_size = strlen(str);
-    char *new_str = malloc(sizeof(char) * (str_size+1));
+    char *new_str = malloc(sizeof(char) * (str_size + 1));
     strncpy(new_str, str, str_size);
     return new_str;
+}
+
+unsigned concatenate(unsigned x, unsigned y) {
+    unsigned pow = 10;
+    while (y >= pow) pow *= 10;
+    return x * pow + y;
+}
+
+void beep(void) {
+    printf("\a");
 }
