@@ -37,8 +37,8 @@ static PubSubSubscription *opt_output_bus_topic_subscription = NULL;
 static ACUMMOutputBus_t last_bus_acumm_output;  // A
 static OP2OutputBus_t last_bus_op2_output;      // B
 
-sem_t *sem1;
-sem_t *sem2;
+static sem_t *sem1;
+static sem_t *sem2;
 
 // static void print_sem_value(const char *desc) {
 //     // int s1 = 0, s2 = 0;
@@ -176,9 +176,9 @@ void run_alu(void) {
     }
 }
 
-void on_exit_thread(void) { pthread_exit(NULL); }
+static void on_exit_thread(void) { pthread_exit(NULL); }
 
-void *alu_thread(void) {
+static void *alu_thread(void) {
     signal(SIGTERM, (void *)on_exit_thread);
     while (1) {
         sem_wait(sem2); // initial 0, pause. sem_post(sem2) => +1, sem_wait(sem1) => -1 and continue executing with sem2 = 0
@@ -191,15 +191,14 @@ void *alu_thread(void) {
     return NULL;
 }
 
-pthread_t thread_id;
+static pthread_t thread_id;
 void init_alu(void) {
     sem1 = sem_open(ALU_THREAD_SEM, O_CREAT, 0644, 0);
     sem2 = sem_open(ALU_UPDATE_SEM, O_CREAT, 0644, 0);
 
-    int r = pthread_create(&thread_id, NULL, (void *)alu_thread, NULL);
-    if (r == -1) {
-        perror("pthread_create");
-        exit(EXIT_FAILURE);
+    if (pthread_create(&thread_id, NULL, (void *)alu_thread, NULL) == -1) {
+        Error err = {.message = "Error creating alu thread", .show_errno = true, .type = FATAL_ERROR};
+        return throw_error(err);
     }
 
     acumm_output_bus_topic_subscription = subscribe_to(ACUMM_OUTPUT_BUS_TOPIC, on_bus_acumm_output_message);
