@@ -8,9 +8,13 @@
  * Modified By: https://github.com/nullxx (mail@nullx.me)
  */
 
+#define ALU_THREAD_SEM "MPP_CPU_ALU_THREAD_SEM"
+#define ALU_UPDATE_SEM "MPP_CPU_ALU_UPDATE_SEM"
+
 #include "alu.h"
 
 #include <pthread.h>
+#include <semaphore.h>
 #include <signal.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -33,8 +37,24 @@ static PubSubSubscription *opt_output_bus_topic_subscription = NULL;
 static ACUMMOutputBus_t last_bus_acumm_output;  // A
 static OP2OutputBus_t last_bus_op2_output;      // B
 
+sem_t *sem1;
+sem_t *sem2;
+
+// static void print_sem_value(const char *desc) {
+//     // int s1 = 0, s2 = 0;
+//     // sem_getvalue(sem1, &s1);
+//     // sem_getvalue(sem2, &s2);
+//     // printf("[%s] sem1: %d\n", desc, s1);
+//     // printf("[%s] sem2: %d\n", desc, s2);
+// }
+
 static void update(void) {
-    run_alu();
+    sem_post(sem2);  // +1
+    // print_sem_value("[UPDATE] ANTES DE BLOQUEARME");
+    sem_wait(sem1);  // -1
+    // print_sem_value("[UPDATE] DESPUES DE BLOQUEARME");
+    // sem_wait(sem2); // -1
+    // print_sem_value();
 }
 
 bool set_selalu_lb(unsigned long bin) {
@@ -156,7 +176,32 @@ void run_alu(void) {
     }
 }
 
+void on_exit_thread(void) { pthread_exit(NULL); }
+
+void *alu_thread(void) {
+    signal(SIGTERM, (void *)on_exit_thread);
+    while (1) {
+        sem_wait(sem2);
+        // print_sem_value("ANTES DE RUN_ALU");
+        run_alu();
+        sem_post(sem1);
+        // print_sem_value("DESPUES DE RUN_ALU");
+    }
+
+    return NULL;
+}
+
+pthread_t thread_id;
 void init_alu(void) {
+    sem1 = sem_open(ALU_THREAD_SEM, O_CREAT, 0644, 0);
+    sem2 = sem_open(ALU_UPDATE_SEM, O_CREAT, 0644, 0);
+
+    int r = pthread_create(&thread_id, NULL, (void *)alu_thread, NULL);
+    if (r == -1) {
+        perror("pthread_create");
+        exit(EXIT_FAILURE);
+    }
+
     acumm_output_bus_topic_subscription = subscribe_to(ACUMM_OUTPUT_BUS_TOPIC, on_bus_acumm_output_message);
     opt_output_bus_topic_subscription = subscribe_to(OP2_OUTPUT_BUS_TOPIC, on_bus_op2_output_message);
 }
@@ -164,4 +209,15 @@ void init_alu(void) {
 void shutdown_alu(void) {
     unsubscribe_for(acumm_output_bus_topic_subscription);
     unsubscribe_for(opt_output_bus_topic_subscription);
+
+    pthread_kill(thread_id, SIGTERM);
+    pthread_join(thread_id, NULL);
+
+    // print_sem_value("FINAL");
+
+    sem_close(sem1);
+    sem_close(sem2);
+
+    sem_unlink(ALU_THREAD_SEM);
+    sem_unlink(ALU_UPDATE_SEM);
 }

@@ -18,6 +18,8 @@
 #include "lib/logger.h"
 #include "lib/watcher.h"
 
+jmp_buf error_buffer;
+
 void on_signal_exit(int signal) {
     log_info("Received signal %d.", signal);
     printf("Do you want to exit? y/n: ");
@@ -35,25 +37,26 @@ void pause_execution(const char* message) {
     getchar();
 }
 
+void init_error_handle(void) {
+    ErrorType err_type = (ErrorType)setjmp(error_buffer);
+
+    if (err_type != NONE_ERROR_TYPE) {
+        process_error(NULL);
+    }
+}
+
 void dispatch_clock_start(void) {
     // 1hz = 1 cyle per second
     // 1GHz = 1.000.000.000 cycles per second
     log_info("Starting clock...");
-    jmp_buf error_buffer;
-    init_err_hanlder(&error_buffer);
 
     log_info("Initial state");
     log_watchers();
 
     pause_execution("Press [ENTER] to start execution...");
-
+    
     while (1) {
-        ErrorType err_type = (ErrorType)setjmp(error_buffer);
-
-        if (err_type != NONE_ERROR_TYPE) {
-            process_error(NULL);
-        }
-
+        init_error_handle();
         clock_t start = clock();
         run_cu();
         clock_t end = clock();
@@ -74,6 +77,10 @@ int main(int argc, const char* argv[]) {
     log_info("Turning on...");
 
     signal(SIGINT, on_signal_exit);
+
+    init_err_hanlder(&error_buffer);
+    init_error_handle();
+
     init_buses();
     init_components();
 
