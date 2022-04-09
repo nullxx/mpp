@@ -35,7 +35,7 @@ static void on_bus_dir_message(PubSubMessage m) { last_bus_dir = *(DirBus_t *)m.
 void init_sp(void) {
     register_watcher(&sp_reg_watcher);
 
-    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, on_bus_dir_message);
+    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC_1, on_bus_dir_message);
 }
 
 void shutdown_sp(void) {

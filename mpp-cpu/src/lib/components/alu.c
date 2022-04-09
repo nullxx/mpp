@@ -8,8 +8,8 @@
  * Modified By: https://github.com/nullxx (mail@nullx.me)
  */
 
-#define ALU_THREAD_SEM "MPP_CPU_ALU_THREAD_SEM"
-#define ALU_UPDATE_SEM "MPP_CPU_ALU_UPDATE_SEM"
+#define ALU_THREAD_SEM "/MPP_CPU_ALU_THREAD_SEM"
+#define ALU_UPDATE_SEM "/MPP_CPU_ALU_UPDATE_SEM"
 
 #include "alu.h"
 

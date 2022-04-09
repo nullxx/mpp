@@ -31,8 +31,10 @@ const char *pubsub_topic_tostring(PubSubTopic topic) {
             return "NONE_PUBSUB_TOPIC";
         case DATA_BUS_TOPIC:
             return "DATA_BUS_TOPIC";
-        case DIR_BUS_TOPIC:
-            return "DIR_BUS_TOPIC";
+        case DIR_BUS_TOPIC_1:
+            return "DIR_BUS_TOPIC_1";
+        case DIR_BUS_TOPIC_2:
+            return "DIR_BUS_TOPIC_2";
         case PC_OUTPUT_BUS_TOPIC:
             return "PC_OUTPUT_BUS_TOPIC";
         case SP_OUTPUT_BUS_TOPIC:
@@ -139,7 +141,7 @@ bool unsubscribe_for(PubSubSubscription *sub) {
         return false;
     }
 
-    int deleted = delete_node_from_value(&subscriptions_head, (void *)sub);
+    int deleted = delete_node_from_value(&subscriptions_head, sub);
     if (!deleted) {
         return false;
     }
@@ -185,6 +187,7 @@ int publish_message_to(PubSubTopic topic, void *value) {
     while (current_node != NULL) {
         PubSubSubscription *sub = (PubSubSubscription *)current_node->value;
         current_node = current_node->next;
+        if (sub == NULL) continue;
         if (sub->topic != topic) continue;
         sub->on_message_fn(message);
 

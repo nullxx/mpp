@@ -39,7 +39,8 @@ static void check_buses_overflow(void) {
     add_topic_middleware(DATA_BUS_TOPIC, check_data_bus_overflow);
 
     // dir bus
-    add_topic_middleware(DIR_BUS_TOPIC, check_dir_bus_overflow);
+    add_topic_middleware(DIR_BUS_TOPIC_1, check_dir_bus_overflow);
+    add_topic_middleware(DIR_BUS_TOPIC_2, check_dir_bus_overflow);
 }
 
 void init_buses(void) {

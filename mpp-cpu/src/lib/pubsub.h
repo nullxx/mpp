@@ -37,7 +37,8 @@ typedef unsigned int FlagsOutputBus_t;
 typedef enum {
     NONE_PUBSUB_TOPIC = 0,
     DATA_BUS_TOPIC,
-    DIR_BUS_TOPIC,
+    DIR_BUS_TOPIC_1,
+    DIR_BUS_TOPIC_2,
 
     PC_OUTPUT_BUS_TOPIC,
     SP_OUTPUT_BUS_TOPIC,

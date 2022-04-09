@@ -75,7 +75,7 @@ static void on_bus_dir_message(PubSubMessage m) {
 void init_mem(void) {
     fill_memory();
     bus_data_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
-    bus_dir_subscription = subscribe_to(DIR_BUS_TOPIC, on_bus_dir_message);
+    bus_dir_subscription = subscribe_to(DIR_BUS_TOPIC_2, on_bus_dir_message);
 }
 
 void shutdown_mem(void) {

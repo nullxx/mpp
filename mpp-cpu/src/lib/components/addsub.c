@@ -51,8 +51,8 @@ void run_addsub(void) {
 
     unsigned long long next_bin_bus_dir = int_to_bin(dir_bus_int, MAX_CALC_BIN_SIZE_BITS);
 
-    publish_message_to(DIR_BUS_TOPIC, &next_bin_bus_dir);
+    publish_message_to(DIR_BUS_TOPIC_1, &next_bin_bus_dir);
 }
 
-void init_addsub(void) { dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, on_dir_bus_topic); }
+void init_addsub(void) { dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC_2, on_dir_bus_topic); }
 void shutdown_addsub(void) { unsubscribe_for(dir_bus_topic_subscription); }

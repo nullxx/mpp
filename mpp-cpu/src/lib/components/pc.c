@@ -49,7 +49,7 @@ void init_pc(void) {
     register_watcher(&pcl_reg_watcher);
     register_watcher(&pc_reg_watcher);
 
-    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, on_bus_dir_message);
+    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC_1, on_bus_dir_message);
     data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
 }
 
