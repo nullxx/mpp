@@ -181,7 +181,7 @@ void on_exit_thread(void) { pthread_exit(NULL); }
 void *alu_thread(void) {
     signal(SIGTERM, (void *)on_exit_thread);
     while (1) {
-        sem_wait(sem2);
+        sem_wait(sem2); // initial 0, pause. sem_post(sem2) => +1, sem_wait(sem1) => -1 and continue executing with sem2 = 0
         // print_sem_value("ANTES DE RUN_ALU");
         run_alu();
         sem_post(sem1);
