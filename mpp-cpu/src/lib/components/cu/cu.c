@@ -312,7 +312,7 @@ OpStateTrace *decode_step(void) {
             break;
         }
 
-        case 0x72: { // TODO - check this. This have to be evaluated before each microinstruction
+        case 0x72: {  // TODO - check this. This have to be evaluated before each microinstruction
             if (flags.fz) {
                 trace->state = s16;
                 add_next_state_trace_from(trace, s17);
@@ -456,16 +456,6 @@ void shutdown_cu(void) {
 }
 
 void run_cu(void) {  // 1 opstate per run
-    if (ricar_lb.value == 1) {
-        // load
-        if (get_bin_len(last_bus_data) > RI_reg.bit_length) {
-            Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load to RI register"};
-            throw_error(err);
-        }
-
-        RI_reg.bin_value = last_bus_data;
-    }
-
     log_debug("Running S%d", state_trace->state.id);
     process_state_loadbits(state_trace->state);
 
@@ -491,7 +481,7 @@ void run_cu(void) {  // 1 opstate per run
 
     run_greg();
 
-    run_alu();
+    // run_alu(); // <<== alu is asyncroneous
 
     run_acumm();
     run_op2();
@@ -504,6 +494,16 @@ void run_cu(void) {  // 1 opstate per run
     run_flags();
 
     cll_run_flagsinta();
+
+    if (ricar_lb.value == 1) {
+        // load
+        if (get_bin_len(last_bus_data) > RI_reg.bit_length) {
+            Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load to RI register"};
+            throw_error(err);
+        }
+
+        RI_reg.bin_value = last_bus_data;
+    }
 
     OpStateTrace *tmp_next_state_trace = state_trace->next;
     free(state_trace);
