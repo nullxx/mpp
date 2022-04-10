@@ -12,7 +12,7 @@ CFLAGS	:= -Wall -Wextra -g -DLOG_USE_COLOR
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
 #   their path using -Lpath, something like:
-LFLAGS = -lm
+LFLAGS = -lm -pthread
 
 LFLAGSTESTS = $(LFLAGS) -lcriterion
 

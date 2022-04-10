@@ -4,7 +4,7 @@
 //
 //  Created by Jon Lara trigo on 22/3/22.
 //
-#define PUBSUB_SEM "/MPP_PUBSUB_SEM"
+#define PUBSUB_SEM "/MPP_PUBSUB_SEM10"
 
 #include "pubsub.h"
 
@@ -29,12 +29,12 @@ unsigned int subscription_count = 0;
 
 sem_t *sem;
 int init_pubsub(void) {
-    sem = sem_open(PUBSUB_SEM, O_CREAT, 0660, 1);
+    sem = sem_open(PUBSUB_SEM, O_CREAT, 0660, 2);  // initial value to 1 does't work
     if (sem == SEM_FAILED) {
         return -1;
     }
 
-    sem_post(sem);
+    // sem_post(sem); // +1
     return 1;
 }
 
@@ -152,16 +152,26 @@ bool rm_topic_middleware(PubSubMiddleware *middleware) {
 }
 
 bool unsubscribe_for(PubSubSubscription *sub) {
-    if (sub == NULL) return false;
-    if (subscriptions_head == NULL) return false;
+    bool response = true;
+    if (sub == NULL) {
+        response = false;
+        goto end;
+    };
+    if (subscriptions_head == NULL) {
+        response = false;
+        goto end;
+    };
 
     if (sub->id >= subscription_count) {
-        return false;
+        response = false;
+        goto end;
     }
+
     sem_wait(sem);
     int deleted = delete_node_from_value(&subscriptions_head, sub);
     if (!deleted) {
-        return false;
+        response = false;
+        goto end;
     }
 
 #ifdef DEBUG
@@ -173,8 +183,9 @@ bool unsubscribe_for(PubSubSubscription *sub) {
 
 #endif
     free(sub);
+end:
     sem_post(sem);
-    return true;
+    return response;
 }
 
 /**
@@ -185,6 +196,9 @@ bool unsubscribe_for(PubSubSubscription *sub) {
  * @return int -1 if middleware doesn't pass
  */
 int publish_message_to(PubSubTopic topic, void *value) {
+    sem_wait(sem);
+    int sent = 0;
+
     PubSubMessage message = {.topic = topic, .value = value};
 
     // executing middlewares
@@ -197,12 +211,13 @@ int publish_message_to(PubSubTopic topic, void *value) {
         log_debug(constructed_msg);
         free(constructed_msg);
 #endif
-        if (!middleware_passes) return -1;
+        if (!middleware_passes) {
+            sent = -1;
+            goto end;
+        };
     }
 
-    sem_wait(sem);
     // find the subs subscribed to this topic
-    int sent = 0;
     LlNode *current_node = subscriptions_head;
     while (current_node != NULL) {
         PubSubSubscription *sub = (PubSubSubscription *)current_node->value;
@@ -214,8 +229,6 @@ int publish_message_to(PubSubTopic topic, void *value) {
         sent++;
     }
 
-    sem_post(sem);
-
 #ifdef DEBUG
     char *sent_str = itoa(sent);
     char *constructed_msg = create_str(pubsub_topic_tostring(topic), "published to", sent_str, "subscribers");
@@ -223,5 +236,8 @@ int publish_message_to(PubSubTopic topic, void *value) {
     free(sent_str);
     free(constructed_msg);
 #endif
+
+end:
+    sem_post(sem);
     return sent;
 }

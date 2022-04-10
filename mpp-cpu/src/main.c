@@ -84,7 +84,7 @@ void dispatch_clock_start(void) {
         log_info("Cycle time: %fs => %f KHz", seconds_spent, (1 / seconds_spent) / 1000);
 
         log_watchers();
-
+        on_signal_exit(0);
         pause_execution("Press [ENTER] to continue...");
     }
 }
