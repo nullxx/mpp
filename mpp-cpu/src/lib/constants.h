@@ -1,9 +1,12 @@
-//
-//  constants.h
-//  mpp
-//
-//  Created by Jon Lara trigo on 21/3/22.
-//
+/*
+ * File: /src/lib/constants.h
+ * Project: mpp-cpu
+ * File Created: Monday, 21st March 2022 11:08:39 am
+ * Author: https://github.com/nullxx (mail@nullx.me)
+ * -----
+ * Last Modified: Sunday, 10th April 2022 4:03:18 pm
+ * Modified By: https://github.com/nullxx (mail@nullx.me)
+ */
 
 #ifndef constants_h
 #define constants_h
@@ -29,7 +32,7 @@
 #define L_REG_SIZE_BIT 8
 #define ACUMM_REG_SIZE_BIT 8
 #define OP2_REG_SIZE_BIT 8
-#define REG_SIZE_BIT 8 // A, B, C, D
+#define REG_SIZE_BIT 8  // A, B, C, D
 #define FLAG_REG_SIZE_BIT 1
 #define RI_REG_SIZE_BIT 8
 
@@ -42,5 +45,7 @@
 #define FLAGSINTA_GND_CHAR_VALUE 0
 
 #define MAX_CALC_BIN_SIZE_BITS 16
+
+#define CONSTANT_RUNNING_MODULES_COUNT 2 + 1 /* +1 for the main thread. ALU, PC */
 
 #endif /* constants_h */

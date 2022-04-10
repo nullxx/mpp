@@ -86,7 +86,10 @@
       "signal.h": "c",
       "variant": "c",
       "watcher.h": "c",
-      "typeinfo": "c"
+      "typeinfo": "c",
+      "__threading_support": "c",
+      "thread": "c",
+      "thread.h": "c"
     },
     "psi-header.templates": [
       {

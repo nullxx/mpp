@@ -13,7 +13,7 @@
 
 #include "alu.h"
 
-#include <pthread.h>
+#include "../thread.h"
 #include <semaphore.h>
 #include <signal.h>
 #include <stdint.h>
@@ -24,7 +24,7 @@
 #include "../constants.h"
 #include "../error.h"
 #include "../logger.h"
-#include "../process.h"
+
 #include "../pubsub.h"
 #include "../utils.h"
 #include "components.h"
@@ -191,12 +191,12 @@ static void *alu_thread(void) {
     return NULL;
 }
 
-static pthread_t thread_id;
+static pthread_t *thread_id = NULL;
 void init_alu(void) {
     sem1 = sem_open(ALU_THREAD_SEM, O_CREAT, 0644, 0);
     sem2 = sem_open(ALU_UPDATE_SEM, O_CREAT, 0644, 0);
 
-    if (pthread_create(&thread_id, NULL, (void *)alu_thread, NULL) == -1) {
+    if ((thread_id = create_pthread(NULL, (void *)alu_thread, NULL)) == NULL) {
         Error err = {.message = "Error creating alu thread", .show_errno = true, .type = FATAL_ERROR};
         return throw_error(err);
     }
@@ -209,8 +209,8 @@ void shutdown_alu(void) {
     unsubscribe_for(acumm_output_bus_topic_subscription);
     unsubscribe_for(opt_output_bus_topic_subscription);
 
-    pthread_kill(thread_id, SIGTERM);
-    pthread_join(thread_id, NULL);
+    pthread_kill(*thread_id, SIGTERM);
+    pthread_join(*thread_id, NULL);
 
     // print_sem_value("FINAL");
 

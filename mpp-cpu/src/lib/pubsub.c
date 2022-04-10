@@ -4,7 +4,7 @@
 //
 //  Created by Jon Lara trigo on 22/3/22.
 //
-#define PUBSUB_SEM "/MPP_PUBSUB_SEM10"
+#define PUBSUB_SEM "/MPP_PUBSUB_SEM01"
 
 #include "pubsub.h"
 
@@ -17,6 +17,7 @@
 #include "linkedlist.h"
 #include "logger.h"
 #include "utils.h"
+#include "constants.h"
 
 // TODO check in all files that use subscribe and unsubscribe if they check return of those functions
 
@@ -29,12 +30,11 @@ unsigned int subscription_count = 0;
 
 sem_t *sem;
 int init_pubsub(void) {
-    sem = sem_open(PUBSUB_SEM, O_CREAT, 0660, 2);  // initial value to 1 does't work
+    sem = sem_open(PUBSUB_SEM, O_CREAT, 0660, CONSTANT_RUNNING_MODULES_COUNT);  // initial value to 1 does't work
     if (sem == SEM_FAILED) {
         return -1;
     }
 
-    // sem_post(sem); // +1
     return 1;
 }
 

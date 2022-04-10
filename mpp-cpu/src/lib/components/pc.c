@@ -21,6 +21,7 @@
 #include "../utils.h"
 #include "../watcher.h"
 #include "components.h"
+#include "../thread.h"
 
 static Register pch_reg = {.bin_value = 0, .bit_length = PCH_REG_SIZE_BIT};
 static Register pcl_reg = {.bin_value = 0, .bit_length = PCL_REG_SIZE_BIT};
@@ -53,7 +54,7 @@ static void *pc_thread(void) {
 
     return NULL;
 }
-static pthread_t thread_id;
+static pthread_t *thread_id;
 
 void init_pc(void) {
     register_watcher(&pch_reg_watcher);
@@ -63,7 +64,7 @@ void init_pc(void) {
     dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC_1, on_bus_dir_message);
     data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
 
-    if (pthread_create(&thread_id, NULL, (void *)pc_thread, NULL) == -1) {
+    if ((thread_id = create_pthread(NULL, (void *)pc_thread, NULL)) == NULL) {
         Error err = {.message = "Error creating alu thread", .show_errno = true, .type = FATAL_ERROR};
         return throw_error(err);
     }
@@ -71,7 +72,7 @@ void init_pc(void) {
 
 void shutdown_pc(void) {
     pr_thread_runnable = 0;
-    pthread_join(thread_id, NULL);
+    pthread_join(*thread_id, NULL);
 
     unsubscribe_for(dir_bus_topic_subscription);
     unsubscribe_for(data_bus_topic_subscription);
