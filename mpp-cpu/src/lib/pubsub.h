@@ -81,6 +81,8 @@ typedef struct {
     PubSubMiddlewareFn middlware;
 } PubSubMiddleware;
 
+int init_pubsub(void);
+void shutdown_pubsub(void);
 #ifndef DEBUG  // this is for debugging. I don't know if is the best practice. Btw is very ougly
 PubSubSubscription *subscribe_to(PubSubTopic, on_message);
 #else

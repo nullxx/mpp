@@ -4,10 +4,12 @@
 //
 //  Created by Jon Lara trigo on 22/3/22.
 //
+#define PUBSUB_SEM "/MPP_PUBSUB_SEM"
 
 #include "pubsub.h"
 
 #include <math.h>
+#include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,6 +26,22 @@ unsigned int topic_with_middleware_count = 0;
 // PubSubSubscription **subscriptions = NULL;
 LlNode *subscriptions_head = NULL;
 unsigned int subscription_count = 0;
+
+sem_t *sem;
+int init_pubsub(void) {
+    sem = sem_open(PUBSUB_SEM, O_CREAT, 0660, 1);
+    if (sem == SEM_FAILED) {
+        return -1;
+    }
+
+    sem_post(sem);
+    return 1;
+}
+
+void shutdown_pubsub(void) {
+    sem_close(sem);
+    sem_unlink(PUBSUB_SEM);
+}
 
 const char *pubsub_topic_tostring(PubSubTopic topic) {
     switch (topic) {
@@ -140,7 +158,7 @@ bool unsubscribe_for(PubSubSubscription *sub) {
     if (sub->id >= subscription_count) {
         return false;
     }
-
+    sem_wait(sem);
     int deleted = delete_node_from_value(&subscriptions_head, sub);
     if (!deleted) {
         return false;
@@ -155,6 +173,7 @@ bool unsubscribe_for(PubSubSubscription *sub) {
 
 #endif
     free(sub);
+    sem_post(sem);
     return true;
 }
 
@@ -181,6 +200,7 @@ int publish_message_to(PubSubTopic topic, void *value) {
         if (!middleware_passes) return -1;
     }
 
+    sem_wait(sem);
     // find the subs subscribed to this topic
     int sent = 0;
     LlNode *current_node = subscriptions_head;
@@ -193,6 +213,8 @@ int publish_message_to(PubSubTopic topic, void *value) {
 
         sent++;
     }
+
+    sem_post(sem);
 
 #ifdef DEBUG
     char *sent_str = itoa(sent);

@@ -16,9 +16,7 @@ LlNode *push_ll_node(LlNode *head, void *val, LlNode *next) {
         current = current->next;
     }
 
-    current->next = (LlNode *)malloc(sizeof(LlNode));
-    current->next->value = val;
-    current->next->next = next;
+    current->next = create_ll_node(val, next);
 
     return current->next;
 }
@@ -56,9 +54,9 @@ int delete_node_from_value(LlNode **head, void *value) {
     }
 
     if (t.prev_node == NULL) {  // replace head
-        *head = t.next_node;
-    } else if (t.next_node != NULL) {  // prev to point to the next of current
-        t.prev_node->next = t.next_node;
+        *head = t.node->next;
+    } else{  // prev to point to the next of current
+        t.prev_node->next = t.node->next;
     }
 
     free(t.node);

@@ -10,6 +10,7 @@
 
 #include "pc.h"
 
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,6 +45,16 @@ static PubSubSubscription *data_bus_topic_subscription = NULL;
 static void on_bus_dir_message(PubSubMessage m) { last_bus_dir = *(DirBus_t *)m.value; }
 static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t *)m.value; }
 
+int pr_thread_runnable = 1;
+static void *pc_thread(void) {
+    while (pr_thread_runnable) {
+        run_pc();
+    }
+
+    return NULL;
+}
+static pthread_t thread_id;
+
 void init_pc(void) {
     register_watcher(&pch_reg_watcher);
     register_watcher(&pcl_reg_watcher);
@@ -51,9 +62,17 @@ void init_pc(void) {
 
     dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC_1, on_bus_dir_message);
     data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
+
+    if (pthread_create(&thread_id, NULL, (void *)pc_thread, NULL) == -1) {
+        Error err = {.message = "Error creating alu thread", .show_errno = true, .type = FATAL_ERROR};
+        return throw_error(err);
+    }
 }
 
 void shutdown_pc(void) {
+    pr_thread_runnable = 0;
+    pthread_join(thread_id, NULL);
+
     unsubscribe_for(dir_bus_topic_subscription);
     unsubscribe_for(data_bus_topic_subscription);
 
