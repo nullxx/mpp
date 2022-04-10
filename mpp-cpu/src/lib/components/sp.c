@@ -33,7 +33,7 @@ static PubSubSubscription *dir_bus_topic_subscription = NULL;
 void init_sp(void) {
     register_watcher(&sp_reg_watcher);
 
-    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, &last_bus_dir);
+    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC_1, &last_bus_dir);
 }
 
 void shutdown_sp(void) {

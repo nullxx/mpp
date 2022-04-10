@@ -4,10 +4,12 @@
 //
 //  Created by Jon Lara trigo on 22/3/22.
 //
+#define PUBSUB_SEM "/MPP_PUBSUB_SEM02"
 
 #include "pubsub.h"
 
 #include <math.h>
+#include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,15 +17,31 @@
 #include "linkedlist.h"
 #include "logger.h"
 #include "utils.h"
+#include "constants.h"
 
 // TODO check in all files that use subscribe and unsubscribe if they check return of those functions
 
 PubSubMiddleware **topics_with_middleware;
-unsigned int topic_with_middleware_count = 0;
+int topic_with_middleware_count = 0;
 
 // PubSubSubscription **subscriptions = NULL;
 LlNode *subscriptions_head = NULL;
-unsigned int subscription_count = 0;
+int subscription_count = 0;
+
+sem_t *sem;
+int init_pubsub(void) {
+    sem = sem_open(PUBSUB_SEM, O_CREAT, 0660, CONSTANT_RUNNING_MODULES_COUNT);  // initial value to 1 does't work
+    if (sem == SEM_FAILED) {
+        return -1;
+    }
+
+    return 1;
+}
+
+void shutdown_pubsub(void) {
+    sem_close(sem);
+    sem_unlink(PUBSUB_SEM);
+}
 
 const char *pubsub_topic_tostring(PubSubTopic topic) {
     switch (topic) {
@@ -31,8 +49,10 @@ const char *pubsub_topic_tostring(PubSubTopic topic) {
             return "NONE_PUBSUB_TOPIC";
         case DATA_BUS_TOPIC:
             return "DATA_BUS_TOPIC";
-        case DIR_BUS_TOPIC:
-            return "DIR_BUS_TOPIC";
+        case DIR_BUS_TOPIC_1:
+            return "DIR_BUS_TOPIC_1";
+        case DIR_BUS_TOPIC_2:
+            return "DIR_BUS_TOPIC_2";
         case PC_OUTPUT_BUS_TOPIC:
             return "PC_OUTPUT_BUS_TOPIC";
         case SP_OUTPUT_BUS_TOPIC:
@@ -132,16 +152,26 @@ int rm_topic_middleware(PubSubMiddleware *middleware) {
 }
 
 int unsubscribe_for(PubSubSubscription *sub) {
-    if (sub == NULL) return false;
-    if (subscriptions_head == NULL) return false;
+    bool response = true;
+    if (sub == NULL) {
+        response = false;
+        goto end;
+    };
+    if (subscriptions_head == NULL) {
+        response = false;
+        goto end;
+    };
 
     if (sub->id >= subscription_count) {
-        return false;
+        response = false;
+        goto end;
     }
 
-    int deleted = delete_node_from_value(&subscriptions_head, (void *)sub);
+    sem_wait(sem);
+    int deleted = delete_node_from_value(&subscriptions_head, sub);
     if (!deleted) {
-        return false;
+        response = false;
+        goto end;
     }
 
 #ifdef DEBUG
@@ -153,7 +183,9 @@ int unsubscribe_for(PubSubSubscription *sub) {
 
 #endif
     free(sub);
-    return true;
+end:
+    sem_post(sem);
+    return response;
 }
 
 /**
@@ -164,9 +196,11 @@ int unsubscribe_for(PubSubSubscription *sub) {
  * @return int -1 if middleware doesn't pass
  */
 int publish_message_to(PubSubTopic topic, Bus_t value) {
+    sem_wait(sem);
+    int sent = 0;
 
     // executing middlewares
-    for (size_t i = 0; i < topic_with_middleware_count; i++) {
+    for (int i = 0; i < topic_with_middleware_count; i++) {
         if (topics_with_middleware[i] == NULL || topics_with_middleware[i]->topic != topic) continue;
         bool middleware_passes = topics_with_middleware[i]->middlware(value);
 #ifdef DEBUG
@@ -175,15 +209,18 @@ int publish_message_to(PubSubTopic topic, Bus_t value) {
         log_debug(constructed_msg);
         free(constructed_msg);
 #endif
-        if (!middleware_passes) return -1;
+        if (!middleware_passes) {
+            sent = -1;
+            goto end;
+        };
     }
 
     // find the subs subscribed to this topic
-    int sent = 0;
     LlNode *current_node = subscriptions_head;
     while (current_node != NULL) {
         PubSubSubscription *sub = (PubSubSubscription *)current_node->value;
         current_node = current_node->next;
+        if (sub == NULL) continue;
         if (sub->topic != topic) continue;
         
         *sub->var = value;
@@ -198,5 +235,8 @@ int publish_message_to(PubSubTopic topic, Bus_t value) {
     free(sent_str);
     free(constructed_msg);
 #endif
+
+end:
+    sem_post(sem);
     return sent;
 }

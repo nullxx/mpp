@@ -474,7 +474,7 @@ void run_cu(void) {  // 1 opstate per run
     run_fffc();
     run_mxdir();
     run_addsub();
-    run_pc();
+    // run_pc();
 
     run_greg();
 

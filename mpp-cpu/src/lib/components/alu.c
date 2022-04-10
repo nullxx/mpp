@@ -10,7 +10,7 @@
 
 #include "alu.h"
 
-#include <pthread.h>
+#include "../thread.h"
 #include <semaphore.h>
 #include <signal.h>
 #include <stdint.h>
@@ -21,7 +21,7 @@
 #include "../constants.h"
 #include "../error.h"
 #include "../logger.h"
-#include "../process.h"
+
 #include "../pubsub.h"
 #include "../utils.h"
 #include "components.h"
@@ -145,12 +145,12 @@ static void *alu_thread(void) {
     return NULL;
 }
 
-static pthread_t thread_id;
+static pthread_t *thread_id = NULL;
 void init_alu(void) {
     acumm_output_bus_topic_subscription = subscribe_to(ACUMM_OUTPUT_BUS_TOPIC, &last_bus_acumm_output);
     opt_output_bus_topic_subscription = subscribe_to(OP2_OUTPUT_BUS_TOPIC, &last_bus_op2_output);
 
-    if (pthread_create(&thread_id, NULL, (void *)alu_thread, NULL) == -1) {
+    if ((thread_id = create_pthread(NULL, (void *)alu_thread, NULL)) == NULL) {
         Error err = {.message = "Error creating alu thread", .show_errno = true, .type = FATAL_ERROR};
         return throw_error(err);
     }
@@ -158,7 +158,7 @@ void init_alu(void) {
 
 void shutdown_alu(void) {
     alu_thread_runnable = 0;
-    pthread_join(thread_id, NULL);
+    pthread_join(*thread_id, NULL);
 
     unsubscribe_for(acumm_output_bus_topic_subscription);
     unsubscribe_for(opt_output_bus_topic_subscription);

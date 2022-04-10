@@ -64,6 +64,6 @@ void run_mxdir(void) {
         return throw_error(err);
     }
 
-    publish_message_to(DIR_BUS_TOPIC, output);
+    publish_message_to(DIR_BUS_TOPIC_2, output);
     return;
 }

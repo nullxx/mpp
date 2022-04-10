@@ -10,6 +10,7 @@
 
 #include "pc.h"
 
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,6 +18,7 @@
 #include "../constants.h"
 #include "../error.h"
 #include "../pubsub.h"
+#include "../thread.h"
 #include "../utils.h"
 #include "../watcher.h"
 #include "components.h"
@@ -41,16 +43,34 @@ static Bus_t last_bus_data;
 static PubSubSubscription *dir_bus_topic_subscription = NULL;
 static PubSubSubscription *data_bus_topic_subscription = NULL;
 
+int pr_thread_runnable = 1;
+static void *pc_thread(void) {
+    while (pr_thread_runnable) {
+        run_pc();
+    }
+
+    return NULL;
+}
+static pthread_t *thread_id;
+
 void init_pc(void) {
     register_watcher(&pch_reg_watcher);
     register_watcher(&pcl_reg_watcher);
     register_watcher(&pc_reg_watcher);
 
-    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, &last_bus_dir);
+    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC_1, &last_bus_dir);
     data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
+
+    if ((thread_id = create_pthread(NULL, (void *)pc_thread, NULL)) == NULL) {
+        Error err = {.message = "Error creating alu thread", .show_errno = 0, .type = FATAL_ERROR};
+        return throw_error(err);
+    }
 }
 
 void shutdown_pc(void) {
+    pr_thread_runnable = 0;
+    pthread_join(*thread_id, NULL);
+
     unsubscribe_for(dir_bus_topic_subscription);
     unsubscribe_for(data_bus_topic_subscription);
 

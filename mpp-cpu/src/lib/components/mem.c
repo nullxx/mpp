@@ -65,7 +65,7 @@ static void unfill_memory(void) {
 void init_mem(void) {
     fill_memory();
     bus_data_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
-    bus_dir_subscription = subscribe_to(DIR_BUS_TOPIC, &last_bus_dir);
+    bus_dir_subscription = subscribe_to(DIR_BUS_TOPIC_2, &last_bus_dir);
 }
 
 void shutdown_mem(void) {

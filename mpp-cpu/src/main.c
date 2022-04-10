@@ -17,8 +17,26 @@
 #include "lib/error.h"
 #include "lib/logger.h"
 #include "lib/watcher.h"
+#include "lib/pubsub.h"
 
 jmp_buf error_buffer;
+
+void init_libs(void) {
+    int init_pubsub_succs = init_pubsub();
+    if (init_pubsub_succs == -1) {
+        Error err = {
+            .type = FATAL_ERROR,
+            .message = "Error initializing pubsub.",
+            .show_errno = true
+        };
+        throw_error(err);
+        return;
+    }
+}
+
+void shutdown_libs(void) {
+    shutdown_pubsub();
+}
 
 void on_signal_exit(int signal) {
     log_info("Received signal %d.", signal);
@@ -28,6 +46,7 @@ void on_signal_exit(int signal) {
     if (confirmation == 'y' || confirmation == '\n') {
         log_info("Shuting down...");
         shutdown_components();
+        shutdown_libs();
         exit(EXIT_SUCCESS);
     }
 }
@@ -54,7 +73,7 @@ void dispatch_clock_start(void) {
     log_watchers();
 
     pause_execution("Press [ENTER] to start execution...");
-    
+
     while (1) {
         init_error_handle();
         clock_t start = clock();
@@ -65,7 +84,7 @@ void dispatch_clock_start(void) {
         log_info("Cycle time: %fs => %f KHz", seconds_spent, (1 / seconds_spent) / 1000);
 
         log_watchers();
-
+        on_signal_exit(0);
         pause_execution("Press [ENTER] to continue...");
     }
 }
@@ -80,6 +99,8 @@ int main(int argc, const char* argv[]) {
 
     init_err_hanlder(&error_buffer);
     init_error_handle();
+
+    init_libs();
 
     init_buses();
     init_components();
