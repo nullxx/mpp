@@ -18,18 +18,16 @@
 #include "../mxfld7.h"
 
 LoadBit selfl_lb = {.value = 0};
-static DataBus_t last_bus_data;
+static Bus_t last_bus_data;
 static PubSubSubscription *bus_data_subscription = NULL;
 
 void cll_set_selfl_lb(void) { selfl_lb.value = 1; }
 void cll_reset_selfl_lb(void) { selfl_lb.value = 0; }
 int cll_get_selfl_lb_value(void) { return selfl_lb.value; }
-DataBus_t cll_get_last_bus_data(void) { return last_bus_data; }
-
-static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t *)m.value; }
+Bus_t cll_get_last_bus_data(void) { return last_bus_data; }
 
 void cll_init_mxfldx(void) {
-    bus_data_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
+    bus_data_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
 
     init_mxfld7();
     init_mxfld0();

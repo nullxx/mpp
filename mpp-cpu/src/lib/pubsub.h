@@ -8,31 +8,7 @@
 #ifndef pubsub_h
 #define pubsub_h
 
-#include <stdbool.h>
-
-// types PubSubMessage value
-typedef unsigned long long DataBus_t;
-typedef unsigned long long DirBus_t;
-
-typedef unsigned long long PCOutputBus_t;
-typedef unsigned long long SPOutputBus_t;
-typedef unsigned long long HLOutputBus_t;
-typedef unsigned long long FFFCOutputBus_t;
-
-typedef unsigned long long ACUMMOutputBus_t;
-typedef unsigned long long OP2OutputBus_t;
-
-typedef unsigned int ALUFCOutputBus_t;
-typedef unsigned int ALUFZOutputBus_t;
-
-typedef unsigned long long SelRegOutputBus_t;
-
-typedef unsigned int MXFlD7OutputBus_t;
-typedef unsigned int MXFlD0OutputBus_t;
-
-typedef unsigned int FlagsOutputBus_t;
-
-// -- types PubSubMessage value
+#include "definitions.h"
 
 typedef enum {
     NONE_PUBSUB_TOPIC = 0,
@@ -70,10 +46,10 @@ typedef void (*on_message)(PubSubMessage);
 typedef struct {
     unsigned int id;
     PubSubTopic topic;
-    on_message on_message_fn;
+    Bus_t *var;
 } PubSubSubscription;
 
-typedef bool (*PubSubMiddlewareFn)(void *);
+typedef int (*PubSubMiddlewareFn)(Bus_t);
 
 typedef struct {
     PubSubTopic topic;
@@ -81,16 +57,16 @@ typedef struct {
 } PubSubMiddleware;
 
 #ifndef DEBUG  // this is for debugging. I don't know if is the best practice. Btw is very ougly
-PubSubSubscription *subscribe_to(PubSubTopic, on_message);
+PubSubSubscription *subscribe_to(PubSubTopic, Bus_t*);
 #else
-PubSubSubscription *subscribe_to_internal(PubSubTopic topic, on_message on_message_fn, const char *caller);
-#define subscribe_to(topic, on_message_fn) subscribe_to_internal(topic, on_message_fn, __func__);
+PubSubSubscription *subscribe_to_internal(PubSubTopic topic, Bus_t *var_ptr, const char *caller);
+#define subscribe_to(topic, var_ptr) subscribe_to_internal(topic, var_ptr, __func__);
 #endif
-bool unsubscribe_for(PubSubSubscription *);
+int unsubscribe_for(PubSubSubscription *);
 
-int publish_message_to(PubSubTopic, void *);
+int publish_message_to(PubSubTopic, Bus_t);
 
 PubSubMiddleware *add_topic_middleware(PubSubTopic topic, PubSubMiddlewareFn middleware_fn);
-bool rm_topic_middleware(PubSubMiddleware *middleware);
+int rm_topic_middleware(PubSubMiddleware *middleware);
 
 #endif /* pubsub_h */

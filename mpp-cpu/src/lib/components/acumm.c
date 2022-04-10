@@ -25,10 +25,8 @@ static Register acumm_reg = {.bin_value = 0, .bit_length = ACUMM_REG_SIZE_BIT};
 
 static RegisterWatcher acumm_reg_watcher = {.name = "ACUM", .reg = &acumm_reg};
 
-static DataBus_t last_bus_data;
+static Bus_t last_bus_data;
 static PubSubSubscription *data_bus_topic_subscription = NULL;
-
-static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t *)m.value; }
 
 void set_acbus_lb(void) { acbus_lb.value = 1; }
 void reset_acbus_lb(void) { acbus_lb.value = 0; }
@@ -39,7 +37,7 @@ void reset_accar_lb(void) { accar_lb.value = 0; }
 void init_acumm(void) {
     register_watcher(&acumm_reg_watcher);
 
-    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
+    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
 }
 void shutdown_acumm(void) {
     unsubscribe_for(data_bus_topic_subscription);
@@ -50,7 +48,7 @@ void run_acumm(void) {
     if (accar_lb.value == 1) {
         // load
         if (get_bin_len(last_bus_data) > acumm_reg.bit_length) {
-            Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load to ACUMM register"};
+            Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load to ACUMM register"};
             throw_error(err);
         }
 
@@ -59,8 +57,8 @@ void run_acumm(void) {
 
     if (acbus_lb.value == 1) {
         // read
-        publish_message_to(DATA_BUS_TOPIC, &acumm_reg.bin_value);
+        publish_message_to(DATA_BUS_TOPIC, acumm_reg.bin_value);
     }
 
-    publish_message_to(ACUMM_OUTPUT_BUS_TOPIC, &acumm_reg.bin_value);
+    publish_message_to(ACUMM_OUTPUT_BUS_TOPIC, acumm_reg.bin_value);
 }

@@ -8,9 +8,6 @@
  * Modified By: https://github.com/nullxx (mail@nullx.me)
  */
 
-#define ALU_THREAD_SEM "MPP_CPU_ALU_THREAD_SEM"
-#define ALU_UPDATE_SEM "MPP_CPU_ALU_UPDATE_SEM"
-
 #include "alu.h"
 
 #include <pthread.h>
@@ -34,28 +31,8 @@ static LoadBit selalu_lb = {.value = 000};
 static LoadBit alubus_lb = {.value = 0};
 static PubSubSubscription *acumm_output_bus_topic_subscription = NULL;
 static PubSubSubscription *opt_output_bus_topic_subscription = NULL;
-static ACUMMOutputBus_t last_bus_acumm_output;  // A
-static OP2OutputBus_t last_bus_op2_output;      // B
-
-static sem_t *sem1;
-static sem_t *sem2;
-
-// static void print_sem_value(const char *desc) {
-//     // int s1 = 0, s2 = 0;
-//     // sem_getvalue(sem1, &s1);
-//     // sem_getvalue(sem2, &s2);
-//     // printf("[%s] sem1: %d\n", desc, s1);
-//     // printf("[%s] sem2: %d\n", desc, s2);
-// }
-
-static void update(void) {
-    sem_post(sem2);  // +1
-    // print_sem_value("[UPDATE] ANTES DE BLOQUEARME");
-    sem_wait(sem1);  // -1
-    // print_sem_value("[UPDATE] DESPUES DE BLOQUEARME");
-    // sem_wait(sem2); // -1
-    // print_sem_value();
-}
+static Bus_t last_bus_acumm_output;  // A
+static Bus_t last_bus_op2_output;      // B
 
 bool set_selalu_lb(unsigned long bin) {
     const int bin_len = get_bin_len(bin);
@@ -64,28 +41,11 @@ bool set_selalu_lb(unsigned long bin) {
     }
 
     selalu_lb.value = bin;
-    update();
     return true;
 }
 
-void set_alubus_lb(void) {
-    alubus_lb.value = 1;
-    update();
-}
-void reset_alubus_lb(void) {
-    alubus_lb.value = 0;
-    update();
-}
-
-static void on_bus_acumm_output_message(PubSubMessage m) {
-    last_bus_acumm_output = *(DataBus_t *)m.value;
-    update();
-}
-
-static void on_bus_op2_output_message(PubSubMessage m) {
-    last_bus_op2_output = *(OP2OutputBus_t *)m.value;
-    update();
-}
+void set_alubus_lb(void) { alubus_lb.value = 1; }
+void reset_alubus_lb(void) { alubus_lb.value = 0; }
 
 void run_alu(void) {
     int sel_alu_int = bin_to_int(selalu_lb.value);
@@ -155,11 +115,11 @@ void run_alu(void) {
 
     // if result == 0 => fz
     int fz = result_bin == 0;
-    publish_message_to(ALU_FZ_OUTPUT_BUS_TOPIC, &fz);
+    publish_message_to(ALU_FZ_OUTPUT_BUS_TOPIC, fz);
 
     // if result doesn't fit data bus => fc
     int fc = result_bin_len > DATA_BUS_SIZE_BITS;
-    publish_message_to(ALU_FC_OUTPUT_BUS_TOPIC, &fc);
+    publish_message_to(ALU_FC_OUTPUT_BUS_TOPIC, fc);
 
     if (fc) {
         char *result_bin_str = bin_to_str(result_bin);
@@ -172,20 +132,14 @@ void run_alu(void) {
     }
 
     if (alubus_lb.value == 1) {
-        publish_message_to(DATA_BUS_TOPIC, &result_bin);
+        publish_message_to(DATA_BUS_TOPIC, result_bin);
     }
 }
 
-static void on_exit_thread(void) { pthread_exit(NULL); }
-
+int alu_thread_runnable = 1;
 static void *alu_thread(void) {
-    signal(SIGTERM, (void *)on_exit_thread);
-    while (1) {
-        sem_wait(sem2); // initial 0, pause. sem_post(sem2) => +1, sem_wait(sem1) => -1 and continue executing with sem2 = 0
-        // print_sem_value("ANTES DE RUN_ALU");
+    while (alu_thread_runnable) {
         run_alu();
-        sem_post(sem1);
-        // print_sem_value("DESPUES DE RUN_ALU");
     }
 
     return NULL;
@@ -193,30 +147,19 @@ static void *alu_thread(void) {
 
 static pthread_t thread_id;
 void init_alu(void) {
-    sem1 = sem_open(ALU_THREAD_SEM, O_CREAT, 0644, 0);
-    sem2 = sem_open(ALU_UPDATE_SEM, O_CREAT, 0644, 0);
+    acumm_output_bus_topic_subscription = subscribe_to(ACUMM_OUTPUT_BUS_TOPIC, &last_bus_acumm_output);
+    opt_output_bus_topic_subscription = subscribe_to(OP2_OUTPUT_BUS_TOPIC, &last_bus_op2_output);
 
     if (pthread_create(&thread_id, NULL, (void *)alu_thread, NULL) == -1) {
         Error err = {.message = "Error creating alu thread", .show_errno = true, .type = FATAL_ERROR};
         return throw_error(err);
     }
-
-    acumm_output_bus_topic_subscription = subscribe_to(ACUMM_OUTPUT_BUS_TOPIC, on_bus_acumm_output_message);
-    opt_output_bus_topic_subscription = subscribe_to(OP2_OUTPUT_BUS_TOPIC, on_bus_op2_output_message);
 }
 
 void shutdown_alu(void) {
-    unsubscribe_for(acumm_output_bus_topic_subscription);
-    unsubscribe_for(opt_output_bus_topic_subscription);
-
-    pthread_kill(thread_id, SIGTERM);
+    alu_thread_runnable = 0;
     pthread_join(thread_id, NULL);
 
-    // print_sem_value("FINAL");
-
-    sem_close(sem1);
-    sem_close(sem2);
-
-    sem_unlink(ALU_THREAD_SEM);
-    sem_unlink(ALU_UPDATE_SEM);
+    unsubscribe_for(acumm_output_bus_topic_subscription);
+    unsubscribe_for(opt_output_bus_topic_subscription);
 }

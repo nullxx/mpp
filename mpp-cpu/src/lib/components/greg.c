@@ -34,8 +34,8 @@ static RegisterWatcher E_reg_watcher = {.name = "E", .reg = &E_reg};
 
 static PubSubSubscription *data_bus_topic_subscription = NULL;
 static PubSubSubscription *selreg_output_bus_topic_subscription = NULL;
-static DataBus_t last_bus_data;
-static SelRegOutputBus_t last_bus_selreg_output;
+static Bus_t last_bus_data;
+static Bus_t last_bus_selreg_output;
 
 void set_gregbus_lb(void) { regbus_lb.value = 1; }
 void reset_gregbus_lb(void) { regbus_lb.value = 0; }
@@ -43,17 +43,14 @@ void reset_gregbus_lb(void) { regbus_lb.value = 0; }
 void set_gregcar_lb(void) { regcar_lb.value = 1; }
 void reset_gregcar_lb(void) { regcar_lb.value = 0; }
 
-static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t *)m.value; }
-static void on_bus_selreg_output_message(PubSubMessage m) { last_bus_selreg_output = *(SelRegOutputBus_t *)m.value; }
-
 void init_greg(void) {
     register_watcher(&B_reg_watcher);
     register_watcher(&C_reg_watcher);
     register_watcher(&D_reg_watcher);
     register_watcher(&E_reg_watcher);
 
-    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
-    selreg_output_bus_topic_subscription = subscribe_to(SELREG_OUTPUT_BUS_TOPIC, on_bus_selreg_output_message);
+    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
+    selreg_output_bus_topic_subscription = subscribe_to(SELREG_OUTPUT_BUS_TOPIC, &last_bus_selreg_output);
 }
 
 void shutdown_greg(void) {
@@ -66,7 +63,7 @@ void shutdown_greg(void) {
     unregister_watcher(&E_reg_watcher);
 }
 
-static Register *get_register(SelRegOutputBus_t selreg) {
+static Register *get_register(Bus_t selreg) {
     switch (selreg) {
         case 00:
             return &B_reg;
@@ -104,6 +101,6 @@ void run_greg(void) {
 
     if (regbus_lb.value == 1) {
         // read to databus
-        publish_message_to(DATA_BUS_TOPIC, &reg->bin_value);
+        publish_message_to(DATA_BUS_TOPIC, reg->bin_value);
     }
 }

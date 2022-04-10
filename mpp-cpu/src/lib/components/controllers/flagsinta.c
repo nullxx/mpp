@@ -20,15 +20,13 @@
 #include "../components.h"
 
 LoadBit flbus_lb = {.value = 0};
-static FlagsOutputBus_t last_bus_flags_out;
+static Bus_t last_bus_flags_out;
 static PubSubSubscription *flags_out_bus_topic_subscription = NULL;
-
-static void on_bus_flags_out_message(PubSubMessage m) { last_bus_flags_out = *(FlagsOutputBus_t *)m.value; }
 
 void cll_set_flbus_lb(void) { flbus_lb.value = 1; }
 void cll_reset_flbus_lb(void) { flbus_lb.value = 0; }
 
-void cll_init_flagsinta(void) { flags_out_bus_topic_subscription = subscribe_to(FLAGS_OUTPUT_BUS_TOPIC, on_bus_flags_out_message); }
+void cll_init_flagsinta(void) { flags_out_bus_topic_subscription = subscribe_to(FLAGS_OUTPUT_BUS_TOPIC, &last_bus_flags_out); }
 
 void cll_shutdown_flagsinta(void) { unsubscribe_for(flags_out_bus_topic_subscription); }
 
@@ -59,6 +57,6 @@ void cll_run_flagsinta(void) {
 
     if (flbus_lb.value) {
         // load
-        publish_message_to(DATA_BUS_TOPIC, &bin);
+        publish_message_to(DATA_BUS_TOPIC, bin);
     }
 }

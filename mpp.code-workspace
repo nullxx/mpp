@@ -86,7 +86,8 @@
       "signal.h": "c",
       "variant": "c",
       "watcher.h": "c",
-      "typeinfo": "c"
+      "typeinfo": "c",
+      "definitions.h": "c"
     },
     "psi-header.templates": [
       {

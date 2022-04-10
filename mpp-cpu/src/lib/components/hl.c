@@ -31,9 +31,7 @@ static LoadBit hcar_lb = {.value = 0};
 
 static LoadBit lcar_lb = {.value = 0};
 static PubSubSubscription *data_bus_topic_subscription = NULL;
-static DataBus_t last_bus_data;
-
-static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t *)m.value; }
+static Bus_t last_bus_data;
 
 void set_hcar_lb(void) { hcar_lb.value = 1; }
 void reset_hcar_lb(void) { hcar_lb.value = 0; }
@@ -45,7 +43,7 @@ void init_hl(void) {
     register_watcher(&h_reg_watcher);
     register_watcher(&l_reg_watcher);
 
-    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
+    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
 }
 
 void shutdown_hl(void) {
@@ -68,7 +66,7 @@ void run_hl(void) {
 
     char *next_hl_reg_str = (char *)malloc(sizeof(char) * (h_reg.bit_length + l_reg.bit_length + 1));
     if (next_hl_reg_str == NULL) {
-        Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Malloc error"};
+        Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Malloc error"};
         throw_error(err);
     }
 
@@ -85,5 +83,5 @@ void run_hl(void) {
 
     free(next_hl_reg_str);
 
-    publish_message_to(HL_OUTPUT_BUS_TOPIC, &hl_bin_value);
+    publish_message_to(HL_OUTPUT_BUS_TOPIC, hl_bin_value);
 }

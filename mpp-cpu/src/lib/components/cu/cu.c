@@ -43,13 +43,10 @@ RegisterWatcher RI_reg_watcher = {.name = "RI", .reg = &RI_reg};
 
 LoadBit ricar_lb = {.value = 0};
 
-static DataBus_t last_bus_data;
-static FlagsOutputBus_t last_bus_flags_out;
+static Bus_t last_bus_data;
+static Bus_t last_bus_flags_out;
 static PubSubSubscription *data_bus_topic_subscription = NULL;
 static PubSubSubscription *flags_out_bus_topic_subscription = NULL;
-
-static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t *)m.value; }
-static void on_bus_flags_out_message(PubSubMessage m) { last_bus_flags_out = *(FlagsOutputBus_t *)m.value; }
 
 static void set_ricar_lb(void) { ricar_lb.value = 1; }
 static void reset_ricar_lb(void) { ricar_lb.value = 0; }
@@ -442,8 +439,8 @@ OpStateTrace *decode_step(void) {
 void init_cu(void) {
     register_watcher(&RI_reg_watcher);
 
-    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
-    flags_out_bus_topic_subscription = subscribe_to(FLAGS_OUTPUT_BUS_TOPIC, on_bus_flags_out_message);
+    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
+    flags_out_bus_topic_subscription = subscribe_to(FLAGS_OUTPUT_BUS_TOPIC, &last_bus_flags_out);
     state_trace = (OpStateTrace *)create_state_trace(&s0);
 }
 

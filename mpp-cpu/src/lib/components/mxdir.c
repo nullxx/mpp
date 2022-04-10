@@ -19,10 +19,10 @@
 
 LoadBit seldir_lb = {.value = 00};  // 2 bits
 
-static PCOutputBus_t last_bus_pc_output;
-static SPOutputBus_t last_bus_sp_output;
-static HLOutputBus_t last_bus_hl_output;
-static FFFCOutputBus_t last_bus_fffc_output;
+static Bus_t last_bus_pc_output;
+static Bus_t last_bus_sp_output;
+static Bus_t last_bus_hl_output;
+static Bus_t last_bus_fffc_output;
 
 static PubSubSubscription *pc_output_topic_subscription = NULL;
 static PubSubSubscription *sp_output_topic_subscription = NULL;
@@ -39,19 +39,11 @@ bool set_seldir_lb(unsigned int bin) {
     return true;
 }
 
-static void on_bus_pc_output(PubSubMessage m) { last_bus_pc_output = *(DataBus_t *)m.value; }
-
-static void on_bus_sp_output(PubSubMessage m) { last_bus_sp_output = *(SPOutputBus_t *)m.value; }
-
-static void on_bus_hl_output(PubSubMessage m) { last_bus_hl_output = *(HLOutputBus_t *)m.value; }
-
-static void on_bus_fffc_output(PubSubMessage m) { last_bus_fffc_output = *(FFFCOutputBus_t *)m.value; }
-
 void init_mxdir(void) {
-    pc_output_topic_subscription = subscribe_to(PC_OUTPUT_BUS_TOPIC, on_bus_pc_output);
-    sp_output_topic_subscription = subscribe_to(SP_OUTPUT_BUS_TOPIC, on_bus_sp_output);
-    hl_output_topic_subscription = subscribe_to(HL_OUTPUT_BUS_TOPIC, on_bus_hl_output);
-    fffc_output_topic_subscription = subscribe_to(FFFC_OUTPUT_BUS_TOPIC, on_bus_fffc_output);
+    pc_output_topic_subscription = subscribe_to(PC_OUTPUT_BUS_TOPIC, &last_bus_pc_output);
+    sp_output_topic_subscription = subscribe_to(SP_OUTPUT_BUS_TOPIC, &last_bus_sp_output);
+    hl_output_topic_subscription = subscribe_to(HL_OUTPUT_BUS_TOPIC, &last_bus_hl_output);
+    fffc_output_topic_subscription = subscribe_to(FFFC_OUTPUT_BUS_TOPIC, &last_bus_fffc_output);
 }
 
 void shutdown_mxdir(void) {
@@ -72,6 +64,6 @@ void run_mxdir(void) {
         return throw_error(err);
     }
 
-    publish_message_to(DIR_BUS_TOPIC, &output);
+    publish_message_to(DIR_BUS_TOPIC, output);
     return;
 }

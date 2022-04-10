@@ -27,15 +27,13 @@ static LoadBit spcar_lb = {
     .value = 0,
 };
 
-static DirBus_t last_bus_dir;
+static Bus_t last_bus_dir;
 static PubSubSubscription *dir_bus_topic_subscription = NULL;
-
-static void on_bus_dir_message(PubSubMessage m) { last_bus_dir = *(DirBus_t *)m.value; }
 
 void init_sp(void) {
     register_watcher(&sp_reg_watcher);
 
-    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, on_bus_dir_message);
+    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, &last_bus_dir);
 }
 
 void shutdown_sp(void) {
@@ -51,7 +49,7 @@ void reset_spcar_lb(void) { spcar_lb.value = 0; }
 void run_sp(void) {
     if (spcar_lb.value == 1) {  // load
         if (get_bin_len(last_bus_dir) > sp_reg.bit_length) {
-            Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load SP register"};
+            Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load SP register"};
             throw_error(err);
         }
 
@@ -59,5 +57,5 @@ void run_sp(void) {
     }
 
     // in both cases: read and after loading, we are going to transmit it
-    publish_message_to(SP_OUTPUT_BUS_TOPIC, &sp_reg.bin_value);
+    publish_message_to(SP_OUTPUT_BUS_TOPIC, sp_reg.bin_value);
 }

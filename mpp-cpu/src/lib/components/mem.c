@@ -29,16 +29,16 @@ static Mem mem;
 static LoadBit l_e_lb = {.value = 0};
 static LoadBit mem_bus_lb = {.value = 0};
 
-static DataBus_t last_bus_data;
-static DirBus_t last_bus_dir;
+static Bus_t last_bus_data;
+static Bus_t last_bus_dir;
 
 static PubSubSubscription *bus_data_subscription = NULL;
 static PubSubSubscription *bus_dir_subscription = NULL;
 
-static bool is_mem_value_valid(char *hex) {
+static int is_mem_value_valid(char *hex) {
     const int num = hex_to_int(hex);
-    if (num < 0 || num > pow(2, MEM_VALUE_SIZE_BITS) - 1) return false;
-    return true;
+    if (num < 0 || num > pow(2, MEM_VALUE_SIZE_BITS) - 1) return 0;
+    return 1;
 }
 
 static void fill_memory(void) {
@@ -62,20 +62,10 @@ static void unfill_memory(void) {
     free(mem.values);
 }
 
-static void on_bus_data_message(PubSubMessage m) {
-    // no condition to receive data from data bus --> always receiving data
-    last_bus_data = *(DataBus_t *)m.value;
-}
-
-static void on_bus_dir_message(PubSubMessage m) {
-    // no condition to receive data from dir bus --> always receiving data
-    last_bus_dir = *(DirBus_t *)m.value;
-}
-
 void init_mem(void) {
     fill_memory();
-    bus_data_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
-    bus_dir_subscription = subscribe_to(DIR_BUS_TOPIC, on_bus_dir_message);
+    bus_data_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
+    bus_dir_subscription = subscribe_to(DIR_BUS_TOPIC, &last_bus_dir);
 }
 
 void shutdown_mem(void) {
@@ -108,11 +98,11 @@ static MemValue *get_value_by_offset(char *offset) {
 // TODO add static again after debugging, and remove header
 ComponentActionReturn set_mem_value(MemValue mem_value) {
     ComponentActionReturn car;
-    car.success = true;
+    car.success = 1;
 
     if (!is_mem_value_valid(mem_value.value_hex)) {
-        car.success = false;
-        car.err.show_errno = false;
+        car.success = 0;
+        car.err.show_errno = 0;
         car.err.type = FATAL_ERROR;
         const int end_bound_mem_value = pow(2, MEM_VALUE_SIZE_BITS) - 1;
         car.err.message = create_str("[set_mem_value] Value", mem_value.value_hex, "invalid. Must be between 0 -", itoa(end_bound_mem_value));
@@ -121,8 +111,8 @@ ComponentActionReturn set_mem_value(MemValue mem_value) {
 
     MemValue *target_mem_value = get_value_by_offset(mem_value.offset);
     if (target_mem_value == NULL) {
-        car.success = false;
-        car.err.show_errno = false;
+        car.success = 0;
+        car.err.show_errno = 0;
         car.err.type = FATAL_ERROR;
         car.err.message = create_str("[set_mem_value] Couldn't find mem_value at", mem_value.offset);
         return car;
@@ -139,12 +129,12 @@ ComponentActionReturn set_mem_value(MemValue mem_value) {
 
 static ComponentActionReturn get_mem_value(char *offset) {
     ComponentActionReturn car;
-    car.success = true;
+    car.success = 1;
 
     MemValue *target_mem_value = get_value_by_offset(offset);
     if (target_mem_value == NULL) {
-        car.success = false;
-        car.err.show_errno = false;
+        car.success = 0;
+        car.err.show_errno = 0;
         car.err.type = FATAL_ERROR;
         car.err.message = create_str("[get_mem_value] Couldn't find mem_value at", offset);
         return car;
@@ -172,7 +162,7 @@ void run_mem(void) {
 
             // if memBus ==> send data to the bus
             unsigned long long bin = int_to_bin(hex_to_int(m->value_hex), MAX_CALC_BIN_SIZE_BITS);
-            if (mem_bus_lb.value == 1) publish_message_to(DATA_BUS_TOPIC, &bin);
+            if (mem_bus_lb.value == 1) publish_message_to(DATA_BUS_TOPIC, bin);
             break;
         }
         case 0: {

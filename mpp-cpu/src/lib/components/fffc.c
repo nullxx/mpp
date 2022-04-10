@@ -18,5 +18,5 @@ void init_fffc(void) {}
 void shutdown_fffc(void) {}
 void run_fffc(void) {
     unsigned long long bin = int_to_bin(hex_to_int("FFFC"), MAX_CALC_BIN_SIZE_BITS);
-    publish_message_to(FFFC_OUTPUT_BUS_TOPIC, &bin);
+    publish_message_to(FFFC_OUTPUT_BUS_TOPIC, bin);
 }

@@ -15,7 +15,7 @@
 #include "components.h"
 
 LoadBit id_lb = {.value = 00};
-DirBus_t last_bus_dir;
+Bus_t last_bus_dir;
 static PubSubSubscription *dir_bus_topic_subscription = NULL;
 
 bool set_id_lb(unsigned long bin) {
@@ -27,8 +27,6 @@ bool set_id_lb(unsigned long bin) {
     id_lb.value = bin;
     return true;
 }
-
-static void on_dir_bus_topic(PubSubMessage m) { last_bus_dir = *(DirBus_t *)m.value; }
 
 void run_addsub(void) {
     int dir_bus_int = bin_to_int(last_bus_dir);
@@ -51,8 +49,8 @@ void run_addsub(void) {
 
     unsigned long long next_bin_bus_dir = int_to_bin(dir_bus_int, MAX_CALC_BIN_SIZE_BITS);
 
-    publish_message_to(DIR_BUS_TOPIC, &next_bin_bus_dir);
+    publish_message_to(DIR_BUS_TOPIC, next_bin_bus_dir);
 }
 
-void init_addsub(void) { dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, on_dir_bus_topic); }
+void init_addsub(void) { dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, &last_bus_dir); }
 void shutdown_addsub(void) { unsubscribe_for(dir_bus_topic_subscription); }

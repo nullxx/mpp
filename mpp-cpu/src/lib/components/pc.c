@@ -36,21 +36,18 @@ static LoadBit pccar_lb = {.value = 0};
 static LoadBit pch_bus = {.value = 0};
 static LoadBit pcl_bus = {.value = 0};
 
-static DirBus_t last_bus_dir;
-static DataBus_t last_bus_data;
+static Bus_t last_bus_dir;
+static Bus_t last_bus_data;
 static PubSubSubscription *dir_bus_topic_subscription = NULL;
 static PubSubSubscription *data_bus_topic_subscription = NULL;
-
-static void on_bus_dir_message(PubSubMessage m) { last_bus_dir = *(DirBus_t *)m.value; }
-static void on_bus_data_message(PubSubMessage m) { last_bus_data = *(DataBus_t *)m.value; }
 
 void init_pc(void) {
     register_watcher(&pch_reg_watcher);
     register_watcher(&pcl_reg_watcher);
     register_watcher(&pc_reg_watcher);
 
-    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, on_bus_dir_message);
-    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, on_bus_data_message);
+    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC, &last_bus_dir);
+    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
 }
 
 void shutdown_pc(void) {
@@ -82,34 +79,34 @@ void run_pc(void) {
     if (pchcar_lb.value == 1) {
         // load pch
         if (get_bin_len(last_bus_data) > pch_reg.bit_length) {
-            Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load PCH register"};
+            Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PCH register"};
             throw_error(err);
         }
 
         pch_reg.bin_value = last_bus_data;
     } else if (pch_bus.value == 1) {  // pchcar_lb.value = 0
         // read to data bus if pchbus enabled
-        publish_message_to(DATA_BUS_TOPIC, &pch_reg.bin_value);
+        publish_message_to(DATA_BUS_TOPIC, pch_reg.bin_value);
     }
     // pcl
     if (pchcar_lb.value == 1) {
         // load pcl
         if (get_bin_len(last_bus_data) > pcl_reg.bit_length) {
-            Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load PCL register"};
+            Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PCL register"};
             throw_error(err);
         }
 
         pcl_reg.bin_value = last_bus_data;
     } else if (pcl_bus.value == 1) {  // pchcar_lb.value = 0
         // read to data bus if pchbus enabled
-        publish_message_to(DATA_BUS_TOPIC, &pcl_reg.bin_value);
+        publish_message_to(DATA_BUS_TOPIC, pcl_reg.bin_value);
     }
 
     // mix pch + pcl => pc. If pc is set later it will be overwritten
     if (pchcar_lb.value == 1 && pclcar_lb.value == 1) {
         char *next_pc_reg_str = (char *)malloc(sizeof(char) * (pcl_reg.bit_length + pch_reg.bit_length + 1));
         if (next_pc_reg_str == NULL) {
-            Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Malloc error"};
+            Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Malloc error"};
             throw_error(err);
             return;
         }
@@ -132,7 +129,7 @@ void run_pc(void) {
     if (pccar_lb.value == 1) {
         // load pc // PC is prioritary than pch and pcl
         if (get_bin_len(last_bus_dir) > pc_reg.bit_length) {
-            Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load PC register"};
+            Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PC register"};
             throw_error(err);
             return;
         }
@@ -154,5 +151,5 @@ void run_pc(void) {
         pcl_reg.bin_value = str_to_bin(next_pcl_reg_str);
     }
 
-    publish_message_to(PC_OUTPUT_BUS_TOPIC, &pc_reg.bin_value);
+    publish_message_to(PC_OUTPUT_BUS_TOPIC, pc_reg.bin_value);
 }

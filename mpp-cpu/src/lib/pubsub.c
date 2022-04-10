@@ -64,9 +64,9 @@ const char *pubsub_topic_tostring(PubSubTopic topic) {
 }
 
 #ifndef DEBUG
-PubSubSubscription *subscribe_to(PubSubTopic topic, on_message on_message_fn) {
+PubSubSubscription *subscribe_to(PubSubTopic topic, Bus_t *var_ptr) {
 #else
-PubSubSubscription *subscribe_to_internal(PubSubTopic topic, on_message on_message_fn, const char *caller) {
+PubSubSubscription *subscribe_to_internal(PubSubTopic topic, Bus_t *var_ptr, const char *caller) {
 #endif
     PubSubSubscription *subscription = (PubSubSubscription *)malloc(sizeof(PubSubSubscription));
     if (subscription == NULL) {
@@ -75,7 +75,7 @@ PubSubSubscription *subscribe_to_internal(PubSubTopic topic, on_message on_messa
 
     subscription->id = subscription_count++;  // id is also the index inside subscriptions
     subscription->topic = topic;
-    subscription->on_message_fn = on_message_fn;
+    subscription->var = var_ptr;
 
     if (subscriptions_head == NULL) {
         subscriptions_head = create_ll_node((void *)subscription, NULL);
@@ -119,7 +119,7 @@ PubSubMiddleware *add_topic_middleware(PubSubTopic topic, PubSubMiddlewareFn mid
     return m;
 }
 
-bool rm_topic_middleware(PubSubMiddleware *middleware) {
+int rm_topic_middleware(PubSubMiddleware *middleware) {
     if (middleware == NULL) {
         return false;
     }
@@ -131,7 +131,7 @@ bool rm_topic_middleware(PubSubMiddleware *middleware) {
     return true;
 }
 
-bool unsubscribe_for(PubSubSubscription *sub) {
+int unsubscribe_for(PubSubSubscription *sub) {
     if (sub == NULL) return false;
     if (subscriptions_head == NULL) return false;
 
@@ -163,8 +163,7 @@ bool unsubscribe_for(PubSubSubscription *sub) {
  * @param value
  * @return int -1 if middleware doesn't pass
  */
-int publish_message_to(PubSubTopic topic, void *value) {
-    PubSubMessage message = {.topic = topic, .value = value};
+int publish_message_to(PubSubTopic topic, Bus_t value) {
 
     // executing middlewares
     for (size_t i = 0; i < topic_with_middleware_count; i++) {
@@ -186,7 +185,8 @@ int publish_message_to(PubSubTopic topic, void *value) {
         PubSubSubscription *sub = (PubSubSubscription *)current_node->value;
         current_node = current_node->next;
         if (sub->topic != topic) continue;
-        sub->on_message_fn(message);
+        
+        *sub->var = value;
 
         sent++;
     }

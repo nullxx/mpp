@@ -26,13 +26,11 @@ static Register FZ_reg = {.bit_length = FLAG_REG_SIZE_BIT, .bin_value = 0};
 static RegisterWatcher FC_reg_watcher = {.name = "FC", .reg = &FC_reg};
 static RegisterWatcher FZ_reg_watcher = {.name = "FZ", .reg = &FZ_reg};
 
-static MXFlD7OutputBus_t last_bus_mxfld7_out;
-static MXFlD0OutputBus_t last_bus_mxfld0_out;
+static Bus_t last_bus_mxfld7_out;
+static Bus_t last_bus_mxfld0_out;
 static PubSubSubscription *mxfld7_out_bus_topic_subscription = NULL;
 static PubSubSubscription *mxfld0_out_bus_topic_subscription = NULL;
 
-static void on_bus_mxfld7_out_message(PubSubMessage m) { last_bus_mxfld7_out = *(MXFlD7OutputBus_t *)m.value; }
-static void on_bus_mxfld0_out_message(PubSubMessage m) { last_bus_mxfld0_out = *(MXFlD0OutputBus_t *)m.value; }
 
 void set_flcar_lb(void) { flcar_lb.value = 1; }
 void reset_flcar_lb(void) { flcar_lb.value = 0; }
@@ -41,8 +39,8 @@ void init_flags(void) {
     register_watcher(&FC_reg_watcher);
     register_watcher(&FZ_reg_watcher);
 
-    mxfld7_out_bus_topic_subscription = subscribe_to(MXFLD7_OUTPUT_BUS_TOPIC, on_bus_mxfld7_out_message);
-    mxfld0_out_bus_topic_subscription = subscribe_to(MXFLD0_OUTPUT_BUS_TOPIC, on_bus_mxfld0_out_message);
+    mxfld7_out_bus_topic_subscription = subscribe_to(MXFLD7_OUTPUT_BUS_TOPIC, &last_bus_mxfld7_out);
+    mxfld0_out_bus_topic_subscription = subscribe_to(MXFLD0_OUTPUT_BUS_TOPIC, &last_bus_mxfld0_out);
 }
 
 void shutdown_flags(void) {
@@ -81,5 +79,5 @@ void run_flags(void) {
         free(flags_str);
     }
 
-    publish_message_to(FLAGS_OUTPUT_BUS_TOPIC, &flags);
+    publish_message_to(FLAGS_OUTPUT_BUS_TOPIC, flags);
 }

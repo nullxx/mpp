@@ -18,12 +18,10 @@
 #include "controllers/mxfldx.h"
 #include "mxfld7.h"
 
-static ALUFZOutputBus_t last_bus_alufz_out;
+static Bus_t last_bus_alufz_out;
 static PubSubSubscription *bus_alufz_out_subscription = NULL;
 
-static void on_bus_alufz_out_message(PubSubMessage m) { last_bus_alufz_out = *(ALUFZOutputBus_t *)m.value; }
-
-void init_mxfld0(void) { bus_alufz_out_subscription = subscribe_to(ALU_FZ_OUTPUT_BUS_TOPIC, on_bus_alufz_out_message); }
+void init_mxfld0(void) { bus_alufz_out_subscription = subscribe_to(ALU_FZ_OUTPUT_BUS_TOPIC, &last_bus_alufz_out); }
 
 void shutdown_mxfld0(void) { unsubscribe_for(bus_alufz_out_subscription); }
 
@@ -33,5 +31,5 @@ void run_mxfld0(void) {
     free(last_bus_data_str);
 
     MXInput result = run_2x1_mx(cll_get_selfl_lb_value(), lowbit, last_bus_alufz_out);
-    publish_message_to(MXFLD0_OUTPUT_BUS_TOPIC, &result);
+    publish_message_to(MXFLD0_OUTPUT_BUS_TOPIC, result);
 }

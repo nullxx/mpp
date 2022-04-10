@@ -19,13 +19,11 @@
 #include "components.h"
 #include "controllers/mxfldx.h"
 
-static ALUFCOutputBus_t last_bus_alufc_out;
+static Bus_t last_bus_alufc_out;
 static PubSubSubscription *bus_alufc_out_subscription = NULL;
 
-static void on_bus_alufc_out_message(PubSubMessage m) { last_bus_alufc_out = *(ALUFCOutputBus_t *)m.value; }
-
 void init_mxfld7(void) {
-    bus_alufc_out_subscription = subscribe_to(ALU_FC_OUTPUT_BUS_TOPIC, on_bus_alufc_out_message);
+    bus_alufc_out_subscription = subscribe_to(ALU_FC_OUTPUT_BUS_TOPIC, &last_bus_alufc_out);
 }
 
 void shutdown_mxfld7(void) { unsubscribe_for(bus_alufc_out_subscription); }
@@ -36,5 +34,5 @@ void run_mxfld7(void) {
     free(last_bus_data_str);
 
     MXInput result = run_2x1_mx(cll_get_selfl_lb_value(), hibit, last_bus_alufc_out);
-    publish_message_to(MXFLD7_OUTPUT_BUS_TOPIC, &result);
+    publish_message_to(MXFLD7_OUTPUT_BUS_TOPIC, result);
 }
