@@ -45,7 +45,7 @@ const char *pubsub_topic_tostring(PubSubTopic topic);
 typedef void (*on_message)(PubSubMessage);
 
 typedef struct {
-    unsigned int id;
+    int id;
     PubSubTopic topic;
     Bus_t *var;
 } PubSubSubscription;
@@ -55,6 +55,7 @@ typedef int (*PubSubMiddlewareFn)(Bus_t);
 typedef struct {
     PubSubTopic topic;
     PubSubMiddlewareFn middlware;
+    int id;
 } PubSubMiddleware;
 
 int init_pubsub(void);

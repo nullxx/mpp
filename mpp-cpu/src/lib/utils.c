@@ -114,7 +114,7 @@ int bin_to_int(unsigned long long bin) {
 unsigned long long int_to_bin(int n, const int max_len) {
     unsigned long long result = 0;
 
-    for (int c = max_len-1; c >= 0; c--) {
+    for (int c = max_len - 1; c >= 0; c--) {
         int d = n >> c;
         if (d & 1) {
             result = concatenate(result, 1);
@@ -161,13 +161,13 @@ char *create_str_internal(const int n, ...) {
         const int prev_size = _first ? 0 : strlen(str);
         const int next_size = sizeof(char) * (strlen(chunk) + strlen(" ") + prev_size + 1);
 
+        str = realloc(str, next_size);
+        
         if (_first) {
-            str = (char *)malloc(next_size);
             if (str == NULL) return NULL;
 
             initialize_str(str, 0, next_size, 0);
         } else {
-            str = (char *)realloc(str, next_size);
             if (str == NULL) return NULL;
 
             initialize_str(str, prev_size, next_size, 0);
@@ -212,6 +212,4 @@ unsigned concatenate(unsigned x, unsigned y) {
     return x * pow + y;
 }
 
-void beep(void) {
-    printf("\a");
-}
+void beep(void) { printf("\a"); }
