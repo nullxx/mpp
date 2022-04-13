@@ -18,6 +18,7 @@
 #include "../utils.h"
 #include "../watcher.h"
 #include "components.h"
+#include "../electronic/bus.h"
 
 static LoadBit regbus_lb = {.value = 1};
 static LoadBit regcar_lb = {.value = 00};
@@ -34,8 +35,8 @@ static RegisterWatcher E_reg_watcher = {.name = "E", .reg = &E_reg};
 
 static PubSubSubscription *data_bus_topic_subscription = NULL;
 static PubSubSubscription *selreg_output_bus_topic_subscription = NULL;
-static Bus_t last_bus_data;
-static Bus_t last_bus_selreg_output;
+static Bus_t last_bus_data = {.current_value = 0, .next_value = 0};
+static Bus_t last_bus_selreg_output = {.current_value = 0, .next_value = 0};
 
 void set_gregbus_lb(void) { regbus_lb.value = 1; }
 void reset_gregbus_lb(void) { regbus_lb.value = 0; }
@@ -63,7 +64,7 @@ void shutdown_greg(void) {
     unregister_watcher(&E_reg_watcher);
 }
 
-static Register *get_register(Bus_t selreg) {
+static Register *get_register(Bin selreg) {
     switch (selreg) {
         case 00:
             return &B_reg;
@@ -84,7 +85,10 @@ static Register *get_register(Bus_t selreg) {
 }
 
 void run_greg(void) {
-    Register *reg = get_register(last_bus_selreg_output);
+    update_bus_data(&last_bus_data);
+    update_bus_data(&last_bus_selreg_output);
+
+    Register *reg = get_register(last_bus_selreg_output.current_value);
     if (reg == NULL) {
         Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Could not find selected register"};
         throw_error(err);
@@ -92,11 +96,11 @@ void run_greg(void) {
 
     if (regcar_lb.value == 1) {
         // load to reg
-        if (get_bin_len(last_bus_data) > reg->bit_length) {
+        if (get_num_len(last_bus_data.current_value) > reg->bit_length) {
             Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load to a general register"};
             throw_error(err);
         }
-        reg->bin_value = last_bus_data;
+        reg->bin_value = last_bus_data.current_value;
     }
 
     if (regbus_lb.value == 1) {

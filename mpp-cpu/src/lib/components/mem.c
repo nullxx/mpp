@@ -13,30 +13,30 @@
 #include <string.h>
 
 #include "../constants.h"
+#include "../electronic/bus.h"
 #include "../error.h"
 #include "../pubsub.h"
+#include "../thread.h"
 #include "../utils.h"
 
 // INTERNAL
-
 
 static const int mem_size_bits = MEM_SIZE_KB * 1024 * 8;
 static const int mem_size = mem_size_bits / MEM_VALUE_SIZE_BITS;
 
 static Mem mem;
 
-// READ by default
-static LoadBit l_e_lb = {.value = 0};
+static LoadBit l_e_lb = {.value = 1};  // READ by default
 static LoadBit mem_bus_lb = {.value = 0};
 
-static Bus_t last_bus_data;
-static Bus_t last_bus_dir;
+static Bus_t last_bus_data = {.current_value = 0, .next_value = 0};
+static Bus_t last_bus_dir = {.current_value = 0, .next_value = 0};
 
 static PubSubSubscription *bus_data_subscription = NULL;
 static PubSubSubscription *bus_dir_subscription = NULL;
 
 static int is_mem_value_valid(char *hex) {
-    const int num = hex_to_int(hex);
+    const int num = hex_to_dec(hex);
     if (num < 0 || num > pow(2, MEM_VALUE_SIZE_BITS) - 1) return 0;
     return 1;
 }
@@ -47,8 +47,9 @@ static void fill_memory(void) {
 
     for (int i = MEM_START_VALUE; i < mem_size; i++) {
         MemValue mem_value;
-        mem_value.offset = int_to_hex(i);
-        mem_value.value_hex = int_to_hex(random_int(0, pow(2, MEM_VALUE_SIZE_BITS) - 1));
+        mem_value.offset = i;
+        mem_value.value_hex = dec_to_hex(random_int(0, pow(2, MEM_VALUE_SIZE_BITS) - 1));
+        mem_value.initial = 1;
         mem.values[i] = mem_value;
         mem.values_count++;
     }
@@ -56,7 +57,6 @@ static void fill_memory(void) {
 
 static void unfill_memory(void) {
     for (int i = MEM_START_VALUE; i < mem_size; i++) {
-        free(mem.values[i].offset);
         free(mem.values[i].value_hex);
     }
     free(mem.values);
@@ -84,14 +84,12 @@ void set_mem_bus_lb(void) { mem_bus_lb.value = 1; }
 void reset_mem_bus_lb(void) { mem_bus_lb.value = 0; }
 // -- control loadbits functions
 
-static MemValue *get_value_by_offset(char *offset) {
-    for (int i = 0; i < mem.values_count; i++) {
-        if (!strcmp(mem.values[i].offset, offset)) {
-            return &mem.values[i];
-        }
+static MemValue *get_value_by_offset(int offset) {
+    if (offset < MEM_START_VALUE || offset >= mem_size) {
+        return NULL;
     }
 
-    return NULL;
+    return &mem.values[offset];
 }
 
 // -- INTERNAL
@@ -103,9 +101,10 @@ ComponentActionReturn set_mem_value(MemValue mem_value) {
     if (!is_mem_value_valid(mem_value.value_hex)) {
         car.success = 0;
         car.err.show_errno = 0;
-        car.err.type = FATAL_ERROR;
+        car.err.type = NOTICE_ERROR;
         const int end_bound_mem_value = pow(2, MEM_VALUE_SIZE_BITS) - 1;
-        car.err.message = create_str("[set_mem_value] Value", mem_value.value_hex, "invalid. Must be between 0 -", itoa(end_bound_mem_value));
+        char *value_dec_str = itoa(hex_to_dec(mem_value.value_hex));
+        car.err.message = create_str("[set_mem_value] Value", value_dec_str, "(dec) invalid. Must be between 0 -", itoa(end_bound_mem_value));
         return car;
     }
 
@@ -113,21 +112,22 @@ ComponentActionReturn set_mem_value(MemValue mem_value) {
     if (target_mem_value == NULL) {
         car.success = 0;
         car.err.show_errno = 0;
-        car.err.type = FATAL_ERROR;
+        car.err.type = NOTICE_ERROR;
         car.err.message = create_str("[set_mem_value] Couldn't find mem_value at", mem_value.offset);
         return car;
     }
-
-    free(target_mem_value->offset);
-    free(target_mem_value->value_hex);
+    if (target_mem_value->initial) {
+        target_mem_value->initial = 0;
+        free(target_mem_value->value_hex);
+    }
 
     target_mem_value->value_hex = str_dup(mem_value.value_hex);
-    target_mem_value->offset = str_dup(mem_value.offset);
+    target_mem_value->offset = mem_value.offset;
 
     return car;
 }
 
-static ComponentActionReturn get_mem_value(char *offset) {
+static ComponentActionReturn get_mem_value(int offset) {
     ComponentActionReturn car;
     car.success = 1;
 
@@ -135,7 +135,7 @@ static ComponentActionReturn get_mem_value(char *offset) {
     if (target_mem_value == NULL) {
         car.success = 0;
         car.err.show_errno = 0;
-        car.err.type = FATAL_ERROR;
+        car.err.type = NOTICE_ERROR;
         car.err.message = create_str("[get_mem_value] Couldn't find mem_value at", offset);
         return car;
     }
@@ -146,13 +146,16 @@ static ComponentActionReturn get_mem_value(char *offset) {
 }
 
 void run_mem(void) {
+    update_bus_data(&last_bus_data);
+    update_bus_data(&last_bus_dir);
+
     Error err;
-    char *dir_bin_str = int_to_hex(bin_to_int(last_bus_dir));
-    char *value_bin_str = int_to_hex(bin_to_int(last_bus_data));
+    int dir_bin = bin_to_dec(last_bus_dir.next_value);
+    char *value_bin_str = dec_to_hex(bin_to_dec(last_bus_data.next_value));
 
     switch (l_e_lb.value) {
         case 1: {
-            ComponentActionReturn car = get_mem_value(dir_bin_str);
+            ComponentActionReturn car = get_mem_value(dir_bin);
             if (!car.success) {
                 err = car.err;
                 goto error;
@@ -161,13 +164,13 @@ void run_mem(void) {
             MemValue *m = (MemValue *)car.return_value;
 
             // if memBus ==> send data to the bus
-            unsigned long long bin = int_to_bin(hex_to_int(m->value_hex), MAX_CALC_BIN_SIZE_BITS);
+            Bin bin = int_to_bin(hex_to_dec(m->value_hex), MAX_CALC_BIN_SIZE_BITS);
             if (mem_bus_lb.value == 1) publish_message_to(DATA_BUS_TOPIC, bin);
             break;
         }
         case 0: {
             // use the last value of DATA_BUS
-            MemValue mem_value = {.offset = dir_bin_str, .value_hex = value_bin_str};
+            MemValue mem_value = {.offset = dir_bin, .value_hex = value_bin_str};
             ComponentActionReturn car = set_mem_value(mem_value);
             if (!car.success) {
                 err = car.err;
@@ -180,7 +183,6 @@ void run_mem(void) {
             break;
     }
 
-    free(dir_bin_str);
     free(value_bin_str);
 
     return;

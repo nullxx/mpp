@@ -10,5 +10,13 @@
 
 #ifndef definitions_h
 #define definitions_h
-typedef unsigned long long Bus_t;
+
+typedef unsigned long long Bin;
+typedef struct {
+    Bin next_value;
+    Bin current_value;
+} Bus_t;
+
+#define BUS_SIZE_BIT 64
+#define BUS_DEFAULT_VALUE 0xFFFFFFFFFFFFFFFF;
 #endif

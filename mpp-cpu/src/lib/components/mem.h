@@ -12,7 +12,8 @@
 
 typedef struct {
     char *value_hex;
-    char *offset;
+    int offset;
+    int initial;
 } MemValue;
 
 typedef struct {

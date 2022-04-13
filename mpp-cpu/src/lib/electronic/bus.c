@@ -14,20 +14,24 @@
 #include "../pubsub.h"
 #include "../utils.h"
 
-static int check_data_bus_overflow(Bus_t value) {
-    if (get_bin_len(value) > DATA_BUS_SIZE_BITS) {
+static int check_data_bus_overflow(Bin value) {
+    if (get_num_len(value) > DATA_BUS_SIZE_BITS) {
         return 0;
     }
 
     return 1;
 }
 
-static int check_dir_bus_overflow(Bus_t value) {
-    if (get_bin_len(value) > DIR_BUS_SIZE_BITS) {
+static int check_dir_bus_overflow(Bin value) {
+    if (get_num_len(value) > DIR_BUS_SIZE_BITS) {
         return 0;
     }
 
     return 1;
+}
+
+void update_bus_data(Bus_t *bus_t) {
+    bus_t->current_value = bus_t->next_value;
 }
 
 static void check_buses_overflow(void) {

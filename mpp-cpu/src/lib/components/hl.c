@@ -20,6 +20,7 @@
 #include "../utils.h"
 #include "../watcher.h"
 #include "components.h"
+#include "../electronic/bus.h"
 
 static Register h_reg = {.bin_value = 0, .bit_length = H_REG_SIZE_BIT};
 static Register l_reg = {.bin_value = 0, .bit_length = L_REG_SIZE_BIT};
@@ -31,7 +32,7 @@ static LoadBit hcar_lb = {.value = 0};
 
 static LoadBit lcar_lb = {.value = 0};
 static PubSubSubscription *data_bus_topic_subscription = NULL;
-static Bus_t last_bus_data;
+static Bus_t last_bus_data = {.current_value = 0, .next_value = 0};
 
 void set_hcar_lb(void) { hcar_lb.value = 1; }
 void reset_hcar_lb(void) { hcar_lb.value = 0; }
@@ -54,14 +55,16 @@ void shutdown_hl(void) {
 }
 
 void run_hl(void) {
+    update_bus_data(&last_bus_data);
+
     if (hcar_lb.value == 1) {
         // load h
-        h_reg.bin_value = last_bus_data;
+        h_reg.bin_value = last_bus_data.current_value;
     }
 
     if (lcar_lb.value == 1) {
         // load l
-        l_reg.bin_value = last_bus_data;
+        l_reg.bin_value = last_bus_data.current_value;
     }
 
     char *next_hl_reg_str = (char *)malloc(sizeof(char) * (h_reg.bit_length + l_reg.bit_length + 1));

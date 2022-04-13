@@ -16,8 +16,10 @@
 #include "../pubsub.h"
 #include "../watcher.h"
 #include "components.h"
+#include "../electronic/bus.h"
+
 static PubSubSubscription *data_bus_topic_subscription = NULL;
-static Bus_t last_bus_data;
+static Bus_t last_bus_data = {.current_value = 0, .next_value = 0};
 
 static Register op2_reg = {.bin_value = 0, .bit_length = OP2_REG_SIZE_BIT};
 
@@ -33,15 +35,18 @@ void init_op2(void) {
 
     data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
 }
+
 void shutdown_op2(void) {
     unsubscribe_for(data_bus_topic_subscription);
     unregister_watcher(&op2_reg_watcher);
 }
 
 void run_op2(void) {
+    update_bus_data(&last_bus_data);
+
     if (car2_lb.value == 1) {
         // load
-        op2_reg.bin_value = last_bus_data;
+        op2_reg.bin_value = last_bus_data.current_value;
     }
 
     publish_message_to(OP2_OUTPUT_BUS_TOPIC, op2_reg.bin_value);

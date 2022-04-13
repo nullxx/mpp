@@ -22,7 +22,7 @@
 LoadBit selreg_lb = {.value = 00};
 
 bool set_selreg_lb(unsigned int sel) {
-    const int num_len = get_bin_len(sel);
+    const int num_len = get_num_len(sel);
     if (num_len > SELREG_LOAD_BIT_SIZE_BITS) {
         return false;
     }
@@ -34,6 +34,6 @@ bool set_selreg_lb(unsigned int sel) {
 void init_mxreg(void) {}
 void shutdown_mxreg(void) {}
 void run_mxreg(void) {
-    Bus_t result = (Bus_t)run_4x1_mx(selreg_lb.value, 00, 01, 10, 11);
+    Bin result = (Bin)run_4x1_mx(selreg_lb.value, 00, 01, 10, 11);
     publish_message_to(SELREG_OUTPUT_BUS_TOPIC, result);
 }

@@ -18,6 +18,7 @@
 #include "../utils.h"
 #include "../watcher.h"
 #include "components.h"
+#include "../electronic/bus.h"
 
 static LoadBit flcar_lb = {.value = 0};
 static Register FC_reg = {.bit_length = FLAG_REG_SIZE_BIT, .bin_value = 0};
@@ -26,8 +27,8 @@ static Register FZ_reg = {.bit_length = FLAG_REG_SIZE_BIT, .bin_value = 0};
 static RegisterWatcher FC_reg_watcher = {.name = "FC", .reg = &FC_reg};
 static RegisterWatcher FZ_reg_watcher = {.name = "FZ", .reg = &FZ_reg};
 
-static Bus_t last_bus_mxfld7_out;
-static Bus_t last_bus_mxfld0_out;
+static Bus_t last_bus_mxfld7_out = {.current_value = 0, .next_value = 0};
+static Bus_t last_bus_mxfld0_out = {.current_value = 0, .next_value = 0};
 static PubSubSubscription *mxfld7_out_bus_topic_subscription = NULL;
 static PubSubSubscription *mxfld0_out_bus_topic_subscription = NULL;
 
@@ -61,13 +62,16 @@ static int get_flags(void) {
 }
 
 void run_flags(void) {
+    update_bus_data(&last_bus_mxfld7_out);
+    update_bus_data(&last_bus_mxfld0_out);
+
     int flags = get_flags();
 
     if (flcar_lb.value == 1) {
         // load
         // concat flags: fc|fz
-        char *fc_str = itoa(last_bus_mxfld7_out);
-        char *fz_str = itoa(last_bus_mxfld0_out);
+        char *fc_str = itoa(last_bus_mxfld7_out.current_value);
+        char *fz_str = itoa(last_bus_mxfld0_out.current_value);
         char *flags_str = str_concat(fc_str, fz_str);
         flags = atoi(flags_str);  // 00, 01, 10, 11
 

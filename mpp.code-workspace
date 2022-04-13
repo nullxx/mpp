@@ -90,7 +90,12 @@
       "definitions.h": "c",
       "__threading_support": "c",
       "thread": "c",
-      "thread.h": "c"
+      "thread.h": "c",
+      "sqlite3.h": "c",
+      "time.h": "c",
+      "__config": "c",
+      "mutex": "c",
+      "stdio.h": "c"
     },
     "psi-header.templates": [
       {

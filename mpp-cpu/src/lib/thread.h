@@ -13,9 +13,4 @@
 #include <pthread.h>
 pthread_t *create_pthread(const pthread_attr_t *attr, void *(*start_routine)(void *), void *arg);
 int get_thread_count(void);
-// int create_process(void (*)(void));
-// int kill_process(int pid);
-// void run_task_in(int pid);
-// void wait_for(int signal_code, unsigned long pid);
-// unsigned long wait_for_init(int signal_code, unsigned long pid);
 #endif

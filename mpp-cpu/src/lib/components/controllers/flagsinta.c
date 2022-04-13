@@ -18,9 +18,10 @@
 #include "../../pubsub.h"
 #include "../../utils.h"
 #include "../components.h"
+#include "../../electronic/bus.h"
 
 LoadBit flbus_lb = {.value = 0};
-static Bus_t last_bus_flags_out;
+static Bus_t last_bus_flags_out = {.current_value = 0, .next_value = 0};
 static PubSubSubscription *flags_out_bus_topic_subscription = NULL;
 
 void cll_set_flbus_lb(void) { flbus_lb.value = 1; }
@@ -31,8 +32,10 @@ void cll_init_flagsinta(void) { flags_out_bus_topic_subscription = subscribe_to(
 void cll_shutdown_flagsinta(void) { unsubscribe_for(flags_out_bus_topic_subscription); }
 
 void cll_run_flagsinta(void) {
+    update_bus_data(&last_bus_flags_out);
+
     // FC|INTA|X|X|X|X|X|FZ
-    char *flags_str = itoa(last_bus_flags_out);
+    char *flags_str = itoa(last_bus_flags_out.current_value);
     const int flags_str_len = strlen(flags_str);
 
     const int bin_str_len = FLAGSINTA_BUS_SIZE_BITS;

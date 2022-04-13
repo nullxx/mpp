@@ -35,22 +35,16 @@ typedef enum {
     FLAGS_OUTPUT_BUS_TOPIC,
 } PubSubTopic;
 
-typedef struct {
-    PubSubTopic topic;
-    void *value;
-} PubSubMessage;
-
 const char *pubsub_topic_tostring(PubSubTopic topic);
-
-typedef void (*on_message)(PubSubMessage);
 
 typedef struct {
     int id;
     PubSubTopic topic;
-    Bus_t *var;
+    Bus_t *bus_t;
+    int active;
 } PubSubSubscription;
 
-typedef int (*PubSubMiddlewareFn)(Bus_t);
+typedef int (*PubSubMiddlewareFn)(Bin);
 
 typedef struct {
     PubSubTopic topic;
@@ -58,17 +52,15 @@ typedef struct {
     int id;
 } PubSubMiddleware;
 
-int init_pubsub(void);
-void shutdown_pubsub(void);
 #ifndef DEBUG  // this is for debugging. I don't know if is the best practice. Btw is very ougly
 PubSubSubscription *subscribe_to(PubSubTopic, Bus_t*);
 #else
-PubSubSubscription *subscribe_to_internal(PubSubTopic topic, Bus_t *var_ptr, const char *caller);
-#define subscribe_to(topic, var_ptr) subscribe_to_internal(topic, var_ptr, __func__);
+PubSubSubscription *subscribe_to_internal(PubSubTopic topic, Bus_t *bus_t, const char *caller);
+#define subscribe_to(topic, bus_t) subscribe_to_internal(topic, bus_t, __func__);
 #endif
 int unsubscribe_for(PubSubSubscription *);
 
-int publish_message_to(PubSubTopic, Bus_t);
+int publish_message_to(PubSubTopic, Bin);
 
 PubSubMiddleware *add_topic_middleware(PubSubTopic topic, PubSubMiddlewareFn middleware_fn);
 int rm_topic_middleware(PubSubMiddleware *middleware);

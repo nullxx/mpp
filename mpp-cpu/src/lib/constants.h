@@ -46,6 +46,6 @@
 
 #define MAX_CALC_BIN_SIZE_BITS 16
 
-#define CONSTANT_RUNNING_MODULES_COUNT 2 + 1 /* +1 for the main thread. ALU, PC */
+#define ALU_MEM_RELATION 2 * 1 // factorial(2)
 
 #endif /* constants_h */

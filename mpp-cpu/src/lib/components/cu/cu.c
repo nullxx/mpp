@@ -12,8 +12,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "../../constants.h"
+#include "../../electronic/bus.h"
 #include "../../error.h"
 #include "../../logger.h"
 #include "../../pubsub.h"
@@ -43,8 +45,8 @@ RegisterWatcher RI_reg_watcher = {.name = "RI", .reg = &RI_reg};
 
 LoadBit ricar_lb = {.value = 0};
 
-static Bus_t last_bus_data;
-static Bus_t last_bus_flags_out;
+static Bus_t last_bus_data = {.current_value = 0, .next_value = 0};
+static Bus_t last_bus_flags_out = {.current_value = 0, .next_value = 0};
 static PubSubSubscription *data_bus_topic_subscription = NULL;
 static PubSubSubscription *flags_out_bus_topic_subscription = NULL;
 
@@ -120,7 +122,7 @@ typedef struct {
 
 FlagsState get_flags(void) {
     FlagsState flags;
-    int flags_int = bin_to_int(last_bus_flags_out);
+    int flags_int = bin_to_dec(last_bus_flags_out.current_value);
     flags.fc = flags_int == 10;
     flags.fz = flags_int == 1;
     if (flags_int == 11) {
@@ -134,7 +136,7 @@ OpStateTrace *decode_step(void) {
     OpStateTrace *trace = create_state_trace(NULL);
     FlagsState flags = get_flags();
 
-    const int opcode = bin_to_int(RI_reg.bin_value);
+    const int opcode = bin_to_dec(RI_reg.bin_value);
     log_debug("Decoding opcode: 0x%02X", opcode);
     switch (opcode) {
         case 0x00 ... 0x0F: {
@@ -452,9 +454,39 @@ void shutdown_cu(void) {
     unregister_watcher(&RI_reg_watcher);
 }
 
+void run_asyncronus_components(void) {
+        run_addsub();
+        run_mxdir();
+
+    for (size_t i = 0; i < ALU_MEM_RELATION; i++) {
+        run_mem();
+        run_alu();
+    }
+}
+
+void run_sync_comp(void (*run_comp_fn)(void)) {
+    run_comp_fn();
+    run_asyncronus_components();
+}
+
 void run_cu(void) {  // 1 opstate per run
     log_debug("Running S%d", state_trace->state.id);
     process_state_loadbits(state_trace->state);
+
+    run_asyncronus_components();
+
+    update_bus_data(&last_bus_data);
+    update_bus_data(&last_bus_flags_out);
+
+    if (ricar_lb.value == 1) {
+        // load
+        if (get_num_len(last_bus_data.current_value) > RI_reg.bit_length) {
+            Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load to RI register"};
+            throw_error(err);
+        }
+
+        RI_reg.bin_value = last_bus_data.next_value;
+    }
 
     switch (state_trace->state.id) {
         case S0: {
@@ -468,39 +500,42 @@ void run_cu(void) {  // 1 opstate per run
         default:
             break;
     }
+    // run_mem(); // <<==  is asyncroneous
 
-    run_mem();
+    // run_fffc();
+    run_sync_comp(run_fffc);
 
-    run_fffc();
-    run_mxdir();
-    run_addsub();
+    // run_mxdir(); // <<==  is asyncroneous
+    // run_addsub(); // <<== is asyncroneous
+
+    // run_acumm();
+    run_sync_comp(run_acumm);
+
+    // run_op2();
+    run_sync_comp(run_op2);
+
+    // run_greg();
+    run_sync_comp(run_greg);
+
+    // run_alu(); // <<== is asyncroneous
+
+    // run_hl();
+    run_sync_comp(run_hl);
+
+    // run_sp();
+    run_sync_comp(run_sp);
+
+    // cll_run_mxfldx();
+    run_sync_comp(cll_run_mxfldx);
+
+    // run_flags();
+    run_sync_comp(run_flags);
+
+    // cll_run_flagsinta();
+    run_sync_comp(cll_run_flagsinta);
+
     // run_pc();
-
-    run_greg();
-
-    // run_alu(); // <<== alu is asyncroneous
-
-    run_acumm();
-    run_op2();
-
-    run_hl();
-    run_sp();
-
-    cll_run_mxfldx();
-
-    run_flags();
-
-    cll_run_flagsinta();
-
-    if (ricar_lb.value == 1) {
-        // load
-        if (get_bin_len(last_bus_data) > RI_reg.bit_length) {
-            Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load to RI register"};
-            throw_error(err);
-        }
-
-        RI_reg.bin_value = last_bus_data;
-    }
+    run_sync_comp(run_pc);
 
     OpStateTrace *tmp_next_state_trace = state_trace->next;
     free(state_trace);

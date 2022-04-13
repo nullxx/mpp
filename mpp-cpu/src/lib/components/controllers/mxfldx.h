@@ -19,5 +19,5 @@ void cll_run_mxfldx(void);
 void cll_set_selfl_lb(void);
 void cll_reset_selfl_lb(void);
 int cll_get_selfl_lb_value(void);
-Bus_t cll_get_last_bus_data(void);
+Bin cll_get_last_bus_data(void);
 #endif

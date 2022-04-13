@@ -38,8 +38,8 @@ void unregister_watcher(RegisterWatcher *reg_watcher) {
 
 void log_watchers(void) {
     for (LlNode *node = watchers; node != NULL; node = node->next) {
-        RegisterWatcher *reg_watcher = node->value;
-        const int decimal_repr = bin_to_int(reg_watcher->reg->bin_value);
+        RegisterWatcher *reg_watcher = (RegisterWatcher *) node->value;
+        const int decimal_repr = bin_to_dec(reg_watcher->reg->bin_value);
         log_debug("%s: 0x%0X (0b%llu)", reg_watcher->name, decimal_repr, reg_watcher->reg->bin_value);
     }
 }

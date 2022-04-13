@@ -17,26 +17,8 @@
 #include "lib/error.h"
 #include "lib/logger.h"
 #include "lib/watcher.h"
-#include "lib/pubsub.h"
 
 jmp_buf error_buffer;
-
-void init_libs(void) {
-    int init_pubsub_succs = init_pubsub();
-    if (init_pubsub_succs == -1) {
-        Error err = {
-            .type = FATAL_ERROR,
-            .message = "Error initializing pubsub.",
-            .show_errno = true
-        };
-        throw_error(err);
-        return;
-    }
-}
-
-void shutdown_libs(void) {
-    shutdown_pubsub();
-}
 
 void on_signal_exit(int signal) {
     log_info("Received signal %d.", signal);
@@ -46,14 +28,13 @@ void on_signal_exit(int signal) {
     if (confirmation == 'y' || confirmation == '\n') {
         log_info("Shuting down...");
         shutdown_components();
-        shutdown_libs();
         exit(EXIT_SUCCESS);
     }
 }
 
-void pause_execution(const char* message) {
+char pause_execution(const char* message) {
     log_info(message);
-    getchar();
+    return getchar();
 }
 
 void init_error_handle(void) {
@@ -99,58 +80,56 @@ int main(int argc, const char* argv[]) {
     init_err_hanlder(&error_buffer);
     init_error_handle();
 
-    init_libs();
-
     init_buses();
     init_components();
 
     // TODO remove
 
     // MOV 22, AC
-    MemValue mem_value1 = {.offset = "0", .value_hex = "64"};
+    MemValue mem_value1 = {.offset = 0x00, .value_hex = "64"};
     set_mem_value(mem_value1);
 
-    MemValue mem_value2 = {.offset = "1", .value_hex = "00"};
+    MemValue mem_value2 = {.offset = 0x01, .value_hex = "00"};
     set_mem_value(mem_value2);
     // -- MOV 22, AC
 
     // INC AC
-    MemValue mem_value3 = {.offset = "2", .value_hex = "4B"};
+    MemValue mem_value3 = {.offset = 0x02, .value_hex = "4B"};
     set_mem_value(mem_value3);
     // -- INC AC
 
     // CMP 05
-    MemValue mem_value4 = {.offset = "3", .value_hex = "67"};
+    MemValue mem_value4 = {.offset = 0x03, .value_hex = "67"};
     set_mem_value(mem_value4);
 
-    MemValue mem_value5 = {.offset = "4", .value_hex = "05"};
+    MemValue mem_value5 = {.offset = 0x04, .value_hex = "05"};
     set_mem_value(mem_value5);
     // -- CMP 05
 
     // CMP 05
-    MemValue mem_value6 = {.offset = "5", .value_hex = "72"};
+    MemValue mem_value6 = {.offset = 0x05, .value_hex = "72"};
     set_mem_value(mem_value6);
 
-    MemValue mem_value7 = {.offset = "6", .value_hex = "00"};
+    MemValue mem_value7 = {.offset = 0x06, .value_hex = "00"};
     set_mem_value(mem_value7);
 
-    MemValue mem_value8 = {.offset = "7", .value_hex = "0B"};
+    MemValue mem_value8 = {.offset = 0x07, .value_hex = "0B"};
     set_mem_value(mem_value8);
     // -- CMP 05
 
     // JMP 0002
-    MemValue mem_value9 = {.offset = "8", .value_hex = "74"};
+    MemValue mem_value9 = {.offset = 0x08, .value_hex = "74"};
     set_mem_value(mem_value9);
 
-    MemValue mem_value10 = {.offset = "9", .value_hex = "00"};
+    MemValue mem_value10 = {.offset = 0x09, .value_hex = "00"};
     set_mem_value(mem_value10);
 
-    MemValue mem_value11 = {.offset = "a", .value_hex = "02"};
+    MemValue mem_value11 = {.offset = 0x0A, .value_hex = "02"};
     set_mem_value(mem_value11);
     // -- JMP 0002
 
     // FIN
-    MemValue mem_value12 = {.offset = "b", .value_hex = "FF"};
+    MemValue mem_value12 = {.offset = 0x0B, .value_hex = "FF"};
     set_mem_value(mem_value12);
     // -- FIN
 

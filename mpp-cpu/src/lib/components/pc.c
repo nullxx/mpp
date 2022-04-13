@@ -22,6 +22,7 @@
 #include "../utils.h"
 #include "../watcher.h"
 #include "components.h"
+#include "../electronic/bus.h"
 
 static Register pch_reg = {.bin_value = 0, .bit_length = PCH_REG_SIZE_BIT};
 static Register pcl_reg = {.bin_value = 0, .bit_length = PCL_REG_SIZE_BIT};
@@ -38,20 +39,10 @@ static LoadBit pccar_lb = {.value = 0};
 static LoadBit pch_bus = {.value = 0};
 static LoadBit pcl_bus = {.value = 0};
 
-static Bus_t last_bus_dir;
-static Bus_t last_bus_data;
+static Bus_t last_bus_dir = {.current_value = 0, .next_value = 0};
+static Bus_t last_bus_data = {.current_value = 0, .next_value = 0};
 static PubSubSubscription *dir_bus_topic_subscription = NULL;
 static PubSubSubscription *data_bus_topic_subscription = NULL;
-
-int pr_thread_runnable = 1;
-static void *pc_thread(void) {
-    while (pr_thread_runnable) {
-        run_pc();
-    }
-
-    return NULL;
-}
-static pthread_t *thread_id;
 
 void init_pc(void) {
     register_watcher(&pch_reg_watcher);
@@ -60,17 +51,9 @@ void init_pc(void) {
 
     dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC_1, &last_bus_dir);
     data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
-
-    if ((thread_id = create_pthread(NULL, (void *)pc_thread, NULL)) == NULL) {
-        Error err = {.message = "Error creating alu thread", .show_errno = 0, .type = FATAL_ERROR};
-        return throw_error(err);
-    }
 }
 
 void shutdown_pc(void) {
-    pr_thread_runnable = 0;
-    pthread_join(*thread_id, NULL);
-
     unsubscribe_for(dir_bus_topic_subscription);
     unsubscribe_for(data_bus_topic_subscription);
 
@@ -95,15 +78,18 @@ void set_pccar_lb(void) { pccar_lb.value = 1; }
 void reset_pccar_lb(void) { pccar_lb.value = 0; }
 
 void run_pc(void) {
+    update_bus_data(&last_bus_data);
+    update_bus_data(&last_bus_dir);
+
     // pch
     if (pchcar_lb.value == 1) {
         // load pch
-        if (get_bin_len(last_bus_data) > pch_reg.bit_length) {
+        if (get_num_len(last_bus_data.current_value) > pch_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PCH register"};
             throw_error(err);
         }
 
-        pch_reg.bin_value = last_bus_data;
+        pch_reg.bin_value = last_bus_data.current_value;
     } else if (pch_bus.value == 1) {  // pchcar_lb.value = 0
         // read to data bus if pchbus enabled
         publish_message_to(DATA_BUS_TOPIC, pch_reg.bin_value);
@@ -111,12 +97,12 @@ void run_pc(void) {
     // pcl
     if (pchcar_lb.value == 1) {
         // load pcl
-        if (get_bin_len(last_bus_data) > pcl_reg.bit_length) {
+        if (get_num_len(last_bus_data.current_value) > pcl_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PCL register"};
             throw_error(err);
         }
 
-        pcl_reg.bin_value = last_bus_data;
+        pcl_reg.bin_value = last_bus_data.current_value;
     } else if (pcl_bus.value == 1) {  // pchcar_lb.value = 0
         // read to data bus if pchbus enabled
         publish_message_to(DATA_BUS_TOPIC, pcl_reg.bin_value);
@@ -124,51 +110,40 @@ void run_pc(void) {
 
     // mix pch + pcl => pc. If pc is set later it will be overwritten
     if (pchcar_lb.value == 1 && pclcar_lb.value == 1) {
-        char *next_pc_reg_str = (char *)malloc(sizeof(char) * (pcl_reg.bit_length + pch_reg.bit_length + 1));
-        if (next_pc_reg_str == NULL) {
-            Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Malloc error"};
-            throw_error(err);
-            return;
-        }
+        // char *next_pc_reg_str = (char *)malloc(sizeof(char) * (pcl_reg.bit_length + pch_reg.bit_length + 1));
+        // if (next_pc_reg_str == NULL) {
+        //     Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Malloc error"};
+        //     throw_error(err);
+        //     return;
+        // }
 
-        char *pch_reg_bin_value_str = bin_to_str(pch_reg.bin_value);
-        char *pcl_reg_bin_value_str = bin_to_str(pcl_reg.bin_value);
+        // char *pch_reg_bin_value_str = bin_to_str(pch_reg.bin_value);
+        // char *pcl_reg_bin_value_str = bin_to_str(pcl_reg.bin_value);
 
-        strcpy(next_pc_reg_str, pch_reg_bin_value_str);
-        strcat(next_pc_reg_str, pcl_reg_bin_value_str);
+        // strcpy(next_pc_reg_str, pch_reg_bin_value_str);
+        // strcat(next_pc_reg_str, pcl_reg_bin_value_str);
 
-        free(pch_reg_bin_value_str);
-        free(pcl_reg_bin_value_str);
+        // free(pch_reg_bin_value_str);
+        // free(pcl_reg_bin_value_str);
 
-        pc_reg.bin_value = str_to_bin(next_pc_reg_str);
+        pc_reg.bin_value = concatenate(pch_reg.bin_value, pcl_reg.bin_value);
 
-        free(next_pc_reg_str);
+        // free(next_pc_reg_str);
     }
 
     // pc
     if (pccar_lb.value == 1) {
         // load pc // PC is prioritary than pch and pcl
-        if (get_bin_len(last_bus_dir) > pc_reg.bit_length) {
+        if (get_num_len(last_bus_dir.current_value) > pc_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PC register"};
             throw_error(err);
             return;
         }
 
-        pc_reg.bin_value = last_bus_dir;
+        pc_reg.bin_value = last_bus_dir.current_value;
 
-        // set pch and pcl
-        char *pc_str = bin_to_str(pc_reg.bin_value);
-
-        char next_pch_reg_str[PCH_REG_SIZE_BIT];
-        char next_pcl_reg_str[PCL_REG_SIZE_BIT];
-
-        strncpy(next_pch_reg_str, pc_str, PCH_REG_SIZE_BIT);
-        strncpy(next_pcl_reg_str, pc_str, PCL_REG_SIZE_BIT);
-
-        free(pc_str);
-
-        pch_reg.bin_value = str_to_bin(next_pch_reg_str);
-        pcl_reg.bin_value = str_to_bin(next_pcl_reg_str);
+        pch_reg.bin_value = pc_reg.bin_value / 100000000; // 8 bits
+        pcl_reg.bin_value = pc_reg.bin_value % 100000000; // 8 bits
     }
 
     publish_message_to(PC_OUTPUT_BUS_TOPIC, pc_reg.bin_value);

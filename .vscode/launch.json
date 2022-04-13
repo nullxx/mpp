@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug mpp-cpu",
+        "type": "lldb",
+        "request": "launch",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "environment": [],
+        "externalConsole": false,
+        "linux": {
+          "MIMode": "gdb",
+          "miDebuggerPath": "gdb",
+          "program": "${workspaceFolder}/mpp-cpu/output/main"
+        },
+        "osx": {
+          "MIMode": "lldb",
+          "MIDebuggerPath": "lldb-mi",
+          "program": "${workspaceFolder}/mpp-cpu/output/main"
+        },
+        "windows": {
+          "MIMode": "gdb",
+          "miDebuggerPath": "gdb.exe",
+          "program": "${workspaceFolder}/mpp-cpu/output/main.exe"
+        },
+        "preLaunchTask": "build mpp-cpu"
+      }
+    ]
+  }

@@ -10,16 +10,20 @@
 #include <stdio.h>
 
 #include "../constants.h"
+#include "../error.h"
 #include "../pubsub.h"
+#include "../thread.h"
 #include "../utils.h"
 #include "components.h"
+#include "../electronic/bus.h"
 
 LoadBit id_lb = {.value = 00};
-Bus_t last_bus_dir;
+Bus_t last_bus_dir = {.current_value = 0, .next_value = 0};
+
 static PubSubSubscription *dir_bus_topic_subscription = NULL;
 
 bool set_id_lb(unsigned long bin) {
-    const int bin_len = get_bin_len(bin);
+    const int bin_len = get_num_len(bin);
     if (bin_len > ID_LOAD_BIT_SIZE_BITS) {
         return false;
     }
@@ -29,7 +33,7 @@ bool set_id_lb(unsigned long bin) {
 }
 
 void run_addsub(void) {
-    int dir_bus_int = bin_to_int(last_bus_dir);
+    int dir_bus_int = bin_to_dec(last_bus_dir.next_value);
 
     switch (id_lb.value) {
         case 01:
@@ -47,10 +51,14 @@ void run_addsub(void) {
             break;
     }
 
-    unsigned long long next_bin_bus_dir = int_to_bin(dir_bus_int, MAX_CALC_BIN_SIZE_BITS);
-
+    Bin next_bin_bus_dir = int_to_bin(dir_bus_int, MAX_CALC_BIN_SIZE_BITS);
     publish_message_to(DIR_BUS_TOPIC_1, next_bin_bus_dir);
 }
 
-void init_addsub(void) { dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC_2, &last_bus_dir); }
-void shutdown_addsub(void) { unsubscribe_for(dir_bus_topic_subscription); }
+void init_addsub(void) {
+    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC_2, &last_bus_dir);
+}
+
+void shutdown_addsub(void) {
+    unsubscribe_for(dir_bus_topic_subscription);
+}

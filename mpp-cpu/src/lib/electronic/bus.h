@@ -11,6 +11,9 @@
 #ifndef bus_h
 #define bus_h
 
+#include "../definitions.h"
+
 void init_buses(void);
+void update_bus_data(Bus_t *bus_t);
 
 #endif /* bus_h */

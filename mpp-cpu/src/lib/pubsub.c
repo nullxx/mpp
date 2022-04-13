@@ -4,12 +4,10 @@
 //
 //  Created by Jon Lara trigo on 22/3/22.
 //
-#define PUBSUB_SEM "/MPP_PUBSUB_SEM02"
 
 #include "pubsub.h"
 
 #include <math.h>
-#include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,21 +25,6 @@ int topic_with_middleware_count = 0;
 // PubSubSubscription **subscriptions = NULL;
 LlNode *subscriptions_head = NULL;
 int subscription_count = 0;
-
-sem_t *sem;
-int init_pubsub(void) {
-    sem = sem_open(PUBSUB_SEM, O_CREAT, 0660, CONSTANT_RUNNING_MODULES_COUNT);  // initial value to 1 does't work
-    if (sem == SEM_FAILED) {
-        return -1;
-    }
-
-    return 1;
-}
-
-void shutdown_pubsub(void) {
-    sem_close(sem);
-    sem_unlink(PUBSUB_SEM);
-}
 
 const char *pubsub_topic_tostring(PubSubTopic topic) {
     switch (topic) {
@@ -84,9 +67,9 @@ const char *pubsub_topic_tostring(PubSubTopic topic) {
 }
 
 #ifndef DEBUG
-PubSubSubscription *subscribe_to(PubSubTopic topic, Bus_t *var_ptr) {
+PubSubSubscription *subscribe_to(PubSubTopic topic, Bus_t *bus_t) {
 #else
-PubSubSubscription *subscribe_to_internal(PubSubTopic topic, Bus_t *var_ptr, const char *caller) {
+PubSubSubscription *subscribe_to_internal(PubSubTopic topic, Bus_t *bus_t, const char *caller) {
 #endif
     PubSubSubscription *subscription = (PubSubSubscription *)malloc(sizeof(PubSubSubscription));
     if (subscription == NULL) {
@@ -95,7 +78,8 @@ PubSubSubscription *subscribe_to_internal(PubSubTopic topic, Bus_t *var_ptr, con
 
     subscription->id = subscription_count++;  // id is also the index inside subscriptions
     subscription->topic = topic;
-    subscription->var = var_ptr;
+    subscription->bus_t = bus_t;
+    subscription->active = 1;
 
     if (subscriptions_head == NULL) {
         subscriptions_head = create_ll_node((void *)subscription, NULL);
@@ -167,10 +151,13 @@ int unsubscribe_for(PubSubSubscription *sub) {
         goto end;
     }
 
-    sem_wait(sem);
+    int sub_active_prev = sub->active;
+    sub->active = 0;
+
     int deleted = delete_node_from_value(&subscriptions_head, sub);
     if (!deleted) {
         response = false;
+        sub->active = sub_active_prev;
         goto end;
     }
 
@@ -182,9 +169,8 @@ int unsubscribe_for(PubSubSubscription *sub) {
     free(constructed_msg);
 
 #endif
-    free(sub);
+    // free(sub); // not deleting the subscription, just removing it from the list
 end:
-    sem_post(sem);
     return response;
 }
 
@@ -195,8 +181,7 @@ end:
  * @param value
  * @return int -1 if middleware doesn't pass
  */
-int publish_message_to(PubSubTopic topic, Bus_t value) {
-    sem_wait(sem);
+int publish_message_to(PubSubTopic topic, Bin value) {
     int sent = 0;
 
     // executing middlewares
@@ -221,9 +206,10 @@ int publish_message_to(PubSubTopic topic, Bus_t value) {
         PubSubSubscription *sub = (PubSubSubscription *)current_node->value;
         current_node = current_node->next;
         if (sub == NULL) continue;
+        if (!sub->active) continue;
         if (sub->topic != topic) continue;
-        
-        *sub->var = value;
+
+        sub->bus_t->next_value = value;
 
         sent++;
     }
@@ -237,6 +223,5 @@ int publish_message_to(PubSubTopic topic, Bus_t value) {
 #endif
 
 end:
-    sem_post(sem);
     return sent;
 }
