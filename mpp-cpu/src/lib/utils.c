@@ -216,3 +216,8 @@ long factorial(int n) {
 }
 
 void beep(void) { printf("\a"); }
+
+char pause_execution(const char *message) {
+    printf("%s\n", message);
+    return getchar();
+}

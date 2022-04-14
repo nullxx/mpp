@@ -26,7 +26,6 @@
 #include "controllers/flagsinta.h"
 #include "flags.h"
 #include "cu/cu.h"
-// TODO review the order of init and shutdown of components. Firt the ones that doesn't depend on any.
 
 void init_components(void) {
     init_mem();
@@ -44,7 +43,7 @@ void init_components(void) {
     cll_init_mxfldx();
     init_flags();
     cll_init_flagsinta();
-    init_cu();
+    // init_cu(); // TODO remove
 }
 
 void shutdown_components(void) {

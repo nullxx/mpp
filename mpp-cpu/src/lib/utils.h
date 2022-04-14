@@ -31,4 +31,5 @@ char *itoa(int num);
 unsigned concatenate(unsigned x, unsigned y);
 long factorial(int n);
 void beep(void);
+char pause_execution(const char *message);
 #endif /* utils_h */

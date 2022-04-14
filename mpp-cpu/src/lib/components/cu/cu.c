@@ -38,6 +38,7 @@
 #include "../pc.h"
 #include "../sp.h"
 #include "cu_constants.h"
+#include "../../utils.h"
 
 Register RI_reg = {.bin_value = 00000000, .bit_length = RI_REG_SIZE_BIT};
 
@@ -52,6 +53,29 @@ static PubSubSubscription *flags_out_bus_topic_subscription = NULL;
 
 static void set_ricar_lb(void) { ricar_lb.value = 1; }
 static void reset_ricar_lb(void) { ricar_lb.value = 0; }
+
+void dispatch_clock_start(void) {
+    // 1hz = 1 cyle per second
+    // 1GHz = 1.000.000.000 cycles per second
+    log_info("Starting clock...");
+
+    log_info("Initial state");
+    log_watchers();
+
+    pause_execution("Press any key to start");
+
+    while (1) {
+        clock_t start = clock();
+        run_cu();
+        clock_t end = clock();
+
+        double seconds_spent = (double)(end - start) / CLOCKS_PER_SEC;
+        log_info("Cycle time: %fs => %f KHz", seconds_spent, (1 / seconds_spent) / 1000);
+
+        log_watchers();
+        pause_execution("Press [ENTER] to continue...");
+    }
+}
 
 static OpStateTrace *create_state_trace(const OpState *state) {
     OpStateTrace *trace = (OpStateTrace *)malloc(sizeof(OpStateTrace));
@@ -444,6 +468,8 @@ void init_cu(void) {
     data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
     flags_out_bus_topic_subscription = subscribe_to(FLAGS_OUTPUT_BUS_TOPIC, &last_bus_flags_out);
     state_trace = (OpStateTrace *)create_state_trace(&s0);
+
+    dispatch_clock_start();
 }
 
 void shutdown_cu(void) {
@@ -455,8 +481,8 @@ void shutdown_cu(void) {
 }
 
 void run_asyncronus_components(void) {
-        run_addsub();
-        run_mxdir();
+    run_addsub();
+    run_mxdir();
 
     for (size_t i = 0; i < ALU_MEM_RELATION; i++) {
         run_mem();

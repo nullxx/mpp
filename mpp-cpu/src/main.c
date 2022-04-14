@@ -17,6 +17,9 @@
 #include "lib/error.h"
 #include "lib/logger.h"
 #include "lib/watcher.h"
+#include "lib/utils.h"
+
+#include "gui/gui.h"
 
 jmp_buf error_buffer;
 
@@ -32,11 +35,6 @@ void on_signal_exit(int signal) {
     }
 }
 
-char pause_execution(const char* message) {
-    log_info(message);
-    return getchar();
-}
-
 void init_error_handle(void) {
     ErrorType err_type = (ErrorType)setjmp(error_buffer);
 
@@ -45,33 +43,11 @@ void init_error_handle(void) {
     }
 }
 
-void dispatch_clock_start(void) {
-    // 1hz = 1 cyle per second
-    // 1GHz = 1.000.000.000 cycles per second
-    log_info("Starting clock...");
-
-    log_info("Initial state");
-    log_watchers();
-
-    pause_execution("Press [ENTER] to start execution...");
-
-    while (1) {
-        init_error_handle();
-        clock_t start = clock();
-        run_cu();
-        clock_t end = clock();
-
-        double seconds_spent = (double)(end - start) / CLOCKS_PER_SEC;
-        log_info("Cycle time: %fs => %f KHz", seconds_spent, (1 / seconds_spent) / 1000);
-
-        log_watchers();
-        pause_execution("Press [ENTER] to continue...");
-    }
-}
-
 int main(int argc, const char* argv[]) {
     (void)argc;
     (void)argv;
+
+    // start_gui(argc, argv);
 
     log_info("Turning on...");
 
@@ -89,52 +65,51 @@ int main(int argc, const char* argv[]) {
     MemValue mem_value1 = {.offset = 0x00, .value_hex = "64"};
     set_mem_value(mem_value1);
 
-    MemValue mem_value2 = {.offset = 0x01, .value_hex = "00"};
+    MemValue mem_value2 = {.offset = 0x01, .value_hex = "02"};
     set_mem_value(mem_value2);
     // -- MOV 22, AC
 
     // INC AC
-    MemValue mem_value3 = {.offset = 0x02, .value_hex = "4B"};
+    MemValue mem_value3 = {.offset = 0x02, .value_hex = "45"};
     set_mem_value(mem_value3);
     // -- INC AC
 
+    // // CMP 05
+    // MemValue mem_value4 = {.offset = 0x03, .value_hex = "40"};
+    // set_mem_value(mem_value4);
+
+    // MemValue mem_value5 = {.offset = 0x04, .value_hex = "30"};
+    // set_mem_value(mem_value5);
+    // // -- CMP 05
+
     // CMP 05
-    MemValue mem_value4 = {.offset = 0x03, .value_hex = "67"};
-    set_mem_value(mem_value4);
+    // MemValue mem_value6 = {.offset = 0x05, .value_hex = "30"};
+    // set_mem_value(mem_value6);
 
-    MemValue mem_value5 = {.offset = 0x04, .value_hex = "05"};
-    set_mem_value(mem_value5);
-    // -- CMP 05
+    // MemValue mem_value7 = {.offset = 0x06, .value_hex = "00"};
+    // set_mem_value(mem_value7);
 
-    // CMP 05
-    MemValue mem_value6 = {.offset = 0x05, .value_hex = "72"};
-    set_mem_value(mem_value6);
+    // MemValue mem_value8 = {.offset = 0x07, .value_hex = "0B"};
+    // set_mem_value(mem_value8);
+    // // -- CMP 05
 
-    MemValue mem_value7 = {.offset = 0x06, .value_hex = "00"};
-    set_mem_value(mem_value7);
+    // // JMP 0002
+    // MemValue mem_value9 = {.offset = 0x08, .value_hex = "74"};
+    // set_mem_value(mem_value9);
 
-    MemValue mem_value8 = {.offset = 0x07, .value_hex = "0B"};
-    set_mem_value(mem_value8);
-    // -- CMP 05
+    // MemValue mem_value10 = {.offset = 0x09, .value_hex = "00"};
+    // set_mem_value(mem_value10);
 
-    // JMP 0002
-    MemValue mem_value9 = {.offset = 0x08, .value_hex = "74"};
-    set_mem_value(mem_value9);
+    // MemValue mem_value11 = {.offset = 0x0A, .value_hex = "02"};
+    // set_mem_value(mem_value11);
+    // // -- JMP 0002
 
-    MemValue mem_value10 = {.offset = 0x09, .value_hex = "00"};
-    set_mem_value(mem_value10);
+    // // FIN
+    // MemValue mem_value12 = {.offset = 0x0B, .value_hex = "FF"};
+    // set_mem_value(mem_value12);
+    // // -- FIN
 
-    MemValue mem_value11 = {.offset = 0x0A, .value_hex = "02"};
-    set_mem_value(mem_value11);
-    // -- JMP 0002
-
-    // FIN
-    MemValue mem_value12 = {.offset = 0x0B, .value_hex = "FF"};
-    set_mem_value(mem_value12);
-    // -- FIN
-
+    init_cu(); // temporal solution for loading instructions
     // -- TODO remove
-    dispatch_clock_start();
-
     return 0;
 }
