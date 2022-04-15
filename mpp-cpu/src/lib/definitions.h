@@ -12,6 +12,7 @@
 #define definitions_h
 
 typedef unsigned long long Bin;
+
 typedef struct {
     Bin next_value;
     Bin current_value;

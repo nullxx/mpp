@@ -33,6 +33,11 @@ typedef enum {
     MXFLD0_OUTPUT_BUS_TOPIC,
 
     FLAGS_OUTPUT_BUS_TOPIC,
+
+    CU_RI_OUTPUT_BUS_TOPIC,
+    CU_SEQ_JOINER_OUTPUT_BUS_TOPIC,
+    CU_SEQ_ACTUAL_STATUS_BUS_TOPIC, // 4 bits
+    CONTROL_BUS_TOPIC
 } PubSubTopic;
 
 const char *pubsub_topic_tostring(PubSubTopic topic);

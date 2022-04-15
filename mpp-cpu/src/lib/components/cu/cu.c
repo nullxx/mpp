@@ -514,6 +514,8 @@ void run_cu(void) {  // 1 opstate per run
         RI_reg.bin_value = last_bus_data.next_value;
     }
 
+    publish_message_to(CU_RI_OUTPUT_BUS_TOPIC, RI_reg.bin_value);
+
     switch (state_trace->state.id) {
         case S0: {
             // RI <- (PC)

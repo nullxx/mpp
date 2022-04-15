@@ -32,4 +32,5 @@ unsigned concatenate(unsigned x, unsigned y);
 long factorial(int n);
 void beep(void);
 char pause_execution(const char *message);
+int digit(int a, int b);
 #endif /* utils_h */

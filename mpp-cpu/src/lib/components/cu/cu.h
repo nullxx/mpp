@@ -10,51 +10,13 @@
 
 #ifndef cu_h
 #define cu_h
+#include "states.h"
+
 void init_cu(void);
 void shutdown_cu(void);
 void run_cu(void);
 
-typedef enum {
-    S0,
-    S1,
-    S2,
-    S3,
-    S4,
-    S5,
-    S6,
-    S7,
-    S8,
-    S9,
-    S10,
-    S11,
-    S12,
-    S13,
-    S14,
-    S15,
-    S16,
-    S17,
-    S18,
-    S19,
-    S20,
-    S21,
-    S22,
-    S23,
-    S24,
-    S25,
-    S26,
-    S27,
-    S28,
-    S29,
-    S30,
-    S31,
-    S32,
-    S33,
-    S34,
-    S35,
-    S36,
-    S37,
-    S38
-} OpStateID;
+
 
 typedef struct {
     int sel_alu;

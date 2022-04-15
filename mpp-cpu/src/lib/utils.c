@@ -221,3 +221,5 @@ char pause_execution(const char *message) {
     printf("%s\n", message);
     return getchar();
 }
+
+int digit(int a, int b) { return a / (int)pow(10, b - 1) % 10; }

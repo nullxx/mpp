@@ -1,14 +1,16 @@
 /*
- * File: /src/lib/components/cu/cu_constants.h
+ * File: /src/lib/components/cu/rom.h
  * Project: mpp-cpu
- * File Created: Sunday, 3rd April 2022 1:56:22 pm
+ * File Created: Thursday, 14th April 2022 6:30:46 pm
  * Author: https://github.com/nullxx (mail@nullx.me)
  * -----
- * Last Modified: Sunday, 3rd April 2022 1:57:00 pm
+ * Last Modified: Thursday, 14th April 2022 6:30:52 pm
  * Modified By: https://github.com/nullxx (mail@nullx.me)
  */
-#ifndef cu_constants_h
-#define cu_constants_h
+
+#ifndef cu_rom_h
+#define cu_rom_h
+
 #include "cu.h"
 
 const OpState s0 = {.id = S0,
