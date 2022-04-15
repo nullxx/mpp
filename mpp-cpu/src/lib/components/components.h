@@ -7,14 +7,14 @@
 
 #ifndef component_h
 #define component_h
-
+#include "../definitions.h"
 typedef struct {
     int value;
 } LoadBit;
 
 typedef struct {
     int bit_length;
-    unsigned long long bin_value;
+    Word value;
 } Register;
 
 void init_components(void);

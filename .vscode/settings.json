@@ -10,7 +10,16 @@
         "typeinfo": "c",
         "cu_constants.h": "c",
         "gtk.h": "c",
-        "gtkaccessible.h": "c"
+        "gtkaccessible.h": "c",
+        "optional": "c",
+        "istream": "c",
+        "ostream": "c",
+        "ratio": "c",
+        "system_error": "c",
+        "array": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c"
     },
     "C_Cpp.default.includePath": [
         "/usr/include/gtk-3.0",

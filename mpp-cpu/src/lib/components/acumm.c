@@ -19,15 +19,16 @@
 #include "../watcher.h"
 #include "components.h"
 #include "../electronic/bus.h"
+#include "../definitions.h"
 
 static LoadBit acbus_lb = {.value = 0};
 static LoadBit accar_lb = {.value = 0};
 
-static Register acumm_reg = {.bin_value = 0, .bit_length = ACUMM_REG_SIZE_BIT};
+static Register acumm_reg = {.bit_length = ACUMM_REG_SIZE_BIT};
 
 static RegisterWatcher acumm_reg_watcher = {.name = "ACUM", .reg = &acumm_reg};
 
-static Bus_t last_bus_data = {.current_value = 0, .next_value = 0};
+static Bus_t *last_bus_data = NULL;
 static PubSubSubscription *data_bus_topic_subscription = NULL;
 
 void set_acbus_lb(void) { acbus_lb.value = 1; }
@@ -37,32 +38,36 @@ void set_accar_lb(void) { accar_lb.value = 1; }
 void reset_accar_lb(void) { accar_lb.value = 0; }
 
 void init_acumm(void) {
-    register_watcher(&acumm_reg_watcher);
+    initialize_word(&acumm_reg.value, 0);
 
-    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
+    last_bus_data = create_bus_data();
+    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, last_bus_data);
+
+    register_watcher(&acumm_reg_watcher);
 }
 void shutdown_acumm(void) {
-    unsubscribe_for(data_bus_topic_subscription);
     unregister_watcher(&acumm_reg_watcher);
+    unsubscribe_for(data_bus_topic_subscription);
+    destroy_bus_data(last_bus_data);
 }
 
 void run_acumm(void) {
-    update_bus_data(&last_bus_data);
+    update_bus_data(last_bus_data);
 
     if (accar_lb.value == 1) {
         // load
-        if (get_num_len(last_bus_data.current_value) > acumm_reg.bit_length) {
+        if (get_used_bits(word_to_int(last_bus_data->current_value)) > acumm_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load to ACUMM register"};
             throw_error(err);
         }
-
-        acumm_reg.bin_value = last_bus_data.current_value;
+        
+        acumm_reg.value = last_bus_data->current_value;
     }
 
     if (acbus_lb.value == 1) {
         // read
-        publish_message_to(DATA_BUS_TOPIC, acumm_reg.bin_value);
+        publish_message_to(DATA_BUS_TOPIC, acumm_reg.value);
     }
 
-    publish_message_to(ACUMM_OUTPUT_BUS_TOPIC, acumm_reg.bin_value);
+    publish_message_to(ACUMM_OUTPUT_BUS_TOPIC, acumm_reg.value);
 }

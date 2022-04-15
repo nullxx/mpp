@@ -98,7 +98,16 @@
       "time.h": "c",
       "__config": "c",
       "mutex": "c",
-      "stdio.h": "c"
+      "stdio.h": "c",
+      "seq_fgs_jnr.h": "c",
+      "complex": "c",
+      "cmath": "c",
+      "rom.h": "c",
+      "atomic": "c",
+      "istream": "c",
+      "memory": "c",
+      "*.tcc": "c",
+      "sstream": "c"
     },
     "psi-header.templates": [
       {

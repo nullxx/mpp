@@ -1,22 +1,22 @@
 /*
  * File: /src/lib/definitions.h
  * Project: mpp-cpu
- * File Created: Sunday, 10th April 2022 10:24:59 pm
+ * File Created: Friday, 15th April 2022 11:32:56 am
  * Author: https://github.com/nullxx (mail@nullx.me)
  * -----
- * Last Modified: Sunday, 10th April 2022 10:25:01 pm
+ * Last Modified: Friday, 15th April 2022 11:33:22 am
  * Modified By: https://github.com/nullxx (mail@nullx.me)
  */
 
 #ifndef definitions_h
 #define definitions_h
-
-typedef unsigned long long Bin;
+#define WORD_SIZE_BIT 32
 typedef struct {
-    Bin next_value;
-    Bin current_value;
-} Bus_t;
+    int bits[WORD_SIZE_BIT];
+} Word;
 
-#define BUS_SIZE_BIT 64
-#define BUS_DEFAULT_VALUE 0xFFFFFFFFFFFFFFFF;
+int word_to_int(Word bw);
+Word int_to_word(int value);
+void initialize_word(Word *bw, int value);
+
 #endif

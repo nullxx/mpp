@@ -181,7 +181,7 @@ end:
  * @param value
  * @return int -1 if middleware doesn't pass
  */
-int publish_message_to(PubSubTopic topic, Bin value) {
+int publish_message_to(PubSubTopic topic, Word value) {
     int sent = 0;
 
     // executing middlewares

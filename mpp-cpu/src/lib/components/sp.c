@@ -13,33 +13,34 @@
 #include <stdio.h>
 
 #include "../constants.h"
+#include "../electronic/bus.h"
 #include "../error.h"
 #include "../pubsub.h"
 #include "../utils.h"
 #include "../watcher.h"
 #include "components.h"
-#include "../electronic/bus.h"
-static Register sp_reg = {.bin_value = 0, .bit_length = SP_REG_SIZE_BIT};
+
+static Register sp_reg = {.bit_length = SP_REG_SIZE_BIT};
 
 RegisterWatcher sp_reg_watcher = {.name = "SP", .reg = &sp_reg};
 
-static LoadBit spcar_lb = {
-    .value = 0,
-};
+static LoadBit spcar_lb = {.value = 0};
 
-static Bus_t last_bus_dir = {.current_value = 0, .next_value = 0};
+static Bus_t *last_bus_dir = NULL;
 static PubSubSubscription *dir_bus_topic_subscription = NULL;
 
 void init_sp(void) {
-    register_watcher(&sp_reg_watcher);
+    initialize_word(&sp_reg.value, 0);
 
-    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC_1, &last_bus_dir);
+    last_bus_dir = create_bus_data();
+    dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC_1, last_bus_dir);
+    register_watcher(&sp_reg_watcher);
 }
 
 void shutdown_sp(void) {
-    unsubscribe_for(dir_bus_topic_subscription);
-
     unregister_watcher(&sp_reg_watcher);
+    unsubscribe_for(dir_bus_topic_subscription);
+    destroy_bus_data(last_bus_dir);
 }
 
 void set_spcar_lb(void) { spcar_lb.value = 1; }
@@ -47,17 +48,17 @@ void set_spcar_lb(void) { spcar_lb.value = 1; }
 void reset_spcar_lb(void) { spcar_lb.value = 0; }
 
 void run_sp(void) {
-    update_bus_data(&last_bus_dir);
+    update_bus_data(last_bus_dir);
 
     if (spcar_lb.value == 1) {  // load
-        if (get_num_len(last_bus_dir.current_value) > sp_reg.bit_length) {
+        if (get_used_bits(word_to_int(last_bus_dir->current_value)) > sp_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load SP register"};
             throw_error(err);
         }
 
-        sp_reg.bin_value = last_bus_dir.current_value;
+        sp_reg.value = last_bus_dir->current_value;
     }
 
     // in both cases: read and after loading, we are going to transmit it
-    publish_message_to(SP_OUTPUT_BUS_TOPIC, sp_reg.bin_value);
+    publish_message_to(SP_OUTPUT_BUS_TOPIC, sp_reg.value);
 }

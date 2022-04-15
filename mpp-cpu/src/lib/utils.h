@@ -14,7 +14,7 @@ char *dec_to_hex(int num);
 
 int random_int(const int min, const int max);
 unsigned long long str_to_bin(const char *s);
-int get_num_len(unsigned long long bin);
+int get_used_bits(int number);
 char *bin_to_str(unsigned long long bin);
 int bin_to_dec(unsigned long long bin);
 unsigned long long int_to_bin(int n, int max_len);
@@ -32,4 +32,9 @@ unsigned concatenate(unsigned x, unsigned y);
 long factorial(int n);
 void beep(void);
 char pause_execution(const char *message);
+int concat_bits(int a, int b);
+int get_bit(int n, int k);
+int get_higher_bit_pos(unsigned int num);
+int clear_bits(int n, int from, int to);
+int set_bit(int n, int k);
 #endif /* utils_h */
