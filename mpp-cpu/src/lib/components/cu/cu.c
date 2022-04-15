@@ -37,17 +37,15 @@
 #include "../op2.h"
 #include "../pc.h"
 #include "../sp.h"
-#include "cu_constants.h"
-#include "../../utils.h"
 
-Register RI_reg = {.bin_value = 00000000, .bit_length = RI_REG_SIZE_BIT};
+Register RI_reg = {.bit_length = RI_REG_SIZE_BIT};
 
 RegisterWatcher RI_reg_watcher = {.name = "RI", .reg = &RI_reg};
 
 LoadBit ricar_lb = {.value = 0};
 
-static Bus_t last_bus_data = {.current_value = 0, .next_value = 0};
-static Bus_t last_bus_flags_out = {.current_value = 0, .next_value = 0};
+static Bus_t *last_bus_data = NULL;
+static Bus_t *last_bus_flags_out = NULL;
 static PubSubSubscription *data_bus_topic_subscription = NULL;
 static PubSubSubscription *flags_out_bus_topic_subscription = NULL;
 
@@ -146,13 +144,8 @@ typedef struct {
 
 FlagsState get_flags(void) {
     FlagsState flags;
-    int flags_int = bin_to_dec(last_bus_flags_out.current_value);
-    flags.fc = flags_int == 10;
-    flags.fz = flags_int == 1;
-    if (flags_int == 11) {
-        flags.fc = 1;
-        flags.fz = 1;
-    }
+    flags.fc = last_bus_flags_out->current_value.bits[1] == 1;
+    flags.fz = last_bus_flags_out->current_value.bits[0] == 1;
     return flags;
 }
 
@@ -160,7 +153,7 @@ OpStateTrace *decode_step(void) {
     OpStateTrace *trace = create_state_trace(NULL);
     FlagsState flags = get_flags();
 
-    const int opcode = bin_to_dec(RI_reg.bin_value);
+    const int opcode = word_to_int(RI_reg.value);
     log_debug("Decoding opcode: 0x%02X", opcode);
     switch (opcode) {
         case 0x00 ... 0x0F: {
@@ -463,10 +456,14 @@ OpStateTrace *decode_step(void) {
 }
 
 void init_cu(void) {
+    initialize_word(&RI_reg.value, 0);
+
+    last_bus_data = create_bus_data();
+    last_bus_flags_out = create_bus_data();
+    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, last_bus_data);
+    flags_out_bus_topic_subscription = subscribe_to(FLAGS_OUTPUT_BUS_TOPIC, last_bus_flags_out);
     register_watcher(&RI_reg_watcher);
 
-    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
-    flags_out_bus_topic_subscription = subscribe_to(FLAGS_OUTPUT_BUS_TOPIC, &last_bus_flags_out);
     state_trace = (OpStateTrace *)create_state_trace(&s0);
 
     dispatch_clock_start();
@@ -474,10 +471,12 @@ void init_cu(void) {
 
 void shutdown_cu(void) {
     free(state_trace);
+    unregister_watcher(&RI_reg_watcher);
+
     unsubscribe_for(data_bus_topic_subscription);
     unsubscribe_for(flags_out_bus_topic_subscription);
-
-    unregister_watcher(&RI_reg_watcher);
+    destroy_bus_data(last_bus_data);
+    destroy_bus_data(last_bus_flags_out);
 }
 
 void run_asyncronus_components(void) {
@@ -501,17 +500,17 @@ void run_cu(void) {  // 1 opstate per run
 
     run_asyncronus_components();
 
-    update_bus_data(&last_bus_data);
-    update_bus_data(&last_bus_flags_out);
+    update_bus_data(last_bus_data);
+    update_bus_data(last_bus_flags_out);
 
     if (ricar_lb.value == 1) {
         // load
-        if (get_num_len(last_bus_data.current_value) > RI_reg.bit_length) {
+        if (get_used_bits(word_to_int(last_bus_data->current_value)) > RI_reg.bit_length) {
             Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load to RI register"};
             throw_error(err);
         }
 
-        RI_reg.bin_value = last_bus_data.next_value;
+        RI_reg.value = last_bus_data->next_value;
     }
 
     publish_message_to(CU_RI_OUTPUT_BUS_TOPIC, RI_reg.bin_value);

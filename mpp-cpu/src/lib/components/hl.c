@@ -15,15 +15,15 @@
 #include <string.h>
 
 #include "../constants.h"
+#include "../electronic/bus.h"
 #include "../error.h"
 #include "../pubsub.h"
 #include "../utils.h"
 #include "../watcher.h"
 #include "components.h"
-#include "../electronic/bus.h"
 
-static Register h_reg = {.bin_value = 0, .bit_length = H_REG_SIZE_BIT};
-static Register l_reg = {.bin_value = 0, .bit_length = L_REG_SIZE_BIT};
+static Register h_reg = {.bit_length = H_REG_SIZE_BIT};
+static Register l_reg = {.bit_length = L_REG_SIZE_BIT};
 
 static RegisterWatcher h_reg_watcher = {.name = "H", .reg = &h_reg};
 static RegisterWatcher l_reg_watcher = {.name = "L", .reg = &l_reg};
@@ -32,7 +32,7 @@ static LoadBit hcar_lb = {.value = 0};
 
 static LoadBit lcar_lb = {.value = 0};
 static PubSubSubscription *data_bus_topic_subscription = NULL;
-static Bus_t last_bus_data = {.current_value = 0, .next_value = 0};
+static Bus_t *last_bus_data = NULL;
 
 void set_hcar_lb(void) { hcar_lb.value = 1; }
 void reset_hcar_lb(void) { hcar_lb.value = 0; }
@@ -41,50 +41,48 @@ void set_lcar_lb(void) { lcar_lb.value = 1; }
 void reset_lcar_lb(void) { lcar_lb.value = 0; }
 
 void init_hl(void) {
+    initialize_word(&h_reg.value, 0);
+    initialize_word(&l_reg.value, 0);
+
+    last_bus_data = create_bus_data();
+    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, last_bus_data);
+
     register_watcher(&h_reg_watcher);
     register_watcher(&l_reg_watcher);
-
-    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
 }
 
 void shutdown_hl(void) {
-    unsubscribe_for(data_bus_topic_subscription);
-
     unregister_watcher(&h_reg_watcher);
     unregister_watcher(&l_reg_watcher);
+
+    unsubscribe_for(data_bus_topic_subscription);
+    destroy_bus_data(last_bus_data);
 }
 
 void run_hl(void) {
-    update_bus_data(&last_bus_data);
+    update_bus_data(last_bus_data);
 
     if (hcar_lb.value == 1) {
         // load h
-        h_reg.bin_value = last_bus_data.current_value;
+        h_reg.value = last_bus_data->current_value;
     }
 
     if (lcar_lb.value == 1) {
         // load l
-        l_reg.bin_value = last_bus_data.current_value;
+        l_reg.value = last_bus_data->current_value;
     }
 
-    char *next_hl_reg_str = (char *)malloc(sizeof(char) * (h_reg.bit_length + l_reg.bit_length + 1));
-    if (next_hl_reg_str == NULL) {
-        Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Malloc error"};
-        throw_error(err);
+    Word to_send;
+    initialize_word(&to_send, 0);
+
+    // H|L
+    for (int i = 0; i < l_reg.bit_length; i++) {
+        to_send.bits[i] = l_reg.value.bits[i];
     }
 
-    char *h_reg_bin_value_str = bin_to_str(h_reg.bin_value);
-    char *l_reg_bin_value_str = bin_to_str(l_reg.bin_value);
+    for (int i = 0; i < h_reg.bit_length; i++) {
+        to_send.bits[l_reg.bit_length + i] = h_reg.value.bits[i];
+    }
 
-    strcpy(next_hl_reg_str, h_reg_bin_value_str);
-    strcat(next_hl_reg_str, l_reg_bin_value_str);
-
-    free(h_reg_bin_value_str);
-    free(l_reg_bin_value_str);
-
-    unsigned long long hl_bin_value = str_to_bin(next_hl_reg_str);
-
-    free(next_hl_reg_str);
-
-    publish_message_to(HL_OUTPUT_BUS_TOPIC, hl_bin_value);
+    publish_message_to(HL_OUTPUT_BUS_TOPIC, to_send);
 }

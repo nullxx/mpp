@@ -11,7 +11,7 @@
 #include "components.h"
 
 typedef struct {
-    char *value_hex;
+    int value;
     int offset;
     int initial;
 } MemValue;

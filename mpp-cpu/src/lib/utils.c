@@ -18,13 +18,10 @@ int hex_to_dec(const char *hex) {
     return number;
 }
 
-int get_num_len(unsigned long long bin) {
-    const int len = (int)log10(bin + 1) + 1;
-    return len;
-}
+int get_used_bits(int number) { return log2(number) + 1; }
 
 char *dec_to_hex(int num) {
-    int size = get_num_len(num);
+    int size = get_used_bits(num);
     char *result = (char *)malloc(sizeof(char) * (size + 1));
     if (result == NULL) {
         return NULL;
@@ -53,7 +50,7 @@ unsigned long long str_to_bin(const char *s) {
 }
 
 char *bin_to_str(unsigned long long bin) {
-    const int bin_len = get_num_len(bin);
+    const int bin_len = get_used_bits(bin);
 
     const size_t size = sizeof(char) * (bin_len + 1);
     char *str = (char *)malloc(size);
@@ -222,4 +219,39 @@ char pause_execution(const char *message) {
     return getchar();
 }
 
-int digit(int a, int b) { return a / (int)pow(10, b - 1) % 10; }
+int concat_bits(int a, int b) { return (a << get_used_bits(a)) | b; }
+
+int get_bit(int n, int k) {
+    int mask = 1 << k;
+    int masked_n = n & mask;
+    int thebit = masked_n >> k;
+    return thebit;
+}
+
+int get_higher_bit_pos(unsigned int num) {
+    int cnt = 0;
+
+    while (num) {
+        cnt++;
+        num = num >> 1;
+    }
+
+    return cnt - 1;
+}
+
+int clear_bit(int n, int k) {
+    int mask = ~(1 << k);
+    return n & mask;
+}
+
+int clear_bits(int n, int from, int to) {
+    for (int i = from; i <= to; i++) {
+        n = clear_bit(n, i);
+    }
+    return n;
+}
+
+int set_bit(int n, int k) {
+    int mask = 1 << k;
+    return n | mask;
+}

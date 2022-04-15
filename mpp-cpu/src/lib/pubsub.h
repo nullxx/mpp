@@ -8,7 +8,7 @@
 #ifndef pubsub_h
 #define pubsub_h
 
-#include "definitions.h"
+#include "electronic/bus.h"
 
 typedef enum {
     NONE_PUBSUB_TOPIC = 0,
@@ -49,7 +49,7 @@ typedef struct {
     int active;
 } PubSubSubscription;
 
-typedef int (*PubSubMiddlewareFn)(Bin);
+typedef int (*PubSubMiddlewareFn)(Word);
 
 typedef struct {
     PubSubTopic topic;
@@ -65,7 +65,7 @@ PubSubSubscription *subscribe_to_internal(PubSubTopic topic, Bus_t *bus_t, const
 #endif
 int unsubscribe_for(PubSubSubscription *);
 
-int publish_message_to(PubSubTopic, Bin);
+int publish_message_to(PubSubTopic, Word);
 
 PubSubMiddleware *add_topic_middleware(PubSubTopic topic, PubSubMiddlewareFn middleware_fn);
 int rm_topic_middleware(PubSubMiddleware *middleware);

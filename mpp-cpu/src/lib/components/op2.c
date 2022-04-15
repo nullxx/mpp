@@ -19,9 +19,9 @@
 #include "../electronic/bus.h"
 
 static PubSubSubscription *data_bus_topic_subscription = NULL;
-static Bus_t last_bus_data = {.current_value = 0, .next_value = 0};
+static Bus_t *last_bus_data = NULL;
 
-static Register op2_reg = {.bin_value = 0, .bit_length = OP2_REG_SIZE_BIT};
+static Register op2_reg = {.bit_length = OP2_REG_SIZE_BIT};
 
 static RegisterWatcher op2_reg_watcher = {.name = "2OP", .reg = &op2_reg};
 
@@ -31,23 +31,26 @@ void set_car2_lb(void) { car2_lb.value = 1; }
 void reset_car2_lb(void) { car2_lb.value = 0; }
 
 void init_op2(void) {
-    register_watcher(&op2_reg_watcher);
+    initialize_word(&op2_reg.value, 0);
 
-    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, &last_bus_data);
+    last_bus_data = create_bus_data();
+    data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, last_bus_data);
+    register_watcher(&op2_reg_watcher);
 }
 
 void shutdown_op2(void) {
-    unsubscribe_for(data_bus_topic_subscription);
     unregister_watcher(&op2_reg_watcher);
+    unsubscribe_for(data_bus_topic_subscription);
+    destroy_bus_data(last_bus_data);
 }
 
 void run_op2(void) {
-    update_bus_data(&last_bus_data);
+    update_bus_data(last_bus_data);
 
     if (car2_lb.value == 1) {
         // load
-        op2_reg.bin_value = last_bus_data.current_value;
+        op2_reg.value = last_bus_data->current_value;
     }
 
-    publish_message_to(OP2_OUTPUT_BUS_TOPIC, op2_reg.bin_value);
+    publish_message_to(OP2_OUTPUT_BUS_TOPIC, op2_reg.value);
 }

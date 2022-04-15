@@ -16,16 +16,16 @@
  */
 MXInput run_4x1_mx(unsigned int sel, MXInput i1, MXInput i2, MXInput i3, MXInput i4) {
     switch (sel) {
-        case 0:
+        case 0b0:
             return i1;
 
-        case 1:
+        case 0b01:
             return i2;
 
-        case 2:
+        case 0b10:
             return i3;
 
-        case 3:
+        case 0b11:
             return i4;
 
         default:
