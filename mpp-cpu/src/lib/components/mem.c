@@ -147,8 +147,7 @@ void run_mem(void) {
     initialize_word(&l_e_lb, 0);
     initialize_word(&mem_bus_lb, 0);
 
-    l_e_lb.bits[0] = control_bus->current_value.bits[CONTROL_BUS_LE_0_BIT_POSITION];
-    l_e_lb.bits[1] = control_bus->current_value.bits[CONTROL_BUS_LE_1_BIT_POSITION];
+    l_e_lb.bits[0] = control_bus->current_value.bits[CONTROL_BUS_LE_BIT_POSITION];
 
     mem_bus_lb.bits[0] = control_bus->current_value.bits[CONTROL_BUS_MEMBUS_BIT_POSITION];
 

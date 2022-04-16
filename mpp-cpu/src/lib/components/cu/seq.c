@@ -82,8 +82,17 @@ void run_cu_seq(void) {
         if (truth_table[i][14] != -1 && truth_table[i][14] != fz) continue;
         if (truth_table[i][15] != -1 && truth_table[i][15] != fc) continue;
 
-        found = i;
-        break;
+        // int count = 0;
+        // for (int j = 0; j < TRUTH_TABLE_COLS; j++) {
+        //     if (truth_table[i][j] != X) {
+        //         count++;
+        //     }
+        // }
+
+        // if (priority < count) {
+            // priority = count;
+            found = i;
+        // }
     }
 
     Word d4, d3, d2, d1, d0;

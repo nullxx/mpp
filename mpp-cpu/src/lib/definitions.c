@@ -10,11 +10,13 @@
 
 #include "definitions.h"
 
+#include <stdio.h>
+
 #include "utils.h"
 
 int word_to_int(Word w) {
-    int value = w.bits[WORD_SIZE_BIT-1];
-    for (int i = WORD_SIZE_BIT-2; i >= 0; i--) {
+    int value = w.bits[WORD_SIZE_BIT - 1];
+    for (int i = WORD_SIZE_BIT - 2; i >= 0; i--) {
         value = (value << 1) | w.bits[i];
     }
 
@@ -31,6 +33,11 @@ Word int_to_word(int value) {
     return w;
 }
 
+void print_word(Word w) {
+    for (int i = WORD_SIZE_BIT - 1; i >= 0; i--) {
+        printf("%d", w.bits[i]);
+    }
+}
 void initialize_word(Word *bw, int value) {
     for (int i = 0; i < WORD_SIZE_BIT; i++) {
         bw->bits[i] = value;

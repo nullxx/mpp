@@ -115,6 +115,12 @@ void run_cu_rom(void) {
     }
 
     publish_message_to(CONTROL_BUS_TOPIC, to_send);
+
+    update_bus_data(actual_status_Q4_bus);
+    update_bus_data(actual_status_Q3_bus);
+    update_bus_data(actual_status_Q2_bus);
+    update_bus_data(actual_status_Q1_bus);
+    update_bus_data(actual_status_Q0_bus);
 }
 
 void shutdown_cu_rom(void) {

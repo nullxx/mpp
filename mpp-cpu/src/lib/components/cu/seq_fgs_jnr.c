@@ -26,8 +26,8 @@ PubSubSubscription *flags_out_bus_topic_subscription = NULL;
 void init_cu_seq_b_jnr(void) {
     last_bus_cu_ri_out = create_bus_data();
     last_bus_flags_out = create_bus_data();
-    last_cu_ri_output_subscription = subscribe_to(PC_OUTPUT_BUS_TOPIC, last_bus_cu_ri_out);
-    flags_out_bus_topic_subscription = subscribe_to(PC_OUTPUT_BUS_TOPIC, last_bus_flags_out);
+    last_cu_ri_output_subscription = subscribe_to(CU_RI_OUTPUT_BUS_TOPIC, last_bus_cu_ri_out);
+    flags_out_bus_topic_subscription = subscribe_to(FLAGS_OUTPUT_BUS_TOPIC, last_bus_flags_out);
 }
 
 void run_cu_seq_b_jnr(void) {

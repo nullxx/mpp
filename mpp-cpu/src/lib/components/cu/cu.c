@@ -41,6 +41,7 @@
 #include "rom.h"
 #include "seq.h"
 #include "seq_fgs_jnr.h"
+#include "../../clock.h"
 
 Register RI_reg = {.bit_length = RI_REG_SIZE_BIT};
 
@@ -65,7 +66,7 @@ void dispatch_clock_start(void) {
 
     while (1) {
         clock_t start = clock();
-        run_cu();
+        run_cu(get_clock_tick());
         clock_t end = clock();
 
         double seconds_spent = (double)(end - start) / CLOCKS_PER_SEC;
@@ -75,30 +76,6 @@ void dispatch_clock_start(void) {
         pause_execution("Press [ENTER] to continue...");
     }
 }
-
-static OpStateTrace *create_state_trace(const OpState *state) {
-    OpStateTrace *trace = (OpStateTrace *)malloc(sizeof(OpStateTrace));
-    if (trace == NULL) {
-        Error err = {.show_errno = false, .type = FATAL_ERROR, .message = "Failed to allocate memory for state trace"};
-        throw_error(err);
-        return NULL;
-    }
-    if (state != NULL) trace->state = *state;
-    trace->next = NULL;
-    return trace;
-}
-
-static OpStateTrace *add_next_state_trace_from(OpStateTrace *trace, OpState state) {
-    if (trace == NULL) return NULL;
-
-    trace->next = create_state_trace(&state);
-    if (trace->next == NULL) return NULL;
-    trace->next->state = state;
-
-    return trace->next;
-}
-
-static OpStateTrace *state_trace;
 
 typedef struct {
     int fc;
@@ -124,7 +101,6 @@ void init_cu(void) {
 
     register_watcher(&RI_reg_watcher);
 
-    // state_trace = (OpStateTrace *)create_state_trace(&s0);
     init_cu_seq_b_jnr();
     init_cu_seq();
     init_cu_dxflipflop();
@@ -134,7 +110,6 @@ void init_cu(void) {
 }
 
 void shutdown_cu(void) {
-    free(state_trace);
     unregister_watcher(&RI_reg_watcher);
 
     unsubscribe_for(data_bus_topic_subscription);
@@ -160,72 +135,67 @@ void run_sync_comp(void (*run_comp_fn)(void)) {
     run_asyncronus_components();
 }
 
-void run_cu(void) {  // 1 opstate per run
-    // log_debug("Running S%d", state_trace->state.id);
-    // process_state_loadbits(state_trace->state);
+void run_cu(int clk) {  // 1 opstate per run
+    log_debug("Clock: %d", clk);
+    if (clk == 1) run_cu_seq_b_jnr();
+    if (clk == 1) run_cu_seq();
+    if (clk == 0) run_cu_dxflipflop();
+    if (clk == 1) run_cu_rom();
 
-    run_cu_seq_b_jnr();
-    run_cu_seq();
-    run_cu_dxflipflop();
-    run_cu_rom();
+    if (clk == 1) run_asyncronus_components();
 
-    run_asyncronus_components();
+    if (clk == 1) {
+        update_bus_data(last_bus_data);
+        update_bus_data(last_bus_flags_out);
+        update_bus_data(control_bus);
 
-    update_bus_data(last_bus_data);
-    update_bus_data(last_bus_flags_out);
-    update_bus_data(control_bus);
+        if (control_bus->current_value.bits[CONTROL_BUS_RICAR_BIT_POSITION] == 1) {
+            // load
+            if (get_used_bits(word_to_int(last_bus_data->current_value)) > RI_reg.bit_length) {
+                Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load to RI register"};
+                throw_error(err);
+            }
 
-    if (control_bus->current_value.bits[CONTROL_BUS_RICAR_BIT_POSITION] == 1) {
-        // load
-        if (get_used_bits(word_to_int(last_bus_data->current_value)) > RI_reg.bit_length) {
-            Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load to RI register"};
-            throw_error(err);
+            RI_reg.value = last_bus_data->current_value;
         }
 
-        RI_reg.value = last_bus_data->current_value;
+        publish_message_to(CU_RI_OUTPUT_BUS_TOPIC, RI_reg.value);
     }
-
-    publish_message_to(CU_RI_OUTPUT_BUS_TOPIC, RI_reg.value);
 
     // run_mem(); // <<==  is asyncroneous
 
     // run_fffc();
-    run_sync_comp(run_fffc);
+    if (clk == 1) run_sync_comp(run_fffc);
 
     // run_mxdir(); // <<==  is asyncroneous
     // run_addsub(); // <<== is asyncroneous
 
     // run_acumm();
-    run_sync_comp(run_acumm);
+    if (clk == 1) run_sync_comp(run_acumm);
 
     // run_op2();
-    run_sync_comp(run_op2);
+    if (clk == 1) run_sync_comp(run_op2);
 
     // run_greg();
-    run_sync_comp(run_greg);
+    if (clk == 1) run_sync_comp(run_greg);
 
     // run_alu(); // <<== is asyncroneous
 
     // run_hl();
-    run_sync_comp(run_hl);
+    if (clk == 1) run_sync_comp(run_hl);
 
     // run_sp();
-    run_sync_comp(run_sp);
+    if (clk == 1) run_sync_comp(run_sp);
 
     // cll_run_mxfldx();
-    run_sync_comp(cll_run_mxfldx);
+    if (clk == 1) run_sync_comp(cll_run_mxfldx);
 
     // run_flags();
-    run_sync_comp(run_flags);
+    if (clk == 1) run_sync_comp(run_flags);
 
     // cll_run_flagsinta();
-    run_sync_comp(cll_run_flagsinta);
+    if (clk == 1) run_sync_comp(cll_run_flagsinta);
 
     // run_pc();
-    run_sync_comp(run_pc);
-
-    // OpStateTrace *tmp_next_state_trace = state_trace->next;
-    // free(state_trace);
-    // if end of trace is reached, go to s0
-    // state_trace = tmp_next_state_trace == NULL ? create_state_trace(&s0) : tmp_next_state_trace;
+    if (clk == 1) run_sync_comp(run_pc);
 }

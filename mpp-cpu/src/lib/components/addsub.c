@@ -36,14 +36,14 @@ void run_addsub(void) {
     id_lb.bits[1] = control_bus->current_value.bits[CONTROL_BUS_ID_1_BIT_POSITION];
 
     switch (word_to_int(id_lb)) {
-        case 01:
+        case 0b10:
             // +1
             dir_bus++;
             break;
-        case 00:
+        case 0b00:
             // +0
             break;
-        case 11:
+        case 0b11:
             // -1
             dir_bus--;
             break;

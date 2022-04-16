@@ -14,7 +14,7 @@
 
 void init_cu(void);
 void shutdown_cu(void);
-void run_cu(void);
+void run_cu(int);
 
 
 
@@ -47,13 +47,4 @@ typedef struct {
     int eoi;
 } StateLoadBits;
 
-typedef struct {
-    OpStateID id;
-    StateLoadBits load_bits;
-} OpState;
-
-typedef struct OpStateTrace {
-    OpState state;
-    struct OpStateTrace *next;
-} OpStateTrace;
 #endif

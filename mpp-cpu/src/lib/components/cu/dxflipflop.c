@@ -39,17 +39,17 @@ void init_cu_dxflipflop(void) {
 }
 
 void run_cu_dxflipflop(void) {
-    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q4_BUS_TOPIC, d4flipflop_bus->current_value);
-    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q3_BUS_TOPIC, d3flipflop_bus->current_value);
-    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q2_BUS_TOPIC, d2flipflop_bus->current_value);
-    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q1_BUS_TOPIC, d1flipflop_bus->current_value);
-    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q0_BUS_TOPIC, d0flipflop_bus->current_value);
-
     update_bus_data(d4flipflop_bus);
     update_bus_data(d3flipflop_bus);
     update_bus_data(d2flipflop_bus);
     update_bus_data(d1flipflop_bus);
     update_bus_data(d0flipflop_bus);
+
+    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q4_BUS_TOPIC, d4flipflop_bus->current_value);
+    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q3_BUS_TOPIC, d3flipflop_bus->current_value);
+    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q2_BUS_TOPIC, d2flipflop_bus->current_value);
+    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q1_BUS_TOPIC, d1flipflop_bus->current_value);
+    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q0_BUS_TOPIC, d0flipflop_bus->current_value);
 }
 
 void shutdown_cu_dxflipflop(void) {

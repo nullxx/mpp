@@ -18,5 +18,6 @@ typedef struct {
 int word_to_int(Word bw);
 Word int_to_word(int value);
 void initialize_word(Word *bw, int value);
+void print_word(Word w);
 
 #endif
