@@ -8,34 +8,48 @@
  * Modified By: https://github.com/nullxx (mail@nullx.me)
  */
 
+#define RI_START_BIT_POS 2
 #include "seq_fgs_jnr.h"
+
+#include <stdio.h>
 
 #include "../../electronic/bus.h"
 #include "../../pubsub.h"
 #include "../../utils.h"
-Bus_t last_bus_cu_ri_out = {.current_value = 0, .next_value = 0};
-Bus_t last_bus_flags_out = {.current_value = 0, .next_value = 0};
 
-PubSubSubscription *last_cu_ri_output_subscription;
-PubSubSubscription *flags_out_bus_topic_subscription;
+Bus_t *last_bus_cu_ri_out = NULL;
+Bus_t *last_bus_flags_out = NULL;
+
+PubSubSubscription *last_cu_ri_output_subscription = NULL;
+PubSubSubscription *flags_out_bus_topic_subscription = NULL;
 
 void init_cu_seq_b_jnr(void) {
-    last_cu_ri_output_subscription = subscribe_to(PC_OUTPUT_BUS_TOPIC, &last_bus_cu_ri_out);
-    flags_out_bus_topic_subscription = subscribe_to(PC_OUTPUT_BUS_TOPIC, &last_bus_flags_out);
+    last_bus_cu_ri_out = create_bus_data();
+    last_bus_flags_out = create_bus_data();
+    last_cu_ri_output_subscription = subscribe_to(PC_OUTPUT_BUS_TOPIC, last_bus_cu_ri_out);
+    flags_out_bus_topic_subscription = subscribe_to(PC_OUTPUT_BUS_TOPIC, last_bus_flags_out);
 }
 
 void run_cu_seq_b_jnr(void) {
-    update_bus_data(&last_bus_cu_ri_out);
-    update_bus_data(&last_bus_flags_out);
+    update_bus_data(last_bus_cu_ri_out);
+    update_bus_data(last_bus_flags_out);
 
-    Bin seq_output_bin = last_bus_cu_ri_out.current_value;
-    seq_output_bin = concatenate(seq_output_bin, last_bus_flags_out.current_value % 10);  // fz
-    seq_output_bin = concatenate(seq_output_bin, last_bus_flags_out.current_value / 10);  // fc
+    Word to_send;
+    initialize_word(&to_send, 0);
 
-    publish_message_to(CU_SEQ_JOINER_OUTPUT_BUS_TOPIC, seq_output_bin);
+    to_send.bits[0] = last_bus_flags_out->current_value.bits[1];  // fc
+    to_send.bits[1] = last_bus_flags_out->current_value.bits[0];  // fz
+
+    for (int i = 0; i < WORD_SIZE_BIT - RI_START_BIT_POS; i++) {
+        to_send.bits[i + RI_START_BIT_POS] = last_bus_cu_ri_out->current_value.bits[i];
+    }
+
+    publish_message_to(CU_SEQ_JOINER_OUTPUT_BUS_TOPIC, to_send);
 }
 
 void shutdown_cu_seq_b_jnr(void) {
     unsubscribe_for(last_cu_ri_output_subscription);
     unsubscribe_for(flags_out_bus_topic_subscription);
+    destroy_bus_data(last_bus_cu_ri_out);
+    destroy_bus_data(last_bus_flags_out);
 }

@@ -12,7 +12,7 @@
 #define cu_rom_h
 
 #include "cu.h"
-
+/*
 const OpState s0 = {.id = S0,
                     .load_bits = {
                         .sel_alu = -1,
@@ -1066,4 +1066,8 @@ const OpState s38 = {.id = S38,
                          .pcl_car = 0,
                          .sp_car = 1,
                      }};
+*/
+void init_cu_rom(void);
+void run_cu_rom(void);
+void shutdown_cu_rom(void);
 #endif

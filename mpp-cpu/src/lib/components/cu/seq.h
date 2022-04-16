@@ -17,7 +17,7 @@
 #include "states.h"
 #define X -1
 
-int truth_table[TRUTH_TABLE_ROWS][TRUTH_TABLE_COLS] = {
+static int truth_table[TRUTH_TABLE_ROWS][TRUTH_TABLE_COLS] = {
     {S0, 0, 0, 0, 0, 0, X, X, X, X, X, X, X, X, X, X, 0, 0, 0, 0, 1, S1},
     {S1, 0, 0, 0, 0, 1, 0, 0, X, X, X, X, X, X, X, X, 0, 0, 0, 1, 0, S2},
     {S1, 0, 0, 0, 0, 1, 0, 1, 0, 0, X, X, X, X, X, X, 0, 1, 1, 0, 0, S12},
@@ -82,4 +82,7 @@ int truth_table[TRUTH_TABLE_ROWS][TRUTH_TABLE_COLS] = {
     {S23, 1, 0, 1, 1, 1, X, X, X, X, X, X, X, X, X, X, 0, 0, 0, 0, 0, S0},
     {S24, 1, 1, 0, 0, 0, X, X, X, X, X, X, X, X, X, X, 0, 0, 0, 0, 0, S0},
 };
+void init_cu_seq(void);
+void run_cu_seq(void);
+void shutdown_cu_seq(void);
 #endif

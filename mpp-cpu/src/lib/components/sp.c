@@ -24,33 +24,41 @@ static Register sp_reg = {.bit_length = SP_REG_SIZE_BIT};
 
 RegisterWatcher sp_reg_watcher = {.name = "SP", .reg = &sp_reg};
 
-static LoadBit spcar_lb = {.value = 0};
-
 static Bus_t *last_bus_dir = NULL;
+static Bus_t *control_bus = NULL;
+
 static PubSubSubscription *dir_bus_topic_subscription = NULL;
+static PubSubSubscription *control_bus_topic_subscription = NULL;
 
 void init_sp(void) {
     initialize_word(&sp_reg.value, 0);
 
     last_bus_dir = create_bus_data();
+    control_bus = create_bus_data();
     dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC_1, last_bus_dir);
+    control_bus_topic_subscription = subscribe_to(CONTROL_BUS_TOPIC, control_bus);
     register_watcher(&sp_reg_watcher);
 }
 
 void shutdown_sp(void) {
     unregister_watcher(&sp_reg_watcher);
     unsubscribe_for(dir_bus_topic_subscription);
+    unsubscribe_for(control_bus_topic_subscription);
+
     destroy_bus_data(last_bus_dir);
+    destroy_bus_data(control_bus);
 }
-
-void set_spcar_lb(void) { spcar_lb.value = 1; }
-
-void reset_spcar_lb(void) { spcar_lb.value = 0; }
 
 void run_sp(void) {
     update_bus_data(last_bus_dir);
+    update_bus_data(control_bus);
 
-    if (spcar_lb.value == 1) {  // load
+    Word spcar_lb;
+    initialize_word(&spcar_lb, 0);
+
+    spcar_lb.bits[0] = control_bus->current_value.bits[CONTROL_BUS_SPCAR_BIT_POSITION];
+
+    if (word_to_int(spcar_lb) == 1) {  // load
         if (get_used_bits(word_to_int(last_bus_dir->current_value)) > sp_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load SP register"};
             throw_error(err);

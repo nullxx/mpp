@@ -26,14 +26,13 @@ static const int mem_size = mem_size_bits / MEM_VALUE_SIZE_BITS;
 
 static Mem mem;
 
-static LoadBit l_e_lb = {.value = 1};  // READ by default
-static LoadBit mem_bus_lb = {.value = 0};
-
 static Bus_t *last_bus_data = NULL;
 static Bus_t *last_bus_dir = NULL;
+static Bus_t *control_bus = NULL;
 
 static PubSubSubscription *bus_data_subscription = NULL;
 static PubSubSubscription *bus_dir_subscription = NULL;
+static PubSubSubscription *control_bus_topic_subscription = NULL;
 
 static int is_mem_value_valid(int num) {
     if (num < 0 || num > pow(2, MEM_VALUE_SIZE_BITS) - 1) return 0;
@@ -54,35 +53,29 @@ static void fill_memory(void) {
     }
 }
 
-static void unfill_memory(void) {
-    free(mem.values);
-}
+static void unfill_memory(void) { free(mem.values); }
 
 void init_mem(void) {
     fill_memory();
     last_bus_data = create_bus_data();
     last_bus_dir = create_bus_data();
+    control_bus = create_bus_data();
     bus_data_subscription = subscribe_to(DATA_BUS_TOPIC, last_bus_data);
     bus_dir_subscription = subscribe_to(DIR_BUS_TOPIC_2, last_bus_dir);
+    control_bus_topic_subscription = subscribe_to(CONTROL_BUS_TOPIC, control_bus);
 }
 
 void shutdown_mem(void) {
     unfill_memory();
+
     unsubscribe_for(bus_data_subscription);
     unsubscribe_for(bus_dir_subscription);
+    unsubscribe_for(control_bus_topic_subscription);
+
     destroy_bus_data(last_bus_data);
     destroy_bus_data(last_bus_dir);
+    destroy_bus_data(control_bus);
 }
-
-// control loadbits functions
-void set_l_e_lb(void) { l_e_lb.value = 1; }
-
-void reset_l_e_lb(void) { l_e_lb.value = 0; }
-
-void set_mem_bus_lb(void) { mem_bus_lb.value = 1; }
-
-void reset_mem_bus_lb(void) { mem_bus_lb.value = 0; }
-// -- control loadbits functions
 
 static MemValue *get_value_by_offset(int offset) {
     if (offset < MEM_START_VALUE || offset >= mem_size) {
@@ -144,11 +137,22 @@ static ComponentActionReturn get_mem_value(int offset) {
 void run_mem(void) {
     update_bus_data(last_bus_data);
     update_bus_data(last_bus_dir);
+    update_bus_data(control_bus);
 
     Error err;
     int dir_bin = word_to_int(last_bus_dir->next_value);
 
-    switch (l_e_lb.value) {
+    Word l_e_lb;
+    Word mem_bus_lb;
+    initialize_word(&l_e_lb, 0);
+    initialize_word(&mem_bus_lb, 0);
+
+    l_e_lb.bits[0] = control_bus->current_value.bits[CONTROL_BUS_LE_0_BIT_POSITION];
+    l_e_lb.bits[1] = control_bus->current_value.bits[CONTROL_BUS_LE_1_BIT_POSITION];
+
+    mem_bus_lb.bits[0] = control_bus->current_value.bits[CONTROL_BUS_MEMBUS_BIT_POSITION];
+
+    switch (word_to_int(l_e_lb)) {
         case 1: {
             ComponentActionReturn car = get_mem_value(dir_bin);
             if (!car.success) {
@@ -159,7 +163,7 @@ void run_mem(void) {
             MemValue *m = (MemValue *)car.return_value;
 
             // if memBus ==> send data to the bus
-            if (mem_bus_lb.value == 1) publish_message_to(DATA_BUS_TOPIC, int_to_word(m->value));
+            if (word_to_int(mem_bus_lb) == 1) publish_message_to(DATA_BUS_TOPIC, int_to_word(m->value));
             break;
         }
         case 0: {

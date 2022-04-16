@@ -9,87 +9,124 @@
  */
 
 #include "rom.h"
-#include "../../pubsub.h"
-#include "../../electronic/bus.h"
-#include "../../utils.h"
 
-#define X -1
-#define XX -2
-#define XXX -3
+#include <stdio.h>
+
+#include "../../electronic/bus.h"
+#include "../../pubsub.h"
+#include "../../utils.h"
+#include "../../logger.h"
+
+#define X 0
 
 #define CU_SIGNAL_ROWS_COUNT 39
-#define CU_SIGNAL_COLS_COUNT 24
+#define CU_SIGNAL_COLS_COUNT 31
 #define SIGNAL_SIZE_BITS 31
 
-Bus_t actual_status_bus;
-PubSubSubscription *actual_status_bus_subscription;
+static Bus_t *actual_status_Q4_bus = NULL;
+static Bus_t *actual_status_Q3_bus = NULL;
+static Bus_t *actual_status_Q2_bus = NULL;
+static Bus_t *actual_status_Q1_bus = NULL;
+static Bus_t *actual_status_Q0_bus = NULL;
+static PubSubSubscription *actual_status_Q4_subscription = NULL;
+static PubSubSubscription *actual_status_Q3_subscription = NULL;
+static PubSubSubscription *actual_status_Q2_subscription = NULL;
+static PubSubSubscription *actual_status_Q1_subscription = NULL;
+static PubSubSubscription *actual_status_Q0_subscription = NULL;
 
-const int ROM[CU_SIGNAL_ROWS_COUNT][CU_SIGNAL_COLS_COUNT] = { // this are the signals 
-    {XXX, XX, 0b00, XX, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, X, 0, 0, 0, 0, 0, 0},
-    {XXX, XX, XX, XX, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 0},
-    {XXX, 0b00, XX, XX, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, X, 0, 0, 0, 0, 0, 0},
-    {0b110, 0b01, XX, XX, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, X, 0, 0, 0, 0, 0, 0},
-    {0b110, XX, XX, XX, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, X, 0, 0, 0, 0, 0, 0},
-    {0b000, XX, XX, XX, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0},
-    {0b001, XX, XX, XX, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0},
-    {0b001, XX, XX, XX, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
-    {0b111, 0b00, XX, XX, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0},
-    {0b010, XX, XX, XX, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0},
-    {0b011, XX, XX, XX, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0},
-    {0b100, XX, XX, XX, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0},
-    {XXX, XX, XX, XX, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, X, 0, 0, 0, 0, 0, 0},
-    {0b111, XX, XX, XX, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0},
-    {0b101, XX, XX, XX, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0},
-    {XXX, XX, 0b00, 0b01, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, X, 0, 0, 0, 0, 0, 0},
-    {XXX, XX, 0b00, 0b01, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, X, 0, 1, 0, 0, 0, 0},
-    {XXX, XX, 0b00, 0b01, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, X, 0, 0, 1, 0, 0, 0},
-    {XXX, XX, 0b10, XX, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, X, 0, 0, 0, 0, 0, 0},
-    {0b110, XX, 0b10, XX, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, X, 0, 1, 0, 0, 0, 0},
-    {XXX, XX, 0b10, 0b00, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, X, 0, 0, 0, 0, 0, 0},
-    {XXX, 0b10, XX, XX, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 1, 0, 0, 0, 0},
-    {XXX, 0b11, XX, XX, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 1, 0, 0, 0},
-    {XXX, XX, X, XX, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, X, 0, 0, 0, 0, 0, 0},
-    {XXX, XX, XX, XX, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-    {XXX, XX, XX, XX, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 0},
-    {XXX, XX, 0b01, 0b11, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 1},
-    {XXX, XX, 0b01, XX, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 0},
-    {XXX, XX, 0b01, XX, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 0},
-    {XXX, XX, 0b01, XX, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 0},
-    {XXX, XX, 0b11, 0b00, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, X, 0, 0, 0, 0, 0, 0},
-    {XXX, XX, 0b01, 0b01, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 1},
-    {XXX, XX, 0b01, XX, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 1, 0},
-    {XXX, XX, 0b01, XX, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 1, 0, 0},
-    {XXX, XX, 0b01, XX, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-    {XXX, XX, XX, XX, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 0},
-    {XXX, XX, 0b01, XX, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 0},
-    {XXX, XX, 0b01, XX, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, X, 0, 0, 0, 0, 0, 0},
-    {XXX, XX, 0b10, 0b00, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 1}
+// FIXME: what should be X and XX and XXX?
+
+const int ROM[CU_SIGNAL_ROWS_COUNT][CU_SIGNAL_COLS_COUNT] = {  // this are the signals
+    {X, X, X, X, X, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, X, X, X, X, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, 0, 0, X, X, X, X, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 1, 0, 0, 1, X, X, X, X, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 1, 0, X, X, X, X, X, X, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, X, X, X, X, X, X, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 1, X, X, X, X, X, X, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 1, X, X, X, X, X, X, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+    {1, 1, 1, 0, 1, X, X, X, X, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+    {0, 1, 0, X, X, X, X, X, X, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+    {0, 1, 1, X, X, X, X, X, X, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, X, X, X, X, X, X, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, X, X, X, X, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 1, 1, X, X, X, X, X, X, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 1, X, X, X, X, X, X, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, X, 0, 1, 0, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, X, 0, 0, 1, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, 1, 0, X, X, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 1, 0, X, X, 1, 0, X, X, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, 1, 0, X, X, X, X, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 1, 0, 0, 0, 0, 0, 0},
+    {X, X, X, 1, 1, X, X, X, X, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 1, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, X, X, X, X, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, X, X, X, X, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, X, X, X, X, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 0, 1, 0},
+    {X, X, X, X, X, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 1, 0, 0},
+    {X, X, X, X, X, 0, 1, X, X, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, 0, 1, X, X, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, 0, 1, X, X, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 1, 0, 0},
+    {X, X, X, X, X, 0, 1, X, X, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 1, 0, 0, 0},
+    {X, X, X, X, X, 0, 1, X, X, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 1, 0, 0, 0, 0},
+    {X, X, X, X, X, 0, 1, X, X, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, X, X, X, X, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 0, 0, 1},
+    {X, X, X, X, X, 0, 1, X, X, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, 0, 1, X, X, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, X, 0, 0, 0, 0, 0, 0, 0, 0},
+    {X, X, X, X, X, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, 0, 0, 0, 0, 0, 1, 0, 0}
 };
 
 void init_cu_rom(void) {
-    actual_status_bus_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_BUS_TOPIC, &actual_status_bus);
+    actual_status_Q4_bus = create_bus_data();
+    actual_status_Q3_bus = create_bus_data();
+    actual_status_Q2_bus = create_bus_data();
+    actual_status_Q1_bus = create_bus_data();
+    actual_status_Q0_bus = create_bus_data();
+
+    actual_status_Q4_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_Q4_BUS_TOPIC, actual_status_Q4_bus);
+    actual_status_Q3_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_Q3_BUS_TOPIC, actual_status_Q3_bus);
+    actual_status_Q2_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_Q2_BUS_TOPIC, actual_status_Q2_bus);
+    actual_status_Q1_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_Q1_BUS_TOPIC, actual_status_Q1_bus);
+    actual_status_Q0_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_Q0_BUS_TOPIC, actual_status_Q0_bus);
 }
 
 void run_cu_rom(void) {
-    int rom_pos_dec = bin_to_dec(actual_status_bus.next_value);
-    
-    if (rom_pos_dec < 0 || rom_pos_dec > CU_SIGNAL_ROWS_COUNT) return;
+    Word w;
+    initialize_word(&w, 0);
+    w.bits[4] = actual_status_Q4_bus->next_value.bits[0];
+    w.bits[3] = actual_status_Q3_bus->next_value.bits[0];
+    w.bits[2] = actual_status_Q2_bus->next_value.bits[0];
+    w.bits[1] = actual_status_Q1_bus->next_value.bits[0];
+    w.bits[0] = actual_status_Q0_bus->next_value.bits[0];
 
-    Bin bin;
+    int rom_pos = word_to_int(w);
+    log_debug("ROM pos: %d", rom_pos);
+
+    if (rom_pos < 0 || rom_pos > CU_SIGNAL_ROWS_COUNT) return;
+
+    Word to_send;
+    initialize_word(&to_send, 0);
+
+    // int j = CU_SIGNAL_COLS_COUNT - 1;
     for (int i = 0; i < CU_SIGNAL_COLS_COUNT; i++) {
-        if (i == 0) {
-            bin = ROM[rom_pos_dec][i];
-             continue;
-        }
-
-        bin = concatenate(bin, ROM[rom_pos_dec][i]);
+        to_send.bits[CU_SIGNAL_COLS_COUNT-1-i] = ROM[rom_pos][i];
     }
 
-    // FIXME this is a fucking shit
-
-    publish_message_to(CONTROL_BUS_TOPIC, bin);
+    publish_message_to(CONTROL_BUS_TOPIC, to_send);
 }
 
 void shutdown_cu_rom(void) {
-    unsubscribe_for(actual_status_bus_subscription);
+    unsubscribe_for(actual_status_Q4_subscription);
+    unsubscribe_for(actual_status_Q3_subscription);
+    unsubscribe_for(actual_status_Q2_subscription);
+    unsubscribe_for(actual_status_Q1_subscription);
+    unsubscribe_for(actual_status_Q0_subscription);
+
+    destroy_bus_data(actual_status_Q4_bus);
+    destroy_bus_data(actual_status_Q3_bus);
+    destroy_bus_data(actual_status_Q2_bus);
+    destroy_bus_data(actual_status_Q1_bus);
+    destroy_bus_data(actual_status_Q0_bus);
 }

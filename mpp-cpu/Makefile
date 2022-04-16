@@ -7,12 +7,12 @@
 CC = clang
 
 # define any compile-time flags
-CFLAGS	:= -Wall -Wextra -g -DLOG_USE_COLOR $(shell pkg-config --cflags gtk+-3.0)
+CFLAGS	:= -Wall -Wextra -g -DLOG_USE_COLOR
 
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
 #   their path using -Lpath, something like:
-LFLAGS = -lm -pthread $(shell pkg-config --libs gtk+-3.0)
+LFLAGS = -lm -pthread
 
 LFLAGSTESTS = $(LFLAGS) -lcriterion
 

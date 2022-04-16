@@ -19,7 +19,10 @@
         "array": "c",
         "tuple": "c",
         "type_traits": "c",
-        "utility": "c"
+        "utility": "c",
+        "pubsub.h": "c",
+        "seq.h": "c",
+        "constants.h": "c"
     },
     "C_Cpp.default.includePath": [
         "/usr/include/gtk-3.0",

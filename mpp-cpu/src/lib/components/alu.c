@@ -26,32 +26,31 @@
 #include "../utils.h"
 #include "components.h"
 
-static LoadBit selalu_lb = {.value = 000};
-
-static LoadBit alubus_lb = {.value = 0};
-static PubSubSubscription *acumm_output_bus_topic_subscription = NULL;
-static PubSubSubscription *opt_output_bus_topic_subscription = NULL;
 static Bus_t *last_bus_acumm_output = NULL;  // A
 static Bus_t *last_bus_op2_output = NULL;    // B
+static Bus_t *control_bus = NULL;
 
-bool set_selalu_lb(unsigned long bin) {
-    const int bin_len = get_used_bits(bin);
-    if (bin_len > SELALU_LOAD_BIT_SIZE_BITS) {
-        return false;
-    }
-
-    selalu_lb.value = bin;
-    return true;
-}
-
-void set_alubus_lb(void) { alubus_lb.value = 1; }
-void reset_alubus_lb(void) { alubus_lb.value = 0; }
+static PubSubSubscription *acumm_output_bus_topic_subscription = NULL;
+static PubSubSubscription *opt_output_bus_topic_subscription = NULL;
+static PubSubSubscription *control_bus_topic_subscription = NULL;
 
 void run_alu(void) {
     update_bus_data(last_bus_acumm_output);
     update_bus_data(last_bus_op2_output);
+    update_bus_data(control_bus);
 
-    int sel_alu = selalu_lb.value;
+    Word selalu_lb;
+    Word alubus_lb;
+    initialize_word(&selalu_lb, 0);
+    initialize_word(&alubus_lb, 0);
+
+    selalu_lb.bits[0] = control_bus->current_value.bits[CONTROL_BUS_SELALU_0_BIT_POSITION];
+    selalu_lb.bits[1] = control_bus->current_value.bits[CONTROL_BUS_SELALU_1_BIT_POSITION];
+    selalu_lb.bits[2] = control_bus->current_value.bits[CONTROL_BUS_SELALU_2_BIT_POSITION];
+
+    alubus_lb.bits[0] = control_bus->current_value.bits[CONTROL_BUS_ALUBUS_BIT_POSITION];
+
+    int sel_alu = word_to_int(selalu_lb);
     int bus_acumm_output = word_to_int(last_bus_acumm_output->next_value);
     int bus_op2_output = word_to_int(last_bus_op2_output->next_value);
     int result = 0;
@@ -124,7 +123,7 @@ void run_alu(void) {
         result = result << (result_bits - DATA_BUS_SIZE_BITS);
     }
 
-    if (alubus_lb.value == 1) {
+    if (word_to_int(alubus_lb) == 1) {
         publish_message_to(DATA_BUS_TOPIC, int_to_word(result));
     }
 }
@@ -132,13 +131,17 @@ void run_alu(void) {
 void init_alu(void) {
     last_bus_acumm_output = create_bus_data();
     last_bus_op2_output = create_bus_data();
+    control_bus = create_bus_data();
     acumm_output_bus_topic_subscription = subscribe_to(ACUMM_OUTPUT_BUS_TOPIC, last_bus_acumm_output);
     opt_output_bus_topic_subscription = subscribe_to(OP2_OUTPUT_BUS_TOPIC, last_bus_op2_output);
+    control_bus_topic_subscription = subscribe_to(CONTROL_BUS_TOPIC, control_bus);
 }
 
 void shutdown_alu(void) {
     unsubscribe_for(acumm_output_bus_topic_subscription);
     unsubscribe_for(opt_output_bus_topic_subscription);
+    unsubscribe_for(control_bus_topic_subscription);
     destroy_bus_data(last_bus_acumm_output);
     destroy_bus_data(last_bus_op2_output);
+    destroy_bus_data(control_bus);
 }

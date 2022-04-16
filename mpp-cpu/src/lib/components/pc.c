@@ -24,25 +24,21 @@
 #include "../watcher.h"
 #include "components.h"
 
-static Register pch_reg = { .bit_length = PCH_REG_SIZE_BIT};
-static Register pcl_reg = { .bit_length = PCL_REG_SIZE_BIT};
-static Register pc_reg = { .bit_length = PC_REG_SIZE_BIT};
+static Register pch_reg = {.bit_length = PCH_REG_SIZE_BIT};
+static Register pcl_reg = {.bit_length = PCL_REG_SIZE_BIT};
+static Register pc_reg = {.bit_length = PC_REG_SIZE_BIT};
 
 RegisterWatcher pch_reg_watcher = {.name = "PCH", .reg = &pch_reg};
 RegisterWatcher pcl_reg_watcher = {.name = "PCL", .reg = &pcl_reg};
 RegisterWatcher pc_reg_watcher = {.name = "PC", .reg = &pc_reg};
 
-static LoadBit pchcar_lb = {.value = 0};
-static LoadBit pclcar_lb = {.value = 0};
-static LoadBit pccar_lb = {.value = 0};
-
-static LoadBit pch_bus = {.value = 0};
-static LoadBit pcl_bus = {.value = 0};
-
 static Bus_t *last_bus_dir = NULL;
 static Bus_t *last_bus_data = NULL;
+static Bus_t *control_bus = NULL;
+
 static PubSubSubscription *dir_bus_topic_subscription = NULL;
 static PubSubSubscription *data_bus_topic_subscription = NULL;
+static PubSubSubscription *control_bus_topic_subscription = NULL;
 
 void init_pc(void) {
     initialize_word(&pch_reg.value, 0);
@@ -51,8 +47,10 @@ void init_pc(void) {
 
     last_bus_dir = create_bus_data();
     last_bus_data = create_bus_data();
+    control_bus = create_bus_data();
     dir_bus_topic_subscription = subscribe_to(DIR_BUS_TOPIC_1, last_bus_dir);
     data_bus_topic_subscription = subscribe_to(DATA_BUS_TOPIC, last_bus_data);
+    control_bus_topic_subscription = subscribe_to(CONTROL_BUS_TOPIC, control_bus);
 
     register_watcher(&pch_reg_watcher);
     register_watcher(&pcl_reg_watcher);
@@ -66,31 +64,33 @@ void shutdown_pc(void) {
 
     unsubscribe_for(dir_bus_topic_subscription);
     unsubscribe_for(data_bus_topic_subscription);
+    unsubscribe_for(control_bus_topic_subscription);
+
     destroy_bus_data(last_bus_dir);
     destroy_bus_data(last_bus_data);
+    destroy_bus_data(control_bus);
 }
-
-void set_pchbus_lb(void) { pch_bus.value = 1; }
-void reset_pchbus_lb(void) { pch_bus.value = 0; }
-
-void set_pclbus_lb(void) { pcl_bus.value = 1; }
-void reset_pclbus_lb(void) { pcl_bus.value = 0; }
-
-void set_pchcar_lb(void) { pchcar_lb.value = 1; }
-void reset_pchcar_lb(void) { pchcar_lb.value = 0; }
-
-void set_pclcar_lb(void) { pclcar_lb.value = 1; }
-void reset_pclcar_lb(void) { pclcar_lb.value = 0; }
-
-void set_pccar_lb(void) { pccar_lb.value = 1; }
-void reset_pccar_lb(void) { pccar_lb.value = 0; }
 
 void run_pc(void) {
     update_bus_data(last_bus_data);
     update_bus_data(last_bus_dir);
+    update_bus_data(control_bus);
+
+    Word pchcar_lb, pclcar_lb, pch_bus, pcl_bus, pccar_lb;
+    initialize_word(&pchcar_lb, 0);
+    initialize_word(&pclcar_lb, 0);
+    initialize_word(&pch_bus, 0);
+    initialize_word(&pcl_bus, 0);
+    initialize_word(&pccar_lb, 0);
+
+    pchcar_lb.bits[0] = control_bus->current_value.bits[CONTROL_BUS_PCHCAR_BIT_POSITION];
+    pclcar_lb.bits[0] = control_bus->current_value.bits[CONTROL_BUS_PCLCAR_BIT_POSITION];
+    pch_bus.bits[0] = control_bus->current_value.bits[CONTROL_BUS_PCHBUS_BIT_POSITION];
+    pcl_bus.bits[0] = control_bus->current_value.bits[CONTROL_BUS_PCLBUS_BIT_POSITION];
+    pccar_lb.bits[0] = control_bus->current_value.bits[CONTROL_BUS_PCCAR_BIT_POSITION];
 
     // pch
-    if (pchcar_lb.value == 1) {
+    if (word_to_int(pchcar_lb) == 1) {
         // load pch
         if (get_used_bits(word_to_int(last_bus_data->current_value)) > pch_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PCH register"};
@@ -98,12 +98,12 @@ void run_pc(void) {
         }
 
         pch_reg.value = last_bus_data->current_value;
-    } else if (pch_bus.value == 1) {  // pchcar_lb.value = 0
+    } else if (word_to_int(pch_bus) == 1) {  // pchcar_lb.value = 0
         // read to data bus if pchbus enabled
         publish_message_to(DATA_BUS_TOPIC, pch_reg.value);
     }
     // pcl
-    if (pchcar_lb.value == 1) {
+    if (word_to_int(pclcar_lb) == 1) {
         // load pcl
         if (get_used_bits(word_to_int(last_bus_data->current_value)) > pcl_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PCL register"};
@@ -111,13 +111,13 @@ void run_pc(void) {
         }
 
         pcl_reg.value = last_bus_data->current_value;
-    } else if (pcl_bus.value == 1) {  // pchcar_lb.value = 0
+    } else if (word_to_int(pcl_bus) == 1) {  // pchcar_lb.value = 0
         // read to data bus if pchbus enabled
         publish_message_to(DATA_BUS_TOPIC, pcl_reg.value);
     }
 
     // mix pch + pcl => pc. If pc is set later it will be overwritten
-    if (pchcar_lb.value == 1 && pclcar_lb.value == 1) {
+    if (word_to_int(pchcar_lb) == 1 && word_to_int(pclcar_lb) == 1) {
         // PC = PCH|PCL
         for (int i = 0; i < pcl_reg.bit_length; i++) {
             pc_reg.value.bits[i] = pcl_reg.value.bits[i];
@@ -129,7 +129,7 @@ void run_pc(void) {
     }
 
     // pc
-    if (pccar_lb.value == 1) {
+    if (word_to_int(pccar_lb) == 1) {
         // load pc // PC is prioritary than pch and pcl
         if (get_used_bits(word_to_int(last_bus_dir->current_value)) > pc_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PC register"};
