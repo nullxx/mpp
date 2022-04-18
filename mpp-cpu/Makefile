@@ -4,15 +4,14 @@
 #
 
 # define the C compiler to use
-CC = clang
+CC = gcc
 
 # define any compile-time flags
-CFLAGS	:= -Wall -Wextra -g -DLOG_USE_COLOR
-
+CFLAGS	:= -Wall -Wextra -g -DLOG_USE_COLOR $(shell pkg-config --cflags gtk4)
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
 #   their path using -Lpath, something like:
-LFLAGS = -lm -pthread
+LFLAGS = -lm $(shell pkg-config --libs gtk4)
 
 LFLAGSTESTS = $(LFLAGS) -lcriterion
 
@@ -23,6 +22,7 @@ OUTPUT	:= output
 SRC		:= src
 
 # define include directory
+INCLUDE	:= include
 INCLUDE	:= include
 
 # define lib directory
@@ -47,6 +47,16 @@ FIXPATH = $(subst /,\,$1)
 RM			:= del /q /f
 MD	:= mkdir
 else
+ifeq ($(GOOS), windows)
+MAIN	:= main.exe
+CFLAGS += -arch x86_64
+SOURCEDIRS	:= $(shell find $(SRC) -type d)
+INCLUDEDIRS	:= $(shell find -L $(INCLUDE) -type d)
+LIBDIRS		:= $(shell find $(LIB) -type d)
+FIXPATH = $1
+RM = rm -f
+MD	:= mkdir -p
+else
 MAIN	:= main
 TEST	:= test
 SOURCEDIRS	:= $(shell find $(SRC) -type d)
@@ -55,6 +65,7 @@ LIBDIRS		:= $(shell find $(LIB) -type d)
 FIXPATH = $1
 RM = rm -f
 MD	:= mkdir -p
+endif
 endif
 
 # define any directories containing header files other than /usr/include
@@ -69,10 +80,8 @@ SOURCES		:= $(wildcard $(patsubst %,%/*.c, $(SOURCEDIRS)))
 # define the C source test files
 TESTSOURCES := $(wildcard $(patsubst %,%/*test.c, $(SOURCEDIRS)))
 
-# define the C object files
+# define the object files
 OBJECTS		:= $(SOURCES:.c=.o)
-
-# define the C object test files
 OBJECTSTEST := $(TESTSOURCES:.c=.o)
 
 #
@@ -90,8 +99,9 @@ all: $(OUTPUT) $(MAIN)
 $(OUTPUT):
 	$(MD) $(OUTPUT)
 
-$(MAIN): $(OBJECTS)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(OUTPUTMAIN) $(OBJECTS) $(LFLAGS) $(LIBS)
+$(MAIN): $(OBJECTS) $(OBJECTS_OBJC)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(OUTPUTMAIN) $(OBJECTS) $(OBJECTS_OBJC) $(LFLAGS) $(LIBS)
+
 
 $(TEST): $(OBJECTSTEST)
 	$(CC) $(CFLAGS) -o $(OUTPUTTEST) $(OBJECTSTEST) $(LFLAGSTESTS) $(LIBS)

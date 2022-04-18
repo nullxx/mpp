@@ -23,14 +23,9 @@ typedef struct {
 
 void init_mem(void);
 void shutdown_mem(void);
-void run_mem(void); // <==
+void run_mem(void);
 
-// control loadbits
-void set_l_e_lb(void);
-void reset_l_e_lb(void);
-void set_mem_bus_lb(void);
-void reset_mem_bus_lb(void);
-// -- control loadbits
+Mem get_mem(void);
 
 #include "../error.h"
 typedef struct {  // temporal

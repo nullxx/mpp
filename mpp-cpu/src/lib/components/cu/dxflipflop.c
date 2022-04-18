@@ -14,16 +14,16 @@
 
 #include "../../pubsub.h"
 
-Bus_t *d4flipflop_bus;
-Bus_t *d3flipflop_bus;
-Bus_t *d2flipflop_bus;
-Bus_t *d1flipflop_bus;
-Bus_t *d0flipflop_bus;
-PubSubSubscription *d4_bus_topic_subscription = NULL;
-PubSubSubscription *d3_bus_topic_subscription = NULL;
-PubSubSubscription *d2_bus_topic_subscription = NULL;
-PubSubSubscription *d1_bus_topic_subscription = NULL;
-PubSubSubscription *d0_bus_topic_subscription = NULL;
+static Bus_t *d4flipflop_bus;
+static Bus_t *d3flipflop_bus;
+static Bus_t *d2flipflop_bus;
+static Bus_t *d1flipflop_bus;
+static Bus_t *d0flipflop_bus;
+static PubSubSubscription *d4_bus_topic_subscription = NULL;
+static PubSubSubscription *d3_bus_topic_subscription = NULL;
+static PubSubSubscription *d2_bus_topic_subscription = NULL;
+static PubSubSubscription *d1_bus_topic_subscription = NULL;
+static PubSubSubscription *d0_bus_topic_subscription = NULL;
 
 void init_cu_dxflipflop(void) {
     d4flipflop_bus = create_bus_data();

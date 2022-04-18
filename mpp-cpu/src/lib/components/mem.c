@@ -96,8 +96,8 @@ ComponentActionReturn set_mem_value(MemValue mem_value) {
         car.err.show_errno = 0;
         car.err.type = NOTICE_ERROR;
         const int end_bound_mem_value = pow(2, MEM_VALUE_SIZE_BITS) - 1;
-        char *value_dec_str = itoa(mem_value.value);
-        car.err.message = create_str("[set_mem_value] Value", value_dec_str, "(dec) invalid. Must be between 0 -", itoa(end_bound_mem_value));
+        char *value_dec_str = num_to_str(mem_value.value);
+        car.err.message = create_str("[set_mem_value] Value", value_dec_str, "(dec) invalid. Must be between 0 -", num_to_str(end_bound_mem_value));
         return car;
     }
 
@@ -184,3 +184,6 @@ void run_mem(void) {
 error:
     return throw_error(err);
 }
+
+// for the simulation
+Mem get_mem(void) { return mem; }

@@ -11,9 +11,8 @@
 #include "cu.h"
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 
+#include "../../clock.h"
 #include "../../constants.h"
 #include "../../electronic/bus.h"
 #include "../../error.h"
@@ -38,10 +37,11 @@
 #include "../pc.h"
 #include "../sp.h"
 #include "dxflipflop.h"
+#include "mxreg_jnr.h"
 #include "rom.h"
 #include "seq.h"
 #include "seq_fgs_jnr.h"
-#include "../../clock.h"
+#include "states.h"
 
 Register RI_reg = {.bit_length = RI_REG_SIZE_BIT};
 
@@ -54,39 +54,22 @@ static PubSubSubscription *data_bus_topic_subscription = NULL;
 static PubSubSubscription *flags_out_bus_topic_subscription = NULL;
 static PubSubSubscription *control_bus_topic_subscription = NULL;
 
-void dispatch_clock_start(void) {
-    // 1hz = 1 cyle per second
-    // 1GHz = 1.000.000.000 cycles per second
-    log_info("Starting clock...");
-
-    log_info("Initial state");
-    log_watchers();
-
-    pause_execution("Press any key to start");
-
+// clock tick generator must be inside cu, but as this is a simulator, the clock will be managed from the window to decrease CPU usage
+double run_clock_cycle(void) {
     while (1) {
         clock_t start = clock();
-        run_cu(get_clock_tick());
+        int clock_tick = get_clock_tick();
+        run_cu(clock_tick);
         clock_t end = clock();
 
-        double seconds_spent = (double)(end - start) / CLOCKS_PER_SEC;
-        log_info("Cycle time: %fs => %f KHz", seconds_spent, (1 / seconds_spent) / 1000);
+        if (clock_tick == 1) {
+            double seconds_spent = (double)(end - start) / CLOCKS_PER_SEC;
+            // log_info("Cycle time: %fs => %f KHz", seconds_spent, (1 / seconds_spent) / 1000);
 
-        log_watchers();
-        pause_execution("Press [ENTER] to continue...");
+            // log_watchers();
+            return seconds_spent;
+        }
     }
-}
-
-typedef struct {
-    int fc;
-    int fz;
-} FlagsState;
-
-FlagsState get_flags(void) {
-    FlagsState flags;
-    flags.fc = last_bus_flags_out->current_value.bits[1] == 1;
-    flags.fz = last_bus_flags_out->current_value.bits[0] == 1;
-    return flags;
 }
 
 void init_cu(void) {
@@ -102,15 +85,20 @@ void init_cu(void) {
     register_watcher(&RI_reg_watcher);
 
     init_cu_seq_b_jnr();
+    init_cu_mxreg_jnr();
     init_cu_seq();
     init_cu_dxflipflop();
     init_cu_rom();
-
-    dispatch_clock_start();
 }
 
 void shutdown_cu(void) {
     unregister_watcher(&RI_reg_watcher);
+
+    shutdown_cu_seq_b_jnr();
+    shutdown_cu_mxreg_jnr();
+    shutdown_cu_seq();
+    shutdown_cu_dxflipflop();
+    shutdown_cu_rom();
 
     unsubscribe_for(data_bus_topic_subscription);
     unsubscribe_for(flags_out_bus_topic_subscription);
@@ -138,6 +126,7 @@ void run_sync_comp(void (*run_comp_fn)(void)) {
 void run_cu(int clk) {  // 1 opstate per run
     log_debug("Clock: %d", clk);
     if (clk == 1) run_cu_seq_b_jnr();
+    if (clk == 1) run_cu_mxreg_jnr();
     if (clk == 1) run_cu_seq();
     if (clk == 0) run_cu_dxflipflop();
     if (clk == 1) run_cu_rom();
@@ -151,7 +140,8 @@ void run_cu(int clk) {  // 1 opstate per run
 
         if (control_bus->current_value.bits[CONTROL_BUS_RICAR_BIT_POSITION] == 1) {
             // load
-            if (get_used_bits(word_to_int(last_bus_data->current_value)) > RI_reg.bit_length) {
+            int b = get_used_bits(word_to_int(last_bus_data->current_value));
+            if (b > RI_reg.bit_length) {
                 Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load to RI register"};
                 throw_error(err);
             }

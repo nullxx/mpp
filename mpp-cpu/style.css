@@ -1,0 +1,42 @@
+/* From uiverse.io by @adamgiebl */
+.text-button {
+    background: #FBCA1F;
+    font-family: inherit;
+    padding: 0.6em 1.3em;
+    font-weight: 900;
+    font-size: 18px;
+    border: 3px solid black;
+    border-radius: 0.4em;
+    box-shadow: 0.1em 0.1em;
+    padding: 0;
+}
+
+.text-button:hover {
+    transform: translate(-0.05em, -0.05em);
+    box-shadow: 0.15em 0.15em;
+}
+
+.text-button:active {
+    transform: translate(0.05em, 0.05em);
+    box-shadow: 0.05em 0.05em;
+}
+
+.highlight {
+    background: #FFC300;
+}
+
+.reset-highlight {
+    background: white;
+}
+
+.background {
+    padding: 5px;
+}
+.label-search-mem {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+}
+
+entry {
+    font-family: 'Courier New', Courier, monospace;
+}

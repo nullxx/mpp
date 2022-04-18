@@ -19,15 +19,23 @@ int hex_to_dec(const char *hex) {
 }
 
 int get_used_bits(int number) { return log2(number) + 1; }
+int get_num_digits(int number) {
+    int count = 1;
+    while (number != 0) {
+        number = number / 10;
+        count++;
+    }
 
-char *dec_to_hex(int num) {
-    int size = get_used_bits(num);
-    char *result = (char *)malloc(sizeof(char) * (size + 1));
+    return count;
+}
+char *int_to_hex(const char *prefix, int num) {
+    int size = get_num_digits(num) + strlen(prefix) + 1;
+    char *result = (char *)malloc(sizeof(char) * size);
     if (result == NULL) {
         return NULL;
     }
 
-    snprintf(result, size, "%x", num);
+    snprintf(result, size, "%s%X", prefix, num);
     return result;
 }
 
@@ -172,7 +180,7 @@ char *create_str_internal(const int n, ...) {
     return str;
 }
 
-char *itoa(int num) {
+char *num_to_str(int num) {
     const int num_len = (int)log10(num + 1) + 1 + 1;  // last +1 for the null terminator
     char *str = (char *)malloc(sizeof(char) * num_len + 1);
     snprintf(str, sizeof(char) * num_len, "%d", num);

@@ -10,16 +10,16 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "gui/gui.h"
 #include "lib/components/components.h"
 #include "lib/components/cu/cu.h"
 #include "lib/components/mem.h"
 #include "lib/electronic/bus.h"
 #include "lib/error.h"
 #include "lib/logger.h"
-#include "lib/watcher.h"
 #include "lib/utils.h"
-
-#include "gui/gui.h"
+#include "lib/watcher.h"
+#include "linker.h"
 
 jmp_buf error_buffer;
 
@@ -46,8 +46,6 @@ void init_error_handle(void) {
 int main(int argc, const char* argv[]) {
     (void)argc;
     (void)argv;
-
-    // start_gui(argc, argv);
 
     log_info("Turning on...");
 
@@ -107,7 +105,15 @@ int main(int argc, const char* argv[]) {
     // FIN
     MemValue mem_value12 = {.offset = 0xB, .value = 0xFF};
     set_mem_value(mem_value12);
-    init_cu(); // temporal solution for loading instructions
+
+    init_linker();
+
+    init_cu();  // temporal solution for loading instructions
+    init_gui();
+
+    shutdown_linker();
+    shutdown_components();
+
     // -- TODO remove
     return 0;
 }

@@ -21,9 +21,10 @@
 
 LoadBit selreg_lb = {.value = 00};
 
-static Bus_t *control_bus = NULL;
-
-static PubSubSubscription *control_bus_topic_subscription = NULL;
+static Bus_t *cu_mreg_jnr_bus_1 = NULL;
+static Bus_t *cu_mreg_jnr_bus_2 = NULL;
+static PubSubSubscription *last_cu_mxreg_jnr_output_1_subscription = NULL;
+static PubSubSubscription *last_cu_mxreg_jnr_output_2_subscription = NULL;
 
 bool set_selreg_lb(unsigned int sel) {
     const int num_len = get_used_bits(sel);
@@ -36,17 +37,24 @@ bool set_selreg_lb(unsigned int sel) {
 }
 
 void init_mxreg(void) {
-    control_bus = create_bus_data();
-    control_bus_topic_subscription = subscribe_to(CONTROL_BUS_TOPIC, control_bus);
+    cu_mreg_jnr_bus_1 = create_bus_data();
+    last_cu_mxreg_jnr_output_1_subscription = subscribe_to(CU_MXREG_JNR_OUTPUT_1_BUS_TOPIC, cu_mreg_jnr_bus_1);
+    cu_mreg_jnr_bus_2 = create_bus_data();
+    last_cu_mxreg_jnr_output_2_subscription = subscribe_to(CU_MXREG_JNR_OUTPUT_2_BUS_TOPIC, cu_mreg_jnr_bus_2);
 }
+
 void shutdown_mxreg(void) {
-    unsubscribe_for(control_bus_topic_subscription);
+    unsubscribe_for(last_cu_mxreg_jnr_output_1_subscription);
+    unsubscribe_for(last_cu_mxreg_jnr_output_2_subscription);
 
-    destroy_bus_data(control_bus);
+    destroy_bus_data(cu_mreg_jnr_bus_1);
+    destroy_bus_data(cu_mreg_jnr_bus_2);
 }
-void run_mxreg(void) {
-    update_bus_data(control_bus);
 
-    int result = run_4x1_mx(selreg_lb.value, 00, 01, 10, 11);
+void run_mxreg(void) {
+    update_bus_data(cu_mreg_jnr_bus_1);
+    update_bus_data(cu_mreg_jnr_bus_2);
+
+    int result = run_4x1_mx(selreg_lb.value, word_to_int(cu_mreg_jnr_bus_1->current_value), word_to_int(cu_mreg_jnr_bus_2->current_value), 0b10, 0b11);
     publish_message_to(SELREG_OUTPUT_BUS_TOPIC, int_to_word(result));
 }

@@ -77,7 +77,7 @@ void run_mxdir(void) {
     if (output == (MXInput)-1) {
         err.message = "Couldn't run multiplexer";
         err.type = NOTICE_ERROR;
-        err.show_errno = false;
+        err.show_errno = 0;
 
         return throw_error(err);
     }

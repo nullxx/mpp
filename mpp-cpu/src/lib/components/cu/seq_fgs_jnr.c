@@ -17,8 +17,8 @@
 #include "../../pubsub.h"
 #include "../../utils.h"
 
-Bus_t *last_bus_cu_ri_out = NULL;
-Bus_t *last_bus_flags_out = NULL;
+static Bus_t *last_bus_cu_ri_out = NULL;
+static Bus_t *last_bus_flags_out = NULL;
 
 PubSubSubscription *last_cu_ri_output_subscription = NULL;
 PubSubSubscription *flags_out_bus_topic_subscription = NULL;

@@ -10,7 +10,7 @@
 #include "vargs.h"
 
 int hex_to_dec(const char *hex);
-char *dec_to_hex(int num);
+char *int_to_hex(const char* prefix, int num);
 
 int random_int(const int min, const int max);
 unsigned long long str_to_bin(const char *s);
@@ -27,7 +27,7 @@ char *initialize_str(char *str, int start, int end, char value);
 char *str_concat(const char *str1, const char *str2);
 char *str_dup(char *str);
 
-char *itoa(int num);
+char *num_to_str(int num);
 unsigned concatenate(unsigned x, unsigned y);
 long factorial(int n);
 void beep(void);

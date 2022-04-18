@@ -88,7 +88,7 @@ PubSubSubscription *subscribe_to_internal(PubSubTopic topic, Bus_t *bus_t, const
     }
 
 #ifdef DEBUG
-    char *sub_id_str = itoa(subscription->id);
+    char *sub_id_str = num_to_str(subscription->id);
     char *constructed_msg = create_str(caller, "Created subscription for", pubsub_topic_tostring(topic), "with id", sub_id_str);
     log_debug(constructed_msg);
     free(sub_id_str);
@@ -162,7 +162,7 @@ int unsubscribe_for(PubSubSubscription *sub) {
     }
 
 #ifdef DEBUG
-    char *sub_id_str = itoa(sub->id);
+    char *sub_id_str = num_to_str(sub->id);
     char *constructed_msg = create_str("Deleting subscription with id", sub_id_str);
     log_debug(constructed_msg);
     free(sub_id_str);
@@ -215,7 +215,7 @@ int publish_message_to(PubSubTopic topic, Word value) {
     }
 
 #ifdef DEBUG
-    char *sent_str = itoa(sent);
+    char *sent_str = num_to_str(sent);
     char *constructed_msg = create_str(pubsub_topic_tostring(topic), "published to", sent_str, "subscribers");
     log_debug(constructed_msg);
     free(sent_str);

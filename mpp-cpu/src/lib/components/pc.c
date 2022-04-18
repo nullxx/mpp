@@ -131,7 +131,8 @@ void run_pc(void) {
     // pc
     if (word_to_int(pccar_lb) == 1) {
         // load pc // PC is prioritary than pch and pcl
-        if (get_used_bits(word_to_int(last_bus_dir->current_value)) > pc_reg.bit_length) {
+        int used_bits = get_used_bits(word_to_int(last_bus_dir->current_value));
+        if (used_bits > pc_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PC register"};
             throw_error(err);
             return;

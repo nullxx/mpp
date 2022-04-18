@@ -12,11 +12,31 @@
 #define watcher_h
 #include "components/components.h"
 typedef struct {
-    Register *reg;
-    const char *name;
+    Register* reg;
+    const char* name;
+    unsigned int changed;
+    char* hex_repr;
 } RegisterWatcher;
 
-void register_watcher(RegisterWatcher *reg);
-void unregister_watcher(RegisterWatcher *reg_watcher);
-void log_watchers(void);
+typedef struct {
+    RegisterWatcher* PC;
+    RegisterWatcher* PCH;
+    RegisterWatcher* PCL;
+    RegisterWatcher* H;
+    RegisterWatcher* L;
+    RegisterWatcher* SP;
+    RegisterWatcher* FC;
+    RegisterWatcher* FZ;
+    RegisterWatcher* B;
+    RegisterWatcher* C;
+    RegisterWatcher* D;
+    RegisterWatcher* E;
+    RegisterWatcher* RI;
+    RegisterWatcher* ACUM;
+    RegisterWatcher* OP2;
+} Watchers;
+
+void register_watcher(RegisterWatcher* reg);
+void unregister_watcher(RegisterWatcher* reg_watcher);
+Watchers get_watchers(void);
 #endif

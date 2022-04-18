@@ -1,0 +1,96 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build mpp-cpu",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "windows": {
+                "options": {
+                    "cwd": "${workspaceFolder}"
+                },
+                "command": "powershell",
+                "args": [
+                    "-c",
+                    "mingw32-make",
+                    "DEBUG=1"
+                ]
+            },
+            "linux": {
+                "options": {
+                    "cwd": "${workspaceFolder}"
+                },
+                "command": "bash",
+                "args": [
+                    "-c",
+                    "make",
+                    "DEBUG=1"
+                ]
+            },
+            "osx": {
+                "options": {
+                    "cwd": "${workspaceFolder}"
+                },
+                "command": "bash",
+                "args": [
+                    "-c",
+                    "make",
+                    "DEBUG=1"
+                ]
+            }
+        },
+        {
+            "label": "build & run",
+            "type": "shell",
+            "windows": {
+                "command": "powershell",
+                "args": [
+                    "-c",
+                    "'mingw32-make run'"
+                ]
+            },
+            "linux": {
+                "command": "bash",
+                "args": [
+                    "-c",
+                    "'make run'"
+                ]
+            },
+            "osx": {
+                "command": "bash",
+                "args": [
+                    "-c",
+                    "'make run'"
+                ]
+            }
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "windows": {
+                "command": "powershell",
+                "args": [
+                    "-c",
+                    "'mingw32-make clean'"
+                ]
+            },
+            "linux": {
+                "command": "bash",
+                "args": [
+                    "-c",
+                    "'make clean'"
+                ]
+            },
+            "osx": {
+                "command": "bash",
+                "args": [
+                    "-c",
+                    "'make clean'"
+                ]
+            }
+        }
+    ]
+}

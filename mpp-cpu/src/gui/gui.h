@@ -1,4 +1,5 @@
-// #ifndef gui_h
-// #define gui_h
-// int start_gui(int argc, char **argv);
-// #endif
+#ifndef gui_h
+#define gui_h
+int init_gui(void);
+static void ui_update_mem(void);
+#endif
