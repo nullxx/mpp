@@ -111,6 +111,7 @@ void shutdown_cu(void) {
 void run_asyncronus_components(void) {
     run_addsub();
     run_mxdir();
+    run_mxreg();
 
     for (size_t i = 0; i < ALU_MEM_RELATION; i++) {
         run_mem();

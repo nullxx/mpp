@@ -30,6 +30,7 @@ typedef struct {
 void init_linker(void);
 void shutdown_linker(void);
 void set_update_ui(void (*update_ui_func)(void));
+void set_run_end(void (*run_end_func)(void));
 void run(RunConfig);
 int is_running(void);
 void cancel_run(void);

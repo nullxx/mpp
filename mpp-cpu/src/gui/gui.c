@@ -6,7 +6,7 @@
 #include "../lib/thread.h"
 #include "../lib/utils.h"
 #include "../linker.h"
-
+#include "panels/diagram.h"
 #define APP_NAME "M++ SIMULATOR"
 #define MEM_WIDGET_HEIGHT 200
 #define ROW_HEIGHT 20
@@ -45,10 +45,16 @@ GtkWidget *search_mem_entry;
 GtkWidget *run_program_btn;
 GtkWidget *run_microinstr_btn;
 GtkWidget *run_state_btn;
+GtkWidget *open_diagram_btn;
 
 GtkWidget *tree_view;
 
 int offset_mem_loaded = 0;
+static void on_run_end(void) {
+    gtk_button_set_label(GTK_BUTTON(run_program_btn), RUN_PROGRAM_TEXT);
+    gtk_button_set_label(GTK_BUTTON(run_microinstr_btn), RUN_MICRO_INSTRUCTION_TEXT);
+    gtk_button_set_label(GTK_BUTTON(run_state_btn), RUN_STATE_TEXT);
+}
 
 static void cancel_running(GtkWidget *widget, gpointer data, const char *last_label) {
     cancel_run();
@@ -62,46 +68,48 @@ static void show_running(void) {
     gtk_button_set_label(GTK_BUTTON(run_state_btn), STOP_TEXT);
 }
 
-static void show_stop(void) {
-    gtk_button_set_label(GTK_BUTTON(run_program_btn), RUN_PROGRAM_TEXT);
-    gtk_button_set_label(GTK_BUTTON(run_microinstr_btn), RUN_MICRO_INSTRUCTION_TEXT);
-    gtk_button_set_label(GTK_BUTTON(run_state_btn), RUN_STATE_TEXT);
-}
-
 static void run_state(GtkWidget *widget, gpointer data) {
+    // show_stop();
     if (is_running()) return cancel_running(widget, data, RUN_STATE_TEXT);
     show_running();
 
     gtk_widget_show(GTK_BUTTON(widget));
     RunConfig conf = {.type = STATE};
-    run(conf);
+    // run(conf);
+    g_thread_create(run_wrapper, &conf, FALSE, NULL);
 
-    show_stop();
+    // show_stop();
 }
 
 static void run_miroinstruction(GtkWidget *widget, gpointer data) {
+    // show_stop();
     if (is_running()) return cancel_running(widget, data, RUN_MICRO_INSTRUCTION_TEXT);
     show_running();
 
     RunConfig conf = {.type = MICRO_INSTRUCTION};
-    run(conf);
+    // run(conf);
+    g_thread_create(run_wrapper, &conf, FALSE, NULL);
 
-    show_stop();
+    // show_stop();
 }
 
 static void run_program(GtkWidget *widget, gpointer data) {
+    // show_stop();
     if (is_running()) return cancel_running(widget, data, RUN_PROGRAM_TEXT);
     show_running();
 
     RunConfig conf = {.type = PROGRAM};
     // run(conf);
-    g_timeout_add(0, (GSourceFunc)run_wrapper, &conf);
+    g_thread_create(run_wrapper, &conf, FALSE, NULL);
 
-    show_stop();
+    // show_stop();
 }
 
 static void on_mem_end_reached(GtkWidget *widget, gpointer data) { ui_update_mem(); }
-
+static void on_destroy(GtkWidget *widget, gpointer data) {
+    gtk_window_destroy(GTK_WINDOW(window));
+    // exit(0);
+}
 static void search_memory(GtkWidget *widget, gpointer data) {
     const gchar *offset_hex = gtk_editable_get_text(GTK_EDITABLE(search_mem_entry));
 
@@ -137,34 +145,33 @@ static void search_memory(GtkWidget *widget, gpointer data) {
     gtk_widget_show(popup);
 }
 
-static void print_hello(GtkWidget *widget, gpointer data) { g_print("Hello World\n"); }
-static void as(GtkWidget *widget, gpointer data) { gtk_window_destroy(window); }
-
-static void highlight_changes(GtkWidget *w) {
-    // red color gtk_widget_modify_bg 255, 195, 0
-    GdkRGBA c = {.red = 0x255, .green = 0x195, .blue = 0.0, .alpha = 1.0};
-    gtk_widget_add_css_class(GTK_WIDGET(w), "highlight");
+static void highlight_changes(RegisterWatcher *watcher, GtkWidget *w) {
+    if (watcher->changed) {
+        gtk_widget_add_css_class(GTK_WIDGET(w), "highlight");
+    } else {
+        gtk_widget_remove_css_class(GTK_WIDGET(w), "highlight");
+    }
 }
 
 static void reset_hightlight(GtkWidget *w) { gtk_widget_remove_css_class(GTK_WIDGET(w), "highlight"); }
 
 static void update_ui_watchers(void) {
     Watchers watchers = get_watchers_updated();
-    reset_hightlight(pc_entry);
-    reset_hightlight(pch_entry);
-    reset_hightlight(pcl_entry);
-    reset_hightlight(h_entry);
-    reset_hightlight(l_entry);
-    reset_hightlight(sp_entry);
-    reset_hightlight(fc_entry);
-    reset_hightlight(fz_entry);
-    reset_hightlight(b_entry);
-    reset_hightlight(c_entry);
-    reset_hightlight(d_entry);
-    reset_hightlight(e_entry);
-    reset_hightlight(ri_entry);
-    reset_hightlight(acum_entry);
-    reset_hightlight(op2_entry);
+    // reset_hightlight(pc_entry);
+    // reset_hightlight(pch_entry);
+    // reset_hightlight(pcl_entry);
+    // reset_hightlight(h_entry);
+    // reset_hightlight(l_entry);
+    // reset_hightlight(sp_entry);
+    // reset_hightlight(fc_entry);
+    // reset_hightlight(fz_entry);
+    // reset_hightlight(b_entry);
+    // reset_hightlight(c_entry);
+    // reset_hightlight(d_entry);
+    // reset_hightlight(e_entry);
+    // reset_hightlight(ri_entry);
+    // reset_hightlight(acum_entry);
+    // reset_hightlight(op2_entry);
 
     gtk_editable_set_text(GTK_EDITABLE(pc_entry), watchers.PC->hex_repr);
     gtk_editable_set_text(GTK_EDITABLE(pch_entry), watchers.PCH->hex_repr);
@@ -185,51 +192,21 @@ static void update_ui_watchers(void) {
     // red color gtk_widget_modify_bg
     // GdkColor red = {.red = 65535, .green = 0, .blue = 0};
     // gtk_widget_modify_bg(GTK_WIDGET(pc_entry), GTK_STATE_NORMAL, &red);
-    if (watchers.PC->changed) {
-        highlight_changes(pc_entry);
-    }
-    if (watchers.PCH->changed) {
-        highlight_changes(pch_entry);
-    }
-    if (watchers.PCL->changed) {
-        highlight_changes(pcl_entry);
-    }
-    if (watchers.H->changed) {
-        highlight_changes(h_entry);
-    }
-    if (watchers.L->changed) {
-        highlight_changes(l_entry);
-    }
-    if (watchers.SP->changed) {
-        highlight_changes(sp_entry);
-    }
-    if (watchers.FC->changed) {
-        highlight_changes(fc_entry);
-    }
-    if (watchers.FZ->changed) {
-        highlight_changes(fz_entry);
-    }
-    if (watchers.B->changed) {
-        highlight_changes(b_entry);
-    }
-    if (watchers.C->changed) {
-        highlight_changes(c_entry);
-    }
-    if (watchers.D->changed) {
-        highlight_changes(d_entry);
-    }
-    if (watchers.E->changed) {
-        highlight_changes(e_entry);
-    }
-    if (watchers.RI->changed) {
-        highlight_changes(ri_entry);
-    }
-    if (watchers.ACUM->changed) {
-        highlight_changes(acum_entry);
-    }
-    if (watchers.OP2->changed) {
-        highlight_changes(op2_entry);
-    }
+    highlight_changes(watchers.PC, pc_entry);
+    highlight_changes(watchers.PCH, pch_entry);
+    highlight_changes(watchers.PCL, pcl_entry);
+    highlight_changes(watchers.H, h_entry);
+    highlight_changes(watchers.L, l_entry);
+    highlight_changes(watchers.SP, sp_entry);
+    highlight_changes(watchers.FC, fc_entry);
+    highlight_changes(watchers.FZ, fz_entry);
+    highlight_changes(watchers.B, b_entry);
+    highlight_changes(watchers.C, c_entry);
+    highlight_changes(watchers.D, d_entry);
+    highlight_changes(watchers.E, e_entry);
+    highlight_changes(watchers.RI, ri_entry);
+    highlight_changes(watchers.ACUM, acum_entry);
+    highlight_changes(watchers.OP2, op2_entry);
 }
 
 static void ui_update_current_status(void) { gtk_editable_set_text(GTK_EDITABLE(current_state), get_current_state_updated()); }
@@ -265,21 +242,21 @@ static void update_ui_mem_selection(void) {
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
     gtk_tree_selection_unselect_all(selection);
 
-    GtkTreePath *path = gtk_tree_path_new_from_indices(word_to_int(get_watchers_updated().PC->reg->value), -1);
+    GtkTreePath *path = gtk_tree_path_new_from_indices(word_to_int(get_watchers(1).PC->reg->value), -1);
     gtk_tree_selection_select_path(selection, path);
 
     // scroll to the first row
     GtkTreeViewColumn *column = gtk_tree_view_get_column(GTK_TREE_VIEW(tree_view), 0);
     gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(tree_view), path, column, TRUE, 0.5, 0.5);
 }
-
-static void on_update(void) {
+static void ui_update_all(void) {
     log_debug("Received update event");
     update_ui_watchers();
     update_ui_mem_selection();
     ui_update_current_status();
     ui_update_buses();
 }
+static void on_update(void) { g_idle_add(ui_update_all, NULL); }
 
 static GtkWidget *insert_vbox(GtkWidget *w, gboolean expand) {
     GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
@@ -340,6 +317,10 @@ static void insert_action_buttons(GtkWidget *w) {
     run_state_btn = gtk_button_new_with_label(RUN_STATE_TEXT);
     g_signal_connect(run_state_btn, "clicked", G_CALLBACK(run_state), NULL);
     gtk_box_append(GTK_BOX(buttons_stack), run_state_btn);
+
+    open_diagram_btn = gtk_button_new_with_label("Open diagram");
+    g_signal_connect(open_diagram_btn, "clicked", G_CALLBACK(open_diagram), NULL);
+    gtk_box_append(GTK_BOX(buttons_stack), open_diagram_btn);
 }
 
 static void insert_current_state(GtkWidget *w) {
@@ -513,6 +494,9 @@ static void insert_alu(GtkWidget *w) {
 
 static void insert_statusbar(GtkWidget *w) {
     GtkWidget *statusbar = gtk_statusbar_new();
+    // create a horizontal box and append it to the statusbar
+    GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+
     gtk_box_append(GTK_BOX(w), statusbar);
     gtk_statusbar_push(GTK_STATUSBAR(statusbar), 0, "Ready");
 }
@@ -524,11 +508,14 @@ static void activate(GtkApplication *app, gpointer user_data) {
     window = gtk_application_window_new(app);
     gtk_window_set_title(GTK_WINDOW(window), APP_NAME);
 
+    // on window close
+    // g_signal_connect(window, "delete-event", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(G_OBJECT(window), "destroy", on_destroy, NULL);
     // load css from file
     GtkCssProvider *provider = gtk_css_provider_new();
     GdkDisplay *display = gdk_display_get_default();
     gtk_style_context_add_provider_for_display(display, provider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    const gchar *css_file = "style.css";
+    const gchar *css_file = "src/gui/style.css";
     GError *error = 0;
     gtk_css_provider_load_from_file(provider, g_file_new_for_path(css_file));
     g_object_unref(provider);
@@ -564,6 +551,7 @@ static void activate(GtkApplication *app, gpointer user_data) {
 
 int init_gui(void) {
     set_update_ui(on_update);
+    set_run_end(on_run_end);
 
     GtkApplication *app = gtk_application_new("me.nullx.mpp", G_APPLICATION_FLAGS_NONE);
     g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);

@@ -38,5 +38,5 @@ typedef struct {
 
 void register_watcher(RegisterWatcher* reg);
 void unregister_watcher(RegisterWatcher* reg_watcher);
-Watchers get_watchers(void);
+Watchers get_watchers(int raw);
 #endif

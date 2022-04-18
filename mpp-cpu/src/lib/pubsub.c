@@ -77,7 +77,7 @@ PubSubSubscription *subscribe_to_internal(PubSubTopic topic, Bus_t *bus_t, const
     }
 
     subscription->id = subscription_count++;  // id is also the index inside subscriptions
-    subscription->topic = topic;
+    subscription->topic = (PubSubTopic) topic;
     subscription->bus_t = bus_t;
     subscription->active = 1;
 

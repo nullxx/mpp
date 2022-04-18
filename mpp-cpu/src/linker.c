@@ -7,9 +7,12 @@
  * Last Modified: Saturday, 16th April 2022 8:43:10 pm
  * Modified By: https://github.com/nullxx (mail@nullx.me)
  */
+
+#define CLOCK_TICK_SLEEP_US 100000
 #include "linker.h"
 
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "lib/components/cu/cu.h"
 #include "lib/components/mem.h"
@@ -45,6 +48,7 @@ static PubSubSubscription *d1_bus_topic_subscription = NULL;
 static PubSubSubscription *d0_bus_topic_subscription = NULL;
 
 void (*update_ui)(void) = NULL;
+void (*run_end)(void) = NULL;
 RunConfig run_conf;
 
 char *last_current_state = NULL;
@@ -56,6 +60,7 @@ MemUpdated last_mem_updated = {.values_count = 0, .values = NULL};
 int running = 0;
 
 void set_update_ui(void (*update_ui_func)(void)) { update_ui = update_ui_func; }
+void set_run_end(void (*run_end_func)(void)) { run_end = run_end_func; }
 
 void init_linker(void) {
     actual_status_Q4_bus = create_bus_data();
@@ -88,6 +93,28 @@ void init_linker(void) {
 }
 
 void shutdown_linker(void) {
+    running = 0;
+    if (last_current_state != NULL) {
+        free(last_current_state);
+        last_current_state = NULL;
+    }
+    if (last_bus_data != NULL) {
+        free(last_bus_data);
+        last_bus_data = NULL;
+    }
+    if (last_bus_dir != NULL) {
+        free(last_bus_dir);
+        last_bus_dir = NULL;
+    }
+    if (last_bus_control != NULL) {
+        free(last_bus_control);
+        last_bus_control = NULL;
+    }
+    if (last_mem_updated.values != NULL) {
+        free(last_mem_updated.values);
+        last_mem_updated.values = NULL;
+    }
+
     unsubscribe_for(actual_status_Q4_subscription);
     unsubscribe_for(actual_status_Q3_subscription);
     unsubscribe_for(actual_status_Q2_subscription);
@@ -168,6 +195,7 @@ void run(RunConfig conf) {
             // runs until the next state is next
             while (1) {
                 if (running == 0) break;
+                usleep(CLOCK_TICK_SLEEP_US);
                 cycle_time += run_clock_cycle();
                 update_ui();
                 int next_state = get_next_state();
@@ -178,9 +206,10 @@ void run(RunConfig conf) {
             // runs until RI = 0xFF
             while (1) {
                 if (running == 0) break;
+                usleep(CLOCK_TICK_SLEEP_US);
                 cycle_time += run_clock_cycle();
                 update_ui();
-                int ri = word_to_int(get_watchers().RI->reg->value);
+                int ri = word_to_int(get_watchers(1).RI->reg->value);
                 if (ri == 0xFF) break;
             }
             break;
@@ -190,10 +219,11 @@ void run(RunConfig conf) {
 
     log_debug("cycle_time: %f", cycle_time);
     running = 0;
+    run_end();
     // update_ui();
 }
 
-Watchers get_watchers_updated(void) { return get_watchers(); }
+Watchers get_watchers_updated(void) { return get_watchers(0); }
 
 char *get_current_state_updated(void) {
     // rom_pos == state

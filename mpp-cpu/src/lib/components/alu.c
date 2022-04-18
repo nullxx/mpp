@@ -10,12 +10,9 @@
 
 #include "alu.h"
 
-#include <semaphore.h>
-#include <signal.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 #include "../constants.h"
 #include "../electronic/bus.h"

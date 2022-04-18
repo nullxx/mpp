@@ -47,16 +47,6 @@ FIXPATH = $(subst /,\,$1)
 RM			:= del /q /f
 MD	:= mkdir
 else
-ifeq ($(GOOS), windows)
-MAIN	:= main.exe
-CFLAGS += -arch x86_64
-SOURCEDIRS	:= $(shell find $(SRC) -type d)
-INCLUDEDIRS	:= $(shell find -L $(INCLUDE) -type d)
-LIBDIRS		:= $(shell find $(LIB) -type d)
-FIXPATH = $1
-RM = rm -f
-MD	:= mkdir -p
-else
 MAIN	:= main
 TEST	:= test
 SOURCEDIRS	:= $(shell find $(SRC) -type d)
@@ -65,7 +55,6 @@ LIBDIRS		:= $(shell find $(LIB) -type d)
 FIXPATH = $1
 RM = rm -f
 MD	:= mkdir -p
-endif
 endif
 
 # define any directories containing header files other than /usr/include

@@ -32,6 +32,7 @@
 .background {
     padding: 5px;
 }
+
 .label-search-mem {
     font-family: 'Courier New', Courier, monospace;
     font-size: 20px;
@@ -39,4 +40,23 @@
 
 entry {
     font-family: 'Courier New', Courier, monospace;
+}
+
+.box {
+    border: 1px solid black;
+    border-radius: 0.2em;
+    padding: 0.5em;
+}
+
+.separator-1 {
+    border-top: 1px solid black;
+}
+.separator-2 {
+    border-bottom: 1px solid black;
+}
+.separator-3 {
+    border-left: 1px solid black;
+}
+.separator-4 {
+    border-right: 1px solid black;
 }

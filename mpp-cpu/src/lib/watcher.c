@@ -83,7 +83,11 @@ unsigned int has_changed(char *new_hex_repr, char *hex_repr) {
     return 1;
 }
 
-Watchers get_watchers(void) {
+Watchers get_watchers(int raw) {
+    if (raw == 1) {
+        return watchers;
+    }
+
     char *acum_hex_repr = int_to_hex("0x", word_to_int(watchers.ACUM->reg->value));
     char *b_hex_repr = int_to_hex("0x", word_to_int(watchers.B->reg->value));
     char *c_hex_repr = int_to_hex("0x", word_to_int(watchers.C->reg->value));
@@ -116,51 +120,51 @@ Watchers get_watchers(void) {
     int pc_changed = has_changed(pc_hex_repr, watchers.PC->hex_repr);
     int sp_changed = has_changed(sp_hex_repr, watchers.SP->hex_repr);
 
-    if (watchers.ACUM->hex_repr != NULL) {
-        free(watchers.ACUM->hex_repr);
-    }
-    if (watchers.B->hex_repr != NULL) {
-        free(watchers.B->hex_repr);
-    }
-    if (watchers.C->hex_repr != NULL) {
-        free(watchers.C->hex_repr);
-    }
-    if (watchers.D->hex_repr != NULL) {
-        free(watchers.D->hex_repr);
-    }
-    if (watchers.E->hex_repr != NULL) {
-        free(watchers.E->hex_repr);
-    }
-    if (watchers.FC->hex_repr != NULL) {
-        free(watchers.FC->hex_repr);
-    }
-    if (watchers.FZ->hex_repr != NULL) {
-        free(watchers.FZ->hex_repr);
-    }
-    if (watchers.H->hex_repr != NULL) {
-        free(watchers.H->hex_repr);
-    }
-    if (watchers.L->hex_repr != NULL) {
-        free(watchers.L->hex_repr);
-    }
-    if (watchers.OP2->hex_repr != NULL) {
-        free(watchers.OP2->hex_repr);
-    }
-    if (watchers.RI->hex_repr != NULL) {
-        free(watchers.RI->hex_repr);
-    }
-    if (watchers.PCL->hex_repr != NULL) {
-        free(watchers.PCL->hex_repr);
-    }
-    if (watchers.PCH->hex_repr != NULL) {
-        free(watchers.PCH->hex_repr);
-    }
-    if (watchers.PC->hex_repr != NULL) {
-        free(watchers.PC->hex_repr);
-    }
-    if (watchers.SP->hex_repr != NULL) {
-        free(watchers.SP->hex_repr);
-    }
+    // if (watchers.ACUM->hex_repr != NULL) {
+    //     free(watchers.ACUM->hex_repr);
+    // }
+    // if (watchers.B->hex_repr != NULL) {
+    //     free(watchers.B->hex_repr);
+    // }
+    // if (watchers.C->hex_repr != NULL) {
+    //     free(watchers.C->hex_repr);
+    // }
+    // if (watchers.D->hex_repr != NULL) {
+    //     free(watchers.D->hex_repr);
+    // }
+    // if (watchers.E->hex_repr != NULL) {
+    //     free(watchers.E->hex_repr);
+    // }
+    // if (watchers.FC->hex_repr != NULL) {
+    //     free(watchers.FC->hex_repr);
+    // }
+    // if (watchers.FZ->hex_repr != NULL) {
+    //     free(watchers.FZ->hex_repr);
+    // }
+    // if (watchers.H->hex_repr != NULL) {
+    //     free(watchers.H->hex_repr);
+    // }
+    // if (watchers.L->hex_repr != NULL) {
+    //     free(watchers.L->hex_repr);
+    // }
+    // if (watchers.OP2->hex_repr != NULL) {
+    //     free(watchers.OP2->hex_repr);
+    // }
+    // if (watchers.RI->hex_repr != NULL) {
+    //     free(watchers.RI->hex_repr);
+    // }
+    // if (watchers.PCL->hex_repr != NULL) {
+    //     free(watchers.PCL->hex_repr);
+    // }
+    // if (watchers.PCH->hex_repr != NULL) {
+    //     free(watchers.PCH->hex_repr);
+    // }
+    // if (watchers.PC->hex_repr != NULL) {
+    //     free(watchers.PC->hex_repr);
+    // }
+    // if (watchers.SP->hex_repr != NULL) {
+    //     free(watchers.SP->hex_repr);
+    // }
 
     watchers.ACUM->hex_repr = acum_hex_repr;
     watchers.B->hex_repr = b_hex_repr;

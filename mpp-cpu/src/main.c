@@ -60,7 +60,7 @@ int main(int argc, const char* argv[]) {
     // TODO remove
 
     // MOV 22, AC
-    MemValue mem_value1 = {.offset = 0x00, .value = 0x64};
+    MemValue mem_value1 = {.offset = 0x00, .value = 0x62};
     set_mem_value(mem_value1);
 
     MemValue mem_value2 = {.offset = 0x01, .value = 0x00};
@@ -68,20 +68,20 @@ int main(int argc, const char* argv[]) {
     // -- MOV 22, AC
 
     // INC AC
-    MemValue mem_value3 = {.offset = 0x02, .value = 0x4B};
+    MemValue mem_value3 = {.offset = 0x02, .value = 0x63};
     set_mem_value(mem_value3);
     // -- INC AC
 
     // CMP 05
-    MemValue mem_value4 = {.offset = 0x03, .value = 0x67};
+    MemValue mem_value4 = {.offset = 0x03, .value = 0x0E};
     set_mem_value(mem_value4);
 
-    MemValue mem_value5 = {.offset = 0x04, .value = 0x05};
+    MemValue mem_value5 = {.offset = 0x04, .value = 0xB0};
     set_mem_value(mem_value5);
     // -- CMP 05
 
     // CMP 05
-    MemValue mem_value6 = {.offset = 0x05, .value = 0x72};
+    MemValue mem_value6 = {.offset = 0x05, .value = 0xFF};
     set_mem_value(mem_value6);
 
     MemValue mem_value7 = {.offset = 0x06, .value = 0x00};
