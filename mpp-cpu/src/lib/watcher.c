@@ -83,7 +83,7 @@ unsigned int has_changed(char *new_hex_repr, char *hex_repr) {
     return 1;
 }
 
-Watchers get_watchers(int raw) {
+Watchers get_watchers(int raw) {  // FIXME implement this in linker.c
     if (raw == 1) {
         return watchers;
     }

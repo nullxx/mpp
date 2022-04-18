@@ -278,6 +278,8 @@ MemUpdated get_mem_updated(void) {
 
     for (int i = 0; i < mem.values_count; i++) {
         MemValueUpdated mem_value_updated;
+        mem_value_updated.offset = mem.values[i].offset;
+        mem_value_updated.value = mem.values[i].value;
         mem_value_updated.offset_hex = int_to_hex("", mem.values[i].offset);
         mem_value_updated.value_hex = int_to_hex("", mem.values[i].value);
         mem_updated.values[i] = mem_value_updated;

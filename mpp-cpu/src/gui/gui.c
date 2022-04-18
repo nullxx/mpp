@@ -7,6 +7,7 @@
 #include "../lib/utils.h"
 #include "../linker.h"
 #include "panels/diagram.h"
+#include "panels/programming.h"
 #define APP_NAME "M++ SIMULATOR"
 #define MEM_WIDGET_HEIGHT 200
 #define ROW_HEIGHT 20
@@ -46,10 +47,13 @@ GtkWidget *run_program_btn;
 GtkWidget *run_microinstr_btn;
 GtkWidget *run_state_btn;
 GtkWidget *open_diagram_btn;
+GtkWidget *open_programming_mode_btn;
 
 GtkWidget *tree_view;
 
 int offset_mem_loaded = 0;
+
+
 static void on_run_end(void) {
     gtk_button_set_label(GTK_BUTTON(run_program_btn), RUN_PROGRAM_TEXT);
     gtk_button_set_label(GTK_BUTTON(run_microinstr_btn), RUN_MICRO_INSTRUCTION_TEXT);
@@ -112,11 +116,11 @@ static void on_destroy(GtkWidget *widget, gpointer data) {
 }
 static void search_memory(GtkWidget *widget, gpointer data) {
     const gchar *offset_hex = gtk_editable_get_text(GTK_EDITABLE(search_mem_entry));
-
+    const int offset = (int)strtol(offset_hex, NULL, 16);
     char *value_hex = NULL;
     MemUpdated mem_updated = get_mem_updated();
     for (int i = 0; i < mem_updated.values_count; i++) {
-        if (strcmp(offset_hex, mem_updated.values[i].offset_hex) == 0) {
+        if (offset == mem_updated.values[i].offset) {
             value_hex = mem_updated.values[i].value_hex;
             break;
         }
@@ -157,21 +161,6 @@ static void reset_hightlight(GtkWidget *w) { gtk_widget_remove_css_class(GTK_WID
 
 static void update_ui_watchers(void) {
     Watchers watchers = get_watchers_updated();
-    // reset_hightlight(pc_entry);
-    // reset_hightlight(pch_entry);
-    // reset_hightlight(pcl_entry);
-    // reset_hightlight(h_entry);
-    // reset_hightlight(l_entry);
-    // reset_hightlight(sp_entry);
-    // reset_hightlight(fc_entry);
-    // reset_hightlight(fz_entry);
-    // reset_hightlight(b_entry);
-    // reset_hightlight(c_entry);
-    // reset_hightlight(d_entry);
-    // reset_hightlight(e_entry);
-    // reset_hightlight(ri_entry);
-    // reset_hightlight(acum_entry);
-    // reset_hightlight(op2_entry);
 
     gtk_editable_set_text(GTK_EDITABLE(pc_entry), watchers.PC->hex_repr);
     gtk_editable_set_text(GTK_EDITABLE(pch_entry), watchers.PCH->hex_repr);
@@ -189,9 +178,6 @@ static void update_ui_watchers(void) {
     gtk_editable_set_text(GTK_EDITABLE(acum_entry), watchers.ACUM->hex_repr);
     gtk_editable_set_text(GTK_EDITABLE(op2_entry), watchers.OP2->hex_repr);
 
-    // red color gtk_widget_modify_bg
-    // GdkColor red = {.red = 65535, .green = 0, .blue = 0};
-    // gtk_widget_modify_bg(GTK_WIDGET(pc_entry), GTK_STATE_NORMAL, &red);
     highlight_changes(watchers.PC, pc_entry);
     highlight_changes(watchers.PCH, pch_entry);
     highlight_changes(watchers.PCL, pcl_entry);
@@ -220,20 +206,28 @@ static void ui_update_buses(void) {
 static void ui_update_mem(void) {
     MemUpdated mem_updated = get_mem_updated();
 
-    // gtk_tree_store_clear(mem_model);
+    gtk_tree_store_clear(mem_model);
     // what to do with large tree store?
     GtkTreeIter iter;
 
-    int min = offset_mem_loaded;
+    // int min = offset_mem_loaded;
+    int min = 0;
     int max = offset_mem_loaded + MEM_WIDGET_HEIGHT / ROW_HEIGHT;
     if (max > mem_updated.values_count) max = mem_updated.values_count;
-
     for (int i = min; i < max; i++) {
         gtk_tree_store_append(mem_model, &iter, NULL);
         gtk_tree_store_set(mem_model, &iter, 0, mem_updated.values[i].offset_hex, 1, mem_updated.values[i].value_hex, -1);
     }
 
     offset_mem_loaded = max;
+}
+
+static void on_programming_destroy(void) {
+    ui_update_mem();
+}
+static void on_open_program_mode(void) {
+    GtkWidget *win = open_programming_mode();
+    g_signal_connect(G_OBJECT(win), "destroy", on_programming_destroy, NULL);
 }
 
 static void update_ui_mem_selection(void) {
@@ -249,6 +243,7 @@ static void update_ui_mem_selection(void) {
     GtkTreeViewColumn *column = gtk_tree_view_get_column(GTK_TREE_VIEW(tree_view), 0);
     gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(tree_view), path, column, TRUE, 0.5, 0.5);
 }
+
 static void ui_update_all(void) {
     log_debug("Received update event");
     update_ui_watchers();
@@ -256,6 +251,7 @@ static void ui_update_all(void) {
     ui_update_current_status();
     ui_update_buses();
 }
+
 static void on_update(void) { g_idle_add(ui_update_all, NULL); }
 
 static GtkWidget *insert_vbox(GtkWidget *w, gboolean expand) {
@@ -315,12 +311,17 @@ static void insert_action_buttons(GtkWidget *w) {
     gtk_box_append(GTK_BOX(buttons_stack), run_microinstr_btn);
 
     run_state_btn = gtk_button_new_with_label(RUN_STATE_TEXT);
+    gtk_button_set_label(GTK_BUTTON(run_state_btn), RUN_STATE_TEXT);
     g_signal_connect(run_state_btn, "clicked", G_CALLBACK(run_state), NULL);
     gtk_box_append(GTK_BOX(buttons_stack), run_state_btn);
 
     open_diagram_btn = gtk_button_new_with_label("Open diagram");
     g_signal_connect(open_diagram_btn, "clicked", G_CALLBACK(open_diagram), NULL);
     gtk_box_append(GTK_BOX(buttons_stack), open_diagram_btn);
+
+    open_programming_mode_btn = gtk_button_new_with_label("Programming mode");
+    g_signal_connect(open_programming_mode_btn, "clicked", G_CALLBACK(on_open_program_mode), NULL);
+    gtk_box_append(GTK_BOX(buttons_stack), open_programming_mode_btn);
 }
 
 static void insert_current_state(GtkWidget *w) {

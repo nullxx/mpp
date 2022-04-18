@@ -18,6 +18,8 @@ typedef struct {
 } RunConfig;
 
 typedef struct {
+    int offset;
+    int value;
     char *offset_hex;
     char *value_hex;
 } MemValueUpdated;
