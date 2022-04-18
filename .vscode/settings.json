@@ -22,7 +22,9 @@
         "utility": "c",
         "pubsub.h": "c",
         "seq.h": "c",
-        "constants.h": "c"
+        "constants.h": "c",
+        "chrono": "c",
+        "algorithm": "c"
     },
     "C_Cpp.default.includePath": [
         "/usr/include/gtk-3.0",
