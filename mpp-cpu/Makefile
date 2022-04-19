@@ -4,10 +4,10 @@
 #
 
 # define the C compiler to use
-CC = gcc
+CC = clang
 
 # define any compile-time flags
-CFLAGS	:= -Wall -Wextra -g -DLOG_USE_COLOR $(shell pkg-config --cflags gtk4)
+CFLAGS	:= -Wall -Wextra -g -Ofast -DLOG_USE_COLOR $(shell pkg-config --cflags gtk4)
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
 #   their path using -Lpath, something like:

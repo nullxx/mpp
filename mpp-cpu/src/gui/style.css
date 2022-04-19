@@ -1,26 +1,26 @@
-/* From uiverse.io by @adamgiebl */
+/* CSS */
 .text-button {
-    background: #FBCA1F;
-    font-family: inherit;
-    padding: 0.6em 1.3em;
-    font-weight: 900;
-    font-size: 18px;
-    border: 3px solid black;
-    border-radius: 0.4em;
-    box-shadow: 0.1em 0.1em;
-    padding: 0;
+  background: #fff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  color: #0f1111;
+  font-family: "Amazon Ember",sans-serif;
+  font-size: 13px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  text-decoration: none;
 }
 
 .text-button:hover {
-    transform: translate(-0.05em, -0.05em);
-    box-shadow: 0.15em 0.15em;
+  background: #f7fafa;
 }
 
-.text-button:active {
-    transform: translate(0.05em, 0.05em);
-    box-shadow: 0.05em 0.05em;
+.text-button:focus {
+  border: #008296;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  outline: 0;
 }
-
 .highlight {
     background: #FFC300;
 }
@@ -59,4 +59,8 @@ entry {
 }
 .separator-4 {
     border-right: 1px solid black;
+}
+
+label {
+    font-family: 'Courier New', Courier, monospace;
 }

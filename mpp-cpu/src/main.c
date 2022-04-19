@@ -17,7 +17,6 @@
 #include "lib/electronic/bus.h"
 #include "lib/error.h"
 #include "lib/logger.h"
-#include "lib/utils.h"
 #include "lib/watcher.h"
 #include "linker.h"
 
@@ -25,17 +24,11 @@ jmp_buf error_buffer;
 
 void on_signal_exit(int signal) {
     log_info("Received signal %d.", signal);
-    printf("Do you want to exit? y/n: ");
-
-    char confirmation = getchar();
-    if (confirmation == 'y' || confirmation == '\n') {
-        log_info("Shuting down...");
-        shutdown_components();
-        exit(EXIT_SUCCESS);
-    }
+    shutdown_components();
+    exit(EXIT_SUCCESS);
 }
 
-void init_error_handle(void) {
+void init_error_handle(void) { // TODO check error handling
     ErrorType err_type = (ErrorType)setjmp(error_buffer);
 
     if (err_type != NONE_ERROR_TYPE) {
@@ -57,63 +50,12 @@ int main(int argc, const char* argv[]) {
     init_buses();
     init_components();
 
-    // TODO remove
-
-    // MOV 22, AC
-    MemValue mem_value1 = {.offset = 0x00, .value = 0x62};
-    set_mem_value(mem_value1);
-
-    MemValue mem_value2 = {.offset = 0x01, .value = 0x00};
-    set_mem_value(mem_value2);
-    // -- MOV 22, AC
-
-    // INC AC
-    MemValue mem_value3 = {.offset = 0x02, .value = 0x63};
-    set_mem_value(mem_value3);
-    // -- INC AC
-
-    // CMP 05
-    MemValue mem_value4 = {.offset = 0x03, .value = 0x0E};
-    set_mem_value(mem_value4);
-
-    MemValue mem_value5 = {.offset = 0x04, .value = 0xB0};
-    set_mem_value(mem_value5);
-    // -- CMP 05
-
-    // CMP 05
-    MemValue mem_value6 = {.offset = 0x05, .value = 0xFF};
-    set_mem_value(mem_value6);
-
-    MemValue mem_value7 = {.offset = 0x06, .value = 0x00};
-    set_mem_value(mem_value7);
-
-    MemValue mem_value8 = {.offset = 0x07, .value = 0x0B};
-    set_mem_value(mem_value8);
-    // -- CMP 05
-
-    // JMP 0002
-    MemValue mem_value9 = {.offset = 0x08, .value = 0x74};
-    set_mem_value(mem_value9);
-
-    MemValue mem_value10 = {.offset = 0x09, .value = 0x00};
-    set_mem_value(mem_value10);
-
-    MemValue mem_value11 = {.offset = 0xA, .value = 0x02};
-    set_mem_value(mem_value11);
-    // -- JMP 0002
-
-    // FIN
-    MemValue mem_value12 = {.offset = 0xB, .value = 0xFF};
-    set_mem_value(mem_value12);
-
     init_linker();
 
-    init_cu();  // temporal solution for loading instructions
     init_gui();
 
     shutdown_linker();
     shutdown_components();
 
-    // -- TODO remove
     return 0;
 }

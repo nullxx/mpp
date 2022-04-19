@@ -42,6 +42,7 @@ GtkWidget *control_bus;
 
 GtkTreeStore *mem_model;
 GtkWidget *search_mem_entry;
+GtkWidget *progress_bar;
 
 GtkWidget *run_program_btn;
 GtkWidget *run_microinstr_btn;
@@ -53,6 +54,7 @@ GtkWidget *tree_view;
 
 int offset_mem_loaded = 0;
 
+int closing = 0;
 
 static void on_run_end(void) {
     gtk_button_set_label(GTK_BUTTON(run_program_btn), RUN_PROGRAM_TEXT);
@@ -77,10 +79,9 @@ static void run_state(GtkWidget *widget, gpointer data) {
     if (is_running()) return cancel_running(widget, data, RUN_STATE_TEXT);
     show_running();
 
-    gtk_widget_show(GTK_BUTTON(widget));
     RunConfig conf = {.type = STATE};
     // run(conf);
-    g_thread_create(run_wrapper, &conf, FALSE, NULL);
+    g_thread_new("run_state", run_wrapper, &conf);
 
     // show_stop();
 }
@@ -92,7 +93,7 @@ static void run_miroinstruction(GtkWidget *widget, gpointer data) {
 
     RunConfig conf = {.type = MICRO_INSTRUCTION};
     // run(conf);
-    g_thread_create(run_wrapper, &conf, FALSE, NULL);
+    g_thread_new("run_micro_instruction", run_wrapper, &conf);
 
     // show_stop();
 }
@@ -104,16 +105,17 @@ static void run_program(GtkWidget *widget, gpointer data) {
 
     RunConfig conf = {.type = PROGRAM};
     // run(conf);
-    g_thread_create(run_wrapper, &conf, FALSE, NULL);
+    g_thread_new("run_program", run_wrapper, &conf);
 
     // show_stop();
 }
 
-static void on_mem_end_reached(GtkWidget *widget, gpointer data) { ui_update_mem(); }
 static void on_destroy(GtkWidget *widget, gpointer data) {
+    closing = 1;
+    cancel_run();
     gtk_window_destroy(GTK_WINDOW(window));
-    // exit(0);
 }
+
 static void search_memory(GtkWidget *widget, gpointer data) {
     const gchar *offset_hex = gtk_editable_get_text(GTK_EDITABLE(search_mem_entry));
     const int offset = (int)strtol(offset_hex, NULL, 16);
@@ -195,7 +197,7 @@ static void update_ui_watchers(void) {
     highlight_changes(watchers.OP2, op2_entry);
 }
 
-static void ui_update_current_status(void) { gtk_editable_set_text(GTK_EDITABLE(current_state), get_current_state_updated()); }
+static void ui_update_current_status(void) { gtk_label_set_text(GTK_LABEL(current_state), get_current_state_updated()); }
 
 static void ui_update_buses(void) {
     gtk_editable_set_text(GTK_EDITABLE(data_bus), get_data_bus_updated());
@@ -203,27 +205,40 @@ static void ui_update_buses(void) {
     gtk_editable_set_text(GTK_EDITABLE(control_bus), get_control_bus_updated());
 }
 
-static void ui_update_mem(void) {
+float mem_loaded_progress = 0.0;
+
+static void update_mem_loaded_progress(void) {
+    if (closing == 1) return;
+    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress_bar), mem_loaded_progress);
+    if (mem_loaded_progress == 1.0) {
+        gtk_progress_bar_set_text(GTK_PROGRESS_BAR(progress_bar), "Memory loaded");
+    }
+}
+static void load_mem(void) {
+    if (mem_loaded_progress != 0 && mem_loaded_progress < 1) return; // other thread is loading
     MemUpdated mem_updated = get_mem_updated();
 
-    gtk_tree_store_clear(mem_model);
-    // what to do with large tree store?
-    GtkTreeIter iter;
+    GtkWidget *mem_model_tmp = gtk_tree_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+    for (int i = 0; i < mem_updated.values_count; i++) {
+        if (closing == 1) {
+            g_thread_exit(NULL);
+        }
 
-    // int min = offset_mem_loaded;
-    int min = 0;
-    int max = offset_mem_loaded + MEM_WIDGET_HEIGHT / ROW_HEIGHT;
-    if (max > mem_updated.values_count) max = mem_updated.values_count;
-    for (int i = min; i < max; i++) {
-        gtk_tree_store_append(mem_model, &iter, NULL);
-        gtk_tree_store_set(mem_model, &iter, 0, mem_updated.values[i].offset_hex, 1, mem_updated.values[i].value_hex, -1);
+        GtkTreeIter iter;
+        gtk_tree_store_append(mem_model_tmp, &iter, NULL);
+        gtk_tree_store_set(mem_model_tmp, &iter, 0, mem_updated.values[i].offset_hex, 1, mem_updated.values[i].value_hex, -1);
+        mem_loaded_progress = (i + 1) / (float)mem_updated.values_count;
+        g_idle_add(update_mem_loaded_progress, NULL);
     }
 
-    offset_mem_loaded = max;
+    g_object_unref(mem_model);
+    mem_model = mem_model_tmp;
+    gtk_tree_view_set_model(GTK_TREE_VIEW(tree_view), GTK_TREE_MODEL(mem_model));
 }
 
 static void on_programming_destroy(void) {
-    ui_update_mem();
+    g_print("Programming window closed\n");
+    g_thread_new("load_mem", load_mem, NULL);
 }
 static void on_open_program_mode(void) {
     GtkWidget *win = open_programming_mode();
@@ -236,12 +251,14 @@ static void update_ui_mem_selection(void) {
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
     gtk_tree_selection_unselect_all(selection);
 
-    GtkTreePath *path = gtk_tree_path_new_from_indices(word_to_int(get_watchers(1).PC->reg->value), -1);
+    GtkTreePath *path = gtk_tree_path_new_from_indices(word_to_int(get_watchers(1).PC->reg->value) + 1, -1);
     gtk_tree_selection_select_path(selection, path);
+    int selected = gtk_tree_selection_path_is_selected(selection, path);
 
     // scroll to the first row
     GtkTreeViewColumn *column = gtk_tree_view_get_column(GTK_TREE_VIEW(tree_view), 0);
     gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(tree_view), path, column, TRUE, 0.5, 0.5);
+    gtk_tree_path_free(path);
 }
 
 static void ui_update_all(void) {
@@ -263,7 +280,7 @@ static GtkWidget *insert_vbox(GtkWidget *w, gboolean expand) {
 }
 
 static GtkWidget *insert_hbox(GtkWidget *w, gboolean expand) {
-    GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
     // expand
     gtk_box_set_homogeneous(GTK_BOX(hbox), expand);
     gtk_box_append(GTK_BOX(w), hbox);
@@ -325,17 +342,17 @@ static void insert_action_buttons(GtkWidget *w) {
 }
 
 static void insert_current_state(GtkWidget *w) {
-    GtkWidget *current_state_stack = insert_vbox(w, FALSE);
-    GtkWidget *label = gtk_label_new("CURRENT STATE");
-
-    gtk_box_append(GTK_BOX(current_state_stack), label);
-    insert_horizontal_separator(current_state_stack);
-
-    current_state = gtk_entry_new();
-    gtk_editable_set_editable(GTK_ENTRY(current_state), FALSE);
+    GtkWidget *frame = gtk_frame_new("Current state");
+    gtk_widget_set_size_request(frame, 10, 10);
+    gtk_box_append(GTK_BOX(w), frame);
+    current_state = gtk_label_new("SX");
+    gtk_label_set_xalign(GTK_LABEL(current_state), 0);
+    gtk_label_set_yalign(GTK_LABEL(current_state), 0);
+    // gtk_editable_set_editable(GTK_ENTRY(current_state), FALSE);
     // set text entry size to 20
-    gtk_editable_set_width_chars(GTK_ENTRY(current_state), 20);
-    gtk_box_append(GTK_BOX(current_state_stack), current_state);
+    // gtk_editable_set_width_chars(GTK_ENTRY(current_state), 20);
+    // gtk_widget_set_size_request(current_state, 10, 10);
+    gtk_frame_set_child(GTK_FRAME(frame), current_state);
 }
 
 static void insert_memory_view(GtkWidget *w) {
@@ -343,6 +360,13 @@ static void insert_memory_view(GtkWidget *w) {
     GtkWidget *label = gtk_label_new("MEMORY");
     gtk_box_append(GTK_BOX(vbox), label);
     insert_horizontal_separator(vbox);
+
+    // create a progress bar
+    progress_bar = gtk_progress_bar_new();
+    gtk_progress_bar_set_text(GTK_PROGRESS_BAR(progress_bar), "Loading...");
+    gtk_progress_bar_set_show_text(GTK_PROGRESS_BAR(progress_bar), TRUE);
+    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress_bar), 0.0);
+    gtk_box_append(GTK_BOX(vbox), progress_bar);
 
     // create a horizontal box: label | entry
     GtkWidget *hbox = insert_hbox(vbox, FALSE);
@@ -363,8 +387,6 @@ static void insert_memory_view(GtkWidget *w) {
     GtkWidget *scrolled_window = gtk_scrolled_window_new();
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
     gtk_widget_set_size_request(scrolled_window, -1, 200);
-    g_signal_connect(scrolled_window, "edge-reached", G_CALLBACK(on_mem_end_reached), NULL);
-    // select the first row
 
     gtk_box_append(GTK_BOX(vbox), scrolled_window);
 
@@ -375,6 +397,7 @@ static void insert_memory_view(GtkWidget *w) {
 
     // create a model for the tree view
     mem_model = gtk_tree_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+    gtk_tree_view_set_fixed_height_mode(GTK_TREE_VIEW(tree_view), TRUE);
     gtk_tree_view_set_model(GTK_TREE_VIEW(tree_view), GTK_TREE_MODEL(mem_model));
 
     // create a cell renderer for the name column
@@ -385,22 +408,22 @@ static void insert_memory_view(GtkWidget *w) {
     renderer = gtk_cell_renderer_text_new();
     gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(tree_view), -1, "Value", renderer, "text", 1, NULL);
 
-    ui_update_mem();
+    g_thread_new("load_mem", load_mem, NULL);
 }
 
 static GtkWidget *insert_readonly_entry(GtkWidget *w, const char *label, const char *text) {
     // in a table of 1 row and 2 columns
-    GtkWidget *box = insert_hbox(w, TRUE);
+    // GtkWidget *box = insert_hbox(w, TRUE);
 
+    GtkWidget *frame = gtk_frame_new(label);
+    gtk_box_append(GTK_BOX(w), frame);
     // add a label to the first column
-    GtkWidget *label_widget = gtk_label_new(label);
-    gtk_box_append(GTK_BOX(box), label_widget);
 
     // add a text entry to the second column
     GtkWidget *entry = gtk_entry_new();
     gtk_editable_set_text(GTK_EDITABLE(entry), text);
     gtk_editable_set_editable(GTK_ENTRY(entry), FALSE);
-    gtk_box_append(GTK_BOX(box), entry);
+    gtk_frame_set_child(GTK_FRAME(frame), entry);
 
     return entry;
 }
@@ -470,29 +493,6 @@ static void insert_buses(GtkWidget *w) {
     ui_update_buses();
 }
 
-static void insert_alu(GtkWidget *w) {
-    GtkWidget *vbox = insert_vbox(w, FALSE);
-    // a frame
-    GtkWidget *frame = gtk_frame_new("ALU");
-    gtk_box_append(GTK_BOX(vbox), frame);
-
-    // create a scrollable window
-    GtkWidget *scrolled_window = gtk_scrolled_window_new();
-
-    gtk_frame_set_child(GTK_FRAME(frame), scrolled_window);
-    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-    // gtk_scrolled_window_set_propagate_natural_height(GTK_SCROLLED_WINDOW(scrolled_window), TRUE);
-    gtk_widget_set_size_request(scrolled_window, -1, 300);
-    // create a box to hold the widgets
-    GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-
-    gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scrolled_window), box);
-
-    // create a text field read only
-    insert_readonly_entry(box, "A", "00000000");
-    insert_readonly_entry(box, "B", "00000000");
-}
-
 static void insert_statusbar(GtkWidget *w) {
     GtkWidget *statusbar = gtk_statusbar_new();
     // create a horizontal box and append it to the statusbar
@@ -516,19 +516,28 @@ static void activate(GtkApplication *app, gpointer user_data) {
     GtkCssProvider *provider = gtk_css_provider_new();
     GdkDisplay *display = gdk_display_get_default();
     gtk_style_context_add_provider_for_display(display, provider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    gtk_css_provider_load_from_data(
+        provider,
+        "/* From uiverse.io by @adamgiebl */\\n.text-button {\n    background: #FBCA1F;\n    font-family: inherit;\n    padding: 0.6em 1.3em;\n    font-weight: 900;\n    font-size: 18px;\n    "
+        "border: 3px solid black;\n    border-radius: 0.4em;\n    box-shadow: 0.1em 0.1em;\n    padding: 0;\n}\n\n.text-button:hover {\n    transform: translate(-0.05em, -0.05em);\n    box-shadow: "
+        "0.15em 0.15em;\n}\n\n.text-button:active {\n    transform: translate(0.05em, 0.05em);\n    box-shadow: 0.05em 0.05em;\n}\n\n.highlight {\n    background: #FFC300;\n}\n\n.reset-highlight {\n "
+        "   background: white;\n}\n\n.background {\n    padding: 5px;\n}\n\n.label-search-mem {\n    font-family: 'Courier New', Courier, monospace;\n    font-size: 20px;\n}\n\nentry {\n    "
+        "font-family: 'Courier New', Courier, monospace;\n}\n\n.box {\n    border: 1px solid black;\n    border-radius: 0.2em;\n    padding: 0.5em;\n}\n\n.separator-1 {\n    border-top: 1px solid "
+        "black;\n}\n.separator-2 {\n    border-bottom: 1px solid black;\n}\n.separator-3 {\n    border-left: 1px solid black;\n}\n.separator-4 {\n    border-right: 1px solid black;\n}",
+        -1);
     const gchar *css_file = "src/gui/style.css";
-    GError *error = 0;
+    // GError *error = 0;
     gtk_css_provider_load_from_file(provider, g_file_new_for_path(css_file));
     g_object_unref(provider);
 
     // print error
-    if (error) {
-        g_print("%s\n", error->message);
-        g_error_free(error);
-    }
+    // if (error) {
+    //     g_print("%s\n", error->message);
+    //     g_error_free(error);
+    // }
 
     // create a vertical box
-    GtkWidget *root_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    GtkWidget *root_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
     gtk_window_set_child(GTK_WINDOW(window), root_vbox);
 
     insert_top_bar(root_vbox);
@@ -543,9 +552,8 @@ static void activate(GtkApplication *app, gpointer user_data) {
     GtkWidget *hbox2 = insert_hbox(root_vbox, TRUE);
     insert_registers(hbox2);
     insert_buses(hbox2);
-    insert_alu(hbox2);
 
-    insert_statusbar(root_vbox);
+    // insert_statusbar(root_vbox);
 
     present();
 }

@@ -74,15 +74,11 @@ void run_hl(void) {
     if (word_to_int(hcar_lb) == 1) {
         // load h
         h_reg.value = last_bus_data->current_value;
-        int h_reg_value = word_to_int(h_reg.value);
-        printf("HL: h_reg_value: %d\n", h_reg_value);
     }
 
     if (word_to_int(lcar_lb) == 1) {
         // load l
         l_reg.value = last_bus_data->current_value;
-        int l_reg_value = word_to_int(l_reg.value);
-        printf("HL: l_reg_value: %d\n", l_reg_value);
     }
 
     Word to_send;

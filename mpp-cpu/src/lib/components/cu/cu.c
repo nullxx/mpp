@@ -164,11 +164,11 @@ void run_cu(int clk) {  // 1 opstate per run
     // run_acumm();
     if (clk == 1) run_sync_comp(run_acumm);
 
-    // run_op2();
-    if (clk == 1) run_sync_comp(run_op2);
-
     // run_greg();
     if (clk == 1) run_sync_comp(run_greg);
+
+    // run_op2();
+    if (clk == 1) run_sync_comp(run_op2);
 
     // run_alu(); // <<== is asyncroneous
 

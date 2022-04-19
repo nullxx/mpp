@@ -43,7 +43,7 @@ void init_components(void) {
     cll_init_mxfldx();
     init_flags();
     cll_init_flagsinta();
-    // init_cu(); // TODO remove
+    init_cu();
 }
 
 void shutdown_components(void) {
