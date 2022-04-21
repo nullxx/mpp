@@ -11,11 +11,14 @@
 #define CLOCK_TICK_SLEEP_US 100000
 #include "linker.h"
 
+#include <math.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 #include "lib/components/cu/cu.h"
 #include "lib/components/mem.h"
+#include "lib/constants.h"
+#include "lib/electronic/bus.h"
 #include "lib/logger.h"
 #include "lib/pubsub.h"
 #include "lib/utils.h"
@@ -62,7 +65,7 @@ int running = 0;
 void set_update_ui(void (*update_ui_func)(void)) { update_ui = update_ui_func; }
 void set_run_end(void (*run_end_func)(void)) { run_end = run_end_func; }
 
-void init_linker(void) {
+void linker_init(void) {
     actual_status_Q4_bus = create_bus_data();
     actual_status_Q3_bus = create_bus_data();
     actual_status_Q2_bus = create_bus_data();
@@ -92,7 +95,7 @@ void init_linker(void) {
     d0_bus_topic_subscription = subscribe_to(CU_SEQ_OUTPUT_D0_BUS_TOPIC, d0flipflop_bus);
 }
 
-void shutdown_linker(void) {
+void linker_shutdown(void) {
     running = 0;
     if (last_current_state != NULL) {
         free(last_current_state);
@@ -144,7 +147,7 @@ void shutdown_linker(void) {
     destroy_bus_data(d0flipflop_bus);
 }
 
-static int get_rom_pos(void) {
+static int linker_get_rom_pos(void) {
     Word w;
     initialize_word(&w, 0);
     w.bits[4] = actual_status_Q4_bus->next_value.bits[0];
@@ -157,7 +160,7 @@ static int get_rom_pos(void) {
     return rom_pos;
 }
 
-static int get_next_state(void) {
+static int linker_get_next_state(void) {
     Word w;
     initialize_word(&w, 0);
     w.bits[4] = d4flipflop_bus->next_value.bits[0];
@@ -170,15 +173,11 @@ static int get_next_state(void) {
     return next_state;
 }
 
-void cancel_run(void) {
-    running = 0;
-}
+void linker_cancel_run(void) { running = 0; }
 
-int is_running(void) {
-    return running;
-}
+int linker_is_running(void) { return running; }
 
-void run(RunConfig conf) {
+void linker_run(RunConfig conf) {
     if (running) return;
     running = 1;
     run_conf = conf;
@@ -198,7 +197,7 @@ void run(RunConfig conf) {
                 usleep(CLOCK_TICK_SLEEP_US);
                 cycle_time += run_clock_cycle();
                 update_ui();
-                int next_state = get_next_state();
+                int next_state = linker_get_next_state();
                 if (next_state == 0) break;
             }
             break;
@@ -210,7 +209,7 @@ void run(RunConfig conf) {
                 cycle_time += run_clock_cycle();
                 update_ui();
                 int ri = word_to_int(get_watchers(1).RI->reg->value);
-                if (ri == 0xFF) break;
+                if (ri == pow(2, MEM_VALUE_SIZE_BITS) - 1) break;
             }
             break;
         default:
@@ -220,14 +219,13 @@ void run(RunConfig conf) {
     log_debug("cycle_time: %f", cycle_time);
     running = 0;
     run_end();
-    // update_ui();
 }
 
-Watchers get_watchers_updated(void) { return get_watchers(0); }
+Watchers linker_get_watchers(void) { return get_watchers(0); }
 
-char *get_current_state_updated(void) {
+char *linker_get_current_state_updated(void) {
     // rom_pos == state
-    int rom_pos = get_rom_pos();
+    int rom_pos = linker_get_rom_pos();
     char *rom_pos_str = num_to_str(rom_pos);
     char *current_state = str_concat("S", rom_pos_str);
 
@@ -239,7 +237,7 @@ char *get_current_state_updated(void) {
     return current_state;
 }
 
-char *get_data_bus_updated(void) {
+char *linker_get_data_bus_updated(void) {
     char *bus_data_hex = int_to_hex("0x", word_to_int(data_bus->next_value));
 
     if (last_bus_data != NULL) {
@@ -250,7 +248,7 @@ char *get_data_bus_updated(void) {
     return bus_data_hex;
 }
 
-char *get_dir_bus_updated(void) {
+char *linker_get_dir_bus_updated(void) {
     char *bus_dir_hex = int_to_hex("0x", word_to_int(dir_bus->next_value));
 
     if (last_bus_dir != NULL) {
@@ -261,7 +259,7 @@ char *get_dir_bus_updated(void) {
     return bus_dir_hex;
 }
 
-char *get_control_bus_updated(void) {
+char *linker_get_control_bus_updated(void) {
     char *bus_control_hex = int_to_hex("0x", word_to_int(control_bus->next_value));
 
     if (last_bus_control != NULL) {
@@ -272,7 +270,7 @@ char *get_control_bus_updated(void) {
     return bus_control_hex;
 }
 
-MemUpdated get_mem_updated(void) {
+MemUpdated linker_get_mem_updated(void) {
     Mem mem = get_mem();
     MemUpdated mem_updated = {.values_count = mem.values_count, .values = malloc(sizeof(MemValueUpdated) * mem.values_count)};
 

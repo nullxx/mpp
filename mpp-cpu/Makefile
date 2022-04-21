@@ -3,17 +3,21 @@
 # 'make clean'  removes all .o and executable files
 #
 
+# this is prepared for a unix like system
+
 # define the C compiler to use
-CC = clang
-
+CC = emcc
+# TODO EXPORTED_METHODS
+#EXPORTED_METHODS := linker_init linker_shutdown linker_get_rom_pos linker_get_next_state linker_cancel_run linker_is_running linker_run linker_get_watchers linker_get_current_state_updated linker_get_data_bus_updated linker_get_dir_bus_updated linker_get_control_bus_updated linker_get_mem_updated
+# -s EXPORTED_RUNTIME_METHODS=['ccall']
 # define any compile-time flags
-CFLAGS	:= -Wall -Wextra -g -Ofast -DLOG_USE_COLOR $(shell pkg-config --cflags gtk4)
-# define library paths in addition to /usr/lib
-#   if I wanted to include libraries not in /usr/lib I'd specify
-#   their path using -Lpath, something like:
-LFLAGS = -lm $(shell pkg-config --libs gtk4)
+CFLAGS	:= -Wall -Wextra -g -DLOG_USE_COLOR
+# FIXME EXPORT_ALL=1 for debugging
+EMCCFLAGS := -s EXPORT_ALL=1 --no-entry
 
-LFLAGSTESTS = $(LFLAGS) -lcriterion
+LFLAGS = -lm
+
+LFLAGSTESTS = $(LFLAGS)
 
 # define output directory
 OUTPUT	:= output
@@ -37,25 +41,13 @@ else
     CFLAGS +=-DNDEBUG
 endif
 
-ifeq ($(OS),Windows_NT)
-MAIN	:= main.exe
-TEST	:= test.exe
-SOURCEDIRS	:= $(SRC)
-INCLUDEDIRS	:= $(INCLUDE)
-LIBDIRS		:= $(LIB)
-FIXPATH = $(subst /,\,$1)
-RM			:= del /q /f
-MD	:= mkdir
-else
-MAIN	:= main
-TEST	:= test
+MAIN	:= libmpp.wasm
 SOURCEDIRS	:= $(shell find $(SRC) -type d)
 INCLUDEDIRS	:= $(shell find -L $(INCLUDE) -type d)
 LIBDIRS		:= $(shell find $(LIB) -type d)
 FIXPATH = $1
 RM = rm -f
 MD	:= mkdir -p
-endif
 
 # define any directories containing header files other than /usr/include
 INCLUDES	:= $(patsubst %,-I%, $(INCLUDEDIRS:%/=%))
@@ -66,12 +58,8 @@ LIBS		:= $(patsubst %,-L%, $(LIBDIRS:%/=%))
 # define the C source files
 SOURCES		:= $(wildcard $(patsubst %,%/*.c, $(SOURCEDIRS)))
 
-# define the C source test files
-TESTSOURCES := $(wildcard $(patsubst %,%/*test.c, $(SOURCEDIRS)))
-
 # define the object files
 OBJECTS		:= $(SOURCES:.c=.o)
-OBJECTSTEST := $(TESTSOURCES:.c=.o)
 
 #
 # The following part of the makefile is generic; it can be used to
@@ -80,7 +68,6 @@ OBJECTSTEST := $(TESTSOURCES:.c=.o)
 #
 
 OUTPUTMAIN	:= $(call FIXPATH,$(OUTPUT)/$(MAIN))
-OUTPUTTEST	:= $(call FIXPATH,$(OUTPUT)/$(TEST))
 
 all: $(OUTPUT) $(MAIN)
 	@echo Executing 'all' complete!
@@ -88,12 +75,8 @@ all: $(OUTPUT) $(MAIN)
 $(OUTPUT):
 	$(MD) $(OUTPUT)
 
-$(MAIN): $(OBJECTS) $(OBJECTS_OBJC)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(OUTPUTMAIN) $(OBJECTS) $(OBJECTS_OBJC) $(LFLAGS) $(LIBS)
-
-
-$(TEST): $(OBJECTSTEST)
-	$(CC) $(CFLAGS) -o $(OUTPUTTEST) $(OBJECTSTEST) $(LFLAGSTESTS) $(LIBS)
+$(MAIN): $(OBJECTS)
+	$(CC) $(CFLAGS) $(EMCCFLAGS) -o $(OUTPUT)/$@ $^ $(LFLAGS) $(LIBS)
 
 # this is a suffix replacement rule for building .o's from .c's
 # it uses automatic variables $<: the name of the prerequisite of
