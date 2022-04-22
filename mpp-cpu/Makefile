@@ -13,7 +13,7 @@ CC = emcc
 # define any compile-time flags
 CFLAGS	:= -Wall -Wextra -g -DLOG_USE_COLOR
 # FIXME EXPORT_ALL=1 for debugging
-EMCCFLAGS := -s EXPORT_ALL=1 --no-entry
+EMCCFLAGS := -s EXPORT_ALL=1 --no-entry -s MODULARIZE=1 -s ENVIRONMENT='web' -s EXPORT_ES6=1 -s 'EXPORTED_RUNTIME_METHODS=["cwrap", "getValue", "addFunction"]' -s ALLOW_TABLE_GROWTH=1
 
 LFLAGS = -lm
 
@@ -41,7 +41,7 @@ else
     CFLAGS +=-DNDEBUG
 endif
 
-MAIN	:= libmpp.wasm
+MAIN	:= libmpp.js
 SOURCEDIRS	:= $(shell find $(SRC) -type d)
 INCLUDEDIRS	:= $(shell find -L $(INCLUDE) -type d)
 LIBDIRS		:= $(shell find $(LIB) -type d)

@@ -232,6 +232,7 @@
       "/opt/homebrew/Cellar/pcre/8.45/include",
       "/opt/homebrew/Cellar/xorgproto/2021.5/include"
     ],
+    "liveServer.settings.multiRootWorkspaceName": "cpu",
   },
   "extensions": {
     "recommendations": [

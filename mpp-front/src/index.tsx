@@ -26,7 +26,6 @@ root.render(
         <App />
       </StyletronProvider>
     </BrowserRouter>
-    ,
   </React.StrictMode>
 );
 

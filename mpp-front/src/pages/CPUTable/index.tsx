@@ -6,12 +6,16 @@ import initialNodes from "./constants/nodes";
 import initialEdges from "./constants/edges";
 import RegisterNode from "./components/RegisterNode";
 import FloatingEdge from "./components/FloatingEdge";
-import FloatingConnectionLine from "./components/FloatingConnectionLine";
+// import FloatingConnectionLine from "./components/FloatingConnectionLine";
 import LoadableNode from "./components/LoadableNode";
+import BusNode from "./components/BusNode";
+import MemoryNode from './components/MemoryNode';
 
 const nodeTypes: NodeTypes = {
   registerNode: RegisterNode as unknown as ReactNode,
   loadableNode: LoadableNode as unknown as ReactNode,
+  memoryNode: MemoryNode as unknown as ReactNode,
+  busNode: BusNode as unknown as ReactNode, // not used
 };
 
 const edgeTypes = {
@@ -46,12 +50,19 @@ function CPUTable() {
           onEdgesChange={onEdgesChange}
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
-          connectionLineComponent={FloatingConnectionLine}
+          // connectionLineComponent={FloatingConnectionLine}
           fitView
         />
       </div>
     </>
   );
 }
-
+/*
+<CPUImage />
+<Input x={132} y={132} height="2rem" /> 
+<Input x={175} y={132} height="2rem" /> 
+<Input x={132} y={175} height="2rem" /> 
+<Input x={175} y={175} height="2rem" />
+<Input x={267} y={106} height="22px" /> 
+*/
 export default CPUTable;

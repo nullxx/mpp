@@ -1,7 +1,6 @@
 import ReactFlow, {
-  MiniMap,
   Controls,
-  ReactFlowProps,
+  ReactFlowProps
 } from "react-flow-renderer";
 
 export interface Point {
@@ -45,7 +44,7 @@ function Flow({
       edgeTypes={edgeTypes}
       connectionLineComponent={connectionLineComponent}
     >
-      <MiniMap />
+      {/* <MiniMap /> */}
       <Controls />
     </ReactFlow>
   );

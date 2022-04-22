@@ -77,7 +77,7 @@ void shutdown_mem(void) {
     destroy_bus_data(control_bus);
 }
 
-static MemValue *get_value_by_offset(int offset) {
+MemValue *get_value_by_offset(int offset) {
     if (offset < MEM_START_VALUE || offset >= mem_size) {
         return NULL;
     }
@@ -185,5 +185,4 @@ error:
     return throw_error(err);
 }
 
-// for the simulation
-Mem get_mem(void) { return mem; }
+

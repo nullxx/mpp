@@ -1,7 +1,8 @@
 import React, { memo } from "react";
 import { Text, Input, Row, Col } from "atomize";
+import LoadBitComponent from "./LoadBitComponent";
 
-export const DEFAULT_REGISTER_VALUE_HEX = '0x00';
+export const DEFAULT_REGISTER_VALUE_HEX = "0x00";
 
 export default memo(({ data, isConnectable }: any) => {
   return (
@@ -22,9 +23,21 @@ export default memo(({ data, isConnectable }: any) => {
       </Row>
       <Row>
         <Col>
-          <Input h="2rem" w="60px" readOnly={data.readOnly} defaultValue={DEFAULT_REGISTER_VALUE_HEX} />
+          <Input
+            h="2rem"
+            w="60px"
+            readOnly={data.readOnly}
+            defaultValue={DEFAULT_REGISTER_VALUE_HEX}
+          />
         </Col>
       </Row>
+      {data.loadBit && (
+        <LoadBitComponent
+          lb={data?.loadBit}
+          totalWidth={data?.width}
+          onChange={data?.onChange}
+        />
+      )}
     </div>
   );
 });

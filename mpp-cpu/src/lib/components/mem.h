@@ -25,8 +25,6 @@ void init_mem(void);
 void shutdown_mem(void);
 void run_mem(void);
 
-Mem get_mem(void);
-
 #include "../error.h"
 typedef struct {  // temporal
     int success;
@@ -34,5 +32,5 @@ typedef struct {  // temporal
     void *return_value;
 } ComponentActionReturn;
 
-ComponentActionReturn set_mem_value(MemValue mem_value);
+MemValue *get_value_by_offset(int offset);
 #endif /* mem_h */

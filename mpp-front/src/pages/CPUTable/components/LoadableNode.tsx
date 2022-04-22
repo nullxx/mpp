@@ -1,59 +1,9 @@
 import React, { memo } from "react";
-import { Text, Checkbox, Row, Col } from "atomize";
-import RightArrow, { RIGHT_ARROW_WIDTH } from "./RightArrow";
+import { Text, Row, Col } from "atomize";
+import LoadBitComponent from "./LoadBitComponent";
 
-export interface LoadBit {
-  label: string;
-  value?: boolean;
-}
 
-export const DEFAULT_LOADBIT_VALUE = false;
 
-const LoadBitComponent = ({
-  lb,
-  totalWidth,
-}: {
-  lb: LoadBit;
-  totalWidth: number;
-}) => (
-  <>
-    <div
-      style={{
-        position: "absolute",
-        right: totalWidth + 15,
-        top: 20,
-        width: "fit-content",
-      }}
-    >
-      <Text tag="p" textSize="display5">
-        {lb.label}
-      </Text>
-    </div>
-
-    <div
-      style={{
-        position: "absolute",
-        left: -RIGHT_ARROW_WIDTH,
-        width: "fit-content",
-      }}
-    >
-      <RightArrow />
-    </div>
-
-    <div
-      style={{
-        position: "absolute",
-        right: totalWidth + 15,
-        top: 65,
-        width: "fit-content",
-      }}
-    >
-      <Text tag="p" textSize="display5">
-        <Checkbox checked={typeof lb.value === 'undefined' ? DEFAULT_LOADBIT_VALUE : lb.value} />
-      </Text>
-    </div>
-  </>
-);
 export default memo(({ data, isConnectable }: any) => {
   return (
     <div
@@ -66,6 +16,13 @@ export default memo(({ data, isConnectable }: any) => {
         height: data.height,
       }}
     >
+      {/* <Handle
+        type="target"
+        position={Position.Top}
+        style={{ background: "#555" }}
+        onConnect={(params) => console.log("handle onConnect", params)}
+        isConnectable={isConnectable}
+      /> */}
       <Row>
         <Col size="100%">
           <Text tag="h4" textSize="display4">
@@ -75,7 +32,11 @@ export default memo(({ data, isConnectable }: any) => {
       </Row>
 
       {data.loadBit && (
-        <LoadBitComponent lb={data.loadBit} totalWidth={data.width} />
+        <LoadBitComponent
+          lb={data?.loadBit}
+          totalWidth={data?.width}
+          onChange={data?.onChange}
+        />
       )}
     </div>
   );
