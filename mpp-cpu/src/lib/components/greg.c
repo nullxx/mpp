@@ -25,10 +25,10 @@ static Register C_reg = {.bit_length = REG_SIZE_BIT};
 static Register D_reg = {.bit_length = REG_SIZE_BIT};
 static Register E_reg = {.bit_length = REG_SIZE_BIT};
 
-static RegisterWatcher B_reg_watcher = {.name = "B", .reg = &B_reg};
-static RegisterWatcher C_reg_watcher = {.name = "C", .reg = &C_reg};
-static RegisterWatcher D_reg_watcher = {.name = "D", .reg = &D_reg};
-static RegisterWatcher E_reg_watcher = {.name = "E", .reg = &E_reg};
+static RegisterWatcher B_reg_watcher = {.reg = &B_reg, .type = WATCHER_TYPE_B};
+static RegisterWatcher C_reg_watcher = {.reg = &C_reg, .type = WATCHER_TYPE_C};
+static RegisterWatcher D_reg_watcher = {.reg = &D_reg, .type = WATCHER_TYPE_D};
+static RegisterWatcher E_reg_watcher = {.reg = &E_reg, .type = WATCHER_TYPE_E};
 
 static Bus_t *last_bus_data = NULL;
 static Bus_t *last_bus_selreg_output = NULL;
@@ -71,7 +71,7 @@ void shutdown_greg(void) {
     destroy_bus_data(control_bus);
 }
 
-static Register *get_register(int selreg) {
+static Register *get_gregister(int selreg) {
     switch (selreg) {
         case 0b00:
             return &B_reg;
@@ -96,7 +96,7 @@ void run_greg(void) {
     update_bus_data(last_bus_selreg_output);
     update_bus_data(control_bus);
 
-    Register *reg = get_register(word_to_int(last_bus_selreg_output->current_value));
+    Register *reg = get_gregister(word_to_int(last_bus_selreg_output->current_value));
     if (reg == NULL) {
         Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Could not find selected register"};
         throw_error(err);

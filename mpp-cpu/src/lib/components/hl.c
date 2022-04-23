@@ -25,8 +25,8 @@
 static Register h_reg = {.bit_length = H_REG_SIZE_BIT};
 static Register l_reg = {.bit_length = L_REG_SIZE_BIT};
 
-static RegisterWatcher h_reg_watcher = {.name = "H", .reg = &h_reg};
-static RegisterWatcher l_reg_watcher = {.name = "L", .reg = &l_reg};
+static RegisterWatcher h_reg_watcher = {.reg = &h_reg, .type = WATCHER_TYPE_H};
+static RegisterWatcher l_reg_watcher = {.reg = &l_reg, .type = WATCHER_TYPE_L};
 
 static Bus_t *last_bus_data = NULL;
 static Bus_t *control_bus = NULL;

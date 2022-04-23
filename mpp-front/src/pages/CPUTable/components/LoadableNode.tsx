@@ -1,6 +1,5 @@
 import React, { memo } from "react";
 import { Text, Row, Col } from "atomize";
-import LoadBitComponent from "./LoadBitComponent";
 
 
 
@@ -31,13 +30,13 @@ export default memo(({ data, isConnectable }: any) => {
         </Col>
       </Row>
 
-      {data.loadBit && (
+      {/* {data.loadBit && (
         <LoadBitComponent
           lb={data?.loadBit}
           totalWidth={data?.width}
           onChange={data?.onChange}
         />
-      )}
+      )} */}
     </div>
   );
 });

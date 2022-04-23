@@ -9,6 +9,7 @@
  */
 
 #include <stdio.h>
+
 #include "../lib/constants.h"
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -24,7 +25,6 @@ int get_memory_size(void) {
     const int mem_size = mem_size_bits / MEM_VALUE_SIZE_BITS;
     return mem_size;
 }
-
 
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_KEEPALIVE

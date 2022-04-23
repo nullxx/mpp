@@ -28,9 +28,9 @@ static Register pch_reg = {.bit_length = PCH_REG_SIZE_BIT};
 static Register pcl_reg = {.bit_length = PCL_REG_SIZE_BIT};
 static Register pc_reg = {.bit_length = PC_REG_SIZE_BIT};
 
-RegisterWatcher pch_reg_watcher = {.name = "PCH", .reg = &pch_reg};
-RegisterWatcher pcl_reg_watcher = {.name = "PCL", .reg = &pcl_reg};
-RegisterWatcher pc_reg_watcher = {.name = "PC", .reg = &pc_reg};
+RegisterWatcher pch_reg_watcher = {.reg = &pch_reg, .type = WATCHER_TYPE_PCH};
+RegisterWatcher pcl_reg_watcher = {.reg = &pcl_reg, .type = WATCHER_TYPE_PCL};
+RegisterWatcher pc_reg_watcher = {.reg = &pc_reg, .type = WATCHER_TYPE_PC};
 
 static Bus_t *last_bus_dir = NULL;
 static Bus_t *last_bus_data = NULL;

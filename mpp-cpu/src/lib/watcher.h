@@ -11,32 +11,32 @@
 #ifndef watcher_h
 #define watcher_h
 #include "components/components.h"
-typedef struct {
-    Register* reg;
-    const char* name;
-    unsigned int changed;
-    char* hex_repr;
-} RegisterWatcher;
+
+typedef enum {
+    WATCHER_TYPE_ACUM,
+    WATCHER_TYPE_FC,
+    WATCHER_TYPE_FZ,
+    WATCHER_TYPE_B,
+    WATCHER_TYPE_C,
+    WATCHER_TYPE_D,
+    WATCHER_TYPE_E,
+    WATCHER_TYPE_H,
+    WATCHER_TYPE_L,
+    WATCHER_TYPE_2OP,
+    WATCHER_TYPE_PCH,
+    WATCHER_TYPE_PCL,
+    WATCHER_TYPE_PC,
+    WATCHER_TYPE_SP,
+    WATCHER_TYPE_RI
+} WatcherType;
 
 typedef struct {
-    RegisterWatcher* PC;
-    RegisterWatcher* PCH;
-    RegisterWatcher* PCL;
-    RegisterWatcher* H;
-    RegisterWatcher* L;
-    RegisterWatcher* SP;
-    RegisterWatcher* FC;
-    RegisterWatcher* FZ;
-    RegisterWatcher* B;
-    RegisterWatcher* C;
-    RegisterWatcher* D;
-    RegisterWatcher* E;
-    RegisterWatcher* RI;
-    RegisterWatcher* ACUM;
-    RegisterWatcher* OP2;
-} Watchers;
+    Register* reg;
+    WatcherType type;
+} RegisterWatcher;
 
 void register_watcher(RegisterWatcher* reg);
 void unregister_watcher(RegisterWatcher* reg_watcher);
-Watchers get_watchers(int raw);
+
+Register* get_register(WatcherType type);
 #endif

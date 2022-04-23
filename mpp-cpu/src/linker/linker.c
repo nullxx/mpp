@@ -9,42 +9,47 @@
  */
 
 #include "linker.h"
+#include "cu.h"
 #include <stdio.h>
-#include "../lib/logger.h"
+
 #include "../lib/components/components.h"
+#include "../lib/logger.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
 
-
-void (*update_ui)(void) = NULL;
-
+update_ui_fn update_ui = NULL;
 
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_KEEPALIVE
 #endif
-void print_hello(void) {
-    printf("Hello from linker\n");
-}
+void print_hello(void) { printf("Hello from linker\n"); }
 
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_KEEPALIVE
 #endif
 void init(void) {
-    log_debug("Initializing components");
+    log_debug("Initializing linker");
     init_components();
+    init_linker_cu();
 }
 
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_KEEPALIVE
 #endif
 void shutdown(void) {
-    log_debug("Shuting down components");
+    log_debug("Shuting down linker");
+    shutdown_linker_cu();
     shutdown_components();
 }
 
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_KEEPALIVE
 #endif
-void linker_set_update_ui(void (*update_ui_func)(void)) { update_ui = update_ui_func; }
+void linker_set_update_ui(void (*update_ui_func)(void)) {
+    update_ui = update_ui_func;
+    log_debug("Set update ui function");
+}
+
+update_ui_fn get_update_ui_fn(void) { return update_ui; }

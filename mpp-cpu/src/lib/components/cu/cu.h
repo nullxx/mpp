@@ -13,5 +13,6 @@
 void init_cu(void);
 void shutdown_cu(void);
 void run_cu(int);
-double run_clock_cycle(void);
+
+double run_cu_clock_cycle(void);
 #endif

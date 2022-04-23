@@ -37,6 +37,100 @@ const exportedMethods: {
   
 
   {
+    name: 'get_register_acum',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_register_acum',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_register_fc',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_register_fz',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_register_b',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_register_c',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_register_d',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_register_e',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_register_h',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_register_l',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_register_2op',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_register_pch',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_register_pcl',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_register_pc',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_register_sp',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_register_ri',
+    returnType: 'number',
+    typeArgs: [],
+  },
+
+
+  {
+    name: 'run_clock_cycle',
+    returnType: 'number',
+    typeArgs: [],
+  },
+  {
+    name: 'get_state',
+    returnType: 'number',
+    typeArgs: [],
+  },
+
+
+  {
     name: "print_hello",
     returnType: null,
     typeArgs: [],
@@ -107,8 +201,13 @@ export function subscribeToUIUpdates(callback: UIUpdateCallbackFn) {
   uiUpdatesSubscriptions.add(callback);
 }
 
+export function unsubscribeToUIUpdates(callback: UIUpdateCallbackFn) {
+  uiUpdatesSubscriptions.delete(callback);
+}
+
 export function createUpdateUICallback() {
   const fnPtr = moduleInstance.addFunction(() => {
+    console.log('Updating UI');
     uiUpdatesSubscriptions.forEach((callback) => callback());
   }, 'v');
 

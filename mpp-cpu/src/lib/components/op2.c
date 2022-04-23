@@ -26,7 +26,7 @@ static PubSubSubscription *control_bus_topic_subscription = NULL;
 
 static Register op2_reg = {.bit_length = OP2_REG_SIZE_BIT};
 
-static RegisterWatcher op2_reg_watcher = {.name = "2OP", .reg = &op2_reg};
+static RegisterWatcher op2_reg_watcher = {.reg = &op2_reg, .type = WATCHER_TYPE_2OP};
 
 void init_op2(void) {
     initialize_word(&op2_reg.value, 0);

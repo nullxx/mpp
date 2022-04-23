@@ -23,8 +23,8 @@
 static Register FC_reg = {.bit_length = FLAG_REG_SIZE_BIT};
 static Register FZ_reg = {.bit_length = FLAG_REG_SIZE_BIT};
 
-static RegisterWatcher FC_reg_watcher = {.name = "FC", .reg = &FC_reg};
-static RegisterWatcher FZ_reg_watcher = {.name = "FZ", .reg = &FZ_reg};
+static RegisterWatcher FC_reg_watcher = {.reg = &FC_reg, .type = WATCHER_TYPE_FC};
+static RegisterWatcher FZ_reg_watcher = {.reg = &FZ_reg, .type = WATCHER_TYPE_FZ};
 
 static Bus_t *last_bus_mxfld7_out = NULL;
 static Bus_t *last_bus_mxfld0_out = NULL;

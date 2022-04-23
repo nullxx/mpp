@@ -21,7 +21,8 @@ const LoadBitComponent = ({
     <div
       style={{
         position: "absolute",
-        right: totalWidth + 15,
+        left: -15,
+        textAlign: 'right',
         top: -5,
         width: "fit-content",
       }}
@@ -34,7 +35,7 @@ const LoadBitComponent = ({
     <div
       style={{
         position: "absolute",
-        left: -RIGHT_ARROW_WIDTH,
+        left: RIGHT_ARROW_WIDTH,
         top: 0,
         width: "fit-content",
       }}

@@ -45,7 +45,7 @@
 
 Register RI_reg = {.bit_length = RI_REG_SIZE_BIT};
 
-RegisterWatcher RI_reg_watcher = {.name = "RI", .reg = &RI_reg};
+RegisterWatcher RI_reg_watcher = {.reg = &RI_reg, .type = WATCHER_TYPE_RI};
 
 static Bus_t *last_bus_data = NULL;
 static Bus_t *last_bus_flags_out = NULL;
@@ -55,7 +55,7 @@ static PubSubSubscription *flags_out_bus_topic_subscription = NULL;
 static PubSubSubscription *control_bus_topic_subscription = NULL;
 
 // clock tick generator must be inside cu, but as this is a simulator, the clock will be managed from the window to decrease CPU usage
-double run_clock_cycle(void) {
+double run_cu_clock_cycle(void) {
     while (1) {
         clock_t start = clock();
         int clock_tick = get_clock_tick();
@@ -64,9 +64,6 @@ double run_clock_cycle(void) {
 
         if (clock_tick == 1) {
             double seconds_spent = (double)(end - start) / CLOCKS_PER_SEC;
-            // log_info("Cycle time: %fs => %f KHz", seconds_spent, (1 / seconds_spent) / 1000);
-
-            // log_watchers();
             return seconds_spent;
         }
     }

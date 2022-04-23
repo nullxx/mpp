@@ -95,9 +95,7 @@ ComponentActionReturn set_mem_value(MemValue mem_value) {
         car.success = 0;
         car.err.show_errno = 0;
         car.err.type = NOTICE_ERROR;
-        const int end_bound_mem_value = pow(2, MEM_VALUE_SIZE_BITS) - 1;
-        char *value_dec_str = num_to_str(mem_value.value);
-        car.err.message = create_str("[set_mem_value] Value", value_dec_str, "(dec) invalid. Must be between 0 -", num_to_str(end_bound_mem_value));
+        car.err.message = "Invalid set value";
         return car;
     }
 
@@ -106,7 +104,7 @@ ComponentActionReturn set_mem_value(MemValue mem_value) {
         car.success = 0;
         car.err.show_errno = 0;
         car.err.type = NOTICE_ERROR;
-        car.err.message = create_str("[set_mem_value] Couldn't find mem_value at", mem_value.offset);
+        car.err.message = "Could not find value in memory";
         return car;
     }
 
@@ -125,7 +123,7 @@ static ComponentActionReturn get_mem_value(int offset) {
         car.success = 0;
         car.err.show_errno = 0;
         car.err.type = NOTICE_ERROR;
-        car.err.message = create_str("[get_mem_value] Couldn't find mem_value at", offset);
+        car.err.message = "Could not find value in memory";
         return car;
     }
 

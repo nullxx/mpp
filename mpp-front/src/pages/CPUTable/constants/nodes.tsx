@@ -5,11 +5,11 @@ const nodes: Node[] = [
     id: "1",
     data: {
       label: "Registers bank",
-      width: 200,
+      width: 400,
       height: 200,
       loadBit: { label: "REGCAR", value: 0 },
     },
-    position: { x: 100, y: 100 },
+    position: { x: 0, y: 300 },
     className: "light",
     type: "loadableNode",
     isParent: true,
@@ -23,17 +23,19 @@ const nodes: Node[] = [
     data: {
       label: "B",
       readOnly: true,
+      getFunction: "get_register_b",
     },
   },
   {
     id: "1b",
-    position: { x: 110, y: 50 },
+    position: { x: 200, y: 50 },
     parentNode: "1",
     draggable: false,
     type: "registerNode",
     data: {
       label: "C",
       readOnly: true,
+      getFunction: "get_register_c",
     },
   },
   {
@@ -45,17 +47,19 @@ const nodes: Node[] = [
     data: {
       label: "D",
       readOnly: true,
+      getFunction: "get_register_d",
     },
   },
   {
     id: "1d",
-    position: { x: 110, y: 120 },
+    position: { x: 200, y: 120 },
     parentNode: "1",
     draggable: false,
     type: "registerNode",
     data: {
       label: "E",
       readOnly: true,
+      getFunction: "get_register_e",
     },
   },
 
@@ -69,7 +73,8 @@ const nodes: Node[] = [
       readOnly: true,
       width: 70,
       height: 63,
-      loadBit: { label: "ACCAR", value: 0 },
+      loadBit: { label: "ACCAR", value: 1 },
+      getFunction: "get_register_acum"
     },
   },
 
@@ -84,6 +89,7 @@ const nodes: Node[] = [
       width: 70,
       height: 63,
       loadBit: { label: "2CAR", value: 0 },
+      getFunction: 'get_register_2op'
     },
   },
   {
@@ -97,6 +103,7 @@ const nodes: Node[] = [
       width: 70,
       height: 63,
       loadBit: { label: "PCCAR", value: 0 },
+      getFunction: "get_register_pc",
     },
   },
 
@@ -111,6 +118,7 @@ const nodes: Node[] = [
       width: 70,
       height: 63,
       loadBit: { label: "SPCAR", value: 0 },
+      getFunction: "get_register_sp",
     },
   },
   {
@@ -124,6 +132,7 @@ const nodes: Node[] = [
       width: 70,
       height: 63,
       loadBit: { label: "HCAR", value: 0 },
+      getFunction: "get_register_h",
     },
   },
   {
@@ -137,6 +146,7 @@ const nodes: Node[] = [
       width: 70,
       height: 63,
       loadBit: { label: "LCAR", value: 0 },
+      getFunction: "get_register_l",
     },
   },
 
@@ -144,7 +154,7 @@ const nodes: Node[] = [
     id: "8",
     data: {
       label: "Control unit",
-      width: 200,
+      width: 400,
       height: 120,
     },
     position: { x: -200, y: 100 },
@@ -155,7 +165,7 @@ const nodes: Node[] = [
 
   {
     id: "8a",
-    position: { x: 20, y: 50 },
+    position: { x: 20, y: 40 },
     parentNode: "8",
     draggable: false,
     type: "registerNode",
@@ -165,6 +175,21 @@ const nodes: Node[] = [
       width: 70,
       height: 63,
       loadBit: { label: "RICAR", value: 0 },
+      getFunction: "get_register_ri",
+    },
+  },
+  {
+    id: "8b",
+    position: { x: 200, y: 40 },
+    parentNode: "8",
+    draggable: false,
+    type: "registerNode",
+    data: {
+      label: "State",
+      readOnly: true,
+      width: 70,
+      height: 63,
+      getFunction: "get_state"
     },
   },
   {
@@ -176,8 +201,7 @@ const nodes: Node[] = [
       label: "Memory",
       readOnly: true,
       width: 300,
-      height: 500,
     },
-  },
+  }
 ];
 export default nodes;

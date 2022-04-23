@@ -22,7 +22,7 @@
 
 static Register sp_reg = {.bit_length = SP_REG_SIZE_BIT};
 
-RegisterWatcher sp_reg_watcher = {.name = "SP", .reg = &sp_reg};
+RegisterWatcher sp_reg_watcher = {.reg = &sp_reg, .type = WATCHER_TYPE_SP};
 
 static Bus_t *last_bus_dir = NULL;
 static Bus_t *control_bus = NULL;

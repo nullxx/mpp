@@ -3,10 +3,13 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Provider as StyletronProvider, DebugEngine } from "styletron-react";
 import { Client as Styletron } from "styletron-engine-atomic";
+import { Toaster } from "react-hot-toast";
 
 import "./index.css";
+import "antd/dist/antd.min.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -21,11 +24,14 @@ const engine = new Styletron();
 // TODO layout
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <StyletronProvider value={engine} debug={debug} debugAfterHydration>
-        <App />
-      </StyletronProvider>
-    </BrowserRouter>
+    <Toaster />
+    <ErrorBoundary>
+      <BrowserRouter>
+        <StyletronProvider value={engine} debug={debug} debugAfterHydration>
+          <App />
+        </StyletronProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   </React.StrictMode>
 );
 

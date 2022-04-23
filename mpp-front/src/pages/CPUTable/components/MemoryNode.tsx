@@ -1,51 +1,84 @@
 import React, { memo } from "react";
-import { execute } from "../../../lib/core";
-import { Row, Col, Input, Text } from "atomize";
-import {
-  InfiniteTable,
-  DataSource,
-  InfiniteTableColumn,
-} from "@infinite-table/infinite-react";
+import { execute, unsubscribeToUIUpdates } from "../../../lib/core";
+import { Row, Col, Text } from "atomize";
 
-export type MemoryValue = {
-  offset: number;
-  value: number;
-};
+import NumberBaseInput, {
+  Base,
+  getRadix,
+} from "../../../components/NumberBaseInput";
+import { subscribeToUIUpdates } from "../../../lib/core/index";
 
-export const columns: Record<string, InfiniteTableColumn<MemoryValue>> = {
-  offset: {
-    field: "offset",
-    header: "Offset",
-  },
-  value: {
-    field: "value",
-    header: "Value",
-  },
-};
+function MemoryComponentRow({
+  offset,
+  value,
+  style
+}: {
+  offset: string;
+  value: string | number;
+  style?: React.CSSProperties
+}) {
+  if (Number(value) === -1) return null;
+  return (
+    <Row style={style}>
+      <Col>{offset}</Col>
+      <Col>{value}</Col>
+    </Row>
+  );
+}
 
-const getMemoryData = (): MemoryValue[] => {
-  const data: MemoryValue[] = [];
-  const memSize = execute("get_memory_size");
-  for (let i = 0; i < memSize; i++) {
-    data.push({
-      offset: i,
-      value: execute("get_memory_value", i),
-    });
-  }
-  return data;
-};
+function MemoryComponent({ offset, base }: { offset: number; base: Base }) {
+  const radix = getRadix(base);
 
+  const prevOffset = Number(offset - 1);
+  const currOffset = Number(offset);
+  const nextOffset = Number(offset + 1);
+
+  const prevOffsetStr = Number(offset - 1).toString(radix);
+  const currOffsetStr = Number(offset).toString(radix);
+  const nextOffsetStr = Number(offset + 1).toString(radix);
+
+  const prevValue = execute("get_memory_value", prevOffset);
+  const currValue = execute("get_memory_value", currOffset);
+  const nextValue = execute("get_memory_value", nextOffset);
+
+  return (
+    <>
+      <Row>
+        <Col>Offset</Col>
+        <Col>Value</Col>
+      </Row>
+      <MemoryComponentRow offset={prevOffsetStr} value={prevValue} />
+      <MemoryComponentRow
+        offset={currOffsetStr}
+        value={currValue}
+        style={{ backgroundColor: "#dedede" }}
+      />
+      <MemoryComponentRow offset={nextOffsetStr} value={nextValue} />
+    </>
+  );
+}
 
 export default memo(({ data, isConnectable }: any) => {
-  const [searchValue, setSearchValue] = React.useState(5);
-  const [dataSource, setDataSource] = React.useState<MemoryValue[]>([]);
+  const [searchValue, setSearchValue] = React.useState(0);
+  const [base, setBase] = React.useState<Base>("HEX");
+
+  function onUIUpdate() {
+    setSearchValue(execute("get_register_pc"));
+  }
 
   React.useEffect(() => {
-    setDataSource(getMemoryData());
+    subscribeToUIUpdates(onUIUpdate);
+    return () => {
+      unsubscribeToUIUpdates(onUIUpdate);
+    }
   }, []);
+  const onSearch = (num: number, base: Base) => {
+    setSearchValue(num);
+    setBase(base);
+  };
 
-  const onSearch = (e: any) => {
-    setSearchValue(Number(e.target.value));
+  const onBaseChange = (base: Base) => {
+    setBase(base);
   };
 
   return (
@@ -53,6 +86,8 @@ export default memo(({ data, isConnectable }: any) => {
       style={{
         height: data.height,
         width: data.width,
+        border: "1px solid black",
+        backgroundColor: "white",
       }}
     >
       <Row>
@@ -64,14 +99,18 @@ export default memo(({ data, isConnectable }: any) => {
       </Row>
       <Row>
         <Col size="100%">
-          <Input placeholder="Enter a value" onChange={onSearch} />
+          <NumberBaseInput
+            initialBase={base}
+            number={searchValue}
+            onChange={onSearch}
+            onBaseChange={onBaseChange}
+            width={200}
+          />
         </Col>
       </Row>
       <Row>
         <Col size="100%">
-          <DataSource<MemoryValue> data={dataSource} primaryKey="offset">
-            <InfiniteTable<MemoryValue> columns={columns} activeIndex={searchValue} />
-          </DataSource>
+          <MemoryComponent offset={searchValue} base={base} />
         </Col>
       </Row>
     </div>

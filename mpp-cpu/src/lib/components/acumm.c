@@ -23,7 +23,7 @@
 
 static Register acumm_reg = {.bit_length = ACUMM_REG_SIZE_BIT};
 
-static RegisterWatcher acumm_reg_watcher = {.name = "ACUM", .reg = &acumm_reg};
+static RegisterWatcher acumm_reg_watcher = {.reg = &acumm_reg, .type = WATCHER_TYPE_ACUM};
 
 static Bus_t *last_bus_data = NULL;
 static Bus_t *control_bus = NULL;
