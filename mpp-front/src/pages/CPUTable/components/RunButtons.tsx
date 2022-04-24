@@ -10,6 +10,7 @@ import { sleep } from "../../../lib/utils";
 import { SettingType } from "./Settings";
 import { useState, useEffect, useRef } from "react";
 import { getStoredValue } from "../../../lib/storage";
+import { Space } from "antd";
 
 export default function RunButtons() {
   const [running, setRunning] = useState(false);
@@ -78,7 +79,7 @@ export default function RunButtons() {
     );
   }
   return (
-    <div>
+    <Space direction="vertical" size="middle">
       <IconButton
         icon={<PlaySquareOutlined />}
         title="Run state"
@@ -98,6 +99,6 @@ export default function RunButtons() {
         onClick={handleRunProgram}
         disabled={running}
       />
-    </div>
+    </Space>
   );
 }

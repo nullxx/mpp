@@ -10,7 +10,7 @@ export enum SettingType {
 const Settings: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const [cycleTime, setCycleTime] = useState(
-    getStoredValue(SettingType.CYCLE_TIME) || 0,
+    getStoredValue(SettingType.CYCLE_TIME) || 500,
   );
 
   const showDrawer = () => {
