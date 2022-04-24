@@ -1,8 +1,5 @@
 <h1 align="center">Welcome to mpp 👋</h1>
 <p>
-  <a href="https://www.npmjs.com/package/mpp" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/mpp.svg">
-  </a>
   <a href="https://opensource.org/licenses/MIT" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
   </a>
@@ -13,8 +10,6 @@
 
 > Mpp is a simulator for the machine ++
 
-### 🏠 [Homepage](https://nullxx.github.io/mpp)
-
 ### ✨ [Demo](https://mpp-beta.nullx.me)
 
 ## Author
@@ -24,7 +19,7 @@
 * Website: nullx.me
 * Twitter: [@nullxme](https://twitter.com/nullxme)
 * Github: [@nullxx](https://github.com/nullxx)
-* LinkedIn: [@https:\/\/www.linkedin.com\/in\/jon-lara-trigo-965ab898\/](https://linkedin.com/in/https:\/\/www.linkedin.com\/in\/jon-lara-trigo-965ab898\/)
+* LinkedIn: [Jon Lara Trigo](https://linkedin.com/in/jon-lara-trigo-965ab898/)
 
 ## Show your support
 
@@ -36,4 +31,3 @@ Copyright © 2022 [nullx](https://github.com/nullxx).<br />
 This project is [MIT](https://opensource.org/licenses/MIT) licensed.
 
 ***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
