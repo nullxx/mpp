@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import { execute } from "../../../lib/core";
 import { sleep } from "../../../lib/utils";
-import { SettingType } from "./Settings";
+import { SettingDefaultValue, SettingType } from "./Settings";
 import { useState, useEffect, useRef } from "react";
 import { getStoredValue } from "../../../lib/storage";
 import { Space } from "antd";
@@ -31,7 +31,7 @@ export default function RunButtons() {
       const nextState = execute("get_next_state");
       if (nextState === 0) break;
       await sleep(
-        getStoredValue(SettingType.CYCLE_TIME),
+        getStoredValue(SettingType.CYCLE_TIME, SettingDefaultValue.CYCLE_TIME),
         isBreak.current.signal
       );
     }
@@ -40,7 +40,7 @@ export default function RunButtons() {
   }
 
   async function handleRunProgram() {
-    const cycleTime = getStoredValue(SettingType.CYCLE_TIME);
+    const cycleTime = getStoredValue(SettingType.CYCLE_TIME, SettingDefaultValue.CYCLE_TIME);
     _running.current = true;
     setRunning(true);
     const maxRepresentableValue =

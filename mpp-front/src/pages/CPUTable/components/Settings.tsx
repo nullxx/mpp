@@ -7,10 +7,14 @@ export enum SettingType {
   CYCLE_TIME = "settings::cycleTime",
 }
 
+export enum SettingDefaultValue {
+  CYCLE_TIME = 500,
+}
+
 const Settings: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const [cycleTime, setCycleTime] = useState(
-    getStoredValue(SettingType.CYCLE_TIME) || 500,
+    getStoredValue(SettingType.CYCLE_TIME, SettingDefaultValue.CYCLE_TIME),
   );
 
   const showDrawer = () => {

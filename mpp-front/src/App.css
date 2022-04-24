@@ -7,6 +7,10 @@
   pointer-events: none;
 }
 
+.react-flow__attribution {
+  display: none;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -41,7 +45,7 @@
 
 html, body, #root, .App {
   height: 100%;
-  overflow: scroll;
+  overflow: hidden;
 }
 
 /* ---------- Make the codepen look nice ---------- */
