@@ -31,7 +31,7 @@ const getFormatted = (number: number, newBase: Base) => {
   const targetBase = bases.find(({ base }) => base === newBase);
   if (!targetBase) return "";
 
-  const value = Number(number).toString(targetBase.radix);
+  const value = Number(number).toString(targetBase.radix).toUpperCase();
   return value;
 };
 
@@ -49,6 +49,7 @@ const NumberBaseInput = ({
   onBaseChange,
   readOnly = false,
   width,
+  isError
 }: {
   number: number;
   initialBase: Base;
@@ -56,6 +57,7 @@ const NumberBaseInput = ({
   onBaseChange?: (newBase: Base) => void;
   readOnly?: boolean;
   width?: number | "100%";
+  isError?: boolean;
 }) => {
   const [base, setBase] = React.useState<Base>(initialBase);
   const [formatted, setFormatted] = React.useState(getFormatted(number, base));
@@ -108,7 +110,7 @@ const NumberBaseInput = ({
       addonBefore={selectBefore}
       value={formatted}
       onChange={onValueChange}
-      status={!isValid ? "error" : undefined}
+      status={!isValid || isError ? "error" : undefined}
       style={{width}}
     />
   );

@@ -28,7 +28,7 @@ root.render(
     <ErrorBoundary>
       <BrowserRouter>
         <StyletronProvider value={engine} debug={debug} debugAfterHydration>
-          <App />
+            <App />
         </StyletronProvider>
       </BrowserRouter>
     </ErrorBoundary>

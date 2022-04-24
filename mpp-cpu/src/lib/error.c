@@ -14,9 +14,6 @@
 
 #include "logger.h"
 
-jmp_buf *err_buffer;
-Error last_error;
-
 void fatal(Error err) {
     if (err.show_errno == true) {
         perror(err.message);
@@ -35,14 +32,7 @@ void notice(Error err) {
     }
 }
 
-void process_error(void *error) {
-    Error err;
-    if (error == NULL) {
-        err = last_error;
-    } else {
-        err = *(Error *) error;
-    }
-    
+void process_error(Error err) {
     switch (err.type) {
         case FATAL_ERROR:
             fatal(err);
@@ -56,11 +46,6 @@ void process_error(void *error) {
     }
 }
 
-void init_err_hanlder(jmp_buf *error_buffer) {
-    err_buffer = error_buffer;
-}
-
 void throw_error(Error err) {
-    last_error = err;
-    longjmp(*err_buffer, err.type);
+    process_error(err);
 }

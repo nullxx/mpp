@@ -13,7 +13,7 @@ CC = emcc
 # define any compile-time flags
 CFLAGS	:= -Wall -Wextra -g -DLOG_USE_COLOR
 # FIXME EXPORT_ALL=1 for debugging
-EMCCFLAGS := -s EXPORT_ALL=1 --no-entry -s MODULARIZE=1 -s ENVIRONMENT='web' -s EXPORT_ES6=1 -s 'EXPORTED_RUNTIME_METHODS=["cwrap", "getValue", "addFunction"]' -s ALLOW_TABLE_GROWTH=1
+EMCCFLAGS := -s EXPORT_ALL=1 --no-entry -s MODULARIZE=1 -s ENVIRONMENT='web' -s EXPORT_ES6=1 -s 'EXPORTED_RUNTIME_METHODS=["cwrap", "getValue", "addFunction"]' -s ALLOW_TABLE_GROWTH=1 -s SAFE_HEAP=1
 
 LFLAGS = -lm
 
@@ -76,7 +76,7 @@ $(OUTPUT):
 	$(MD) $(OUTPUT)
 
 $(MAIN): $(OBJECTS)
-	$(CC) $(CFLAGS) $(EMCCFLAGS) -o $(OUTPUT)/$@ $^ $(LFLAGS) $(LIBS)
+	$(CC) $(CFLAGS) $(EMCCFLAGS) -fPIC -o $(OUTPUT)/$@ $^ $(LFLAGS) $(LIBS)
 
 # this is a suffix replacement rule for building .o's from .c's
 # it uses automatic variables $<: the name of the prerequisite of

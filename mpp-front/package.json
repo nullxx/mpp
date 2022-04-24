@@ -11,9 +11,11 @@
     "@types/node": "^17.0.25",
     "@types/react": "^18.0.5",
     "@types/react-dom": "^18.0.1",
+    "ace-builds": "^1.4.14",
     "antd": "^4.19.5",
     "atomize": "^1.0.28",
     "react": "^18.0.0",
+    "react-ace": "^10.0.0",
     "react-dom": "^18.0.0",
     "react-flow-renderer": "^10.1.1",
     "react-hot-toast": "^2.2.0",
@@ -27,6 +29,7 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
+    "postinstall": "npx patch-package",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

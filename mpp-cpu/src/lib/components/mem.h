@@ -25,12 +25,5 @@ void init_mem(void);
 void shutdown_mem(void);
 void run_mem(void);
 
-#include "../error.h"
-typedef struct {  // temporal
-    int success;
-    Error err;
-    void *return_value;
-} ComponentActionReturn;
-
 MemValue *get_value_by_offset(int offset);
 #endif /* mem_h */

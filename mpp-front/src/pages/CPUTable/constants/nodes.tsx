@@ -9,7 +9,7 @@ const nodes: Node[] = [
       height: 200,
       loadBit: { label: "REGCAR", value: 0 },
     },
-    position: { x: 0, y: 300 },
+    position: { x: -200, y: 150 },
     className: "light",
     type: "loadableNode",
     isParent: true,
@@ -65,7 +65,7 @@ const nodes: Node[] = [
 
   {
     id: "2",
-    position: { x: 420, y: 50 },
+    position: { x: 270, y: 50 },
     draggable: true,
     type: "registerNode",
     data: {
@@ -80,7 +80,7 @@ const nodes: Node[] = [
 
   {
     id: "3",
-    position: { x: 420, y: 120 },
+    position: { x: 270, y: 120 },
     draggable: true,
     type: "registerNode",
     data: {
@@ -94,7 +94,7 @@ const nodes: Node[] = [
   },
   {
     id: "4",
-    position: { x: 420, y: 190 },
+    position: { x: 270, y: 190 },
     draggable: true,
     type: "registerNode",
     data: {
@@ -109,7 +109,7 @@ const nodes: Node[] = [
 
   {
     id: "5",
-    position: { x: 420, y: 260 },
+    position: { x: 270, y: 260 },
     draggable: true,
     type: "registerNode",
     data: {
@@ -123,7 +123,7 @@ const nodes: Node[] = [
   },
   {
     id: "6",
-    position: { x: 420, y: 330 },
+    position: { x: 270, y: 330 },
     draggable: true,
     type: "registerNode",
     data: {
@@ -137,7 +137,7 @@ const nodes: Node[] = [
   },
   {
     id: "L",
-    position: { x: 420, y: 400 },
+    position: { x: 270, y: 400 },
     draggable: true,
     type: "registerNode",
     data: {
@@ -157,7 +157,7 @@ const nodes: Node[] = [
       width: 400,
       height: 120,
     },
-    position: { x: -200, y: 100 },
+    position: { x: -200, y: 0 },
     className: "light",
     type: "loadableNode",
     isParent: true,
@@ -194,7 +194,7 @@ const nodes: Node[] = [
   },
   {
     id: "9",
-    position: { x: 560, y: 200 },
+    position: { x: -150, y: 360 },
     draggable: true,
     type: "memoryNode",
     data: {

@@ -6,7 +6,6 @@ import {
   subscribeToUIUpdates,
   unsubscribeToUIUpdates,
 } from "../../../lib/core/index";
-import usePrev from "../../../hook/usePrev";
 
 export const DEFAULT_REGISTER_VALUE = 0;
 

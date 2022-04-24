@@ -1,6 +1,6 @@
 import { useState, useCallback, ReactNode } from "react";
 import Flow, { applyEdgeChanges, applyNodeChanges } from "../../lib/ReactFlow";
-import { Layout } from "antd";
+import { Layout, Row, Col } from "antd";
 
 import type {
   Node,
@@ -19,6 +19,7 @@ import LoadableNode from "./components/LoadableNode";
 import BusNode from "./components/BusNode";
 import MemoryNode from "./components/MemoryNode";
 import ButtonStack from "./components/ButtonStack";
+import Settings from "./components/Settings";
 
 const { Header, Sider, Content } = Layout;
 
@@ -53,7 +54,14 @@ function CPUTable() {
     <>
       <Layout style={{ height: "100%" }}>
         <Header style={{ backgroundColor: "unset" }}>
-          <h2>M++ Simulator</h2>
+          <Row>
+            <Col span={5} offset={0}>
+              <h2>M++ Simulator</h2>
+            </Col>
+            <Col span={1} offset={18}>
+              <Settings />
+            </Col>
+          </Row>
         </Header>
         <Layout>
           <Content>

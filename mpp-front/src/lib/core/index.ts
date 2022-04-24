@@ -1,9 +1,10 @@
 import type { MppCore, UIUpdateCallbackFn } from "./types";
 import libmppModule from "./files/libmpp";
 import { emptyMppCore } from "./types";
+import toast from "react-hot-toast";
 
 let moduleInstance: any;
-let mppCore: MppCore | null;
+export let mppCore: MppCore | null;
 
 const uiUpdatesSubscriptions = new Set<UIUpdateCallbackFn>();
 
@@ -13,122 +14,138 @@ const exportedMethods: {
   typeArgs: ("number" | "string")[];
 }[] = [
   {
-    name: 'init',
+    name: "init",
     returnType: null,
     typeArgs: [],
   },
   {
-    name: 'shutdown',
+    name: "shutdown",
     returnType: null,
     typeArgs: [],
   },
 
-
   {
-    name: 'get_memory_size',
-    returnType: 'number',
+    name: "get_memory_size",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
+    name: "get_memory_value_size_bits",
+    returnType: "number",
     typeArgs: [],
   },
   {
     name: "get_memory_value",
-    returnType: 'number',
-    typeArgs: ['number'],
+    returnType: "number",
+    typeArgs: ["number"],
   },
-  
+  {
+    name: "set_memory_value",
+    returnType: null,
+    typeArgs: ["number", "number"],
+  },
 
   {
-    name: 'get_register_acum',
-    returnType: 'number',
+    name: "get_register_acum",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_register_acum',
-    returnType: 'number',
+    name: "get_register_acum",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_register_fc',
-    returnType: 'number',
+    name: "get_register_fc",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_register_fz',
-    returnType: 'number',
+    name: "get_register_fz",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_register_b',
-    returnType: 'number',
+    name: "get_register_b",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_register_c',
-    returnType: 'number',
+    name: "get_register_c",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_register_d',
-    returnType: 'number',
+    name: "get_register_d",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_register_e',
-    returnType: 'number',
+    name: "get_register_e",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_register_h',
-    returnType: 'number',
+    name: "get_register_h",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_register_l',
-    returnType: 'number',
+    name: "get_register_l",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_register_2op',
-    returnType: 'number',
+    name: "get_register_2op",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_register_pch',
-    returnType: 'number',
+    name: "get_register_pch",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_register_pcl',
-    returnType: 'number',
+    name: "get_register_pcl",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_register_pc',
-    returnType: 'number',
+    name: "get_register_pc",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_register_sp',
-    returnType: 'number',
+    name: "get_register_sp",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_register_ri',
-    returnType: 'number',
+    name: "get_register_ri",
+    returnType: "number",
     typeArgs: [],
+  },
+  {
+    name: "set_register_pc",
+    returnType: null,
+    typeArgs: ["number"],
   },
 
-
   {
-    name: 'run_clock_cycle',
-    returnType: 'number',
+    name: "run_clock_cycle",
+    returnType: "number",
     typeArgs: [],
   },
   {
-    name: 'get_state',
-    returnType: 'number',
+    name: "get_state",
+    returnType: "number",
     typeArgs: [],
   },
-
+  {
+    name: "get_next_state",
+    returnType: "number",
+    typeArgs: [],
+  },
 
   {
     name: "print_hello",
@@ -140,7 +157,6 @@ const exportedMethods: {
     returnType: null,
     typeArgs: [],
   },
-  
 ];
 
 export async function loadInstance(): Promise<void> {
@@ -169,7 +185,8 @@ export async function connectBackend() {
   if (!mppCore) throw new Error("MppCore not loaded");
   console.info("MppCore loaded");
 
-  execute('init');
+  execute("init");
+
   console.info("MppCore initialized");
 
   createUpdateUICallback();
@@ -182,7 +199,7 @@ export async function disconnectBackend() {
     return;
   }
 
-  execute('shutdown');
+  execute("shutdown");
   mppCore = null;
 }
 
@@ -207,9 +224,9 @@ export function unsubscribeToUIUpdates(callback: UIUpdateCallbackFn) {
 
 export function createUpdateUICallback() {
   const fnPtr = moduleInstance.addFunction(() => {
-    console.log('Updating UI');
+    console.log("Updating UI");
     uiUpdatesSubscriptions.forEach((callback) => callback());
-  }, 'v');
+  }, "v");
 
   mppCore?.linker_set_update_ui(fnPtr);
 }

@@ -19,8 +19,6 @@
 #include "../thread.h"
 #include "../utils.h"
 
-// INTERNAL
-
 static const int mem_size_bits = MEM_SIZE_KB * 1024 * 8;
 static const int mem_size = mem_size_bits / MEM_VALUE_SIZE_BITS;
 
@@ -85,51 +83,25 @@ MemValue *get_value_by_offset(int offset) {
     return &mem.values[offset];
 }
 
-// -- INTERNAL
-// TODO add static again after debugging, and remove header
-ComponentActionReturn set_mem_value(MemValue mem_value) {
-    ComponentActionReturn car;
-    car.success = 1;
 
+static int set_mem_value(MemValue mem_value) {
     if (!is_mem_value_valid(mem_value.value)) {
-        car.success = 0;
-        car.err.show_errno = 0;
-        car.err.type = NOTICE_ERROR;
-        car.err.message = "Invalid set value";
-        return car;
+        return 0;
     }
 
     MemValue *target_mem_value = get_value_by_offset(mem_value.offset);
     if (target_mem_value == NULL) {
-        car.success = 0;
-        car.err.show_errno = 0;
-        car.err.type = NOTICE_ERROR;
-        car.err.message = "Could not find value in memory";
-        return car;
+        return 0;
     }
 
     target_mem_value->value = mem_value.value;
-    target_mem_value->offset = mem_value.offset;
 
-    return car;
+    return 1;
 }
 
-static ComponentActionReturn get_mem_value(int offset) {
-    ComponentActionReturn car;
-    car.success = 1;
-
+static MemValue *get_mem_value(int offset) {
     MemValue *target_mem_value = get_value_by_offset(offset);
-    if (target_mem_value == NULL) {
-        car.success = 0;
-        car.err.show_errno = 0;
-        car.err.type = NOTICE_ERROR;
-        car.err.message = "Could not find value in memory";
-        return car;
-    }
-
-    car.return_value = (void *)target_mem_value;
-
-    return car;
+    return target_mem_value;
 }
 
 void run_mem(void) {
@@ -151,24 +123,26 @@ void run_mem(void) {
 
     switch (word_to_int(l_e_lb)) {
         case 1: {
-            ComponentActionReturn car = get_mem_value(dir_bin);
-            if (!car.success) {
-                err = car.err;
+            MemValue *mem_value = get_mem_value(dir_bin);
+            if (mem_value == NULL) {
+                err.message = "Could not get value from memory";
+                err.show_errno = 0;
+                err.type = NOTICE_ERROR;
                 goto error;
             }
 
-            MemValue *m = (MemValue *)car.return_value;
-
             // if memBus ==> send data to the bus
-            if (word_to_int(mem_bus_lb) == 1) publish_message_to(DATA_BUS_TOPIC, int_to_word(m->value));
+            if (word_to_int(mem_bus_lb) == 1) publish_message_to(DATA_BUS_TOPIC, int_to_word(mem_value->value));
             break;
         }
         case 0: {
             // use the last value of DATA_BUS
             MemValue mem_value = {.offset = dir_bin, .value = word_to_int(last_bus_data->next_value)};
-            ComponentActionReturn car = set_mem_value(mem_value);
-            if (!car.success) {
-                err = car.err;
+            int success = set_mem_value(mem_value);
+            if (!success) {
+                err.message = "Could not set value in memory";
+                err.type = NOTICE_ERROR;
+                err.show_errno = 0;
                 goto error;
             }
 
@@ -182,5 +156,3 @@ void run_mem(void) {
 error:
     return throw_error(err);
 }
-
-

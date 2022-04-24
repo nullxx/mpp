@@ -8,8 +8,6 @@
 #ifndef error_h
 #define error_h
 
-#include <setjmp.h>
-
 typedef enum {
     NONE_ERROR_TYPE = 0,
     FATAL_ERROR,
@@ -22,10 +20,9 @@ typedef struct {
     unsigned int show_errno;
 } Error;
 
-void init_err_hanlder(jmp_buf *error_buffer);
 void throw_error(Error err);
 
-void process_error(void *error);
+void process_error(Error err);
 void fatal(Error err);
 void notice(Error err);
 

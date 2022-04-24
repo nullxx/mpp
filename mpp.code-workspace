@@ -119,7 +119,8 @@
       "gdk-pixbuf.h": "c",
       "diagram.h": "c",
       "and.h": "c",
-      "mxreg_jnr.h": "c"
+      "mxreg_jnr.h": "c",
+      "setjmp.h": "c"
     },
     "psi-header.templates": [
       {

@@ -14,6 +14,7 @@
 #include "../lib/components/components.h"
 #include "../lib/logger.h"
 #include "../lib/watcher.h"
+#include "linker.h"
 
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_KEEPALIVE
@@ -89,3 +90,11 @@ int get_register_sp(void) { return word_to_int(get_register(WATCHER_TYPE_SP)->va
 EMSCRIPTEN_KEEPALIVE
 #endif
 int get_register_ri(void) { return word_to_int(get_register(WATCHER_TYPE_RI)->value); }
+
+#ifdef __EMSCRIPTEN__
+EMSCRIPTEN_KEEPALIVE
+#endif
+void set_register_pc(int value) {
+    get_register(WATCHER_TYPE_PC)->value = int_to_word(value);
+    get_update_ui_fn()();
+}

@@ -1,0 +1,26 @@
+diff --git a/node_modules/react-ace/lib/split.d.ts b/node_modules/react-ace/lib/split.d.ts
+index c998fdc..ec57579 100644
+--- a/node_modules/react-ace/lib/split.d.ts
++++ b/node_modules/react-ace/lib/split.d.ts
+@@ -56,7 +56,7 @@ export interface ISplitEditorProps {
+     annotations?: IAnnotation[][];
+     markers?: IMarker[][];
+ }
+-export default class SplitComponent extends React.Component<ISplitEditorProps, undefined> {
++export default class SplitComponent extends React.Component<ISplitEditorProps, {}> {
+     [index: string]: any;
+     static propTypes: PropTypes.ValidationMap<ISplitEditorProps>;
+     static defaultProps: Partial<ISplitEditorProps>;
+diff --git a/node_modules/react-ace/src/split.tsx b/node_modules/react-ace/src/split.tsx
+index 2d4f9b3..fcffe9a 100644
+--- a/node_modules/react-ace/src/split.tsx
++++ b/node_modules/react-ace/src/split.tsx
+@@ -77,7 +77,7 @@ export interface ISplitEditorProps {
+ 
+ export default class SplitComponent extends React.Component<
+   ISplitEditorProps,
+-  undefined
++  {}
+ > {
+   [index: string]: any;
+ 

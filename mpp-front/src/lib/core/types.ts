@@ -10,6 +10,7 @@ export interface MppCore {
   shutdown(): void;
 
   get_memory_size(): number;
+  get_memory_value_size_bits(): number;
   get_memory_value(offset: number): number;
 
   get_register_acum(): number;
@@ -30,86 +31,103 @@ export interface MppCore {
 
   run_clock_cycle(): number;
   get_state(): number;
+  get_next_state(): number;
+  set_memory_value(offset: number, value: number): void;
+  set_register_pc(value: number): void;
 }
 
 export type UIUpdateCallbackFn = () => void;
 
+function throwUninitializedError(fnName: string): never {
+  throw new Error(
+    `Cannot call function ${fnName} because core is not initialized`
+  );
+}
 export function emptyMppCore(): MppCore & MppCoreExtension {
   return {
     getValue: (ptr: any, type?: string) => {
-      throw new Error(`Method getValue not implemented`);
+      throwUninitializedError("getValue");
     },
     print_hello: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("print_hello");
     },
     linker_set_update_ui: (fnptr: number) => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("linker_set_update_ui");
     },
-
     init: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("init");
     },
     shutdown: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("shutdown");
     },
-
     get_memory_size: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_memory_size");
+    },
+    get_memory_value_size_bits: () => {
+      throwUninitializedError("get_memory_value_size");
     },
     get_memory_value: (offset: number) => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_memory_value");
     },
-
     get_register_acum: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_register_acum");
     },
     get_register_fc: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_register_fc");
     },
     get_register_fz: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_register_fz");
     },
     get_register_b: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_register_b");
     },
     get_register_c: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_register_c");
     },
     get_register_d: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_register_d");
     },
     get_register_e: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_register_e");
     },
     get_register_h: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_register_h");
     },
     get_register_l: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_register_l");
     },
     get_register_2op: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_register_2op");
     },
     get_register_pch: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_register_pch");
     },
     get_register_pcl: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_register_pcl");
     },
     get_register_pc: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_register_pc");
     },
     get_register_sp: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_register_sp");
     },
     get_register_ri: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_register_ri");
     },
     run_clock_cycle: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("run_clock_cycle");
     },
     get_state: () => {
-      throw new Error("MppCore not loaded");
+      throwUninitializedError("get_state");
+    },
+    get_next_state: () => {
+      throwUninitializedError("get_next_state");
+    },
+    set_memory_value: (offset: number, value: number) => {
+      throwUninitializedError("set_memory_value");
+    },
+    set_register_pc: (value: number) => {
+      throwUninitializedError("set_register_pc");
     }
   };
 }

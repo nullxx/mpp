@@ -25,7 +25,7 @@ int get_num_digits(int number) {
 }
 
 int random_int(const int min, const int max) {
-    int r = min + rand() % (max - min);
+    int r = rand() % max + min;
     return r;
 }
 

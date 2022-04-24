@@ -1,15 +1,11 @@
-import { PlaySquareOutlined } from "@ant-design/icons";
-import IconButton from "../../../components/IconButton";
-import { execute } from '../../../lib/core/index';
+import Coder from "../../Coder";
+import RunButtons from "./RunButtons";
 
 export default function ButtonStack() {
-  function handleRunState() {
-    execute('run_clock_cycle');
-  }
-
   return (
     <div>
-      <IconButton icon={<PlaySquareOutlined />} title="Run state" onClick={handleRunState} />
+      <RunButtons />
+      <Coder />
     </div>
   );
 }
