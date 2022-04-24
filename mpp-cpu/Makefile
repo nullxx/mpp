@@ -1,7 +1,7 @@
 # this is prepared for a unix like system
 
 CC = emcc
-CFLAGS	:= -Wall -Wextra -g -DLOG_USE_COLOR
+CFLAGS	:= -Wall -Wextra -g
 EMCCFLAGS := --no-entry -s MODULARIZE=1 -s ENVIRONMENT='web' -s EXPORT_ES6=1 -s 'EXPORTED_RUNTIME_METHODS=["cwrap", "getValue", "addFunction"]' -s ALLOW_TABLE_GROWTH=1 -s SAFE_HEAP=1
 
 LFLAGS = -lm

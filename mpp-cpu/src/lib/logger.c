@@ -116,6 +116,12 @@ void log_log(int level, const char *file, int line, const char *fmt, ...) {
         .line = line,
         .level = level,
     };
+    
+    #ifndef DEBUG
+    if (level != LOG_INFO && level != LOG_ERROR) {
+        return;
+    }
+    #endif
 
     lock();
 

@@ -27,7 +27,6 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<CPUTable />} />
-        {/* <Route path="about" element={<About />} /> */}
       </Routes>
     </div>
   );

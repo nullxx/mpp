@@ -13,5 +13,5 @@ export function getStoredValue<T = unknown>(key: string, defaultValue: T) {
   const r = localStorage.getItem(key);
   const value = r ? JSON.parse(r) : null;
   if (value == null) setStoredValue<T>(key, defaultValue);
-  return value || defaultValue;
+  return value ?? defaultValue;
 }

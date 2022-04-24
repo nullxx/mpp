@@ -24,10 +24,10 @@ const engine = new Styletron();
 // TODO layout
 root.render(
   <React.StrictMode>
-    <Toaster />
+    <Toaster position="bottom-left"/>
     <ErrorBoundary>
       <BrowserRouter>
-        <StyletronProvider value={engine} debug={debug} debugAfterHydration>
+        <StyletronProvider value={engine} debug={debug}>
             <App />
         </StyletronProvider>
       </BrowserRouter>

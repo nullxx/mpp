@@ -24,6 +24,7 @@ export default function RunButtons() {
   }
 
   async function handleRunInstruction() {
+    const cycleTime = getStoredValue(SettingType.CYCLE_TIME, SettingDefaultValue.CYCLE_TIME);
     _running.current = true;
     setRunning(true);
     while (_running.current) {
@@ -31,7 +32,7 @@ export default function RunButtons() {
       const nextState = execute("get_next_state");
       if (nextState === 0) break;
       await sleep(
-        getStoredValue(SettingType.CYCLE_TIME, SettingDefaultValue.CYCLE_TIME),
+        cycleTime,
         isBreak.current.signal
       );
     }

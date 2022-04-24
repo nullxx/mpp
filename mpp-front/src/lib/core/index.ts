@@ -159,8 +159,25 @@ const exportedMethods: {
   },
 ];
 
+export function getCConsoleHandle() {
+  return {
+    print: (...args: unknown[]) => {
+      console.log.bind(console, ...args);
+    },
+    printErr: (...args: unknown[]) => {
+      toast.error(args.join(' '), {
+        style: {
+          border: '1px solid #713200',
+          padding: '10px',
+          color: '#713200',
+        },
+      });
+    }
+  }
+}
+
 export async function loadInstance(): Promise<void> {
-  moduleInstance = await libmppModule();
+  moduleInstance = await libmppModule(getCConsoleHandle());
   const tmpMppCore = emptyMppCore();
 
   for (const method of exportedMethods) {
@@ -174,7 +191,15 @@ export async function loadInstance(): Promise<void> {
 
   mppCore = tmpMppCore;
 }
+export function setCConsoleLogger() {
+  moduleInstance["print"] = (...args: any[]) => {
+    console.log("ALGO", ...args);
+  };
 
+  moduleInstance["printErr"] = (...args: any[]) => {
+    console.log("ALGO", ...args);
+  };
+}
 export async function connectBackend() {
   if (mppCore) {
     console.warn("MppCore already loaded");
@@ -184,6 +209,8 @@ export async function connectBackend() {
   await loadInstance();
   if (!mppCore) throw new Error("MppCore not loaded");
   console.info("MppCore loaded");
+
+  setCConsoleLogger();
 
   execute("init");
 
@@ -224,7 +251,6 @@ export function unsubscribeToUIUpdates(callback: UIUpdateCallbackFn) {
 
 export function createUpdateUICallback() {
   const fnPtr = moduleInstance.addFunction(() => {
-    console.log("Updating UI");
     uiUpdatesSubscriptions.forEach((callback) => callback());
   }, "v");
 
