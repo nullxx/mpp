@@ -15,7 +15,7 @@
 
 ### 🏠 [Homepage](https://nullxx.github.io/mpp)
 
-### ✨ [Demo](mpp-beta.nullx.me)
+### ✨ [Demo](https://mpp-beta.nullx.me)
 
 ## Author
 
