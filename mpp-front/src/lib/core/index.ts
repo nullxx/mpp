@@ -191,15 +191,7 @@ export async function loadInstance(): Promise<void> {
 
   mppCore = tmpMppCore;
 }
-export function setCConsoleLogger() {
-  moduleInstance["print"] = (...args: any[]) => {
-    console.log("ALGO", ...args);
-  };
 
-  moduleInstance["printErr"] = (...args: any[]) => {
-    console.log("ALGO", ...args);
-  };
-}
 export async function connectBackend() {
   if (mppCore) {
     console.warn("MppCore already loaded");
@@ -209,8 +201,6 @@ export async function connectBackend() {
   await loadInstance();
   if (!mppCore) throw new Error("MppCore not loaded");
   console.info("MppCore loaded");
-
-  setCConsoleLogger();
 
   execute("init");
 

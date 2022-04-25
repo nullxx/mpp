@@ -117,7 +117,15 @@ void run_alu(void) {
 
     if (fc) {
         // get rid of the extra higher bits
-        result = result << (result_bits - DATA_BUS_SIZE_BITS);
+        Word word_result = int_to_word(result);
+        for (int i = WORD_SIZE_BIT - 1; i <= 0; i++) {
+            if (word_result.bits[i] == 1) {
+                word_result.bits[i] = 0;
+                break;
+            }
+        }
+
+        result = word_to_int(word_result);
     }
 
     if (word_to_int(alubus_lb) == 1) {

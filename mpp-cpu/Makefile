@@ -20,8 +20,6 @@ DEBUG ?= 0
 
 ifeq ($(DEBUG), 1)
     CFLAGS +=-DDEBUG
-else
-    CFLAGS +=-DNDEBUG
 endif
 
 MAIN	:= libmpp.js
