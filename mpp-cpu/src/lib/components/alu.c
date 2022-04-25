@@ -118,7 +118,7 @@ void run_alu(void) {
     if (fc) {
         // get rid of the extra higher bits
         Word word_result = int_to_word(result);
-        for (int i = WORD_SIZE_BIT - 1; i <= 0; i++) {
+        for (int i = WORD_SIZE_BIT - 1; i >= 0; i--) {
             if (word_result.bits[i] == 1) {
                 word_result.bits[i] = 0;
                 break;
