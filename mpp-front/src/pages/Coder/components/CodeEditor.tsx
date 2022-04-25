@@ -6,6 +6,7 @@ import { TraslationError } from "../../../lib/traslator/index";
 import NumberBaseInput from "../../../components/NumberBaseInput";
 import { execute } from "../../../lib/core/index";
 import { Button, Popover, Space } from "antd";
+import 'ace-builds/src-noconflict/mode-text'
 
 export default function CodeEditor({
   onNewTranslation,
@@ -107,6 +108,7 @@ export default function CodeEditor({
           }}
           height="200px"
           width="unset"
+          mode="text"
 
           markers={markers}
         />
@@ -123,6 +125,7 @@ export default function CodeEditor({
           }}
           height="200px"
           width="unset"
+          mode="text"
         />
       </Space>
       </Space>
