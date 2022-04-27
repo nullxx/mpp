@@ -13,6 +13,7 @@
 
 int random_int(const int min, const int max);
 int get_used_bits(int number);
+int get_num_digits(int number);
 
 char *num_to_str(int num);
 int get_bit(int n, int k);

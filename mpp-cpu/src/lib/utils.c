@@ -15,7 +15,7 @@
 
 int get_used_bits(int number) { return log2(number) + 1; }
 int get_num_digits(int number) {
-    int count = 1;
+    int count = 0;
     while (number != 0) {
         number = number / 10;
         count++;

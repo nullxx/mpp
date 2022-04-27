@@ -49,10 +49,10 @@ get_node_t get_node_from_value(LlNode *head, void *value) {
 
 /**
  * @brief Removes the reference from the list, but does not free node
- * 
- * @param head 
- * @param value 
- * @return int 
+ *
+ * @param head
+ * @param value
+ * @return int
  */
 int delete_node_from_value(LlNode **head, void *value) {
     get_node_t t = get_node_from_value(*head, value);
@@ -62,9 +62,11 @@ int delete_node_from_value(LlNode **head, void *value) {
 
     if (t.prev_node == NULL) {  // replace head
         *head = t.node->next;
-    } else{  // prev to point to the next of current
+    } else {  // prev to point to the next of current
         t.prev_node->next = t.node->next;
     }
+
+    free(t.node);
 
     return 1;
 }

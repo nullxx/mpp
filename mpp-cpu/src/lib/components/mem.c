@@ -16,11 +16,9 @@
 #include "../electronic/bus.h"
 #include "../error.h"
 #include "../pubsub.h"
-#include "../thread.h"
 #include "../utils.h"
 
-static const int mem_size_bits = MEM_SIZE_KB * 1024 * 8;
-static const int mem_size = mem_size_bits / MEM_VALUE_SIZE_BITS;
+static const int mem_size = MEM_SIZE_KB * 1024 * 8 / MEM_VALUE_SIZE_BITS;
 
 static Mem mem;
 

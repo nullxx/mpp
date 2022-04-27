@@ -11,6 +11,7 @@
 #ifndef definitions_h
 #define definitions_h
 #define WORD_SIZE_BIT 32
+
 typedef struct {
     int bits[WORD_SIZE_BIT];
 } Word;

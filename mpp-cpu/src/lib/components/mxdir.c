@@ -15,7 +15,6 @@
 #include "../electronic/multiplexer.h"
 #include "../error.h"
 #include "../pubsub.h"
-#include "../thread.h"
 #include "../utils.h"
 #include "components.h"
 

@@ -57,8 +57,6 @@ typedef enum {
     CONTROL_BUS_TOPIC
 } PubSubTopic;
 
-const char *pubsub_topic_tostring(PubSubTopic topic);
-
 typedef struct {
     int id;
     PubSubTopic topic;

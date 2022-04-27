@@ -12,10 +12,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "constants.h"
 #include "linkedlist.h"
 #include "logger.h"
 #include "utils.h"
-#include "constants.h"
 
 // TODO check in all files that use subscribe and unsubscribe if they check return of those functions
 
@@ -25,46 +25,6 @@ int topic_with_middleware_count = 0;
 // PubSubSubscription **subscriptions = NULL;
 LlNode *subscriptions_head = NULL;
 int subscription_count = 0;
-
-const char *pubsub_topic_tostring(PubSubTopic topic) {
-    switch (topic) {
-        case NONE_PUBSUB_TOPIC:
-            return "NONE_PUBSUB_TOPIC";
-        case DATA_BUS_TOPIC:
-            return "DATA_BUS_TOPIC";
-        case DIR_BUS_TOPIC_1:
-            return "DIR_BUS_TOPIC_1";
-        case DIR_BUS_TOPIC_2:
-            return "DIR_BUS_TOPIC_2";
-        case PC_OUTPUT_BUS_TOPIC:
-            return "PC_OUTPUT_BUS_TOPIC";
-        case SP_OUTPUT_BUS_TOPIC:
-            return "SP_OUTPUT_BUS_TOPIC";
-        case HL_OUTPUT_BUS_TOPIC:
-            return "HL_OUTPUT_BUS_TOPIC";
-        case FFFC_OUTPUT_BUS_TOPIC:
-            return "FFFC_OUTPUT_BUS_TOPIC";
-        case ACUMM_OUTPUT_BUS_TOPIC:
-            return "ACUMM_OUTPUT_BUS_TOPIC";
-        case OP2_OUTPUT_BUS_TOPIC:
-            return "OP2_OUTPUT_BUS_TOPIC";
-        case ALU_FC_OUTPUT_BUS_TOPIC:
-            return "ALU_FC_OUTPUT_BUS_TOPIC";
-        case ALU_FZ_OUTPUT_BUS_TOPIC:
-            return "ALU_FZ_OUTPUT_BUS_TOPIC";
-        case SELREG_OUTPUT_BUS_TOPIC:
-            return "SELREG_OUTPUT_BUS_TOPIC";
-        case MXFLD7_OUTPUT_BUS_TOPIC:
-            return "MXFLD7_OUTPUT_BUS_TOPIC";
-        case MXFLD0_OUTPUT_BUS_TOPIC:
-            return "MXFLD0_OUTPUT_BUS_TOPIC";
-        case FLAGS_OUTPUT_BUS_TOPIC:
-            return "FLAGS_OUTPUT_BUS_TOPIC";
-
-        default:
-            return NULL;
-    }
-}
 
 #ifndef DEBUG
 PubSubSubscription *subscribe_to(PubSubTopic topic, Bus_t *bus_t) {
@@ -77,7 +37,7 @@ PubSubSubscription *subscribe_to_internal(PubSubTopic topic, Bus_t *bus_t, const
     }
 
     subscription->id = subscription_count++;  // id is also the index inside subscriptions
-    subscription->topic = (PubSubTopic) topic;
+    subscription->topic = (PubSubTopic)topic;
     subscription->bus_t = bus_t;
     subscription->active = 1;
 
@@ -87,13 +47,6 @@ PubSubSubscription *subscribe_to_internal(PubSubTopic topic, Bus_t *bus_t, const
         push_ll_node(subscriptions_head, subscription, NULL);
     }
 
-#ifdef DEBUG
-    char *sub_id_str = num_to_str(subscription->id);
-    char *constructed_msg = create_str(caller, "Created subscription for", pubsub_topic_tostring(topic), "with id", sub_id_str);
-    log_debug(constructed_msg);
-    free(sub_id_str);
-    free(constructed_msg);
-#endif
     return subscription;
 }
 
@@ -115,11 +68,6 @@ PubSubMiddleware *add_topic_middleware(PubSubTopic topic, PubSubMiddlewareFn mid
 
     topics_with_middleware[topic_with_middleware_count - 1] = m;
 
-#ifdef DEBUG
-    char *constructed_msg = create_str("Adding middleware for topic", pubsub_topic_tostring(topic));
-    log_debug(constructed_msg);
-    free(constructed_msg);
-#endif
     return m;
 }
 
@@ -161,14 +109,6 @@ int unsubscribe_for(PubSubSubscription *sub) {
         goto end;
     }
 
-#ifdef DEBUG
-    char *sub_id_str = num_to_str(sub->id);
-    char *constructed_msg = create_str("Deleting subscription with id", sub_id_str);
-    log_debug(constructed_msg);
-    free(sub_id_str);
-    free(constructed_msg);
-
-#endif
     // free(sub); // not deleting the subscription, just removing it from the list
 end:
     return response;
@@ -188,16 +128,11 @@ int publish_message_to(PubSubTopic topic, Word value) {
     for (int i = 0; i < topic_with_middleware_count; i++) {
         if (topics_with_middleware[i] == NULL || topics_with_middleware[i]->topic != topic) continue;
         bool middleware_passes = topics_with_middleware[i]->middlware(value);
-#ifdef DEBUG
-        const char *result = middleware_passes ? "true" : "false";
-        char *constructed_msg = create_str("Executed middleware for topic", pubsub_topic_tostring(topic), "with result", result);
-        log_debug(constructed_msg);
-        free(constructed_msg);
-#endif
+
         if (!middleware_passes) {
             sent = -1;
             goto end;
-        };
+        }
     }
 
     // find the subs subscribed to this topic
@@ -213,14 +148,6 @@ int publish_message_to(PubSubTopic topic, Word value) {
 
         sent++;
     }
-
-#ifdef DEBUG
-    char *sent_str = num_to_str(sent);
-    char *constructed_msg = create_str(pubsub_topic_tostring(topic), "published to", sent_str, "subscribers");
-    log_debug(constructed_msg);
-    free(sent_str);
-    free(constructed_msg);
-#endif
 
 end:
     return sent;

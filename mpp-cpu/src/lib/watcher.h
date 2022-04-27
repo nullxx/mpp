@@ -36,7 +36,7 @@ typedef struct {
 } RegisterWatcher;
 
 void register_watcher(RegisterWatcher* reg);
-void unregister_watcher(RegisterWatcher* reg_watcher);
+int unregister_watcher(RegisterWatcher *reg_watcher);
 
 Register* get_register(WatcherType type);
 #endif

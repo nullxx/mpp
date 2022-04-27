@@ -11,3 +11,10 @@ make
 This will generate the following files in output/
 - libmpp.js
 - libmpp.wasm
+
+
+## TESTING
+
+```console
+RUNTEST=1 make compile-tests && make run-tests
+```

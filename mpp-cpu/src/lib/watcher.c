@@ -33,9 +33,9 @@ void register_watcher(RegisterWatcher *reg_watcher) {
     }
 }
 
-void unregister_watcher(RegisterWatcher *reg_watcher) {
-    if (head == NULL) return;
-    delete_node_from_value(&head, reg_watcher);
+int unregister_watcher(RegisterWatcher *reg_watcher) {
+    if (head == NULL) return 0;
+    return delete_node_from_value(&head, reg_watcher);
 }
 
 Register *get_register(WatcherType type) {

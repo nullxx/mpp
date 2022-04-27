@@ -23,7 +23,7 @@
 
 update_ui_fn update_ui = NULL;
 
-void _init(void) { srand(time(NULL)); }
+void __init(void) { srand(time(NULL)); }
 
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_KEEPALIVE
@@ -35,7 +35,7 @@ EMSCRIPTEN_KEEPALIVE
 #endif
 void init(void) {
     log_debug("Initializing linker");
-    _init();
+    __init();
     init_components();
     init_linker_cu();
 }
