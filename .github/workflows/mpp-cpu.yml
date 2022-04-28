@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: mpp-cpu
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  mpp-cpu_test:
 
     runs-on: ubuntu-latest
 
@@ -15,5 +15,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Compile tests
       run: RUNTEST=1 make compile-tests
+      working-directory: mpp-cpu
     - name: Run tests
       run: make run-tests
+      working-directory: mpp-cpu
