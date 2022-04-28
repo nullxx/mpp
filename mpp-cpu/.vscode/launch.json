@@ -26,6 +26,13 @@
           "program": "${workspaceFolder}/output/main.exe"
         },
         "preLaunchTask": "build mpp-cpu"
+      },
+      {
+        "name": "Run tests",
+        "type": "f5anything",
+        "request": "launch",
+        "preLaunchTask": "Compile tests",
+        "command": "make run-tests",
       }
     ]
   }

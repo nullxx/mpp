@@ -91,6 +91,32 @@
                     "'make clean'"
                 ]
             }
+        },
+        {
+            "label": "Compile tests",
+            "dependsOn": "clean",
+            "options": {
+                "env": {
+                    "RUNTEST": "1"
+                }
+            },
+            "command": [
+                "bash"
+            ],
+            "args": [
+                "-c",
+                "'make' compile-tests",
+            ]
+        },
+        {
+            "label": "Run tests",
+            "command": [
+                "bash"
+            ],
+            "args": [
+                "-c",
+                "'make run-tests'",
+            ]
         }
     ]
 }

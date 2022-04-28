@@ -29,6 +29,8 @@
         "munit.h": "c",
         "definitions.h": "c",
         "linkedlist.h": "c",
-        "utils.h": "c"
+        "utils.h": "c",
+        "acumm.h": "c",
+        "watcher.h": "c"
     }
 }
