@@ -15,7 +15,4 @@ void init_sp(void);
 void shutdown_sp(void);
 void run_sp(void);
 
-void set_spcar_lb(void);
-void reset_spcar_lb(void);
-
 #endif /* sp_h */

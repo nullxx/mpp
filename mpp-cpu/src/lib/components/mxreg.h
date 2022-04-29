@@ -16,6 +16,4 @@ void init_mxreg(void);
 void shutdown_mxreg(void);
 void run_mxreg(void);
 
-bool set_selreg_lb(unsigned int sel);
-
 #endif

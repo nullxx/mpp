@@ -15,8 +15,4 @@ void init_greg(void);
 void shutdown_greg(void);
 void run_greg(void);
 
-void set_gregbus_lb(void);
-void reset_gregbus_lb(void);
-void set_gregcar_lb(void);
-void reset_gregcar_lb(void);
 #endif

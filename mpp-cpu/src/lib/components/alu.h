@@ -17,8 +17,5 @@ enum SelAluOp { SUM = 0b00, SUB = 0b01, AND = 0b10, OR = 0b11, XOR = 0b100, NOT 
 void init_alu(void);
 void shutdown_alu(void);
 void run_alu(void);
-bool set_selalu_lb(unsigned long bin);
-void set_alubus_lb(void);
-void reset_alubus_lb(void);
 
 #endif

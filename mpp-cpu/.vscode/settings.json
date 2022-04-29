@@ -31,6 +31,7 @@
         "linkedlist.h": "c",
         "utils.h": "c",
         "acumm.h": "c",
-        "watcher.h": "c"
+        "watcher.h": "c",
+        "stdio.h": "c"
     }
 }

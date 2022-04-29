@@ -14,8 +14,4 @@ void init_acumm(void);
 void shutdown_acumm(void);
 void run_acumm(void);
 
-void set_acbus_lb(void);
-void reset_acbus_lb(void);
-void set_accar_lb(void);
-void reset_accar_lb(void);
 #endif

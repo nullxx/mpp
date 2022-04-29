@@ -24,7 +24,7 @@ else
 endif
 
 ifeq ($(RUNTEST), 1)
-    CC=gcc
+    CC=cc
 else
     CC=emcc
 endif

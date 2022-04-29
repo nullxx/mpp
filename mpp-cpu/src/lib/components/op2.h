@@ -11,9 +11,6 @@
 #ifndef op2_h
 #define op2_h
 
-void set_car2_lb(void);
-void reset_car2_lb(void);
-
 void init_op2(void);
 void shutdown_op2(void);
 void run_op2(void);

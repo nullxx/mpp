@@ -20,15 +20,6 @@ static void setup(void) {
     init_acumm();
 }
 
-static void teardown(void) {
-    unsubscribe_for(acum_output_bus_topic);
-    unsubscribe_for(data_bus_topic);
-
-    destroy_bus_data(acum_output_bus);
-    destroy_bus_data(data_bus_topic_bus);
-    shutdown_acumm();
-}
-
 static void test_run_acumm(void) {
     Word wc;
     initialize_word(&wc, 0);
@@ -46,6 +37,24 @@ static void test_run_acumm(void) {
     assert_int(word_to_int(acum_output_bus->next_value), ==, word_to_int(r->value));
 
     // ----
+    
+    Word last_reg_value = r->value;
+    initialize_word(&wc, 0);
+    wc.bits[CONTROL_BUS_ACCAR_BIT_POSITION] = 1;
+    publish_message_to(CONTROL_BUS_TOPIC, wc);
+
+    int num = 0xFFF;
+    assert_int(num, >, r->bit_length);
+    wd = int_to_word(num);
+    
+    publish_message_to(DATA_BUS_TOPIC, wd);
+
+    run_acumm();
+
+    assert_int(word_to_int(r->value), ==, word_to_int(last_reg_value));
+    assert_int(word_to_int(acum_output_bus->next_value), ==, word_to_int(r->value));
+    
+    // ----
 
     initialize_word(&wc, 0);
     wc.bits[CONTROL_BUS_ACBUS_BIT_POSITION] = 1;
@@ -53,29 +62,23 @@ static void test_run_acumm(void) {
 
     run_acumm();
 
-    r = get_register(WATCHER_TYPE_ACUM);
-
-    assert_not_null(r);
     assert_int(word_to_int(data_bus_topic_bus->next_value), ==, word_to_int(r->value));
     assert_int(word_to_int(acum_output_bus->next_value), ==, word_to_int(r->value));
 }
 
-static void test_set_acbus_lb(void) {}
+static void teardown(void) {
+    unsubscribe_for(acum_output_bus_topic);
+    unsubscribe_for(data_bus_topic);
 
-static void test_reset_acbus_lb(void) {}
-
-static void test_set_accar_lb(void) {}
-
-static void test_reset_accar_lb(void) {}
+    destroy_bus_data(acum_output_bus);
+    destroy_bus_data(data_bus_topic_bus);
+    shutdown_acumm();
+}
 
 int main(void) {
     setup();
 
     test_run_acumm();
-    test_set_acbus_lb();
-    test_reset_acbus_lb();
-    test_set_acbus_lb();
-    test_reset_accar_lb();
 
     teardown();
     return 0;

@@ -93,7 +93,7 @@ void run_pc(void) {
         // load pch
         if (get_used_bits(word_to_int(last_bus_data->current_value)) > pch_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PCH register"};
-            throw_error(err);
+            return throw_error(err);
         }
 
         pch_reg.value = last_bus_data->current_value;
@@ -106,7 +106,7 @@ void run_pc(void) {
         // load pcl
         if (get_used_bits(word_to_int(last_bus_data->current_value)) > pcl_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PCL register"};
-            throw_error(err);
+            return throw_error(err);
         }
 
         pcl_reg.value = last_bus_data->current_value;
@@ -133,8 +133,7 @@ void run_pc(void) {
         int used_bits = get_used_bits(word_to_int(last_bus_dir->current_value));
         if (used_bits > pc_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PC register"};
-            throw_error(err);
-            return;
+            return throw_error(err);
         }
 
         pc_reg.value = last_bus_dir->current_value;

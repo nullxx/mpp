@@ -99,7 +99,7 @@ void run_greg(void) {
     Register *reg = get_gregister(word_to_int(last_bus_selreg_output->current_value));
     if (reg == NULL) {
         Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Could not find selected register"};
-        throw_error(err);
+        return throw_error(err);
     }
 
     Word regcar_lb;
@@ -115,7 +115,7 @@ void run_greg(void) {
         // load to reg
         if (get_used_bits(word_to_int(last_bus_data->current_value)) > reg->bit_length) {
             Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load to a general register"};
-            throw_error(err);
+            return throw_error(err);
         }
         reg->value = last_bus_data->current_value;
     }

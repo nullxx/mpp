@@ -15,9 +15,4 @@ void init_hl(void);
 void shutdown_hl(void);
 void run_hl(void);
 
-void set_hcar_lb(void);
-void reset_hcar_lb(void);
-void set_lcar_lb(void) ;
-void reset_lcar_lb(void);
-
 #endif

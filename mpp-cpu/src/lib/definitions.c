@@ -37,6 +37,7 @@ void print_word(Word w) {
     for (int i = WORD_SIZE_BIT - 1; i >= 0; i--) {
         printf("%d", w.bits[i]);
     }
+    printf("\n");
 }
 
 void initialize_word(Word *bw, int value) {

@@ -13,6 +13,4 @@ void init_flags(void);
 void shutdown_flags(void);
 void run_flags(void);
 
-void set_flcar_lb(void);
-void reset_flcar_lb(void);
 #endif

@@ -14,6 +14,4 @@ void init_addsub(void);
 void shutdown_addsub(void);
 void run_addsub(void);
 
-bool set_id_lb(unsigned long bin);
-
 #endif // addsub_h

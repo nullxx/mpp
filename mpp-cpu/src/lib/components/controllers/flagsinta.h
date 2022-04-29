@@ -13,6 +13,4 @@ void cll_init_flagsinta(void);
 void cll_shutdown_flagsinta(void);
 void cll_run_flagsinta(void);
 
-void cll_set_flbus_lb(void);
-void cll_reset_flbus_lb(void);
 #endif
