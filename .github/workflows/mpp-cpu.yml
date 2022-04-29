@@ -1,0 +1,23 @@
+name: mpp-cpu
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  mpp-cpu_test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+          submodules: 'true'
+    - name: Compile tests
+      run: RUNTEST=1 make compile-tests
+      working-directory: mpp-cpu
+    - name: Run tests
+      run: make run-tests
+      working-directory: mpp-cpu
