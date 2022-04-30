@@ -12,7 +12,6 @@
 #define utils_h
 
 int random_int(const int min, const int max);
-int get_used_bits(int number);
 int get_num_digits(int number);
 
 char *num_to_str(int num);

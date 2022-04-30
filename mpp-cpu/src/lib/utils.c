@@ -13,7 +13,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int get_used_bits(int number) { return log2(number) + 1; }
 int get_num_digits(int number) {
     int count = 0;
     while (number != 0) {
@@ -37,8 +36,5 @@ char *num_to_str(int num) {
 }
 
 int get_bit(int n, int k) {
-    int mask = 1 << k;
-    int masked_n = n & mask;
-    int thebit = masked_n >> k;
-    return thebit;
+    return (n >> k) & 1;
 }

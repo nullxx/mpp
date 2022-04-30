@@ -19,6 +19,7 @@ typedef struct {
 int word_to_int(Word bw);
 Word int_to_word(int value);
 void initialize_word(Word *bw, int value);
+int get_used_bits(Word w);
 void print_word(Word w);
 
 #endif

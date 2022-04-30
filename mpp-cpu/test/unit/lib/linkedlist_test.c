@@ -1,6 +1,7 @@
 #define MUNIT_ENABLE_ASSERT_ALIASES
 #include "../../../src/lib/linkedlist.h"
 
+#include "../../../src/lib/logger.h"
 #include "../../_munit/munit.h"
 
 void test_create_ll_node(void) {
@@ -58,6 +59,8 @@ void test_delete_node_from_value(void) {
 }
 
 int main(void) {
+    log_set_quiet(1);
+
     test_create_ll_node();
     test_push_ll_node();
     test_get_node_from_value();

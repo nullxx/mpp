@@ -18,7 +18,7 @@
 #include "../utils.h"
 
 static int check_data_bus_overflow(Word value) {
-    if (get_used_bits(word_to_int(value)) > DATA_BUS_SIZE_BITS) {
+    if (get_used_bits(value) > DATA_BUS_SIZE_BITS) {
         return 0;
     }
 
@@ -26,7 +26,7 @@ static int check_data_bus_overflow(Word value) {
 }
 
 static int check_dir_bus_overflow(Word value) {
-    if (get_used_bits(word_to_int(value)) > DIR_BUS_SIZE_BITS) {
+    if (get_used_bits(value) > DIR_BUS_SIZE_BITS) {
         return 0;
     }
 

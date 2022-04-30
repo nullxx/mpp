@@ -55,7 +55,7 @@ void run_acumm(void) {
 
     if (control_bus->current_value.bits[CONTROL_BUS_ACCAR_BIT_POSITION] == 1) {
         // load
-        if (get_used_bits(word_to_int(last_bus_data->current_value)) > acumm_reg.bit_length) {
+        if (get_used_bits(last_bus_data->current_value) > acumm_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load to ACUMM register"};
             return throw_error(err);
         }

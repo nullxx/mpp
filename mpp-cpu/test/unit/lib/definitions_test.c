@@ -1,6 +1,7 @@
 #define MUNIT_ENABLE_ASSERT_ALIASES
 #include "../../../src/lib/definitions.h"
 
+#include "../../../src/lib/logger.h"
 #include "../../_munit/munit.h"
 
 void test_initialize_word(void) {
@@ -43,6 +44,8 @@ void test_int_to_word(void) {
 }
 
 int main(void) {
+    log_set_quiet(1);
+
     test_initialize_word();
     test_word_to_int();
     test_int_to_word();

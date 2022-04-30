@@ -1,9 +1,8 @@
 #define MUNIT_ENABLE_ASSERT_ALIASES
 #include "../../../../src/lib/components/addsub.h"
 
-#include <stdio.h>
-
 #include "../../../../src/lib/constants.h"
+#include "../../../../src/lib/logger.h"
 #include "../../../../src/lib/pubsub.h"
 #include "../../../../src/lib/watcher.h"
 #include "../../../_munit/munit.h"
@@ -69,6 +68,7 @@ static void test_run_addsub(void) {
     publish_message_to(DIR_BUS_TOPIC_2, wd);
 
     run_addsub();
+
     assert_int(word_to_int(last_bus_dir1->next_value), ==, word_to_int(wd));
 
     // ----
@@ -84,7 +84,7 @@ static void test_run_addsub(void) {
     publish_message_to(DIR_BUS_TOPIC_2, wd);
 
     run_addsub();
-    assert_int(word_to_int(last_bus_dir1->next_value), ==, word_to_int(wd)-1);
+    assert_int(word_to_int(last_bus_dir1->next_value), ==, word_to_int(wd) - 1);
 }
 
 static void teardown(void) {
@@ -100,6 +100,8 @@ static void teardown(void) {
 }
 
 int main(void) {
+    log_set_quiet(1);
+
     setup();
 
     test_run_addsub();

@@ -1,8 +1,7 @@
 #define MUNIT_ENABLE_ASSERT_ALIASES
 #include "../../../src/lib/pubsub.h"
 
-#include <stdio.h>
-
+#include "../../../src/lib/logger.h"
 #include "../../_munit/munit.h"
 
 static int fn1_used = -1;
@@ -112,6 +111,8 @@ void test_rm_topic_middleware(PubSubMiddleware *mid1, PubSubMiddleware *mid2) {
 }
 
 int main(void) {
+    log_set_quiet(1);
+
     Bus_t *bus = create_bus_data();
 
     PubSubSubscription *sub = test_subscribe_to(bus);

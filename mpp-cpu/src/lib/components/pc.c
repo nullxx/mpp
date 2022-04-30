@@ -91,7 +91,7 @@ void run_pc(void) {
     // pch
     if (word_to_int(pchcar_lb) == 1) {
         // load pch
-        if (get_used_bits(word_to_int(last_bus_data->current_value)) > pch_reg.bit_length) {
+        if (get_used_bits(last_bus_data->current_value) > pch_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PCH register"};
             return throw_error(err);
         }
@@ -104,7 +104,7 @@ void run_pc(void) {
     // pcl
     if (word_to_int(pclcar_lb) == 1) {
         // load pcl
-        if (get_used_bits(word_to_int(last_bus_data->current_value)) > pcl_reg.bit_length) {
+        if (get_used_bits(last_bus_data->current_value) > pcl_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PCL register"};
             return throw_error(err);
         }
@@ -130,7 +130,7 @@ void run_pc(void) {
     // pc
     if (word_to_int(pccar_lb) == 1) {
         // load pc // PC is prioritary than pch and pcl
-        int used_bits = get_used_bits(word_to_int(last_bus_dir->current_value));
+        int used_bits = get_used_bits(last_bus_dir->current_value);
         if (used_bits > pc_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load PC register"};
             return throw_error(err);

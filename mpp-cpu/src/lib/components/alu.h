@@ -12,7 +12,7 @@
 #define alu_h
 #include <stdbool.h>
 
-enum SelAluOp { SUM = 0b00, SUB = 0b01, AND = 0b10, OR = 0b11, XOR = 0b100, NOT = 0b101, TRANSPARENT = 0b110, INCREMENT = 0b111 };
+enum SelAluOp { SUM = 0b000, SUB = 0b001, AND = 0b010, OR = 0b011, XOR = 0b100, NOT = 0b101, TRANSPARENT = 0b110, INCREMENT = 0b111 };
 
 void init_alu(void);
 void shutdown_alu(void);

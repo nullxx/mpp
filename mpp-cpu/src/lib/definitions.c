@@ -26,11 +26,21 @@ int word_to_int(Word w) {
 Word int_to_word(int value) {
     Word w;
     initialize_word(&w, 0);
-    for (int i = 0; i < get_used_bits(value); i++) {
+    for (int i = 0; i < WORD_SIZE_BIT; i++) {
         w.bits[i] = get_bit(value, i);
     }
 
     return w;
+}
+
+int get_used_bits(Word w) {
+    for (int i = WORD_SIZE_BIT - 1; i >= 0; i--) {
+        if (w.bits[i] == 1) {
+            return i + 1;
+        }
+    }
+
+    return 0;
 }
 
 void print_word(Word w) {

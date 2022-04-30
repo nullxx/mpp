@@ -59,7 +59,7 @@ void run_sp(void) {
     spcar_lb.bits[0] = control_bus->current_value.bits[CONTROL_BUS_SPCAR_BIT_POSITION];
 
     if (word_to_int(spcar_lb) == 1) {  // load
-        if (get_used_bits(word_to_int(last_bus_dir->current_value)) > sp_reg.bit_length) {
+        if (get_used_bits(last_bus_dir->current_value) > sp_reg.bit_length) {
             Error err = {.show_errno = 0, .type = NOTICE_ERROR, .message = "Overflow attemping to load SP register"};
             return throw_error(err);
         }

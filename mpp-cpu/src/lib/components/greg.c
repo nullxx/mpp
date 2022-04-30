@@ -113,7 +113,7 @@ void run_greg(void) {
 
     if (word_to_int(regcar_lb) == 1) {
         // load to reg
-        if (get_used_bits(word_to_int(last_bus_data->current_value)) > reg->bit_length) {
+        if (get_used_bits(last_bus_data->current_value) > reg->bit_length) {
             Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load to a general register"};
             return throw_error(err);
         }

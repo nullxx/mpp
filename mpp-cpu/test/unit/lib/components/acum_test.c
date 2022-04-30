@@ -3,6 +3,7 @@
 #include "../../../../src/lib/constants.h"
 #include "../../../../src/lib/pubsub.h"
 #include "../../../../src/lib/watcher.h"
+#include "../../../../src/lib/logger.h"
 #include "../../../_munit/munit.h"
 
 PubSubSubscription *acum_output_bus_topic;
@@ -76,6 +77,8 @@ static void teardown(void) {
 }
 
 int main(void) {
+    log_set_quiet(1);
+
     setup();
 
     test_run_acumm();

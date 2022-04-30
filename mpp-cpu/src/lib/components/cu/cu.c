@@ -143,7 +143,7 @@ void run_cu(int clk) {  // 1 opstate per run
 
         if (control_bus->current_value.bits[CONTROL_BUS_RICAR_BIT_POSITION] == 1) {
             // load
-            int b = get_used_bits(word_to_int(last_bus_data->current_value));
+            int b = get_used_bits(last_bus_data->current_value);
             if (b > RI_reg.bit_length) {
                 Error err = {.show_errno = false, .type = NOTICE_ERROR, .message = "Overflow attemping to load to RI register"};
                 return throw_error(err);

@@ -1,22 +1,24 @@
 #define MUNIT_ENABLE_ASSERT_ALIASES
 
 #include "../../../src/lib/utils.h"
+#include "../../../src/lib/definitions.h"
 
+#include "../../../src/lib/logger.h"
 #include "../../_munit/munit.h"
 
 void test_get_used_bits(void) {
     int i1 = 1;
-    int i1u = get_used_bits(i1);
+    int i1u = get_used_bits(int_to_word(i1));
 
     assert_int(i1u, ==, 1);
 
     int i2 = 2;
-    int i2u = get_used_bits(i2);
+    int i2u = get_used_bits(int_to_word(i2));
 
     assert_int(i2u, ==, 2);
 
     int i3 = 3;
-    int i3u = get_used_bits(i3);
+    int i3u = get_used_bits(int_to_word(i3));
 
     assert_int(i3u, ==, 2);
 }
@@ -104,6 +106,8 @@ void test_get_bit(void) {
 }
 
 int main(void) {
+    log_set_quiet(1);
+
     test_get_used_bits();
     test_get_num_digits();
     test_random_int();

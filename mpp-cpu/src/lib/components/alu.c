@@ -104,7 +104,7 @@ void run_alu(void) {
             break;
     }
 
-    const int result_bits = get_used_bits(result);
+    const int result_bits = get_used_bits(int_to_word(result));
 
     // if result == 0 => fz
     int fz = result == 0;
@@ -117,11 +117,8 @@ void run_alu(void) {
     if (fc) {
         // get rid of the extra higher bits
         Word word_result = int_to_word(result);
-        for (int i = WORD_SIZE_BIT - 1; i >= 0; i--) {
-            if (word_result.bits[i] == 1) {
-                word_result.bits[i] = 0;
-                break;
-            }
+        for (int i = WORD_SIZE_BIT - 1; i >= DATA_BUS_SIZE_BITS; i--) {
+            word_result.bits[i] = 0;
         }
 
         result = word_to_int(word_result);
