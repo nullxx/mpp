@@ -1,4 +1,4 @@
-import { List, Button, Typography } from "antd";
+import { List, Button } from "antd";
 import examples from "../constants/examples.json";
 
 export default function Examples({
