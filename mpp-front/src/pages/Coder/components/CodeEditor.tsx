@@ -1,12 +1,14 @@
 import AceEditor, { IMarker } from "react-ace";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { parseInput } from "../../../lib/traslator";
 import { TraslationError } from "../../../lib/traslator/index";
 import NumberBaseInput from "../../../components/NumberBaseInput";
 import { execute } from "../../../lib/core/index";
 import { Button, Popover, Space } from "antd";
-import 'ace-builds/src-noconflict/mode-text'
+import "ace-builds/src-noconflict/mode-text";
+import Examples from "./Examples";
+import { setStoredValue, getStoredValue } from "../../../lib/storage";
 
 export default function CodeEditor({
   onNewTranslation,
@@ -15,16 +17,19 @@ export default function CodeEditor({
   onNewTranslation: (lines: string[] | null) => void;
   onNewOffset: (offset: number) => void;
 }) {
+  const [code, setCode] = React.useState(getStoredValue("code", ""));
   const [traslated, setTraslated] = React.useState("");
   const [initOffset, setInitOffset] = React.useState(0);
   const [error, setError] = React.useState<TraslationError[]>([]);
   const [offsetValid, setOffsetValid] = React.useState<boolean>(true);
 
-  function onChange(newValue: string) {
+  useEffect(() => {
+    setStoredValue("code", code);
+
     setTraslated("");
     setError([]);
 
-    const res = parseInput(newValue, 0);
+    const res = parseInput(code, 0);
 
     const str = res.results.map((r) => r.join("\n")).join("\n");
     setTraslated(str);
@@ -36,6 +41,12 @@ export default function CodeEditor({
     if (res.errors.length > 0) {
       setError(res.errors);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [code]);
+
+  function onChange(newValue: string) {
+    setCode(newValue);
   }
 
   function onChangeInitOffset(newValue: number) {
@@ -55,6 +66,10 @@ export default function CodeEditor({
   function handlePCChange() {
     execute("set_register_pc", initOffset);
   }
+
+  function handleSelectExample(code: string) {
+    setCode(code);
+  }
   // build markers
 
   const markers: IMarker[] = error.map((e) => {
@@ -71,63 +86,64 @@ export default function CodeEditor({
   // Render editor
   return (
     <>
-    <Space direction="vertical">
-      <Space align="center" direction="horizontal">
-        <NumberBaseInput
-          initialBase="HEX"
-          number={initOffset}
-          onChange={onChangeInitOffset}
-          width={200}
-          isError={!offsetValid}
-        />
+      <Space direction="vertical">
+        <Space align="center" direction="horizontal">
+          <NumberBaseInput
+            initialBase="HEX"
+            number={initOffset}
+            onChange={onChangeInitOffset}
+            width={200}
+            isError={!offsetValid}
+          />
 
-        <Popover
-          placement="topLeft"
-          title={`PC setted successfully to ${initOffset}`}
-          content="The execution will start from the new offset"
-          trigger="click"
-        >
-          <Button
-            type="primary"
-            onClick={handlePCChange}
-            disabled={!offsetValid}
+          <Popover
+            placement="topLeft"
+            title={`PC setted successfully to ${initOffset}`}
+            content="The execution will start from the new offset"
+            trigger="click"
           >
-            Set PC to {initOffset}
-          </Button>
-        </Popover>
-      </Space>
+            <Button
+              type="primary"
+              onClick={handlePCChange}
+              disabled={!offsetValid}
+            >
+              Set PC to {initOffset}
+            </Button>
+          </Popover>
+        </Space>
 
-      <Space direction="vertical" style={{width: '100%'}}>
-        <AceEditor
-          onChange={onChange}
-          name="code"
-          editorProps={{ $blockScrolling: false }}
-          setOptions={{
-            showLineNumbers: true,
-            firstLineNumber: 0,
-          }}
-          height="200px"
-          width="unset"
-          mode="text"
+        <Space direction="vertical" style={{ width: "100%" }}>
+          <AceEditor
+            onChange={onChange}
+            value={code}
+            name="code"
+            editorProps={{ $blockScrolling: false }}
+            setOptions={{
+              showLineNumbers: true,
+              firstLineNumber: 0,
+            }}
+            height="200px"
+            width="unset"
+            mode="text"
+            markers={markers}
+          />
 
-          markers={markers}
-        />
+          <AceEditor
+            value={traslated}
+            name="traslated"
+            editorProps={{ $blockScrolling: true }}
+            setOptions={{
+              showLineNumbers: true,
+              firstLineNumber: initOffset,
+              readOnly: true,
+            }}
+            height="200px"
+            width="unset"
+            mode="text"
+          />
+        </Space>
 
-        <AceEditor
-          value={traslated}
-          name="traslated"
-          editorProps={{ $blockScrolling: true }}
-          setOptions={{
-            showLineNumbers: true,
-            firstLineNumber: initOffset,
-            readOnly: true,
-
-          }}
-          height="200px"
-          width="unset"
-          mode="text"
-        />
-      </Space>
+        <Examples onSelect={handleSelectExample} />
       </Space>
     </>
   );

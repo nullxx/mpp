@@ -22,7 +22,7 @@ const Coder: React.FC = () => {
   };
 
   const handleSaveToMemory = () => {
-    execute('reset_control'); // reset the control to start from the beginning
+    execute("reset_control"); // reset the control to start from the beginning
 
     for (let i = 0; i < slots.length; i++) {
       const slot = slots[i];
@@ -53,6 +53,8 @@ const Coder: React.FC = () => {
         />
       </Space>
       <Drawer
+        maskClosable={false}
+        closeIcon={null}
         title="Code"
         placement="right"
         size={size}
