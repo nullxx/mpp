@@ -14,6 +14,7 @@
 #include "../lib/components/components.h"
 #include "../lib/logger.h"
 #include "../lib/watcher.h"
+#include "../lib/pubsub.h"
 #include "linker.h"
 
 #ifdef __EMSCRIPTEN__
@@ -96,5 +97,8 @@ EMSCRIPTEN_KEEPALIVE
 #endif
 void set_register_pc(int value) {
     get_register(WATCHER_TYPE_PC)->value = int_to_word(value);
+
+    publish_message_to(PC_OUTPUT_BUS_TOPIC, get_register(WATCHER_TYPE_PC)->value); // set pc output bus to let know addsub new pc value
+
     get_update_ui_fn()();
 }

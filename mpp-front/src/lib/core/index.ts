@@ -146,9 +146,8 @@ const exportedMethods: {
     returnType: "number",
     typeArgs: [],
   },
-
   {
-    name: "print_hello",
+    name: "reset_control",
     returnType: null,
     typeArgs: [],
   },

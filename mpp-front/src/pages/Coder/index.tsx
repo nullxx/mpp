@@ -22,6 +22,8 @@ const Coder: React.FC = () => {
   };
 
   const handleSaveToMemory = () => {
+    execute('reset_control'); // reset the control to start from the beginning
+
     for (let i = 0; i < slots.length; i++) {
       const slot = slots[i];
 

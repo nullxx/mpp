@@ -3,7 +3,6 @@ export interface MppCoreExtension {
 }
 
 export interface MppCore {
-  print_hello(): void;
   linker_set_update_ui(fnptr: number): void;
 
   init(): void;
@@ -32,6 +31,8 @@ export interface MppCore {
   run_clock_cycle(): number;
   get_state(): number;
   get_next_state(): number;
+  reset_control(): void;
+
   set_memory_value(offset: number, value: number): void;
   set_register_pc(value: number): void;
 }
@@ -48,9 +49,7 @@ export function emptyMppCore(): MppCore & MppCoreExtension {
     getValue: (ptr: any, type?: string) => {
       throwUninitializedError("getValue");
     },
-    print_hello: () => {
-      throwUninitializedError("print_hello");
-    },
+
     linker_set_update_ui: (fnptr: number) => {
       throwUninitializedError("linker_set_update_ui");
     },
@@ -128,6 +127,9 @@ export function emptyMppCore(): MppCore & MppCoreExtension {
     },
     set_register_pc: (value: number) => {
       throwUninitializedError("set_register_pc");
-    }
+    },
+    reset_control: () => {
+      throwUninitializedError("reset_control");
+    },
   };
 }

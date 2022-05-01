@@ -138,3 +138,27 @@ int get_state(void) {
 EMSCRIPTEN_KEEPALIVE
 #endif
 int get_next_state(void) { return get_processed_state(); }
+
+#ifdef __EMSCRIPTEN__
+EMSCRIPTEN_KEEPALIVE
+#endif
+void reset_control(void) {
+    // reset multiple control signals to 0, to start from the beginning of the rom
+    Word emtpy = int_to_word(0);
+
+    publish_message_to(CONTROL_BUS_TOPIC, emtpy);
+
+    publish_message_to(CU_SEQ_JOINER_OUTPUT_BUS_TOPIC, emtpy);
+
+    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q4_BUS_TOPIC, emtpy);
+    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q3_BUS_TOPIC, emtpy);
+    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q2_BUS_TOPIC, emtpy);
+    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q1_BUS_TOPIC, emtpy);
+    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q0_BUS_TOPIC, emtpy);
+
+    publish_message_to(CU_SEQ_OUTPUT_D4_BUS_TOPIC, emtpy);
+    publish_message_to(CU_SEQ_OUTPUT_D3_BUS_TOPIC, emtpy);
+    publish_message_to(CU_SEQ_OUTPUT_D2_BUS_TOPIC, emtpy);
+    publish_message_to(CU_SEQ_OUTPUT_D1_BUS_TOPIC, emtpy);
+    publish_message_to(CU_SEQ_OUTPUT_D0_BUS_TOPIC, emtpy);
+}

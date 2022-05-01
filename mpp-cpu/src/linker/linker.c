@@ -28,11 +28,6 @@ void __init(void) { srand(time(NULL)); }
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_KEEPALIVE
 #endif
-void print_hello(void) { printf("Hello from linker\n"); }
-
-#ifdef __EMSCRIPTEN__
-EMSCRIPTEN_KEEPALIVE
-#endif
 void init(void) {
     log_debug("Initializing linker");
     __init();
