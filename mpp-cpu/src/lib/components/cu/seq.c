@@ -63,7 +63,9 @@ static int truth_table[TRUTH_TABLE_ROWS][TRUTH_TABLE_COLS] = {
     {S12, 0, 0, 1, 1, 0, 0, X, X, X, 1, X, X, X, X, X, X, 0, 1, 0, 0, 1, 1, S19},
     {S13, 0, 0, 1, 1, 0, 1, X, X, X, X, X, X, X, X, X, X, 0, 0, 0, 0, 0, 0, S0},
     {S14, 0, 0, 1, 1, 1, 0, X, X, X, X, X, X, X, X, X, X, 0, 0, 0, 0, 0, 0, S0},
-    {S15, 0, 0, 1, 1, 1, 1, X, X, X, X, 0, 0, X, X, X, X, 0, 0, 0, 0, 1, 1, S3},
+    // {S15, 0, 0, 1, 1, 1, 1, X, X, X, X, 0, 0, X, X, X, X, 0, 0, 0, 0, 1, 1, S3}, // OLD @deprecated
+    {S15, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, X, X, X, X, 1, 0, 0, 1, 1, 1, S39}, // NEW that points to an S3 clone changing MXREG
+
     {S15, 0, 0, 1, 1, 1, 1, X, X, X, X, 0, 1, 0, 0, X, X, 0, 0, 0, 1, 0, 0, S4},
     {S15, 0, 0, 1, 1, 1, 1, X, X, X, X, 0, 1, 0, 1, X, X, 0, 0, 0, 1, 0, 1, S5},
     {S15, 0, 0, 1, 1, 1, 1, X, X, X, X, 0, 1, 1, 0, X, X, 0, 0, 0, 1, 1, 0, S6},
@@ -163,6 +165,9 @@ void run_cu_seq(void) {
         if (truth_table[i][16] != -1 && truth_table[i][16] != fc) continue;
 
         found = i;
+
+        // it **should** be only one match, so for "speed" purposes I will take the first (first and last) and stop checking more
+        break;
     }
 
     Word d5, d4, d3, d2, d1, d0;

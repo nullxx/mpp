@@ -49,6 +49,9 @@ typedef enum {
     S35,
     S36,
     S37,
-    S38
+    S38,
+
+    // 
+    S39 // S3-2
 } OpStateID;
 #endif
