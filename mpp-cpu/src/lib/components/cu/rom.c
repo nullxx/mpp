@@ -23,11 +23,14 @@
 #define CU_SIGNAL_COLS_COUNT 31
 #define SIGNAL_SIZE_BITS 31
 
+static Bus_t *actual_status_Q5_bus = NULL;
 static Bus_t *actual_status_Q4_bus = NULL;
 static Bus_t *actual_status_Q3_bus = NULL;
 static Bus_t *actual_status_Q2_bus = NULL;
 static Bus_t *actual_status_Q1_bus = NULL;
 static Bus_t *actual_status_Q0_bus = NULL;
+
+static PubSubSubscription *actual_status_Q5_subscription = NULL;
 static PubSubSubscription *actual_status_Q4_subscription = NULL;
 static PubSubSubscription *actual_status_Q3_subscription = NULL;
 static PubSubSubscription *actual_status_Q2_subscription = NULL;
@@ -77,12 +80,14 @@ const int ROM[CU_SIGNAL_ROWS_COUNT][CU_SIGNAL_COLS_COUNT] = {  // this are the s
 };
 
 void init_cu_rom(void) {
+    actual_status_Q5_bus = create_bus_data();
     actual_status_Q4_bus = create_bus_data();
     actual_status_Q3_bus = create_bus_data();
     actual_status_Q2_bus = create_bus_data();
     actual_status_Q1_bus = create_bus_data();
     actual_status_Q0_bus = create_bus_data();
 
+    actual_status_Q5_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_Q5_BUS_TOPIC, actual_status_Q5_bus);
     actual_status_Q4_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_Q4_BUS_TOPIC, actual_status_Q4_bus);
     actual_status_Q3_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_Q3_BUS_TOPIC, actual_status_Q3_bus);
     actual_status_Q2_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_Q2_BUS_TOPIC, actual_status_Q2_bus);
@@ -93,6 +98,7 @@ void init_cu_rom(void) {
 void run_cu_rom(void) {
     Word w;
     initialize_word(&w, 0);
+    w.bits[5] = actual_status_Q5_bus->next_value.bits[0];
     w.bits[4] = actual_status_Q4_bus->next_value.bits[0];
     w.bits[3] = actual_status_Q3_bus->next_value.bits[0];
     w.bits[2] = actual_status_Q2_bus->next_value.bits[0];
@@ -114,6 +120,7 @@ void run_cu_rom(void) {
 
     publish_message_to(CONTROL_BUS_TOPIC, to_send);
 
+    update_bus_data(actual_status_Q5_bus);
     update_bus_data(actual_status_Q4_bus);
     update_bus_data(actual_status_Q3_bus);
     update_bus_data(actual_status_Q2_bus);
@@ -122,12 +129,14 @@ void run_cu_rom(void) {
 }
 
 void shutdown_cu_rom(void) {
+    unsubscribe_for(actual_status_Q5_subscription);
     unsubscribe_for(actual_status_Q4_subscription);
     unsubscribe_for(actual_status_Q3_subscription);
     unsubscribe_for(actual_status_Q2_subscription);
     unsubscribe_for(actual_status_Q1_subscription);
     unsubscribe_for(actual_status_Q0_subscription);
 
+    destroy_bus_data(actual_status_Q5_bus);
     destroy_bus_data(actual_status_Q4_bus);
     destroy_bus_data(actual_status_Q3_bus);
     destroy_bus_data(actual_status_Q2_bus);

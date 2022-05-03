@@ -14,11 +14,13 @@
 
 #include "../../pubsub.h"
 
+static Bus_t *d5flipflop_bus;
 static Bus_t *d4flipflop_bus;
 static Bus_t *d3flipflop_bus;
 static Bus_t *d2flipflop_bus;
 static Bus_t *d1flipflop_bus;
 static Bus_t *d0flipflop_bus;
+static PubSubSubscription *d5_bus_topic_subscription = NULL;
 static PubSubSubscription *d4_bus_topic_subscription = NULL;
 static PubSubSubscription *d3_bus_topic_subscription = NULL;
 static PubSubSubscription *d2_bus_topic_subscription = NULL;
@@ -26,11 +28,13 @@ static PubSubSubscription *d1_bus_topic_subscription = NULL;
 static PubSubSubscription *d0_bus_topic_subscription = NULL;
 
 void init_cu_dxflipflop(void) {
+    d5flipflop_bus = create_bus_data();
     d4flipflop_bus = create_bus_data();
     d3flipflop_bus = create_bus_data();
     d2flipflop_bus = create_bus_data();
     d1flipflop_bus = create_bus_data();
     d0flipflop_bus = create_bus_data();
+    d5_bus_topic_subscription = subscribe_to(CU_SEQ_OUTPUT_D5_BUS_TOPIC, d5flipflop_bus);
     d4_bus_topic_subscription = subscribe_to(CU_SEQ_OUTPUT_D4_BUS_TOPIC, d4flipflop_bus);
     d3_bus_topic_subscription = subscribe_to(CU_SEQ_OUTPUT_D3_BUS_TOPIC, d3flipflop_bus);
     d2_bus_topic_subscription = subscribe_to(CU_SEQ_OUTPUT_D2_BUS_TOPIC, d2flipflop_bus);
@@ -39,12 +43,14 @@ void init_cu_dxflipflop(void) {
 }
 
 void run_cu_dxflipflop(void) {
+    update_bus_data(d5flipflop_bus);
     update_bus_data(d4flipflop_bus);
     update_bus_data(d3flipflop_bus);
     update_bus_data(d2flipflop_bus);
     update_bus_data(d1flipflop_bus);
     update_bus_data(d0flipflop_bus);
 
+    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q5_BUS_TOPIC, d5flipflop_bus->current_value);
     publish_message_to(CU_SEQ_ACTUAL_STATUS_Q4_BUS_TOPIC, d4flipflop_bus->current_value);
     publish_message_to(CU_SEQ_ACTUAL_STATUS_Q3_BUS_TOPIC, d3flipflop_bus->current_value);
     publish_message_to(CU_SEQ_ACTUAL_STATUS_Q2_BUS_TOPIC, d2flipflop_bus->current_value);
@@ -53,12 +59,14 @@ void run_cu_dxflipflop(void) {
 }
 
 void shutdown_cu_dxflipflop(void) {
+    unsubscribe_for(d5_bus_topic_subscription);
     unsubscribe_for(d4_bus_topic_subscription);
     unsubscribe_for(d3_bus_topic_subscription);
     unsubscribe_for(d2_bus_topic_subscription);
     unsubscribe_for(d1_bus_topic_subscription);
     unsubscribe_for(d0_bus_topic_subscription);
 
+    destroy_bus_data(d5flipflop_bus);
     destroy_bus_data(d4flipflop_bus);
     destroy_bus_data(d3flipflop_bus);
     destroy_bus_data(d2flipflop_bus);

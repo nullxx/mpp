@@ -19,21 +19,25 @@
 #include <emscripten.h>
 #endif
 
+static Bus_t *actual_status_Q5_bus = NULL;
 static Bus_t *actual_status_Q4_bus = NULL;
 static Bus_t *actual_status_Q3_bus = NULL;
 static Bus_t *actual_status_Q2_bus = NULL;
 static Bus_t *actual_status_Q1_bus = NULL;
 static Bus_t *actual_status_Q0_bus = NULL;
+static Bus_t *d5flipflop_bus;
 static Bus_t *d4flipflop_bus;
 static Bus_t *d3flipflop_bus;
 static Bus_t *d2flipflop_bus;
 static Bus_t *d1flipflop_bus;
 static Bus_t *d0flipflop_bus;
+static PubSubSubscription *actual_status_Q5_subscription = NULL;
 static PubSubSubscription *actual_status_Q4_subscription = NULL;
 static PubSubSubscription *actual_status_Q3_subscription = NULL;
 static PubSubSubscription *actual_status_Q2_subscription = NULL;
 static PubSubSubscription *actual_status_Q1_subscription = NULL;
 static PubSubSubscription *actual_status_Q0_subscription = NULL;
+static PubSubSubscription *d5_bus_topic_subscription = NULL;
 static PubSubSubscription *d4_bus_topic_subscription = NULL;
 static PubSubSubscription *d3_bus_topic_subscription = NULL;
 static PubSubSubscription *d2_bus_topic_subscription = NULL;
@@ -41,24 +45,28 @@ static PubSubSubscription *d1_bus_topic_subscription = NULL;
 static PubSubSubscription *d0_bus_topic_subscription = NULL;
 
 void init_linker_cu(void) {
+    actual_status_Q5_bus = create_bus_data();
     actual_status_Q4_bus = create_bus_data();
     actual_status_Q3_bus = create_bus_data();
     actual_status_Q2_bus = create_bus_data();
     actual_status_Q1_bus = create_bus_data();
     actual_status_Q0_bus = create_bus_data();
 
+    d5flipflop_bus = create_bus_data();
     d4flipflop_bus = create_bus_data();
     d3flipflop_bus = create_bus_data();
     d2flipflop_bus = create_bus_data();
     d1flipflop_bus = create_bus_data();
     d0flipflop_bus = create_bus_data();
 
+    actual_status_Q5_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_Q5_BUS_TOPIC, actual_status_Q5_bus);
     actual_status_Q4_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_Q4_BUS_TOPIC, actual_status_Q4_bus);
     actual_status_Q3_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_Q3_BUS_TOPIC, actual_status_Q3_bus);
     actual_status_Q2_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_Q2_BUS_TOPIC, actual_status_Q2_bus);
     actual_status_Q1_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_Q1_BUS_TOPIC, actual_status_Q1_bus);
     actual_status_Q0_subscription = subscribe_to(CU_SEQ_ACTUAL_STATUS_Q0_BUS_TOPIC, actual_status_Q0_bus);
 
+    d5_bus_topic_subscription = subscribe_to(CU_SEQ_OUTPUT_D5_BUS_TOPIC, d5flipflop_bus);
     d4_bus_topic_subscription = subscribe_to(CU_SEQ_OUTPUT_D4_BUS_TOPIC, d4flipflop_bus);
     d3_bus_topic_subscription = subscribe_to(CU_SEQ_OUTPUT_D3_BUS_TOPIC, d3flipflop_bus);
     d2_bus_topic_subscription = subscribe_to(CU_SEQ_OUTPUT_D2_BUS_TOPIC, d2flipflop_bus);
@@ -67,24 +75,28 @@ void init_linker_cu(void) {
 }
 
 void shutdown_linker_cu(void) {
+    unsubscribe_for(actual_status_Q5_subscription);
     unsubscribe_for(actual_status_Q4_subscription);
     unsubscribe_for(actual_status_Q3_subscription);
     unsubscribe_for(actual_status_Q2_subscription);
     unsubscribe_for(actual_status_Q1_subscription);
     unsubscribe_for(actual_status_Q0_subscription);
 
+    unsubscribe_for(d5_bus_topic_subscription);
     unsubscribe_for(d4_bus_topic_subscription);
     unsubscribe_for(d3_bus_topic_subscription);
     unsubscribe_for(d2_bus_topic_subscription);
     unsubscribe_for(d1_bus_topic_subscription);
     unsubscribe_for(d0_bus_topic_subscription);
 
+    destroy_bus_data(actual_status_Q5_bus);
     destroy_bus_data(actual_status_Q4_bus);
     destroy_bus_data(actual_status_Q3_bus);
     destroy_bus_data(actual_status_Q2_bus);
     destroy_bus_data(actual_status_Q1_bus);
     destroy_bus_data(actual_status_Q0_bus);
 
+    destroy_bus_data(d5flipflop_bus);
     destroy_bus_data(d4flipflop_bus);
     destroy_bus_data(d3flipflop_bus);
     destroy_bus_data(d2flipflop_bus);
@@ -95,6 +107,7 @@ void shutdown_linker_cu(void) {
 static int get_rom_pos(void) {
     Word w;
     initialize_word(&w, 0);
+    w.bits[5] = actual_status_Q5_bus->next_value.bits[0];
     w.bits[4] = actual_status_Q4_bus->next_value.bits[0];
     w.bits[3] = actual_status_Q3_bus->next_value.bits[0];
     w.bits[2] = actual_status_Q2_bus->next_value.bits[0];
@@ -108,6 +121,7 @@ static int get_rom_pos(void) {
 static int get_processed_state(void) {
     Word w;
     initialize_word(&w, 0);
+    w.bits[5] = d5flipflop_bus->next_value.bits[0];
     w.bits[4] = d4flipflop_bus->next_value.bits[0];
     w.bits[3] = d3flipflop_bus->next_value.bits[0];
     w.bits[2] = d2flipflop_bus->next_value.bits[0];
@@ -150,12 +164,14 @@ void reset_control(void) {
 
     publish_message_to(CU_SEQ_JOINER_OUTPUT_BUS_TOPIC, emtpy);
 
+    publish_message_to(CU_SEQ_ACTUAL_STATUS_Q5_BUS_TOPIC, emtpy);
     publish_message_to(CU_SEQ_ACTUAL_STATUS_Q4_BUS_TOPIC, emtpy);
     publish_message_to(CU_SEQ_ACTUAL_STATUS_Q3_BUS_TOPIC, emtpy);
     publish_message_to(CU_SEQ_ACTUAL_STATUS_Q2_BUS_TOPIC, emtpy);
     publish_message_to(CU_SEQ_ACTUAL_STATUS_Q1_BUS_TOPIC, emtpy);
     publish_message_to(CU_SEQ_ACTUAL_STATUS_Q0_BUS_TOPIC, emtpy);
 
+    publish_message_to(CU_SEQ_OUTPUT_D5_BUS_TOPIC, emtpy);
     publish_message_to(CU_SEQ_OUTPUT_D4_BUS_TOPIC, emtpy);
     publish_message_to(CU_SEQ_OUTPUT_D3_BUS_TOPIC, emtpy);
     publish_message_to(CU_SEQ_OUTPUT_D2_BUS_TOPIC, emtpy);
