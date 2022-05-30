@@ -1,6 +1,6 @@
 import { useState, useCallback, ReactNode } from "react";
 import Flow, { applyEdgeChanges, applyNodeChanges } from "../../lib/ReactFlow";
-import { Layout, Row, Col } from "antd";
+import { Layout, Row, Space } from "antd";
 
 import type {
   Node,
@@ -20,6 +20,7 @@ import BusNode from "./components/BusNode";
 import MemoryNode from "./components/MemoryNode";
 import ButtonStack from "./components/ButtonStack";
 import Settings from "./components/Settings";
+import Changelog from "./components/Info";
 import { EdgeTypes } from "react-flow-renderer";
 import StateTransition from "./components/StateTransition";
 
@@ -57,13 +58,12 @@ function CPUTable() {
     <>
       <Layout style={{ height: "100%" }}>
         <Header style={{ backgroundColor: "unset" }}>
-          <Row>
-            <Col span={5} offset={0}>
-              <h2>M++ Simulator</h2>
-            </Col>
-            <Col span={1} offset={18}>
+          <Row justify="space-between">
+            <h2>M++ Simulator</h2>
+            <Space>
               <Settings />
-            </Col>
+              <Changelog />
+            </Space>
           </Row>
         </Header>
         <Layout>
@@ -94,12 +94,5 @@ function CPUTable() {
     </>
   );
 }
-/*
-<CPUImage />
-<Input x={132} y={132} height="2rem" /> 
-<Input x={175} y={132} height="2rem" /> 
-<Input x={132} y={175} height="2rem" /> 
-<Input x={175} y={175} height="2rem" />
-<Input x={267} y={106} height="22px" /> 
-*/
+
 export default CPUTable;

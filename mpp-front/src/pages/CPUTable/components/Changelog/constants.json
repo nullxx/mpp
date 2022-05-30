@@ -1,0 +1,17 @@
+{
+  "repo": "mpp",
+  "owner": "nullxx",
+  "currentVersion": {
+    "name": "v0.0.12",
+    "items": [
+      {
+        "description": "Upgraded CU from 5 state bits to 6",
+        "sha": "8c8e0e61c32f72bfc8829bf65fa40eba345c0fe2"
+      },
+      {
+        "description": "MOV and MVI workaround using new state",
+        "sha": "fc97c11b60f866cf63cde5e599062b7c7e182597"
+      }
+    ]
+  }
+}
