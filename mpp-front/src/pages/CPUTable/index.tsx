@@ -20,6 +20,8 @@ import BusNode from "./components/BusNode";
 import MemoryNode from "./components/MemoryNode";
 import ButtonStack from "./components/ButtonStack";
 import Settings from "./components/Settings";
+import { EdgeTypes } from "react-flow-renderer";
+import StateTransition from "./components/StateTransition";
 
 const { Header, Sider, Content } = Layout;
 
@@ -27,10 +29,11 @@ const nodeTypes: NodeTypes = {
   registerNode: RegisterNode as unknown as ReactNode,
   loadableNode: LoadableNode as unknown as ReactNode,
   memoryNode: MemoryNode as unknown as ReactNode,
+  stateTransition: StateTransition as unknown as ReactNode,
   busNode: BusNode as unknown as ReactNode, // not used
 };
 
-const edgeTypes = {
+const edgeTypes: EdgeTypes = {
   floating: FloatingEdge as unknown as ReactNode,
 };
 

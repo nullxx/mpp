@@ -24,24 +24,27 @@ export default function RunButtons() {
   }
 
   async function handleRunInstruction() {
-    const cycleTime = getStoredValue(SettingType.CYCLE_TIME, SettingDefaultValue.CYCLE_TIME);
+    const cycleTime = getStoredValue(
+      SettingType.CYCLE_TIME,
+      SettingDefaultValue.CYCLE_TIME
+    );
     _running.current = true;
     setRunning(true);
     while (_running.current) {
       execute("run_clock_cycle");
       const nextState = execute("get_next_state");
       if (nextState === 0) break;
-      await sleep(
-        cycleTime,
-        isBreak.current.signal
-      );
+      await sleep(cycleTime, isBreak.current.signal);
     }
     setRunning(false);
     _running.current = false;
   }
 
   async function handleRunProgram() {
-    const cycleTime = getStoredValue(SettingType.CYCLE_TIME, SettingDefaultValue.CYCLE_TIME);
+    const cycleTime = getStoredValue(
+      SettingType.CYCLE_TIME,
+      SettingDefaultValue.CYCLE_TIME
+    );
     _running.current = true;
     setRunning(true);
     const maxRepresentableValue =
@@ -50,10 +53,7 @@ export default function RunButtons() {
       execute("run_clock_cycle");
       const riRegister = execute("get_register_ri");
       if (riRegister === maxRepresentableValue) break;
-      await sleep(
-        cycleTime,
-        isBreak.current.signal
-      );
+      await sleep(cycleTime, isBreak.current.signal);
     }
     setRunning(false);
     _running.current = false;

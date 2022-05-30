@@ -11,7 +11,7 @@
     "@types/react": "^18.0.5",
     "@types/react-dom": "^18.0.1",
     "ace-builds": "^1.4.14",
-    "antd": "^4.19.5",
+    "antd": "4.20.7",
     "atomize": "^1.0.28",
     "react": "^18.0.0",
     "react-ace": "^10.0.0",
@@ -51,8 +51,8 @@
     ]
   },
   "devDependencies": {
-    "react-scripts": "^5.0.1",
     "@types/styletron-engine-atomic": "^1.1.1",
-    "@types/styletron-react": "^5.0.3"
+    "@types/styletron-react": "^5.0.3",
+    "react-scripts": "^5.0.1"
   }
 }

@@ -194,13 +194,23 @@ const nodes: Node[] = [
   },
   {
     id: "9",
-    position: { x: -150, y: 360 },
+    position: { x: -100, y: 360 },
     draggable: true,
     type: "memoryNode",
     data: {
       label: "Memory",
       readOnly: true,
       width: 300,
+    },
+  },
+  {
+    id: "10",
+    position: { x: -330, y: 360 },
+    draggable: true,
+    type: "stateTransition",
+    data: {
+      label: "Transition state",
+      readOnly: true,
     },
   }
 ];

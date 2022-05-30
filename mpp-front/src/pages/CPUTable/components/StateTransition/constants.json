@@ -1,0 +1,162 @@
+[
+    {
+        "state": 0,
+        "op": "RI <- (PC), PC + 1"
+    },
+    {
+        "state": 1,
+        "op": "DECODE"
+    },
+    {
+        "state": 2,
+        "op": "2OP <- RF"
+    },
+    {
+        "state": 3,
+        "op": "RD <- 2OP"
+    },
+    {
+        "state": 4,
+        "op": "AC <- 2OP"
+    },
+    {
+        "state": 5,
+        "op": "AC <- AC+2OP"
+    },
+    {
+        "state": 6,
+        "op": "AC <- AC-2OP"
+    },
+    {
+        "state": 7,
+        "op": "AC-2OP"
+    },
+    {
+        "state": 8,
+        "op": "RD <- 2OP+1"
+    },
+    {
+        "state": 9,
+        "op": "AC <- AC and 2OP"
+    },
+    {
+        "state": 10,
+        "op": "AC <- AC or 20P"
+    },
+    {
+        "state": 11,
+        "op": "AC <- AC ⨁ 20P"
+    },
+    {
+        "state": 12,
+        "op": "20P <- AC"
+    },
+    {
+        "state": 13,
+        "op": "AC <- 20P + 1"
+    },
+    {
+        "state": 14,
+        "op": "AC <- not(AC)"
+    },
+    {
+        "state": 15,
+        "op": "20P <- (PC), PC+ PC+1"
+    },
+    {
+        "state": 16,
+        "op": "H <- (PC), PC <- PC+1"
+    },
+    {
+        "state": 17,
+        "op": "L <- (PC), PC <- PC+1"
+    },
+    {
+        "state": 18,
+        "op": "20P <- (HL)"
+    },
+    {
+        "state": 19,
+        "op": "(HL) <- 20P"
+    },
+    {
+        "state": 20,
+        "op": "PC <- HL"
+    },
+    {
+        "state": 21,
+        "op": "H <- D"
+    },
+    {
+        "state": 22,
+        "op": "L <- E"
+    },
+    {
+        "state": 23,
+        "op": "AC <- Flags"
+    },
+    {
+        "state": 24,
+        "op": "Flags <- AC"
+    },
+    {
+        "state": 25,
+        "op": "INTA_IN <- 1"
+    },
+    {
+        "state": 26,
+        "op": "SP <- SP-1"
+    },
+    {
+        "state": 27,
+        "op": "(SP) <- Flags"
+    },
+    {
+        "state": 28,
+        "op": "(SP) <- PCH"
+    },
+    {
+        "state": 29,
+        "op": "(SP) <- PCL"
+    },
+    {
+        "state": 30,
+        "op": "PC <- Dir INT"
+    },
+    {
+        "state": 31,
+        "op": "SP <- Sp+1"
+    },
+    {
+        "state": 32,
+        "op": "PCL <- (SP)"
+    },
+    {
+        "state": 33,
+        "op": "PCH <- (SP)"
+    },
+    {
+        "state": 34,
+        "op": "Flags <- (SP)"
+    },
+    {
+        "state": 35,
+        "op": "EOI <- 1"
+    },
+    {
+        "state": 36,
+        "op": "(SP) <- AC"
+    },
+    {
+        "state": 37,
+        "op": "AC <- (SP)"
+    },
+    {
+        "state": 38,
+        "op": "SP <- HL"
+    },
+    {
+        "state": 39,
+        "op": "RD <- 2OP"
+    }
+]
