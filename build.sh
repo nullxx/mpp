@@ -4,7 +4,7 @@ docker build -t mpp-core -f Dockerfile.build.core .
 
 docker cp $(docker create --rm mpp-core):/mpp-cpu/output/. mpp-front/src/lib/core/files
 
-docker rmi $(docker images | grep 'mpp-core')
+docker rmi $(docker images 'mpp-core' -a -q) -f
 
 # --no-cache to prevent using old core/files
 docker build --no-cache -t mpp-front mpp-front
