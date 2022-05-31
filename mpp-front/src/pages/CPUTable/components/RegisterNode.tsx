@@ -42,9 +42,9 @@ export default memo(({ data, isConnectable }: any) => {
   return (
     <div
       className={
-        changed ? "rotating-border rotating-border--google" : "bordered"
+        changed ? "blob bordered" : "bordered"
       }
-      style={{ borderRadius: 3, padding: 5 }}
+      style={{ borderRadius: 3, padding: 5, background: 'white' }}
     >
       <Row>
         <Col>
