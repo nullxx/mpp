@@ -16,7 +16,10 @@
 #include "../lib/components/components.h"
 #include "../lib/error.h"
 #include "../lib/logger.h"
+
+#include "mem.h"
 #include "cu.h"
+
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
@@ -32,6 +35,7 @@ void init(void) {
     log_debug("Initializing linker");
     __init();
     init_components();
+    init_linker_mem();
     init_linker_cu();
 }
 
@@ -41,6 +45,7 @@ EMSCRIPTEN_KEEPALIVE
 void shutdown(void) {
     log_debug("Shuting down linker");
     shutdown_linker_cu();
+    shutdown_linker_mem();
     shutdown_components();
 }
 

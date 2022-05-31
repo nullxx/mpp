@@ -19,31 +19,18 @@
 
 #include "../lib/components/mem.h"
 
-// static Bus_t *last_bus_data = NULL;
-// static Bus_t *last_bus_dir = NULL;
-// static Bus_t *control_bus = NULL;
-// static PubSubSubscription *control_bus_topic_subscription = NULL;
-// static PubSubSubscription *bus_data_subscription = NULL;
-// static PubSubSubscription *bus_dir_subscription = NULL;
+static Bus_t *last_bus_dir = NULL;
+static PubSubSubscription *bus_dir_subscription = NULL;
 
-// void init_linker_mem(void) {
-//     last_bus_data = create_bus_data();
-//     last_bus_dir = create_bus_data();
-//     control_bus = create_bus_data();
-//     bus_data_subscription = subscribe_to(DATA_BUS_TOPIC, last_bus_data);
-//     bus_dir_subscription = subscribe_to(DIR_BUS_TOPIC_2, last_bus_dir);
-//     control_bus_topic_subscription = subscribe_to(CONTROL_BUS_TOPIC, control_bus);
-// }
+void init_linker_mem(void) {
+    last_bus_dir = create_bus_data();
+    bus_dir_subscription = subscribe_to(DIR_BUS_TOPIC_2, last_bus_dir);
+}
 
-// void shutdown_linker_mem(void) {
-//     unsubscribe_for(bus_data_subscription);
-//     unsubscribe_for(bus_dir_subscription);
-//     unsubscribe_for(control_bus_topic_subscription);
-
-//     destroy_bus_data(last_bus_data);
-//     destroy_bus_data(last_bus_dir);
-//     destroy_bus_data(control_bus);
-// }
+void shutdown_linker_mem(void) {
+    unsubscribe_for(bus_dir_subscription);
+    destroy_bus_data(last_bus_dir);
+}
 
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_KEEPALIVE
@@ -57,9 +44,7 @@ int get_memory_size(void) {
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_KEEPALIVE
 #endif
-int get_memory_value_size_bits(void) {
-    return MEM_VALUE_SIZE_BITS;
-}
+int get_memory_value_size_bits(void) { return MEM_VALUE_SIZE_BITS; }
 
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_KEEPALIVE
@@ -79,3 +64,8 @@ void set_memory_value(const int offset, const int value) {
     get_value_by_offset(offset)->value = value;
     get_update_ui_fn()();
 }
+
+#ifdef __EMSCRIPTEN__
+EMSCRIPTEN_KEEPALIVE
+#endif
+int get_memory_dir_bus(void) { return word_to_int(last_bus_dir->next_value); }
