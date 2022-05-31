@@ -40,6 +40,11 @@ const exportedMethods: {
     typeArgs: ["number"],
   },
   {
+    name: "get_memory_dir_bus",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
     name: "set_memory_value",
     returnType: null,
     typeArgs: ["number", "number"],

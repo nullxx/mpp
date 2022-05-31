@@ -11,6 +11,7 @@ export interface MppCore {
   get_memory_size(): number;
   get_memory_value_size_bits(): number;
   get_memory_value(offset: number): number;
+  get_memory_dir_bus(): number;
 
   get_register_acum(): number;
   get_register_fc(): number;
@@ -67,6 +68,9 @@ export function emptyMppCore(): MppCore & MppCoreExtension {
     },
     get_memory_value: (offset: number) => {
       throwUninitializedError("get_memory_value");
+    },
+    get_memory_dir_bus: () => {
+      throwUninitializedError("get_memory_dir_bus");
     },
     get_register_acum: () => {
       throwUninitializedError("get_register_acum");

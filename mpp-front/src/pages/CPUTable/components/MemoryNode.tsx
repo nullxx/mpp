@@ -63,7 +63,7 @@ export default memo(({ data, isConnectable }: any) => {
   const [base, setBase] = React.useState<Base>("HEX");
 
   function onUIUpdate() {
-    setSearchValue(execute("get_register_pc"));
+    setSearchValue(execute("get_memory_dir_bus"));
   }
 
   React.useEffect(() => {
