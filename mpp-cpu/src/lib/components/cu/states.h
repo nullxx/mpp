@@ -52,6 +52,11 @@ typedef enum {
     S38,
 
     // 
-    S39 // S3-2
+    S39, // S3-2
+    S40,  // S26-2
+    S41,  // S31-2
+    S42,  // S26-3
+    S43,  // S31-3
+    S44, // S3-3
 } OpStateID;
 #endif

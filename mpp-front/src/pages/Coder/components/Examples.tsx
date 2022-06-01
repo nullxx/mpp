@@ -1,4 +1,4 @@
-import { List, Button } from "antd";
+import { List, Button, Tooltip } from "antd";
 import examples from "../constants/examples.json";
 
 export default function Examples({
@@ -14,7 +14,9 @@ export default function Examples({
       split={true}
       renderItem={(item) => (
         <List.Item key={item.title}>
-          <Button onClick={() => onSelect(item.code)}>{item.title}</Button>
+          <Tooltip title={item.description || item.title}>
+            <Button onClick={() => onSelect(item.code)}>{item.title}</Button>
+          </Tooltip>
         </List.Item>
       )}
     />

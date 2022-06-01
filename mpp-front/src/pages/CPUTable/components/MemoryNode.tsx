@@ -11,11 +11,11 @@ import { subscribeToUIUpdates } from "../../../lib/core/index";
 function MemoryComponentRow({
   offset,
   value,
-  style
+  style,
 }: {
   offset: string;
   value: string | number;
-  style?: React.CSSProperties
+  style?: React.CSSProperties;
 }) {
   if (Number(value) === -1) return null;
   return (
@@ -58,7 +58,7 @@ function MemoryComponent({ offset, base }: { offset: number; base: Base }) {
   );
 }
 
-export default memo(({ data, isConnectable }: any) => {
+const MemoryNode = ({ data }: { data: any }) => {
   const [searchValue, setSearchValue] = React.useState(0);
   const [base, setBase] = React.useState<Base>("HEX");
 
@@ -70,7 +70,7 @@ export default memo(({ data, isConnectable }: any) => {
     subscribeToUIUpdates(onUIUpdate);
     return () => {
       unsubscribeToUIUpdates(onUIUpdate);
-    }
+    };
   }, []);
   const onSearch = (num: number, base: Base) => {
     setSearchValue(num);
@@ -115,4 +115,6 @@ export default memo(({ data, isConnectable }: any) => {
       </Row>
     </div>
   );
-});
+};
+
+export default MemoryNode;

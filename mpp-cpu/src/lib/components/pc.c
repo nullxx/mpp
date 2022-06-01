@@ -115,14 +115,17 @@ void run_pc(void) {
     }
 
     // mix pch + pcl => pc. If pc is set later it will be overwritten
-    if (word_to_int(pchcar_lb) == 1 && word_to_int(pclcar_lb) == 1) {
-        // PC = PCH|PCL
-        for (int i = 0; i < pcl_reg.bit_length; i++) {
-            pc_reg.value.bits[i] = pcl_reg.value.bits[i];
-        }
-
+    if (word_to_int(pchcar_lb) == 1) {
+        // PC = PCH|
         for (int i = 0; i < pch_reg.bit_length; i++) {
             pc_reg.value.bits[pcl_reg.bit_length + i] = pch_reg.value.bits[i];
+        }
+    }
+
+    if (word_to_int(pclcar_lb) == 1) {
+        // PC = |PCL
+        for (int i = 0; i < pcl_reg.bit_length; i++) {
+            pc_reg.value.bits[i] = pcl_reg.value.bits[i];
         }
     }
 

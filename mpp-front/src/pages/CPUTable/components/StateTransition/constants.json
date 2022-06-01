@@ -125,7 +125,7 @@
     },
     {
         "state": 31,
-        "op": "SP <- Sp+1"
+        "op": "SP <- SP+1"
     },
     {
         "state": 32,
@@ -157,6 +157,26 @@
     },
     {
         "state": 39,
+        "op": "RD <- 2OP"
+    },
+    {
+        "state": 40,
+        "op": "SP <- SP-1"
+    },
+    {
+        "state": 41,
+        "op": "SP <- SP+1"
+    },
+    {
+        "state": 42,
+        "op": "SP <- SP-1"
+    },
+    {
+        "state": 43,
+        "op": "SP <- SP+1"
+    },
+    {
+        "state": 43,
         "op": "RD <- 2OP"
     }
 ]
