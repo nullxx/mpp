@@ -2,23 +2,11 @@
   "repo": "mpp",
   "owner": "nullxx",
   "currentVersion": {
-    "name": "v0.0.15",
+    "name": "v0.0.16",
     "items": [
       {
-        "description": "mpp-cpu: get_memory_dir_bus",
-        "sha": "6a34b75b1d6ba9151a187837810eb0c2cc7dd8d2"
-      },
-      {
-        "description": "Memory point to dir bus",
-        "sha": "3c525c801b5578d552898a3cf9cdecc63162f887"
-      },
-      {
-        "description": "Change register changed animation",
-        "sha": "5bc0ad36a37d73b46acf3f4c3617ce3ae4977ec2"
-      },
-      {
-        "description": "fix: build docker image",
-        "sha": "d97c2cc1147d0b6359cfced659562d6ba33b11ab"
+        "description": "Added push, pop, inisp, call, ret, iret",
+        "sha": "59cc867664de6323c1f541582604108ff49fac8e"
       }
     ]
   }
