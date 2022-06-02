@@ -205,12 +205,31 @@ const nodes: Node[] = [
   },
   {
     id: "10",
-    position: { x: -330, y: 360 },
+    position: { x: -700, y: 0 },
     draggable: true,
     type: "stateTransition",
     data: {
       label: "Transition state",
       readOnly: true,
+    },
+  },
+  {
+    id: "11",
+    position: { x: -460, y: 0 },
+    draggable: true,
+    type: "debuggerNode",
+    data: {
+      label: "Debugger",
+      readOnly: true,
+    },
+  },
+  {
+    id: "12",
+    position: { x: -200, y: 390},
+    draggable: true,
+    type: "flagsNode",
+    data: {
+      label: "Flags"
     },
   }
 ];

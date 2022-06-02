@@ -169,15 +169,15 @@ export function getCConsoleHandle() {
       console.log.bind(console, ...args);
     },
     printErr: (...args: unknown[]) => {
-      toast.error(args.join(' '), {
+      toast.error(args.join(" "), {
         style: {
-          border: '1px solid #713200',
-          padding: '10px',
-          color: '#713200',
+          border: "1px solid #713200",
+          padding: "10px",
+          color: "#713200",
         },
       });
-    }
-  }
+    },
+  };
 }
 
 export async function loadInstance(): Promise<void> {
@@ -229,10 +229,10 @@ export function getCore() {
   return mppCore;
 }
 
-export function execute(method: keyof MppCore, ...args: unknown[]) {
+export function execute<T = any>(method: keyof MppCore, ...args: unknown[]) {
   if (!mppCore) throw new Error("MppCore not loaded");
   const response = (mppCore[method as keyof MppCore] as Function)(...args);
-  return response;
+  return response as T;
 }
 
 export function subscribeToUIUpdates(callback: UIUpdateCallbackFn) {
@@ -243,9 +243,13 @@ export function unsubscribeToUIUpdates(callback: UIUpdateCallbackFn) {
   uiUpdatesSubscriptions.delete(callback);
 }
 
+export function notifyUpdateToSubscribers() {
+  uiUpdatesSubscriptions.forEach((callback) => callback());
+}
+
 export function createUpdateUICallback() {
   const fnPtr = moduleInstance.addFunction(() => {
-    uiUpdatesSubscriptions.forEach((callback) => callback());
+    notifyUpdateToSubscribers();
   }, "v");
 
   mppCore?.linker_set_update_ui(fnPtr);

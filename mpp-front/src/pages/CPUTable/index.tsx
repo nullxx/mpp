@@ -23,6 +23,8 @@ import Settings from "./components/Settings";
 import Changelog from "./components/Info";
 import { EdgeTypes } from "react-flow-renderer";
 import StateTransition from "./components/StateTransition";
+import DebuggerNode from './components/DebuggerNode';
+import FlagsNode from './components/FlagsNode';
 
 const { Header, Sider, Content } = Layout;
 
@@ -32,6 +34,8 @@ const nodeTypes: NodeTypes = {
   memoryNode: MemoryNode as unknown as ReactNode,
   stateTransition: StateTransition as unknown as ReactNode,
   busNode: BusNode as unknown as ReactNode, // not used
+  debuggerNode: DebuggerNode as unknown as ReactNode,
+  flagsNode: FlagsNode as unknown as ReactNode,
 };
 
 const edgeTypes: EdgeTypes = {

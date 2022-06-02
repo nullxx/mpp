@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 import { execute, unsubscribeToUIUpdates } from "../../../lib/core";
 import { Row, Col, Text } from "atomize";
 
@@ -7,6 +7,7 @@ import NumberBaseInput, {
   getRadix,
 } from "../../../components/NumberBaseInput";
 import { subscribeToUIUpdates } from "../../../lib/core/index";
+import { useForceUpdate } from "../../../hook/forceUpdate";
 
 function MemoryComponentRow({
   offset,
@@ -62,8 +63,11 @@ const MemoryNode = ({ data }: { data: any }) => {
   const [searchValue, setSearchValue] = React.useState(0);
   const [base, setBase] = React.useState<Base>("HEX");
 
+  const forceUpdate = useForceUpdate();
+
   function onUIUpdate() {
     setSearchValue(execute("get_memory_dir_bus"));
+    forceUpdate(); // need to update state to force re-render because the searchValue is not changed, but the MemoryComponent could be changed
   }
 
   React.useEffect(() => {
@@ -71,7 +75,9 @@ const MemoryNode = ({ data }: { data: any }) => {
     return () => {
       unsubscribeToUIUpdates(onUIUpdate);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const onSearch = (num: number, base: Base) => {
     setSearchValue(num);
     setBase(base);

@@ -53,26 +53,35 @@ html, body, #root, .App {
 }
 
 .blob {
-	animation: pulse 0.1s forwards;
+  animation: pulse 0.1s forwards;
   background-color: #F0C400;
 }
 
 @keyframes pulse {
-	0% {
-		/* transform: scale(0.95, 0.95); */
+  0% {
+    /* transform: scale(0.95, 0.95); */
     box-shadow: 0 0 0 0 #F0C400;
     background-color: #FFFF;
-	}
+  }
 
-	70% {
-		/* transform: scale(1, 1); */
+  70% {
+    /* transform: scale(1, 1); */
     background-color: #f0c4005d;
     box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
-	}
+  }
 
-	100% {
-		/* transform: scale(0.95, 0.95); */
-		background-color: #f0c40094;
+  100% {
+    /* transform: scale(0.95, 0.95); */
+    background-color: #f0c40094;
     box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
-	}
+  }
+}
+
+.debuggerPointed {
+  background-color: rgba(240, 196, 0, 0.5);
+}
+
+.debuggerPointed .debuggerPointedOp {
+  font-weight: bold;
+  font-size: large;
 }
