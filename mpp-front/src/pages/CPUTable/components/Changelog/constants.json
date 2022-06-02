@@ -2,11 +2,23 @@
   "repo": "mpp",
   "owner": "nullxx",
   "currentVersion": {
-    "name": "v0.0.16",
+    "name": "v0.0.17",
     "items": [
       {
-        "description": "Added push, pop, inisp, call, ret, iret",
-        "sha": "59cc867664de6323c1f541582604108ff49fac8e"
+        "description": "fix: conflicting bits with opcode FF",
+        "sha": "5f3b8e3972ddd18436621bf79422715a6084c14d"
+      },
+      {
+        "description": "fix: FIN stopping program",
+        "sha": "46a10233441fc254df3ae54f18595d574fd390bd"
+      },
+      {
+        "description": "Added debugger",
+        "sha": "32d162feac3404c6e835645df75c4fa809507dc6"
+      },
+      {
+        "description": "Added flags node",
+        "sha": "78d2527b25fad265efba0a0e60eea73cc57e95c5"
       }
     ]
   }
