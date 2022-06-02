@@ -16,7 +16,7 @@
 #include "../../pubsub.h"
 #include "../../utils.h"
 
-#define TRUTH_TABLE_ROWS 99
+#define TRUTH_TABLE_ROWS 100
 #define TRUTH_TABLE_COLS 24
 
 #include "states.h"
