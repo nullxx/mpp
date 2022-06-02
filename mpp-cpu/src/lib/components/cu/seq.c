@@ -22,7 +22,6 @@
 #include "states.h"
 #define X -1
 
-// FIXME - missing states for the M++ (this truth table is for the M+)
 static int truth_table[TRUTH_TABLE_ROWS][TRUTH_TABLE_COLS] = {
     {S0, 0, 0, 0, 0, 0, 0, X, X, X, X, X, X, X, X, X, X, 0, 0, 0, 0, 0, 1, S1},
     {S1, 0, 0, 0, 0, 0, 1, 0, 0, X, X, X, X, X, X, X, X, 0, 0, 0, 0, 1, 0, S2},
@@ -70,9 +69,7 @@ static int truth_table[TRUTH_TABLE_ROWS][TRUTH_TABLE_COLS] = {
     {S12, 0, 0, 1, 1, 0, 0, X, X, X, 1, X, X, X, X, X, X, 0, 1, 0, 0, 1, 1, S19},
     {S13, 0, 0, 1, 1, 0, 1, X, X, X, X, X, X, X, X, X, X, 0, 0, 0, 0, 0, 0, S0},
     {S14, 0, 0, 1, 1, 1, 0, X, X, X, X, X, X, X, X, X, X, 0, 0, 0, 0, 0, 0, S0},
-    // {S15, 0, 0, 1, 1, 1, 1, X, X, X, X, 0, 0, X, X, X, X, 0, 0, 0, 0, 1, 1, S3}, // OLD @deprecated
     {S15, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, X, X, X, X, 1, 0, 0, 1, 1, 1, S39}, // NEW that points to an S3 clone changing MXREG
-
     {S15, 0, 0, 1, 1, 1, 1, X, X, X, X, 0, 1, 0, 0, X, X, 0, 0, 0, 1, 0, 0, S4},
     {S15, 0, 0, 1, 1, 1, 1, X, X, X, X, 0, 1, 0, 1, X, X, 0, 0, 0, 1, 0, 1, S5},
     {S15, 0, 0, 1, 1, 1, 1, X, X, X, X, 0, 1, 1, 0, X, X, 0, 0, 0, 1, 1, 0, S6},
@@ -103,7 +100,6 @@ static int truth_table[TRUTH_TABLE_ROWS][TRUTH_TABLE_COLS] = {
     {S26, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, X, X, 0, 1, 1, 1, 0, 0, S28},
     {S26, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, X, X, 0, 1, 1, 1, 0, 1, S27},
     {S27, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, X, X, 1, 0, 1, 0, 0, 0, S40},
-
     {S28, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, X, X, 1, 0, 1, 0, 0, 0, S40},
     {S28, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, X, X, 1, 0, 1, 0, 1, 0, S42},
     {S29, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, X, X, 0, 1, 0, 1, 0, 0, S20},
