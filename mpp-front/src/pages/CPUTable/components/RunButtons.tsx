@@ -49,10 +49,12 @@ export default function RunButtons() {
     setRunning(true);
     const maxRepresentableValue =
       Math.pow(2, execute("get_memory_value_size_bits")) - 1;
+    let stoping = false;
     while (_running.current) {
       execute("run_clock_cycle");
+      if (stoping) break; // doing this to "execute" FF. S0 -> S1 -> (next) S0. And leave ready for next
       const riRegister = execute("get_register_ri");
-      if (riRegister === maxRepresentableValue) break;
+      stoping = riRegister === maxRepresentableValue;
       await sleep(cycleTime, isBreak.current.signal);
     }
     setRunning(false);
