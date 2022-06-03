@@ -94,3 +94,8 @@ html, body, #root, .App {
   font-weight: bold;
   font-size: large;
 }
+
+.error-marker { /* code editor error marker */
+  background-color: rgba(240, 0, 0, 0.3);
+  position: absolute;
+}

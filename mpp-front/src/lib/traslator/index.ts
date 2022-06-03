@@ -11,12 +11,15 @@ interface Instruction {
 export interface TraslationError {
   lineFrom: number;
   lineTo: number;
+  startCol: number;
+  endCol: number;
 }
 
-let setEtiquetas = [];
+let setEtiquetas: string[] = [];
 const parseInput = (text: string, initDir: number) => {
   setEtiquetas = [];
   let results: RegexResponse[] = [];
+  const errors: TraslationError[] = [];
   const lines = text.split("\n");
 
   pre(lines);
@@ -26,29 +29,22 @@ const parseInput = (text: string, initDir: number) => {
     if (!line) continue;
 
     const result = executeRegex(line);
-    if (!result) continue;
+    console.log("result", result, line);
+    if (!result) {
+      errors.push({ lineFrom: i, lineTo: i, startCol: 0, endCol: line.length });
+      continue;
+    }
     results.push(result);
   }
 
   results = post(results, initDir);
 
   return {
-    errors: getErrors(results),
+    errors,
     results: results.map((s) => s.result),
   };
 };
 
-const getErrors = (results: RegexResponse[]): TraslationError[] => {
-  const errors = [];
-  for (let i = 0; i < results.length; i++) {
-    const result = results[i];
-
-    if (!result.result || result.instruction.ALLOC !== result.result.length) {
-      errors.push({ lineFrom: i, lineTo: i });
-    }
-  }
-  return errors;
-};
 
 const pre = (lines: string[]) => {
   for (let i = 0; i < lines.length; i++) {
@@ -62,7 +58,7 @@ const pre = (lines: string[]) => {
       const result = new RegExp(instruction.REGEX, "gim").exec(line2.join(" "));
 
       if (result && result.length > 1) {
-        setEtiquetas.push({ eti: posibleSetEti });
+        setEtiquetas.push(posibleSetEti);
       }
     }
   }
@@ -80,9 +76,12 @@ const post = (results: RegexResponse[], initDir: number) => {
       if (eti) {
         // console.info("Found eti at", result.result);
         result.result.splice(j, 1);
-        const etiDirHex = Number(eti.dir).toString(16).toUpperCase().padStart(4, "0");
-        for (let i = 0; i < etiDirHex.length; i+= 2) {
-          result.result.push(etiDirHex.slice(i, i+2));
+        const etiDirHex = Number(eti.dir)
+          .toString(16)
+          .toUpperCase()
+          .padStart(4, "0");
+        for (let i = 0; i < etiDirHex.length; i += 2) {
+          result.result.push(etiDirHex.slice(i, i + 2));
         }
 
         // result.result.push(etiDirHex.slice(0, 2), etiDirHex.slice(2));
@@ -100,7 +99,8 @@ interface RegexResponse {
   eti: string;
   instruction: Instruction;
 }
-const executeRegex = (line: string): RegexResponse | undefined => {
+
+const executeRegex = (line: string): RegexResponse | null => {
   for (let i = 0; i < instructions.length; i++) {
     const instruction = instructions[i] as Instruction;
 
@@ -122,9 +122,11 @@ const executeRegex = (line: string): RegexResponse | undefined => {
         instruction,
         result.slice(1, result.length)
       );
+      if (traslateOut == null) return null;
       return { line, result: traslateOut, eti, instruction };
     }
   }
+  return null;
 };
 
 const translate = (instruction: Instruction, ops: string[]) => {
@@ -143,6 +145,7 @@ const translate = (instruction: Instruction, ops: string[]) => {
       if (!inmORDir) return [];
 
       if (inmORDir.toUpperCase().startsWith("ET")) {
+        if (!setEtiquetas.includes(inmORDir)) return null;
         return [OPHexCode, inmORDir];
       }
 

@@ -5,10 +5,11 @@ import { parseInput } from "../../../lib/traslator";
 import { TraslationError } from "../../../lib/traslator/index";
 import NumberBaseInput from "../../../components/NumberBaseInput";
 import { execute } from "../../../lib/core/index";
-import { Button, Popover, Space } from "antd";
+import { Button, Popover, Space, Alert } from "antd";
 import "ace-builds/src-noconflict/mode-text";
 import Examples from "./Examples";
 import { setStoredValue, getStoredValue } from "../../../lib/storage";
+import { animations } from "react-animation";
 
 export default function CodeEditor({
   onNewTranslation,
@@ -78,10 +79,12 @@ export default function CodeEditor({
       endRow: e.lineTo,
       className: "error-marker",
       type: "text",
-      startCol: 0,
-      endCol: 10,
+      startCol: e.startCol,
+      endCol: e.endCol,
     };
   });
+
+  const thereIsErrors = error.length > 0;
 
   // Render editor
   return (
@@ -111,6 +114,16 @@ export default function CodeEditor({
             </Button>
           </Popover>
         </Space>
+
+        {thereIsErrors && (
+          <Alert
+            type="error"
+            style={{ animation: animations.fadeInUp }}
+            banner
+            message="There is errors in the code"
+            description="Check them out"
+          />
+        )}
 
         <Space direction="vertical" style={{ width: "100%" }}>
           <AceEditor

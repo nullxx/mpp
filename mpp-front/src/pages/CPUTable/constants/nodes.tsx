@@ -199,7 +199,7 @@ const nodes: Node[] = [
     type: "memoryNode",
     data: {
       label: "Memory",
-      readOnly: true,
+      readOnly: false,
       width: 300,
     },
   },
@@ -210,7 +210,7 @@ const nodes: Node[] = [
     type: "stateTransition",
     data: {
       label: "Transition state",
-      readOnly: true,
+      readOnly: false,
     },
   },
   {
@@ -220,7 +220,7 @@ const nodes: Node[] = [
     type: "debuggerNode",
     data: {
       label: "Debugger",
-      readOnly: true,
+      readOnly: false,
     },
   },
   {
