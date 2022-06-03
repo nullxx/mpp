@@ -2,7 +2,7 @@
   "repo": "mpp",
   "owner": "nullxx",
   "currentVersion": {
-    "name": "v0.0.17",
+    "name": "v0.0.18",
     "items": [
       {
         "description": "fix: conflicting bits with opcode FF",
@@ -19,6 +19,14 @@
       {
         "description": "Added flags node",
         "sha": "78d2527b25fad265efba0a0e60eea73cc57e95c5"
+      },
+      {
+        "description": "Welcome improved",
+        "sha": "40bb773418e8239fa8312d3579f135f5f45c7220"
+      },
+      {
+        "description": "Added clock cycle time",
+        "sha": "a6665e51ef593cf63accc4363330ef137559c59c"
       }
     ]
   }
