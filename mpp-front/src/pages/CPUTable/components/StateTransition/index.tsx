@@ -15,6 +15,8 @@ interface State {
   op: string;
 }
 
+const maxItems = 100;
+
 export default function StateTransition() {
   const [states, setStates] = useState<State[]>([]);
   const [currentState, setCurrentState] = useState(0);
@@ -42,16 +44,20 @@ export default function StateTransition() {
     const currentState = stateDetails[currentStateNumber];
 
     setStates((prev) => {
-      const nnew = [...prev];
+      const arr = [...prev];
+
+      if (arr.length >= maxItems) {
+        arr.splice(0, arr.length - maxItems);
+      }
 
       if (prev.length === 0) {
-        nnew.push(currentState, nextState);
+        arr.push(currentState, nextState);
       } else {
-        nnew.push(nextState);
+        arr.push(nextState);
       }
-      setCurrentStep(nnew.length - 1);
+      setCurrentStep(arr.length - 1);
 
-      return nnew;
+      return arr;
     });
 
     setCurrentState(currentStateNumber);

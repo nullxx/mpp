@@ -5,7 +5,7 @@ import { Alert, Tooltip } from "antd";
 
 import NumberBaseInput, { Base } from "../../../../components/NumberBaseInput";
 import { subscribeToUIUpdates } from "../../../../lib/core/index";
-import { deductOperationOf } from "../../../../lib/debugger";
+import { deductOperationOf, NO_OP_NAME } from "../../../../lib/debugger";
 import { useForceUpdate } from "../../../../hook/forceUpdate";
 
 function DebuggerComponentRow({
@@ -20,7 +20,15 @@ function DebuggerComponentRow({
   return (
     <Row className={focus ? "debuggerPointed" : undefined}>
       <Col>{range[0].toString(16) + "-" + range[1].toString(16)}</Col>
-      <Col className={focus ? "debuggerPointedOp" : undefined}>{operation}</Col>
+      {operation === NO_OP_NAME ? (
+        <Col className={focus ? "debuggerPointedOpNotFound" : undefined}>
+          {operation}
+        </Col>
+      ) : (
+        <Col className={focus ? "debuggerPointedOp" : undefined}>
+          {operation}
+        </Col>
+      )}
     </Row>
   );
 }
@@ -58,11 +66,11 @@ function DebuggerComponent({
 
     const pointerBottom = pointerTop + pointerHeight;
 
-    // listScroll.scrollTop = pointerBottom - listScrollHeight; // maybe is better without smooth
-    listScroll.scrollTo({
-      top: pointerBottom - listScrollHeight,
-      behavior: "smooth",
-    });
+    listScroll.scrollTop = pointerBottom - listScrollHeight; // maybe is better without smooth, because when the program is fast it will be better
+    // listScroll.scrollTo({
+    //   top: pointerBottom - listScrollHeight,
+    //   behavior: "smooth",
+    // });
   }, [memOffset]);
 
   return (

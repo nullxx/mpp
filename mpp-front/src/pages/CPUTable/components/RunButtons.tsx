@@ -12,6 +12,8 @@ import { useState, useEffect, useRef } from "react";
 import { getStoredValue } from "../../../lib/storage";
 import { Space } from "antd";
 
+export let clockCycleTime = -1;
+
 export default function RunButtons() {
   const [running, setRunning] = useState(false);
   const _running = useRef<boolean>();
@@ -19,7 +21,7 @@ export default function RunButtons() {
 
   function handleRunState() {
     setRunning(true);
-    execute("run_clock_cycle");
+    clockCycleTime = execute("run_clock_cycle");
     setRunning(false);
   }
 
@@ -31,7 +33,7 @@ export default function RunButtons() {
     _running.current = true;
     setRunning(true);
     while (_running.current) {
-      execute("run_clock_cycle");
+      clockCycleTime = execute("run_clock_cycle");
       const nextState = execute("get_next_state");
       if (nextState === 0) break;
       await sleep(cycleTime, isBreak.current.signal);
@@ -51,7 +53,7 @@ export default function RunButtons() {
       Math.pow(2, execute("get_memory_value_size_bits")) - 1;
     let stoping = false;
     while (_running.current) {
-      execute("run_clock_cycle");
+      clockCycleTime = execute("run_clock_cycle");
       if (stoping) break; // doing this to "execute" FF. S0 -> S1 -> (next) S0. And leave ready for next
       const riRegister = execute("get_register_ri");
       stoping = riRegister === maxRepresentableValue;

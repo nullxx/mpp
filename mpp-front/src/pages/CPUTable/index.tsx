@@ -25,6 +25,7 @@ import { EdgeTypes } from "react-flow-renderer";
 import StateTransition from "./components/StateTransition";
 import DebuggerNode from './components/DebuggerNode';
 import FlagsNode from './components/FlagsNode';
+import CycleTimeNode from "./components/CycleTimeNode";
 
 const { Header, Sider, Content } = Layout;
 
@@ -36,6 +37,7 @@ const nodeTypes: NodeTypes = {
   busNode: BusNode as unknown as ReactNode, // not used
   debuggerNode: DebuggerNode as unknown as ReactNode,
   flagsNode: FlagsNode as unknown as ReactNode,
+  cycleTimeNode: CycleTimeNode as unknown as ReactNode,
 };
 
 const edgeTypes: EdgeTypes = {

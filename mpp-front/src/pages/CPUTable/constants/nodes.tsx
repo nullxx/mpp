@@ -231,6 +231,15 @@ const nodes: Node[] = [
     data: {
       label: "Flags"
     },
+  },
+  {
+    id: "13",
+    position: { x: -370, y: 395},
+    draggable: true,
+    type: "cycleTimeNode",
+    data: {
+      label: "Flags"
+    },
   }
 ];
 export default nodes;

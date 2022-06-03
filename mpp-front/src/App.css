@@ -79,9 +79,18 @@ html, body, #root, .App {
 
 .debuggerPointed {
   background-color: rgba(240, 196, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .debuggerPointed .debuggerPointedOp {
+  font-weight: bold;
+  font-size: large;
+}
+
+.debuggerPointed .debuggerPointedOpNotFound {
+  background-color: rgba(240, 0, 0, 0.5);
   font-weight: bold;
   font-size: large;
 }

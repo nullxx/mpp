@@ -9,6 +9,8 @@ type ReplacementFn = (offset: number, operation: string) => string;
 
 const INM_NAME = "inm";
 const DIR_NAME = "dir";
+export const NO_OP_NAME = "-";
+const FILL_NO_OP = true;
 const replacementFunctions: ReplacementFn[] = [replaceInm, replaceDir];
 
 let memSize: null | number = null;
@@ -17,6 +19,9 @@ export function deductOperationOf(fromMemOffset: number, toMemOffset: number) {
   if (memSize == null) memSize = execute<number>("get_memory_size");
   if (toMemOffset < fromMemOffset) {
     throw new Error("toMemOffset must be greater than fromMemOffset");
+  }
+  if (fromMemOffset < 0) {
+    fromMemOffset = 0;
   }
   if (toMemOffset > memSize) {
     toMemOffset = memSize;
@@ -45,7 +50,8 @@ function findOperation(
   memValue: number
 ): FindOperationValue | null {
   const op = operations.find((o) => parseInt(o.HEX, 16) === memValue);
-  if (!op) return null;
+  if (!op && !FILL_NO_OP) return null;
+  if (!op) return { operation: NO_OP_NAME, range: [initOffset, initOffset] };
   return {
     operation: doReplacements(initOffset, op.NEMO),
     range: [initOffset, initOffset + op.ALLOC - 1],
