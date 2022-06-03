@@ -19,11 +19,10 @@ const data = [
   {
     title: "Atomize React",
     description:
-      "Atomize React is a UI framework that helps developers collaborate with designers and build consistent user interfaces effortlessly",
+      "Atomize React is a UI framework that helps developers collaborate with designers and build consistent user interfaces effortlessly.",
     img: "https://www.saashub.com/images/app/service_logos/66/c18fdeed76cf/large.png?1639983720",
     url: "https://atomizecode.com/",
   },
-
 ];
 
 export default function ThirdPartyAttribution() {

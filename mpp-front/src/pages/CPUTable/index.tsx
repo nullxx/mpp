@@ -64,7 +64,7 @@ function CPUTable() {
   return (
     <>
       <Layout style={{ height: "100%" }}>
-        <Header style={{ backgroundColor: "unset" }}>
+        <Header className="mpp-header">
           <Row justify="space-between">
             <Space align="center">
               <h2>M++ Simulator</h2>
@@ -91,16 +91,17 @@ function CPUTable() {
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 nodeTypes={nodeTypes}
-                edgeTypes={edgeTypes}
                 fitView
               />
             </div>
           </Content>
-          <Sider theme="light">
+          <Sider theme="light" style={{ overflowX: "hidden" }}>
             <ButtonStack />
           </Sider>
         </Layout>
-        <Footer style={{ padding: 5, margin: 'unset' }}><Attribution /></Footer>
+        <Footer style={{ padding: 5, margin: "unset" }}>
+          <Attribution />
+        </Footer>
       </Layout>
     </>
   );

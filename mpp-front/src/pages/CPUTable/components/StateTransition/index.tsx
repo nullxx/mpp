@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { execute, unsubscribeToUIUpdates } from "../../../../lib/core";
-
+import { Row, Col, Text } from "atomize";
+import { CheckCircleFilled } from "@ant-design/icons";
 import { subscribeToUIUpdates } from "../../../../lib/core/index";
 import stateDetails from "./constants.json";
 
@@ -17,7 +18,7 @@ interface State {
 
 const maxItems = 100;
 
-export default function StateTransition() {
+export default function StateTransition({ data }: { data: any }) {
   const [states, setStates] = useState<State[]>([]);
   const [currentState, setCurrentState] = useState(0);
   const [nextState, setNextState] = useState(0);
@@ -91,30 +92,50 @@ export default function StateTransition() {
         padding: 8,
       }}
     >
-      <h4>States graph</h4>
-      <Steps direction="vertical" size="small" current={currentStep}>
-        {states.map((state: State, index: number, arr) => {
-
-          const title =
-            index === arr.length - 1 ? "Next State" : "✅ Already executed";
-          return (
-            <Step
-              key={index}
-              title={title}
-              description={state.op}
-              progressDot={() => "S" + state.state}
+      <Row>
+        <Col size="100%">
+          <Text tag="h4" textSize="display4">
+            {data.label}
+          </Text>
+        </Col>
+      </Row>
+      <Row>
+        <Col size="100%">
+          <Steps direction="vertical" size="small" current={currentStep}>
+            {states.map((state: State, index: number, arr) => {
+              const title =
+                index === arr.length - 1 ? (
+                  "Next State"
+                ) : (
+                  <>
+                    <CheckCircleFilled style={{ color: "green" }} /> Executed
+                  </>
+                );
+              return (
+                <Step
+                  key={index}
+                  title={title}
+                  description={state.op}
+                  progressDot={() => "S" + state.state}
+                />
+              );
+            })}
+          </Steps>
+        </Col>
+      </Row>
+      <Row>
+        <Col size="100%">
+          {states.length > 0 ? (
+            <IconButton
+              icon={<DeleteOutlined />}
+              title="Clear"
+              onClick={handleClear}
             />
-          );
-        })}
-      </Steps>
-      {states.length > 0 ? (
-          <IconButton
-            icon={<DeleteOutlined />}
-            title="Clear"
-            onClick={handleClear}
-          />
-        ) : <sub>No states</sub>
-      }
+          ) : (
+            <sub>No states</sub>
+          )}
+        </Col>
+      </Row>
     </div>
   );
 }

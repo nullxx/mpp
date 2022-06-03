@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Drawer, Button, Space, Popconfirm } from "antd";
-import { DrawerProps } from "antd/es/drawer";
 import CodeEditor from "./components/CodeEditor";
 import { execute } from "../../lib/core/index";
 import IconButton from "../../components/IconButton";
@@ -8,13 +7,11 @@ import { CodeOutlined } from "@ant-design/icons";
 
 const Coder: React.FC = () => {
   const [visible, setVisible] = useState(false);
-  const [size, setSize] = useState<DrawerProps["size"]>();
   const [canSaveToMem, setCanSaveToMem] = useState(false);
   const [initOffset, setInitOffset] = useState(0);
   const [slots, setSlots] = useState<string[]>([]);
 
   const showDefaultDrawer = () => {
-    setSize("default");
     setVisible(true);
   };
   const onClose = () => {
@@ -47,7 +44,7 @@ const Coder: React.FC = () => {
     <>
       <Space>
         <IconButton
-          title="Code"
+          title="Open editor"
           icon={<CodeOutlined />}
           onClick={showDefaultDrawer}
         />
@@ -57,7 +54,6 @@ const Coder: React.FC = () => {
         closeIcon={null}
         title="Code"
         placement="right"
-        size={size}
         onClose={onClose}
         visible={visible}
         extra={

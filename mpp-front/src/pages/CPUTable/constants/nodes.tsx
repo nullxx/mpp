@@ -66,7 +66,7 @@ const nodes: Node[] = [
   {
     id: "2",
     position: { x: 270, y: 50 },
-    draggable: true,
+    draggable: false,
     type: "registerNode",
     data: {
       label: "ACUM",
@@ -81,7 +81,7 @@ const nodes: Node[] = [
   {
     id: "3",
     position: { x: 270, y: 120 },
-    draggable: true,
+    draggable: false,
     type: "registerNode",
     data: {
       label: "2OP",
@@ -95,7 +95,7 @@ const nodes: Node[] = [
   {
     id: "4",
     position: { x: 270, y: 190 },
-    draggable: true,
+    draggable: false,
     type: "registerNode",
     data: {
       label: "PC",
@@ -110,7 +110,7 @@ const nodes: Node[] = [
   {
     id: "5",
     position: { x: 270, y: 260 },
-    draggable: true,
+    draggable: false,
     type: "registerNode",
     data: {
       label: "SP",
@@ -124,7 +124,7 @@ const nodes: Node[] = [
   {
     id: "6",
     position: { x: 270, y: 330 },
-    draggable: true,
+    draggable: false,
     type: "registerNode",
     data: {
       label: "H",
@@ -138,7 +138,7 @@ const nodes: Node[] = [
   {
     id: "L",
     position: { x: 270, y: 400 },
-    draggable: true,
+    draggable: false,
     type: "registerNode",
     data: {
       label: "L",
@@ -195,8 +195,8 @@ const nodes: Node[] = [
   {
     id: "9",
     position: { x: -100, y: 360 },
-    draggable: true,
     type: "memoryNode",
+    draggable: false,
     data: {
       label: "Memory",
       readOnly: false,
@@ -206,27 +206,25 @@ const nodes: Node[] = [
   {
     id: "10",
     position: { x: -700, y: 0 },
-    draggable: true,
     type: "stateTransition",
     data: {
       label: "Transition state",
-      readOnly: false,
     },
+    draggable: false,
   },
   {
     id: "11",
     position: { x: -460, y: 0 },
-    draggable: true,
     type: "debuggerNode",
     data: {
       label: "Debugger",
-      readOnly: false,
     },
+    draggable: false,
   },
   {
     id: "12",
     position: { x: -200, y: 390},
-    draggable: true,
+    draggable: false,
     type: "flagsNode",
     data: {
       label: "Flags"
@@ -235,7 +233,7 @@ const nodes: Node[] = [
   {
     id: "13",
     position: { x: -370, y: 395},
-    draggable: true,
+    draggable: false,
     type: "cycleTimeNode",
     data: {
       label: "Flags"

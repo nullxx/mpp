@@ -1,18 +1,59 @@
-import IconButton from "../../../components/IconButton";
 import {
-  PlaySquareOutlined,
-  PlayCircleOutlined,
-  PlayCircleTwoTone,
+  VerticalAlignBottomOutlined,
+  ArrowDownOutlined,
   StopFilled,
+  SendOutlined,
 } from "@ant-design/icons";
 import { execute } from "../../../lib/core";
 import { sleep } from "../../../lib/utils";
 import { SettingDefaultValue, SettingType } from "./Settings";
 import { useState, useEffect, useRef } from "react";
 import { getStoredValue } from "../../../lib/storage";
-import { Space } from "antd";
+import { Space, Button, Tooltip, Collapse, List } from "antd";
+
+const { Panel } = Collapse;
 
 export let clockCycleTime = -1;
+
+const buttonsInfo = [
+  {
+    description: "Run program",
+    icon: <SendOutlined />
+  },
+  {
+    description: "Run instruction",
+    icon: <ArrowDownOutlined />
+  },
+  {
+    description: "Run state",
+    icon: <VerticalAlignBottomOutlined />
+  },
+  {
+    description: "Stop",
+    icon: <StopFilled />
+  },
+];
+
+function RunButtonsInfo() {
+  return (
+    <Collapse bordered={false}>
+      <Panel header="What is this?" key="1">
+        <List
+          itemLayout="horizontal"
+          dataSource={buttonsInfo}
+          renderItem={(item) => (
+            <List.Item>
+              <List.Item.Meta
+                avatar={item.icon}
+                title={item.description}
+              />
+            </List.Item>
+          )}
+        />
+      </Panel>
+    </Collapse>
+  );
+}
 
 export default function RunButtons() {
   const [running, setRunning] = useState(false);
@@ -74,40 +115,49 @@ export default function RunButtons() {
     _running.current = running;
   }, [running]);
 
-  if (running) {
-    return (
-      <IconButton
-        title="Stop"
-        icon={<StopFilled />}
-        onClick={handleStopRunning}
-      />
-    );
-  }
-
   return (
     <Space direction="vertical" size="middle">
-      <IconButton
-        icon={<PlaySquareOutlined />}
-        title="Run state"
-        onClick={handleRunState}
-        disabled={running}
-        animate={false}
-      />
-      <IconButton
-        icon={<PlayCircleOutlined />}
-        title="Run instruction"
-        onClick={handleRunInstruction}
-        disabled={running}
-        animate={false}
-      />
+      <Space className="runButtons">
+        <Tooltip title="Run program">
+          <Button
+            type="primary"
+            icon={<SendOutlined />}
+            onClick={handleRunProgram}
+            disabled={running}
+            size={"middle"}
+          />
+        </Tooltip>
 
-      <IconButton
-        icon={<PlayCircleTwoTone />}
-        title="Run program"
-        onClick={handleRunProgram}
-        disabled={running}
-        animate
-      />
+        <Tooltip title="Run instruction">
+          <Button
+            type="primary"
+            icon={<ArrowDownOutlined />}
+            onClick={handleRunInstruction}
+            disabled={running}
+            size={"middle"}
+          />
+        </Tooltip>
+        <Tooltip title="Run state">
+          <Button
+            type="primary"
+            icon={<VerticalAlignBottomOutlined />}
+            onClick={handleRunState}
+            disabled={running}
+            size={"middle"}
+          />
+        </Tooltip>
+        <Tooltip title="Stop">
+          <Button
+            type="primary"
+            icon={<StopFilled />}
+            onClick={handleStopRunning}
+            disabled={!running}
+            size={"middle"}
+          />
+        </Tooltip>
+      </Space>
+      <p style={{ fontSize: 10 }}>Status: {running ? "running" : "stopped"}</p>
+      <RunButtonsInfo />
     </Space>
   );
 }
