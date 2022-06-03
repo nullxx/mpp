@@ -4,10 +4,16 @@ import "./App.css";
 import { connectBackend } from "./lib/core";
 
 import CPUTable from "./pages/CPUTable";
-import Welcome from './pages/Welcome';
+import Welcome from "./pages/Welcome";
 
 function App() {
   const [coreLoaded, setCoreLoaded] = React.useState(false);
+  const [ready, setReady] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!coreLoaded) return;
+    setTimeout(() => setReady(true), 1000);
+  }, [coreLoaded]);
 
   React.useEffect(() => {
     connectBackend()
@@ -19,15 +25,14 @@ function App() {
       });
   }, []);
 
-  if (!coreLoaded) {
-    return <Welcome />;
-  }
-
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<CPUTable />} />
-      </Routes>
+      {!ready && <Welcome />}
+      {coreLoaded && (
+        <Routes>
+          <Route path="/" element={<CPUTable />} />
+        </Routes>
+      )}
     </div>
   );
 }
