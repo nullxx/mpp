@@ -2,7 +2,7 @@
   "repo": "mpp",
   "owner": "nullxx",
   "currentVersion": {
-    "name": "v0.0.18",
+    "name": "v0.0.19",
     "items": [
       {
         "description": "fix: conflicting bits with opcode FF",
