@@ -27,6 +27,10 @@
       {
         "description": "Added clock cycle time",
         "sha": "a6665e51ef593cf63accc4363330ef137559c59c"
+      },
+      {
+        "description": "fix: traslate errors detection & ace editor",
+        "sha": "b985eb4e0664f0f81b51b858afe483008931a656"
       }
     ]
   }
