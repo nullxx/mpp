@@ -33,7 +33,7 @@ export default function Technologies() {
         <List.Item>
           <List.Item.Meta
             avatar={<Avatar shape="square" src={item.img} />}
-            title={<a href={item.url}>{item.title}</a>}
+            title={<a href={item.url} target="_blank" rel="noreferrer">{item.title}</a>}
             description={item.description}
           />
         </List.Item>
