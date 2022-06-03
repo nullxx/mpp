@@ -8,6 +8,8 @@ import { subscribeToUIUpdates } from "../../../../lib/core/index";
 import { deductOperationOf, NO_OP_NAME } from "../../../../lib/debugger";
 import { useForceUpdate } from "../../../../hook/forceUpdate";
 
+const maxOffsetPadding = 50;
+
 function DebuggerComponentRow({
   range,
   operation,
@@ -164,6 +166,7 @@ const DebuggerNode = ({ data }: { data: any }) => {
                 onChange={onSearch}
                 onBaseChange={onBaseChange}
                 width={200}
+                max={maxOffsetPadding}
               />
             </div>
           </Tooltip>

@@ -49,7 +49,8 @@ const NumberBaseInput = ({
   onBaseChange,
   readOnly = false,
   width,
-  isError
+  isError,
+  max,
 }: {
   number: number;
   initialBase: Base;
@@ -58,6 +59,7 @@ const NumberBaseInput = ({
   readOnly?: boolean;
   width?: number | "100%";
   isError?: boolean;
+  max?: number;
 }) => {
   const [base, setBase] = React.useState<Base>(initialBase);
   const [formatted, setFormatted] = React.useState(getFormatted(number, base));
@@ -67,7 +69,7 @@ const NumberBaseInput = ({
 
   React.useEffect(() => {
     setFormatted(getFormatted(number, base)); // for updating props
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [number]);
 
   const handleBaseChange = (newBase: Base) => {
@@ -81,8 +83,7 @@ const NumberBaseInput = ({
   };
 
   const onValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormatted(e.target.value);
-
+    let newValue = e.target.value;
     const isValid = validateNumberBase(e.target.value, base);
     setIsValid(isValid);
 
@@ -90,16 +91,21 @@ const NumberBaseInput = ({
     if (!targetBase) return "";
 
     if (isValid) {
-      const num = parseInt(e.target.value, targetBase.radix);
+      let num = parseInt(e.target.value, targetBase.radix);
+      num = max && num > max ? max : num;
+      newValue = getFormatted(num, base);
       onChange && onChange(num, base);
     }
+
+    setFormatted(newValue);
   };
 
   const selectBefore = (
     <Select value={base} onChange={handleBaseChange}>
       {bases.map(({ base, radix }) => (
         <Option key={base} value={base}>
-          {base}<sub>({radix})</sub>
+          {base}
+          <sub>({radix})</sub>
         </Option>
       ))}
     </Select>
@@ -111,7 +117,7 @@ const NumberBaseInput = ({
       value={formatted}
       onChange={onValueChange}
       status={!isValid || isError ? "error" : undefined}
-      style={{width}}
+      style={{ width }}
     />
   );
 };
