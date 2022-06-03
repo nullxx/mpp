@@ -120,7 +120,7 @@ export default function CodeEditor({
             type="error"
             style={{ animation: animations.fadeInUp }}
             banner
-            message="There is errors in the code"
+            message="There are errors in the code"
             description="Check them out"
           />
         )}
