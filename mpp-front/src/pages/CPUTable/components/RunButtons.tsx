@@ -83,6 +83,7 @@ export default function RunButtons() {
       />
     );
   }
+
   return (
     <Space direction="vertical" size="middle">
       <IconButton
@@ -90,12 +91,14 @@ export default function RunButtons() {
         title="Run state"
         onClick={handleRunState}
         disabled={running}
+        animate={false}
       />
       <IconButton
         icon={<PlayCircleOutlined />}
         title="Run instruction"
         onClick={handleRunInstruction}
         disabled={running}
+        animate={false}
       />
 
       <IconButton
@@ -103,6 +106,7 @@ export default function RunButtons() {
         title="Run program"
         onClick={handleRunProgram}
         disabled={running}
+        animate
       />
     </Space>
   );

@@ -8,7 +8,12 @@
 }
 
 .react-flow__attribution {
-  display: none;
+  visibility: hidden;
+}
+
+.react-flow__attribution::after {
+  content: 'M++ simulator';
+  visibility: visible;
 }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -3,6 +3,7 @@ import { Drawer, Button, Space, Divider } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 
 import Changelog from "./Changelog";
+import ThirdPartyAttribution from "../../../components/ThirdPartyAttribution";
 
 const Info: React.FC = () => {
   const [visible, setVisible] = useState(false);
@@ -29,7 +30,7 @@ const Info: React.FC = () => {
         visible={visible}
       >
         <Space direction="vertical">
-          <Divider>About</Divider>
+          <Divider style={{margin: 0}}>About</Divider>
           <p>
             Mpp is a simulator for the machine ++. This was developed by{" "}
             <a href="https://nullx.me" target="_blank" rel="noreferrer">
@@ -40,6 +41,8 @@ const Info: React.FC = () => {
           </p>
           <Divider>Changelog</Divider>
           <Changelog />
+          <Divider>Third party attribution</Divider>
+          <ThirdPartyAttribution />
         </Space>
       </Drawer>
     </>

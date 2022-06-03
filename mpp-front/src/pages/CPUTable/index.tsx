@@ -14,7 +14,6 @@ import initialNodes from "./constants/nodes";
 import initialEdges from "./constants/edges";
 import RegisterNode from "./components/RegisterNode";
 import FloatingEdge from "./components/FloatingEdge";
-// import FloatingConnectionLine from "./components/FloatingConnectionLine";
 import LoadableNode from "./components/LoadableNode";
 import BusNode from "./components/BusNode";
 import MemoryNode from "./components/MemoryNode";
@@ -23,11 +22,13 @@ import Settings from "./components/Settings";
 import Changelog from "./components/Info";
 import { EdgeTypes } from "react-flow-renderer";
 import StateTransition from "./components/StateTransition";
-import DebuggerNode from './components/DebuggerNode';
-import FlagsNode from './components/FlagsNode';
+import DebuggerNode from "./components/DebuggerNode";
+import FlagsNode from "./components/FlagsNode";
 import CycleTimeNode from "./components/CycleTimeNode";
+import Github from "../../components/Github";
+import Attribution from "../../components/Attribution";
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content, Footer } = Layout;
 
 const nodeTypes: NodeTypes = {
   registerNode: RegisterNode as unknown as ReactNode,
@@ -65,7 +66,10 @@ function CPUTable() {
       <Layout style={{ height: "100%" }}>
         <Header style={{ backgroundColor: "unset" }}>
           <Row justify="space-between">
-            <h2>M++ Simulator</h2>
+            <Space align="center">
+              <h2>M++ Simulator</h2>
+              <Github />
+            </Space>
             <Space>
               <Settings />
               <Changelog />
@@ -96,6 +100,7 @@ function CPUTable() {
             <ButtonStack />
           </Sider>
         </Layout>
+        <Footer style={{ padding: 5, margin: 'unset' }}><Attribution /></Footer>
       </Layout>
     </>
   );

@@ -26,6 +26,17 @@
     "typescript": "^4.6.3",
     "web-vitals": "^2.1.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nullxx/mpp",
+    "directory": "mpp-front"
+  },
+  "homepage": "https://mpp-beta.nullx.me/",
+  "author": {
+    "email": "mail@nullx.me",
+    "name": "nullx",
+    "url": "https://nullx.me"
+  },
   "scripts": {
     "postinstall": "npx patch-package",
     "start": "react-scripts start",
