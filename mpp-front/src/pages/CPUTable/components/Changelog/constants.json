@@ -2,7 +2,7 @@
   "repo": "mpp",
   "owner": "nullxx",
   "currentVersion": {
-    "name": "v0.0.19",
+    "name": "v0.0.20",
     "items": [
       {
         "description": "fix: conflicting bits with opcode FF",
@@ -31,6 +31,10 @@
       {
         "description": "fix: traslate errors detection & ace editor",
         "sha": "b985eb4e0664f0f81b51b858afe483008931a656"
+      },
+      {
+        "description": "fix: misspelling traslation error message",
+        "sha": "da6f6fdcfb82db461e737a0dc955865c5075b012"
       }
     ]
   }
