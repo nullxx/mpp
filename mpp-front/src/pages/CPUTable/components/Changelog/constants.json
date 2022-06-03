@@ -2,39 +2,11 @@
   "repo": "mpp",
   "owner": "nullxx",
   "currentVersion": {
-    "name": "v0.0.20",
+    "name": "v0.0.21",
     "items": [
       {
-        "description": "fix: conflicting bits with opcode FF",
-        "sha": "5f3b8e3972ddd18436621bf79422715a6084c14d"
-      },
-      {
-        "description": "fix: FIN stopping program",
-        "sha": "46a10233441fc254df3ae54f18595d574fd390bd"
-      },
-      {
-        "description": "Added debugger",
-        "sha": "32d162feac3404c6e835645df75c4fa809507dc6"
-      },
-      {
-        "description": "Added flags node",
-        "sha": "78d2527b25fad265efba0a0e60eea73cc57e95c5"
-      },
-      {
-        "description": "Welcome improved",
-        "sha": "40bb773418e8239fa8312d3579f135f5f45c7220"
-      },
-      {
-        "description": "Added clock cycle time",
-        "sha": "a6665e51ef593cf63accc4363330ef137559c59c"
-      },
-      {
-        "description": "fix: traslate errors detection & ace editor",
-        "sha": "b985eb4e0664f0f81b51b858afe483008931a656"
-      },
-      {
-        "description": "fix: misspelling traslation error message",
-        "sha": "da6f6fdcfb82db461e737a0dc955865c5075b012"
+        "description": "Added attribution",
+        "sha": "b829af579f8a46b2f4c4bb4168231b93453032d2"
       }
     ]
   }
