@@ -29,7 +29,6 @@ const parseInput = (text: string, initDir: number) => {
     if (!line) continue;
 
     const result = executeRegex(line);
-    console.log("result", result, line);
     if (!result) {
       errors.push({ lineFrom: i, lineTo: i, startCol: 0, endCol: line.length });
       continue;
