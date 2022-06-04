@@ -2,11 +2,11 @@
   "repo": "mpp",
   "owner": "nullxx",
   "currentVersion": {
-    "name": "v0.0.22",
+    "name": "v0.0.23",
     "items": [
       {
-        "description": "Modify styles",
-        "sha": "ab84c4b73fafd93b86e20c518ab787b6b49d0b76"
+        "description": "fix: traslator",
+        "sha": "d9f7ba256a8a2240913ed97b3f362ae7d23b9e35"
       }
     ]
   }
