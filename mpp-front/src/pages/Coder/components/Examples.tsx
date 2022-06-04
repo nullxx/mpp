@@ -8,7 +8,6 @@ export default function Examples({
 }) {
   return (
     <List
-      header={<h3>Examples</h3>}
       dataSource={examples}
       size="small"
       split={true}

@@ -1,3 +1,19 @@
+/**
+ * DO NOT LOOK HERE
+ * THIS IS THE MAGIC
+ * IT IS NOT A GOOD WAY TO DO IT
+ * IT IS HORRIBLE
+ * BUT IT WORKS
+ * --
+ * I KNOW IT IS HORRIBLE
+ * BUT IT WORKS
+ * --
+ * I WILL REFACTOR IT
+ * SOON
+ * --
+ * MAYBE I WILL HAVE TO REDO IT ALL OVER AGAIN
+ */
+
 import instructions from "./operations.json";
 
 interface Instruction {
@@ -8,12 +24,15 @@ interface Instruction {
   ALLOC: number;
 }
 
-export interface TraslationError {
+interface Marker {
   lineFrom: number;
   lineTo: number;
   startCol: number;
   endCol: number;
 }
+
+const ETI_START_NAME = "T";
+export interface TraslationError extends Marker {}
 
 let setEtiquetas: string[] = [];
 const parseInput = (text: string, initDir: number) => {
@@ -29,21 +48,23 @@ const parseInput = (text: string, initDir: number) => {
     if (!line) continue;
 
     const result = executeRegex(line);
-    if (!result) {
+    if (!result || result.result.length === 0) {
       errors.push({ lineFrom: i, lineTo: i, startCol: 0, endCol: line.length });
       continue;
     }
-    results.push(result);
+
+    results.push({ ...result, originalOffset: i });
   }
 
+  const etiPositions = calculateEtiquetasPos(results, initDir);
   results = post(results, initDir);
 
   return {
     errors,
     results: results.map((s) => s.result),
+    etiPositions,
   };
 };
-
 
 const pre = (lines: string[]) => {
   for (let i = 0; i < lines.length; i++) {
@@ -73,17 +94,16 @@ const post = (results: RegexResponse[], initDir: number) => {
       let r = result.result[j];
       const eti = etiPositions.find((s) => s.eti.eti === r);
       if (eti) {
-        // console.info("Found eti at", result.result);
         result.result.splice(j, 1);
         const etiDirHex = Number(eti.dir)
           .toString(16)
           .toUpperCase()
           .padStart(4, "0");
+
         for (let i = 0; i < etiDirHex.length; i += 2) {
           result.result.push(etiDirHex.slice(i, i + 2));
         }
 
-        // result.result.push(etiDirHex.slice(0, 2), etiDirHex.slice(2));
       } else if (!/[0-9A-Fa-f]{2}/g.test(r)) {
         // is not !hex && !eti => error
         results.splice(i, 1);
@@ -97,12 +117,12 @@ interface RegexResponse {
   result: string[];
   eti: string;
   instruction: Instruction;
+  originalOffset?: number;
 }
 
 const executeRegex = (line: string): RegexResponse | null => {
   for (let i = 0; i < instructions.length; i++) {
     const instruction = instructions[i] as Instruction;
-
     let eti = "";
     let result = new RegExp(instruction.REGEX, "gim").exec(line);
     if (!result) {
@@ -112,6 +132,7 @@ const executeRegex = (line: string): RegexResponse | null => {
       result = new RegExp(instruction.REGEX, "gim").exec(line2.join(" "));
 
       if (result && result.length > 1) {
+        if (!posibleSetEti.startsWith(ETI_START_NAME)) return null;
         eti = posibleSetEti;
       }
     }
@@ -121,11 +142,20 @@ const executeRegex = (line: string): RegexResponse | null => {
         instruction,
         result.slice(1, result.length)
       );
-      if (traslateOut == null) return null;
+
       return { line, result: traslateOut, eti, instruction };
     }
   }
   return null;
+};
+
+const checkIsHex = (word: string) => {
+  for (let i = 0; i < word.length; i++) {
+    const l = word[i];
+    const r = parseInt(l, 16);
+    if (isNaN(r)) return false;
+  }
+  return true;
 };
 
 const translate = (instruction: Instruction, ops: string[]) => {
@@ -143,8 +173,8 @@ const translate = (instruction: Instruction, ops: string[]) => {
       const isInm = instruction.NEMO.includes("inm");
       if (!inmORDir) return [];
 
-      if (inmORDir.toUpperCase().startsWith("ET")) {
-        if (!setEtiquetas.includes(inmORDir)) return null;
+      if (inmORDir.startsWith(ETI_START_NAME)) {
+        if (!setEtiquetas.includes(inmORDir)) return [];
         return [OPHexCode, inmORDir];
       }
 
@@ -155,6 +185,8 @@ const translate = (instruction: Instruction, ops: string[]) => {
       if (isInm && inmORDir.length !== 2) {
         return [];
       }
+
+      if (!checkIsHex(inmORDir)) return [];
 
       if (isDir) {
         return [OPHexCode, inmORDir.slice(0, 2), inmORDir.slice(2)];
@@ -172,7 +204,8 @@ const translate = (instruction: Instruction, ops: string[]) => {
       const isInm = instruction.NEMO.includes("inm");
       if (!inmORDir) return [];
 
-      if (inmORDir.toUpperCase().startsWith("ET")) {
+      if (inmORDir.startsWith(ETI_START_NAME)) {
+        if (!setEtiquetas.includes(inmORDir)) return [];
         return [OPHexCode, inmORDir];
       }
 
@@ -184,6 +217,8 @@ const translate = (instruction: Instruction, ops: string[]) => {
         return [];
       }
 
+      if (!checkIsHex(inmORDir)) return [];
+
       if (isDir) {
         return [OPHexCode, inmORDir.slice(0, 2), inmORDir.slice(2)];
       } else {
@@ -194,7 +229,7 @@ const translate = (instruction: Instruction, ops: string[]) => {
   return [];
 };
 
-interface EtiquetaPos {
+export interface EtiquetaPos extends Marker {
   eti: RegexResponse;
   dir: number;
 }
@@ -208,29 +243,25 @@ const calculateEtiquetasPos = (
   for (let i = 0; i < defEtiquetas.length; i++) {
     const defEtiqueta = defEtiquetas[i];
     let sum = 0;
-    for (let i = 0; i < results.length; i++) {
-      const result = results[i];
+    for (let j = 0; j < results.length; j++) {
+      const result = results[j];
       if (!result.result) continue;
       if (result === defEtiqueta) {
         break;
       } else {
-        console.info(
-          result.line,
-          result.result,
-          "+" + result.instruction.ALLOC,
-          "=>",
-          sum
-        );
         sum += result.instruction.ALLOC;
       }
     }
+
     toReturn.push({
       eti: defEtiqueta,
       dir: initDir + sum,
+      lineFrom: defEtiqueta.originalOffset ?? -1,
+      lineTo: defEtiqueta.originalOffset ?? -1,
+      startCol: defEtiqueta.line.indexOf(defEtiqueta.eti),
+      endCol:
+        defEtiqueta.line.indexOf(defEtiqueta.eti) + defEtiqueta.eti.length,
     });
-    console.info(
-      "Index hasta declaracion de et: " + defEtiqueta.eti + " => " + sum
-    );
   }
   return toReturn;
 };

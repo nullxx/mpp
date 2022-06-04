@@ -102,8 +102,20 @@ html, body, #root, .App {
 
 .error-marker {
   /* code editor error marker */
-  background-color: rgba(240, 0, 0, 0.3);
   position: absolute;
+  border-bottom: 1px solid red;
+  border-radius: 0;
+}
+
+.eti-marker {
+  /* code editor eti marker */
+  position: absolute;
+  background: #fff677;
+}
+
+.eti-marker-color {
+  background-color: #fff677;
+  border-radius: 3px;
 }
 
 .runButtons {
@@ -116,4 +128,9 @@ html, body, #root, .App {
 .mpp-header {
   background-color: #f5f5f5;
   user-select: none;
+}
+
+.code {
+  border: 1px dotted #ccc;
+  padding: 5px;
 }

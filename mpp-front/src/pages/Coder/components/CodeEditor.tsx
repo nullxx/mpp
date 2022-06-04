@@ -1,15 +1,18 @@
 import AceEditor, { IMarker } from "react-ace";
 
 import React, { useEffect } from "react";
-import { parseInput } from "../../../lib/traslator";
+import { EtiquetaPos, parseInput } from "../../../lib/traslator";
 import { TraslationError } from "../../../lib/traslator/index";
 import NumberBaseInput from "../../../components/NumberBaseInput";
 import { execute } from "../../../lib/core/index";
-import { Button, Popover, Space, Alert } from "antd";
+import { Button, Popover, Space, Alert, Collapse, Divider } from "antd";
 import "ace-builds/src-noconflict/mode-text";
 import Examples from "./Examples";
 import { setStoredValue, getStoredValue } from "../../../lib/storage";
 import { animations } from "react-animation";
+import { Text } from "atomize";
+
+const { Panel } = Collapse;
 
 export default function CodeEditor({
   onNewTranslation,
@@ -23,6 +26,7 @@ export default function CodeEditor({
   const [initOffset, setInitOffset] = React.useState(0);
   const [error, setError] = React.useState<TraslationError[]>([]);
   const [offsetValid, setOffsetValid] = React.useState<boolean>(true);
+  const [etiPositions, setEtiPositions] = React.useState<EtiquetaPos[]>([]);
 
   useEffect(() => {
     setStoredValue("code", code);
@@ -34,6 +38,7 @@ export default function CodeEditor({
 
     const str = res.results.map((r) => r.join("\n")).join("\n");
     setTraslated(str);
+    setEtiPositions(res.etiPositions);
 
     onNewTranslation(
       res.errors.length > 0 || str.length === 0 ? null : str.split("\n")
@@ -73,7 +78,7 @@ export default function CodeEditor({
   }
   // build markers
 
-  const markers: IMarker[] = error.map((e) => {
+  const errorMarkers: IMarker[] = error.map((e) => {
     return {
       startRow: e.lineFrom,
       endRow: e.lineTo,
@@ -83,6 +88,17 @@ export default function CodeEditor({
       endCol: e.endCol,
     };
   });
+
+  const hightlightEtiMarkers: IMarker[] = etiPositions.map((e) => ({
+    startRow: e.lineFrom,
+    endRow: e.lineTo,
+    className: "eti-marker",
+    type: "text",
+    startCol: e.startCol,
+    endCol: e.endCol,
+  }));
+
+  const markers = [...hightlightEtiMarkers, ...errorMarkers];
 
   const thereIsErrors = error.length > 0;
 
@@ -115,6 +131,24 @@ export default function CodeEditor({
           </Popover>
         </Space>
 
+        <Space direction="vertical" style={{ width: "100%" }}>
+          <Collapse bordered={false}>
+            <Panel header="How to use labels?" key="1">
+              <Text>- You declare them starting with 'T':</Text>
+
+              <pre className="code">
+                <span className="eti-marker-color">T1</span> MOV FF, AC
+              </pre>
+              <Text>
+                They will be colored in{" "}
+                <span className="eti-marker-color">yellow</span>.
+              </Text>
+              <Text>- You can use them in the code:</Text>
+              <pre className="code">JMP T1</pre>
+            </Panel>
+          </Collapse>
+        </Space>
+
         {thereIsErrors && (
           <Alert
             type="error"
@@ -134,6 +168,7 @@ export default function CodeEditor({
             setOptions={{
               showLineNumbers: true,
               firstLineNumber: 0,
+              fontSize: "14px",
             }}
             height="200px"
             width="unset"
@@ -155,8 +190,11 @@ export default function CodeEditor({
             mode="text"
           />
         </Space>
-
-        <Examples onSelect={handleSelectExample} />
+        <Collapse bordered={false}>
+          <Panel header="Examples" key="1">
+            <Examples onSelect={handleSelectExample} />
+          </Panel>
+        </Collapse>
       </Space>
     </>
   );

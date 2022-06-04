@@ -2,12 +2,12 @@
   {
     "title": "SUM ACC UNTIL AC=5",
     "description": null,
-    "code": "MOV 00, AC\nETI2 INC AC\nCMP 05\nBEQ ETI1\nJMP ETI2\nETI1 FIN"
+    "code": "MOV 00, AC\nT2 INC AC\nCMP 05\nBEQ T1\nJMP T2\nT1 FIN"
   },
   {
     "title": "SEARCH IN BUFFER FOR '05'",
     "description": null,
-    "code": "MOV 01, D\nMOV 02, E\nMOV 05, AC\nSTAX\n\nMOV 00, D\nMOV FE, E\nETIS LDAX\n\nCMP 05\nBEQ ETIFIN\n\nMOV E, AC\nCMP FF\nBEQ ETID\nJMP ETIE\n\nETID INC D\nETIE INC E\n\nJMP ETIS\nETIFIN FIN"
+    "code": "MOV 01, D\nMOV 02, E\nMOV 05, AC\nSTAX\n\nMOV 00, D\nMOV FE, E\nTS LDAX\n\nCMP 05\nBEQ TF\n\nMOV E, AC\nCMP FF\nBEQ TD\nJMP TE\n\nTD INC D\nTE INC E\n\nJMP TS\nTF FIN"
   },
   {
     "title": "CALL FUNCTION",
