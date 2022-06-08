@@ -156,13 +156,13 @@ void run_cu(int clk) {  // 1 opstate per run
     }
 
     if (clk == 1) run_sync_comp(run_fffc);
+    if (clk == 1) run_sync_comp(cll_run_mxfldx);
+    if (clk == 1) run_sync_comp(run_flags);
+    if (clk == 1) run_sync_comp(cll_run_flagsinta);
     if (clk == 1) run_sync_comp(run_acumm);
     if (clk == 1) run_sync_comp(run_greg);
     if (clk == 1) run_sync_comp(run_op2);
     if (clk == 1) run_sync_comp(run_hl);
     if (clk == 1) run_sync_comp(run_sp);
-    if (clk == 1) run_sync_comp(cll_run_mxfldx);
-    if (clk == 1) run_sync_comp(run_flags);
-    if (clk == 1) run_sync_comp(cll_run_flagsinta);
     if (clk == 1) run_sync_comp(run_pc);
 }
