@@ -1,4 +1,4 @@
-import { Checkbox } from "antd";
+import { Checkbox, Tooltip } from "antd";
 import { Row, Col, Text } from "atomize";
 import { useEffect, useState } from "react";
 import {
@@ -54,16 +54,22 @@ export default function FlagsNode({ data }: { data: any }) {
     >
       <Row>
         <Col size="100%">
-          <Text tag="h4" textSize="display4">
-            {data.label}
-          </Text>
+          <Tooltip title={data.helpInfo}>
+            <Text tag="h4" textSize="display4">
+              {data.label}
+            </Text>
+          </Tooltip>
         </Col>
       </Row>
       <Row>
-        <Checkbox checked={fz}>FZ</Checkbox>
+        <Tooltip title={data.fzHelpInfo}>
+          <Checkbox checked={fz}>FZ</Checkbox>
+        </Tooltip>
       </Row>
       <Row>
-        <Checkbox checked={fc}>FC</Checkbox>
+        <Tooltip title={data.fcHelpInfo}>
+          <Checkbox checked={fc}>FC</Checkbox>
+        </Tooltip>
       </Row>
     </div>
   );

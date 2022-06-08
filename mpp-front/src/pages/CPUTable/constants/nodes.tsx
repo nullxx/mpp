@@ -74,7 +74,8 @@ const nodes: Node[] = [
       width: 70,
       height: 63,
       loadBit: { label: "ACCAR", value: 1 },
-      getFunction: "get_register_acum"
+      getFunction: "get_register_acum",
+      helpInfo: "Accumulator is a register that is the same length as the processor word (ALU operands). It is used to contain the result of an arithmetic operation or one of the ALU operands.",
     },
   },
 
@@ -104,6 +105,7 @@ const nodes: Node[] = [
       height: 63,
       loadBit: { label: "PCCAR", value: 0 },
       getFunction: "get_register_pc",
+      helpInfo: "Program Counter is a register that contains the address of the next instruction to be executed. It is used to control the execution of the program.",
     },
   },
 
@@ -119,6 +121,7 @@ const nodes: Node[] = [
       height: 63,
       loadBit: { label: "SPCAR", value: 0 },
       getFunction: "get_register_sp",
+      helpInfo: "Stack Pointer is a register that contains the address of the top of the stack. It is used to control the execution of the program in some cases (e.g. subrutine call).",
     },
   },
   {
@@ -176,6 +179,7 @@ const nodes: Node[] = [
       height: 63,
       loadBit: { label: "RICAR", value: 0 },
       getFunction: "get_register_ri",
+      helpInfo: "Register Instruction is a register that contains the instruction currently being executed. It is used to control the execution of the program.",
     },
   },
   {
@@ -201,6 +205,7 @@ const nodes: Node[] = [
       label: "Memory",
       readOnly: false,
       width: 300,
+      helpInfo: "Memory is a set of values that contains the instructions and data of the program. If not initialized it is filled randomly.",
     },
   },
   {
@@ -227,7 +232,10 @@ const nodes: Node[] = [
     draggable: false,
     type: "flagsNode",
     data: {
-      label: "Flags"
+      label: "Flags",
+      helpInfo: "Flags are used to indicate the status of the last ALU operation.",
+      fzHelpInfo: "FZ is a flag that indicates whether the result of the last ALU operation is zero.",
+      fcHelpInfo: "FC is a flag that indicates whether the result of the last ALU operation has carry.",
     },
   },
   {

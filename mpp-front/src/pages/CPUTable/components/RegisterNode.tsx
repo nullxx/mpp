@@ -6,6 +6,7 @@ import {
   subscribeToUIUpdates,
   unsubscribeToUIUpdates,
 } from "../../../lib/core/index";
+import { Tooltip } from "antd";
 
 export const DEFAULT_REGISTER_VALUE = 0;
 
@@ -41,16 +42,16 @@ export default memo(({ data, isConnectable }: any) => {
 
   return (
     <div
-      className={
-        changed ? "blob bordered" : "bordered"
-      }
-      style={{ borderRadius: 3, padding: 5, background: 'white' }}
+      className={changed ? "blob bordered" : "bordered"}
+      style={{ borderRadius: 3, padding: 5, background: "white" }}
     >
       <Row>
         <Col>
-          <Text tag="p" textSize="display5">
-            {data.label}
-          </Text>
+          <Tooltip title={data.helpInfo}>
+            <Text tag="p" textSize="display5">
+              {data.label}
+            </Text>
+          </Tooltip>
         </Col>
       </Row>
       <Row>

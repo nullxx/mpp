@@ -8,6 +8,7 @@ import NumberBaseInput, {
 } from "../../../components/NumberBaseInput";
 import { subscribeToUIUpdates } from "../../../lib/core/index";
 import { useForceUpdate } from "../../../hook/forceUpdate";
+import { Tooltip } from "antd";
 
 function MemoryComponentRow({
   offset,
@@ -98,9 +99,11 @@ const MemoryNode = ({ data }: { data: any }) => {
     >
       <Row>
         <Col size="100%">
-          <Text tag="h4" textSize="display4">
-            {data.label}
-          </Text>
+          <Tooltip title={data.helpInfo}>
+            <Text tag="h4" textSize="display4">
+              {data.label}
+            </Text>
+          </Tooltip>
         </Col>
       </Row>
       <Row>
