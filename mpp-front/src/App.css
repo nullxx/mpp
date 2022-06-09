@@ -112,12 +112,6 @@ html, body, #root, .App {
   position: absolute;
   background: #fff677;
 }
-.comment-marker {
-  /* code editor eti marker */
-  position: absolute;
-  background: #c4ffe0;
-  opacity: 0.7;
-}
 
 .eti-marker-color {
   background-color: #fff677;

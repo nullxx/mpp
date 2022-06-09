@@ -38,12 +38,21 @@ export interface TraslationError extends Marker {}
 export interface Comment extends Marker {}
 
 let setEtiquetas: string[] = [];
+
+const checkCommentLine = (line: string) => {
+  const startCommentIndex = line.indexOf(COMMENT_LINE_START);
+  if (startCommentIndex > -1) {
+    return line.slice(0, startCommentIndex).trimEnd();
+  }
+  return line;
+}
+
 const parseInput = (text: string, initDir: number) => {
   setEtiquetas = [];
   let results: RegexResponse[] = [];
   const errors: TraslationError[] = [];
   const comments: Comment[] = [];
-  const lines = text.split("\n");
+  const lines = text.split("\n").map(line => line.trim()).map((line) => checkCommentLine(line));
 
   pre(lines);
 
@@ -60,11 +69,12 @@ const parseInput = (text: string, initDir: number) => {
         endCol: line.length,
       });
       if (startCommentIndex === 0) {
-      continue;
+        continue;
       } else {
         line = line.slice(0, startCommentIndex).trimEnd(); // trim because of the space(s) between the code and the #
       }
     }
+
     const result = executeRegex(line);
     if (!result || result.result.length === 0) {
       errors.push({ lineFrom: i, lineTo: i, startCol: 0, endCol: line.length });
@@ -101,7 +111,8 @@ const pre = (lines: string[]) => {
       }
     }
   }
-};
+}
+
 const post = (results: RegexResponse[], initDir: number) => {
   const etiPositions = calculateEtiquetasPos(results, initDir);
 
@@ -122,7 +133,6 @@ const post = (results: RegexResponse[], initDir: number) => {
         for (let i = 0; i < etiDirHex.length; i += 2) {
           result.result.push(etiDirHex.slice(i, i + 2));
         }
-
       } else if (!checkIsHex(r)) {
         // is not !hex && !eti => error
         results.splice(i, 1);
