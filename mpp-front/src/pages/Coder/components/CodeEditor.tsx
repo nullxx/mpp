@@ -1,11 +1,11 @@
 import AceEditor, { IMarker } from "react-ace";
 
 import React, { useEffect } from "react";
-import { EtiquetaPos, parseInput } from "../../../lib/traslator";
+import { EtiquetaPos, Comment,  parseInput } from "../../../lib/traslator";
 import { TraslationError } from "../../../lib/traslator/index";
 import NumberBaseInput from "../../../components/NumberBaseInput";
 import { execute } from "../../../lib/core/index";
-import { Button, Popover, Space, Alert, Collapse, Divider } from "antd";
+import { Button, Popover, Space, Alert, Collapse } from "antd";
 import "ace-builds/src-noconflict/mode-text";
 import Examples from "./Examples";
 import { setStoredValue, getStoredValue } from "../../../lib/storage";
@@ -27,6 +27,7 @@ export default function CodeEditor({
   const [error, setError] = React.useState<TraslationError[]>([]);
   const [offsetValid, setOffsetValid] = React.useState<boolean>(true);
   const [etiPositions, setEtiPositions] = React.useState<EtiquetaPos[]>([]);
+  const [comments, setComments] = React.useState<Comment[]>([]);
 
   useEffect(() => {
     setStoredValue("code", code);
@@ -39,6 +40,7 @@ export default function CodeEditor({
     const str = res.results.map((r) => r.join("\n")).join("\n");
     setTraslated(str);
     setEtiPositions(res.etiPositions);
+    setComments(res.comments);
 
     onNewTranslation(
       res.errors.length > 0 || str.length === 0 ? null : str.split("\n")
@@ -98,7 +100,16 @@ export default function CodeEditor({
     endCol: e.endCol,
   }));
 
-  const markers = [...hightlightEtiMarkers, ...errorMarkers];
+  const hightlightComments: IMarker[] = comments.map((e) => ({
+    startRow: e.lineFrom,
+    endRow: e.lineTo,
+    className: "comment-marker",
+    type: "text",
+    startCol: e.startCol,
+    endCol: e.endCol,
+  }));
+
+  const markers = [...hightlightEtiMarkers, ...hightlightComments, ...errorMarkers];
 
   const thereIsErrors = error.length > 0;
 

@@ -5,6 +5,11 @@
     "code": "MOV 00, AC\nT2 INC AC\nCMP 05\nBEQ T1\nJMP T2\nT1 FIN"
   },
   {
+    "title": "MULTIPLICATION",
+    "description": "Performs multiplication of two numbers (B x C) and stores the result in AC",
+    "code": "# 5x3\nMOV 05, B # <== modify this\nMOV 03, C # <== modify this\n\nINISP 1234\nMOV B, AC\nPUSH\n\nTSTART MOV C, AC\nCMP 01\nBEQ TFIN\nPOP\nADD B\nPUSH\nMOV C, AC\nSUB 01\nMOV AC, C\nJMP TSTART\nTFIN POP\nFIN"
+  },
+  {
     "title": "SEARCH IN BUFFER FOR '05'",
     "description": null,
     "code": "MOV 01, D\nMOV 02, E\nMOV 05, AC\nSTAX\n\nMOV 00, D\nMOV FE, E\nTS LDAX\n\nCMP 05\nBEQ TF\n\nMOV E, AC\nCMP FF\nBEQ TD\nJMP TE\n\nTD INC D\nTE INC E\n\nJMP TS\nTF FIN"

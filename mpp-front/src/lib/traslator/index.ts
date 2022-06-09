@@ -32,21 +32,39 @@ interface Marker {
 }
 
 const ETI_START_NAME = "T";
+const COMMENT_LINE_START = "#";
+
 export interface TraslationError extends Marker {}
+export interface Comment extends Marker {}
 
 let setEtiquetas: string[] = [];
 const parseInput = (text: string, initDir: number) => {
   setEtiquetas = [];
   let results: RegexResponse[] = [];
   const errors: TraslationError[] = [];
+  const comments: Comment[] = [];
   const lines = text.split("\n");
 
   pre(lines);
 
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
+    let line = lines[i];
     if (!line) continue;
 
+    const startCommentIndex = line.indexOf(COMMENT_LINE_START);
+    if (startCommentIndex !== -1) {
+      comments.push({
+        lineFrom: i,
+        lineTo: i,
+        startCol: startCommentIndex,
+        endCol: line.length,
+      });
+      if (startCommentIndex === 0) {
+      continue;
+      } else {
+        line = line.slice(0, startCommentIndex).trimEnd(); // trim because of the space(s) between the code and the #
+      }
+    }
     const result = executeRegex(line);
     if (!result || result.result.length === 0) {
       errors.push({ lineFrom: i, lineTo: i, startCol: 0, endCol: line.length });
@@ -63,6 +81,7 @@ const parseInput = (text: string, initDir: number) => {
     errors,
     results: results.map((s) => s.result),
     etiPositions,
+    comments,
   };
 };
 
