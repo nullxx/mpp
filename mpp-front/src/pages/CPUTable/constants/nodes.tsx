@@ -24,6 +24,7 @@ const nodes: Node[] = [
       label: "B",
       readOnly: true,
       getFunction: "get_register_b",
+      helpInfo: "General purpose register. Use it as 'RB' in the code.",
     },
   },
   {
@@ -36,6 +37,7 @@ const nodes: Node[] = [
       label: "C",
       readOnly: true,
       getFunction: "get_register_c",
+      helpInfo: "General purpose register. Use it as 'RC' in the code.",
     },
   },
   {
@@ -48,6 +50,7 @@ const nodes: Node[] = [
       label: "D",
       readOnly: true,
       getFunction: "get_register_d",
+      helpInfo: "General purpose register. Use it as 'RD' in the code.",
     },
   },
   {
@@ -60,6 +63,7 @@ const nodes: Node[] = [
       label: "E",
       readOnly: true,
       getFunction: "get_register_e",
+      helpInfo: "General purpose register. Use it as 'RE' in the code.",
     },
   },
 

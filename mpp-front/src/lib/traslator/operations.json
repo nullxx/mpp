@@ -1,365 +1,365 @@
 [
     {
       "HEX": "00",
-      "NEMO": "MOV B, B",
-      "REGEX": "^(MOV)\\s(B),\\s?(B)$",
+      "NEMO": "MOV RB, RB",
+      "REGEX": "^(MOV)\\s(RB),\\s?(RB)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "01",
-      "NEMO": "MOV C, B",
-      "REGEX": "^(MOV)\\s(C),\\s?(B)$",
+      "NEMO": "MOV RC, RB",
+      "REGEX": "^(MOV)\\s(RC),\\s?(RB)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "02",
-      "NEMO": "MOV D, B",
-      "REGEX": "^(MOV)\\s(D),\\s?(B)$",
+      "NEMO": "MOV RD, RB",
+      "REGEX": "^(MOV)\\s(RD),\\s?(RB)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "03",
-      "NEMO": "MOV E, B",
-      "REGEX": "^(MOV)\\s(E),\\s?(B)$",
+      "NEMO": "MOV RE, RB",
+      "REGEX": "^(MOV)\\s(RE),\\s?(RB)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "04",
-      "NEMO": "MOV B, C",
-      "REGEX": "^(MOV)\\s(B),\\s?(C)$",
+      "NEMO": "MOV RB, RC",
+      "REGEX": "^(MOV)\\s(RB),\\s?(RC)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "05",
-      "NEMO": "MOV C, C",
-      "REGEX": "^(MOV)\\s(C),\\s?(C)$",
+      "NEMO": "MOV RC, RC",
+      "REGEX": "^(MOV)\\s(RC),\\s?(RC)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "06",
-      "NEMO": "MOV D, C",
-      "REGEX": "^(MOV)\\s(D),\\s?(C)$",
+      "NEMO": "MOV RD, RC",
+      "REGEX": "^(MOV)\\s(RD),\\s?(RC)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "07",
-      "NEMO": "MOV E, C",
-      "REGEX": "^(MOV)\\s(E),\\s?(C)$",
+      "NEMO": "MOV RE, RC",
+      "REGEX": "^(MOV)\\s(RE),\\s?(RC)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "08",
-      "NEMO": "MOV B, D",
-      "REGEX": "^(MOV)\\s(B),\\s?(D)$",
+      "NEMO": "MOV RB, RD",
+      "REGEX": "^(MOV)\\s(RB),\\s?(RD)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "09",
-      "NEMO": "MOV C, D",
-      "REGEX": "^(MOV)\\s(C),\\s?(D)$",
+      "NEMO": "MOV RC, RD",
+      "REGEX": "^(MOV)\\s(RC),\\s?(RD)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "0A",
-      "NEMO": "MOV D, D",
-      "REGEX": "^(MOV)\\s(D),\\s?(D)$",
+      "NEMO": "MOV RD, RD",
+      "REGEX": "^(MOV)\\s(RD),\\s?(RD)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "0B",
-      "NEMO": "MOV E, D",
-      "REGEX": "^(MOV)\\s(E),\\s?(D)$",
+      "NEMO": "MOV RE, RD",
+      "REGEX": "^(MOV)\\s(RE),\\s?(RD)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "0C",
-      "NEMO": "MOV B, E",
-      "REGEX": "^(MOV)\\s(B),\\s?(E)$",
+      "NEMO": "MOV RB, RE",
+      "REGEX": "^(MOV)\\s(RB),\\s?(RE)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "0D",
-      "NEMO": "MOV C, E",
-      "REGEX": "^(MOV)\\s(C),\\s?(E)$",
+      "NEMO": "MOV RC, RE",
+      "REGEX": "^(MOV)\\s(RC),\\s?(RE)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "0E",
-      "NEMO": "MOV D, E",
-      "REGEX": "^(MOV)\\s(D),\\s?(E)$",
+      "NEMO": "MOV RD, RE",
+      "REGEX": "^(MOV)\\s(RD),\\s?(RE)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "0F",
-      "NEMO": "MOV E, E",
-      "REGEX": "^(MOV)\\s(E),\\s?(E)$",
+      "NEMO": "MOV RE, RE",
+      "REGEX": "^(MOV)\\s(RE),\\s?(RE)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "10",
-      "NEMO": "MOV B, AC",
-      "REGEX": "^(MOV)\\s(B),\\s?(AC)$",
+      "NEMO": "MOV RB, AC",
+      "REGEX": "^(MOV)\\s(RB),\\s?(AC)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "11",
-      "NEMO": "MOV C, AC",
-      "REGEX": "^(MOV)\\s(C),\\s?(AC)$",
+      "NEMO": "MOV RC, AC",
+      "REGEX": "^(MOV)\\s(RC),\\s?(AC)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "12",
-      "NEMO": "MOV D, AC",
-      "REGEX": "^(MOV)\\s(D),\\s?(AC)$",
+      "NEMO": "MOV RD, AC",
+      "REGEX": "^(MOV)\\s(RD),\\s?(AC)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "13",
-      "NEMO": "MOV E, AC",
-      "REGEX": "^(MOV)\\s(E),\\s?(AC)$",
+      "NEMO": "MOV RE, AC",
+      "REGEX": "^(MOV)\\s(RE),\\s?(AC)$",
       "GRUPO": 1,
       "ALLOC": 1
     },
     {
       "HEX": "18",
-      "NEMO": "SUB B",
-      "REGEX": "^(SUB)\\s(B)$",
+      "NEMO": "SUB RB",
+      "REGEX": "^(SUB)\\s(RB)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "19",
-      "NEMO": "SUB C",
-      "REGEX": "^(SUB)\\s(C)$",
+      "NEMO": "SUB RC",
+      "REGEX": "^(SUB)\\s(RC)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "1A",
-      "NEMO": "SUB D",
-      "REGEX": "^(SUB)\\s(D)$",
+      "NEMO": "SUB RD",
+      "REGEX": "^(SUB)\\s(RD)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "1B",
-      "NEMO": "SUB E",
-      "REGEX": "^(SUB)\\s(E)$",
+      "NEMO": "SUB RE",
+      "REGEX": "^(SUB)\\s(RE)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "1C",
-      "NEMO": "CMP B",
-      "REGEX": "^(CMP)\\s(B)$",
+      "NEMO": "CMP RB",
+      "REGEX": "^(CMP)\\s(RB)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "1D",
-      "NEMO": "CMP C",
-      "REGEX": "^(CMP)\\s(C)$",
+      "NEMO": "CMP RC",
+      "REGEX": "^(CMP)\\s(RC)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "1E",
-      "NEMO": "CMP D",
-      "REGEX": "^(CMP)\\s(D)$",
+      "NEMO": "CMP RD",
+      "REGEX": "^(CMP)\\s(RD)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "1F",
-      "NEMO": "CMP E",
-      "REGEX": "^(CMP)\\s(E)$",
+      "NEMO": "CMP RE",
+      "REGEX": "^(CMP)\\s(RE)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "20",
-      "NEMO": "AND B",
-      "REGEX": "^(AND)\\s(B)$",
+      "NEMO": "AND RB",
+      "REGEX": "^(AND)\\s(RB)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "21",
-      "NEMO": "AND C",
-      "REGEX": "^(AND)\\s(C)$",
+      "NEMO": "AND RC",
+      "REGEX": "^(AND)\\s(RC)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "22",
-      "NEMO": "AND D",
-      "REGEX": "^(AND)\\s(D)$",
+      "NEMO": "AND RD",
+      "REGEX": "^(AND)\\s(RD)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "23",
-      "NEMO": "AND E",
-      "REGEX": "^(AND)\\s(E)$",
+      "NEMO": "AND RE",
+      "REGEX": "^(AND)\\s(RE)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "24",
-      "NEMO": "OR B",
-      "REGEX": "^(OR)\\s(B)$",
+      "NEMO": "OR RB",
+      "REGEX": "^(OR)\\s(RB)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "25",
-      "NEMO": "OR C",
-      "REGEX": "^(OR)\\s(C)$",
+      "NEMO": "OR RC",
+      "REGEX": "^(OR)\\s(RC)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "26",
-      "NEMO": "OR D",
-      "REGEX": "^(OR)\\s(D)$",
+      "NEMO": "OR RD",
+      "REGEX": "^(OR)\\s(RD)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "27",
-      "NEMO": "OR E",
-      "REGEX": "^(OR)\\s(E)$",
+      "NEMO": "OR RE",
+      "REGEX": "^(OR)\\s(RE)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "28",
-      "NEMO": "XOR B",
-      "REGEX": "^(XOR)\\s(B)$",
+      "NEMO": "XOR RB",
+      "REGEX": "^(XOR)\\s(RB)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "29",
-      "NEMO": "XOR C",
-      "REGEX": "^(XOR)\\s(C)$",
+      "NEMO": "XOR RC",
+      "REGEX": "^(XOR)\\s(RC)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "2A",
-      "NEMO": "XOR D",
-      "REGEX": "^(XOR)\\s(D)$",
+      "NEMO": "XOR RD",
+      "REGEX": "^(XOR)\\s(RD)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "2B",
-      "NEMO": "XOR E",
-      "REGEX": "^(XOR)\\s(E)$",
+      "NEMO": "XOR RE",
+      "REGEX": "^(XOR)\\s(RE)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "2C",
-      "NEMO": "INC B",
-      "REGEX": "^(INC)\\s(B)$",
+      "NEMO": "INC RB",
+      "REGEX": "^(INC)\\s(RB)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "2D",
-      "NEMO": "INC C",
-      "REGEX": "^(INC)\\s(C)$",
+      "NEMO": "INC RC",
+      "REGEX": "^(INC)\\s(RC)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "2E",
-      "NEMO": "INC D",
-      "REGEX": "^(INC)\\s(D)$",
+      "NEMO": "INC RD",
+      "REGEX": "^(INC)\\s(RD)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "2F",
-      "NEMO": "INC E",
-      "REGEX": "^(INC)\\s(E)$",
+      "NEMO": "INC RE",
+      "REGEX": "^(INC)\\s(RE)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "30",
-      "NEMO": "ADD B",
-      "REGEX": "^(ADD)\\s(B)$",
+      "NEMO": "ADD RB",
+      "REGEX": "^(ADD)\\s(RB)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "31",
-      "NEMO": "ADD C",
-      "REGEX": "^(ADD)\\s(C)$",
+      "NEMO": "ADD RC",
+      "REGEX": "^(ADD)\\s(RC)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "32",
-      "NEMO": "ADD D",
-      "REGEX": "^(ADD)\\s(D)$",
+      "NEMO": "ADD RD",
+      "REGEX": "^(ADD)\\s(RD)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "33",
-      "NEMO": "ADD E",
-      "REGEX": "^(ADD)\\s(E)$",
+      "NEMO": "ADD RE",
+      "REGEX": "^(ADD)\\s(RE)$",
       "GRUPO": 2,
       "ALLOC": 1
     },
     {
       "HEX": "40",
-      "NEMO": "MOV AC, B",
-      "REGEX": "^(MOV)\\s(AC),\\s?(B)$",
+      "NEMO": "MOV AC, RB",
+      "REGEX": "^(MOV)\\s(AC),\\s?(RB)$",
       "GRUPO": 3,
       "ALLOC": 1
     },
     {
       "HEX": "41",
-      "NEMO": "MOV AC, C",
-      "REGEX": "^(MOV)\\s(AC),\\s?(C)$",
+      "NEMO": "MOV AC, RC",
+      "REGEX": "^(MOV)\\s(AC),\\s?(RC)$",
       "GRUPO": 3,
       "ALLOC": 1
     },
     {
       "HEX": "42",
-      "NEMO": "MOV AC, D",
-      "REGEX": "^(MOV)\\s(AC),\\s?(D)$",
+      "NEMO": "MOV AC, RD",
+      "REGEX": "^(MOV)\\s(AC),\\s?(RD)$",
       "GRUPO": 3,
       "ALLOC": 1
     },
     {
       "HEX": "43",
-      "NEMO": "MOV AC, E",
-      "REGEX": "^(MOV)\\s(AC),\\s?(E)$",
+      "NEMO": "MOV AC, RE",
+      "REGEX": "^(MOV)\\s(AC),\\s?(RE)$",
       "GRUPO": 3,
       "ALLOC": 1
     },
@@ -428,29 +428,29 @@
     },
     {
       "HEX": "60",
-      "NEMO": "MOV inm, B",
-      "REGEX": "^(MOV)\\s(\\w{1,}),\\s?(B)$",
+      "NEMO": "MOV inm, RB",
+      "REGEX": "^(MOV)\\s(\\w{1,}),\\s?(RB)$",
       "GRUPO": 4,
       "ALLOC": 2
     },
     {
       "HEX": "61",
-      "NEMO": "MOV inm, C",
-      "REGEX": "^(MOV)\\s(\\w{1,}),\\s?(C)$",
+      "NEMO": "MOV inm, RC",
+      "REGEX": "^(MOV)\\s(\\w{1,}),\\s?(RC)$",
       "GRUPO": 4,
       "ALLOC": 2
     },
     {
       "HEX": "62",
-      "NEMO": "MOV inm, D",
-      "REGEX": "^(MOV)\\s(\\w{1,}),\\s?(D)$",
+      "NEMO": "MOV inm, RD",
+      "REGEX": "^(MOV)\\s(\\w{1,}),\\s?(RD)$",
       "GRUPO": 4,
       "ALLOC": 2
     },
     {
       "HEX": "63",
-      "NEMO": "MOV inm, E",
-      "REGEX": "^(MOV)\\s(\\w{1,}),\\s?(E)$",
+      "NEMO": "MOV inm, RE",
+      "REGEX": "^(MOV)\\s(\\w{1,}),\\s?(RE)$",
       "GRUPO": 4,
       "ALLOC": 2
     },
@@ -612,7 +612,7 @@
       "HEX": "FF",
       "NEMO": "FIN",
       "REGEX": "^(FIN)$",
-      "GRUPO": "",
+      "GRUPO": 0,
       "ALLOC": 1
     }
   ]

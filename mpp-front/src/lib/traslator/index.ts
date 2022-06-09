@@ -123,7 +123,7 @@ const post = (results: RegexResponse[], initDir: number) => {
           result.result.push(etiDirHex.slice(i, i + 2));
         }
 
-      } else if (!/[0-9A-Fa-f]{2}/g.test(r)) {
+      } else if (!checkIsHex(r)) {
         // is not !hex && !eti => error
         results.splice(i, 1);
       }
@@ -197,20 +197,19 @@ const translate = (instruction: Instruction, ops: string[]) => {
         return [OPHexCode, inmORDir];
       }
 
-      if (isDir && inmORDir.length !== 4) {
-        return [];
-      }
+      const isHex = checkIsHex(inmORDir);
+      if (!isHex) return [];
 
-      if (isInm && inmORDir.length !== 2) {
-        return [];
-      }
-
-      if (!checkIsHex(inmORDir)) return [];
+      const hex = parseInt(inmORDir, 16);
+      if (isDir && hex > 0xffff) return [];
+      if (isInm && hex > 0xff) return [];
 
       if (isDir) {
-        return [OPHexCode, inmORDir.slice(0, 2), inmORDir.slice(2)];
+        const newHex = hex.toString(16).padStart(4, "0");
+        return [OPHexCode, newHex.slice(0, 2), newHex.slice(2)];
       } else {
-        return [OPHexCode, inmORDir.slice(0, 2)];
+        const newHex = hex.toString(16).padStart(2, "0");
+        return [OPHexCode, newHex.slice(0, 2)];
       }
     }
   } else if (length === 3) {
@@ -228,20 +227,19 @@ const translate = (instruction: Instruction, ops: string[]) => {
         return [OPHexCode, inmORDir];
       }
 
-      if (isDir && inmORDir.length !== 4) {
-        return [];
-      }
+      const isHex = checkIsHex(inmORDir);
+      if (!isHex) return [];
 
-      if (isInm && inmORDir.length !== 2) {
-        return [];
-      }
-
-      if (!checkIsHex(inmORDir)) return [];
+      const hex = parseInt(inmORDir, 16);
+      if (isDir && hex > 0xffff) return [];
+      if (isInm && hex > 0xff) return [];
 
       if (isDir) {
-        return [OPHexCode, inmORDir.slice(0, 2), inmORDir.slice(2)];
+        const newHex = hex.toString(16).padStart(4, "0");
+        return [OPHexCode, newHex.slice(0, 2), newHex.slice(2)];
       } else {
-        return [OPHexCode, inmORDir.slice(0, 2)];
+        const newHex = hex.toString(16).padStart(2, "0");
+        return [OPHexCode, newHex.slice(0, 2)];
       }
     }
   }

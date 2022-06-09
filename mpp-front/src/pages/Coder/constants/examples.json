@@ -7,16 +7,16 @@
   {
     "title": "MULTIPLICATION",
     "description": "Performs multiplication of two numbers (B x C) and stores the result in AC",
-    "code": "# 5x3\nMOV 05, B # <== modify this\nMOV 03, C # <== modify this\n\nINISP 1234\nMOV B, AC\nPUSH\n\nTSTART MOV C, AC\nCMP 01\nBEQ TFIN\nPOP\nADD B\nPUSH\nMOV C, AC\nSUB 01\nMOV AC, C\nJMP TSTART\nTFIN POP\nFIN"
+    "code": "# 5x3\nMOV 05, RB # <== modify this\nMOV 03, RC # <== modify this\n\nINISP 1234\nMOV RB, AC\nPUSH\n\nTSTART MOV RC, AC\nCMP 01\nBEQ TFIN\nPOP\nADD RB\nPUSH\nMOV RC, AC\nSUB 01\nMOV AC, RC\nJMP TSTART\nTFIN POP\nFIN"
   },
   {
     "title": "SEARCH IN BUFFER FOR '05'",
     "description": null,
-    "code": "MOV 01, D\nMOV 02, E\nMOV 05, AC\nSTAX\n\nMOV 00, D\nMOV FE, E\nTS LDAX\n\nCMP 05\nBEQ TF\n\nMOV E, AC\nCMP FF\nBEQ TD\nJMP TE\n\nTD INC D\nTE INC E\n\nJMP TS\nTF FIN"
+    "code": "MOV 01, RD\nMOV 02, RE\nMOV 05, AC\nSTAX\n\nMOV 00, RD\nMOV FE, RE\nTS LDAX\n\nCMP 05\nBEQ TF\n\nMOV RE, AC\nCMP FF\nBEQ TD\nJMP TE\n\nTD INC RD\nTE INC RE\n\nJMP TS\nTF FIN"
   },
   {
     "title": "CALL FUNCTION",
     "description": "D = B + C",
-    "code": "INISP 0123\n\nMOV FF, D\nMOV FA, E\n\nMOV 10, AC\nSTAX\n\nINC E\nMOV 31, AC\nSTAX\n\nINC E\nMOV 42, AC\nSTAX\n\nINC E\nMOV C5, AC\nSTAX\n\n\nMOV 02, B\nMOV 02, C\nCALL FFFA\nFIN"
+    "code": "INISP 0123\n\nMOV FF, RD\nMOV FA, RE\n\nMOV 10, AC\nSTAX\n\nINC RE\nMOV 31, AC\nSTAX\n\nINC RE\nMOV 42, AC\nSTAX\n\nINC RE\nMOV C5, AC\nSTAX\n\n\nMOV 02, RB\nMOV 02, RC\nCALL FFFA\nFIN"
   }
 ]
