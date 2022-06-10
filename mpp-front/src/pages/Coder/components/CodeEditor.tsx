@@ -1,16 +1,16 @@
 import AceEditor, { IMarker } from "react-ace";
+import 'brace/ext/language_tools'; // after import react-ace
 import MppMode from "../MppMode";
+import completer from '../Completer';
 
 import React, { useEffect } from "react";
 import { EtiquetaPos, parseInput } from "../../../lib/traslator";
 import { TraslationError } from "../../../lib/traslator/index";
 import NumberBaseInput from "../../../components/NumberBaseInput";
 import { execute } from "../../../lib/core/index";
-import { Button, Popover, Space, Alert, Collapse } from "antd";
-import "ace-builds/src-noconflict/mode-text";
+import { Button, Popover, Space, Collapse } from "antd";
 import Examples from "./Examples";
 import { setStoredValue, getStoredValue } from "../../../lib/storage";
-import { animations } from "react-animation";
 import { Text } from "atomize";
 
 const { Panel } = Collapse;
@@ -57,6 +57,7 @@ export default function CodeEditor({
   useEffect(() => {
     if (!aceEditorRef.current) return;
     aceEditorRef.current.editor.getSession().setMode(new MppMode() as any);
+    aceEditorRef.current.editor.completers = [completer];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -109,8 +110,6 @@ export default function CodeEditor({
 
   const markers = [...hightlightEtiMarkers, ...errorMarkers];
 
-  const thereIsErrors = error.length > 0;
-
   // Render editor
   return (
     <>
@@ -158,16 +157,6 @@ export default function CodeEditor({
           </Collapse>
         </Space>
 
-        {thereIsErrors && (
-          <Alert
-            type="error"
-            style={{ animation: animations.fadeInUp }}
-            banner
-            message="There are errors in the code"
-            description="Check them out"
-          />
-        )}
-
         <Space direction="vertical" style={{ width: "100%" }}>
           <AceEditor
             onChange={onChange}
@@ -179,6 +168,8 @@ export default function CodeEditor({
               showLineNumbers: true,
               firstLineNumber: 0,
               fontSize: "14px",
+              enableBasicAutocompletion: true,
+              enableLiveAutocompletion: true,
             }}
             height="200px"
             width="unset"
