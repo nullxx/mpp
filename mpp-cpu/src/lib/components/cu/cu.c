@@ -55,9 +55,9 @@ static PubSubSubscription *flags_out_bus_topic_subscription = NULL;
 static PubSubSubscription *control_bus_topic_subscription = NULL;
 
 /**
- * Clock tick generator must be inside CU, but as this is a simulator, 
+ * Clock tick generator must be inside CU, but as this is a simulator,
  * the clock will be managed from the window to decrease CPU usage
- * 
+ *
  */
 double run_cu_clock_cycle(void) {
     while (1) {
@@ -125,6 +125,15 @@ void run_sync_comp(void (*run_comp_fn)(void)) {
     run_asyncronus_components();
 }
 
+void run_acumm_or_flags(void) {
+    for (int i = 0; i < ACUM_FLAGS_RELATION; i++) {
+        run_sync_comp(run_acumm);
+        run_sync_comp(cll_run_mxfldx);
+        run_sync_comp(run_flags);
+        run_sync_comp(cll_run_flagsinta);
+    }
+}
+
 void run_cu(int clk) {  // 1 opstate per run
     log_debug("Clock: %d", clk);
 
@@ -156,10 +165,7 @@ void run_cu(int clk) {  // 1 opstate per run
     }
 
     if (clk == 1) run_sync_comp(run_fffc);
-    if (clk == 1) run_sync_comp(cll_run_mxfldx);
-    if (clk == 1) run_sync_comp(run_flags);
-    if (clk == 1) run_sync_comp(cll_run_flagsinta);
-    if (clk == 1) run_sync_comp(run_acumm);
+    if (clk == 1) run_acumm_or_flags();
     if (clk == 1) run_sync_comp(run_greg);
     if (clk == 1) run_sync_comp(run_op2);
     if (clk == 1) run_sync_comp(run_hl);

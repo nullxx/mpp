@@ -166,9 +166,13 @@ const exportedMethods: {
 export function getCConsoleHandle() {
   return {
     print: (...args: unknown[]) => {
-      console.log.bind(console, ...args);
+      console.log(...args);
     },
     printErr: (...args: unknown[]) => {
+      if (process.env.NODE_ENV !== "production") {
+        return console.error(...args);
+      }
+
       toast.error(args.join(" "), {
         style: {
           border: "1px solid #713200",

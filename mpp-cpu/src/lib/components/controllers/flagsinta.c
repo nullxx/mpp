@@ -55,7 +55,7 @@ void cll_run_flagsinta(void) {
 
     // FC|INTA|X|X|X|X|X|FZ
     to_send.bits[FLAGSINTA_FC_BUS_BIT_POSITION] = last_bus_flags_out->current_value.bits[FLAGSINTA_FC_BUS_BIT_POSITION];
-    to_send.bits[FLAGSINTA_FZ_BUS_BIT_POSITION] = last_bus_flags_out->current_value.bits[FLAGSINTA_FZ_BUS_BIT_POSITION];
+    to_send.bits[FLAGSINTA_FZ_BUS_BIT_POSITION_TARGET] = last_bus_flags_out->current_value.bits[FLAGSINTA_FZ_BUS_BIT_POSITION_SOURCE];
     // rest of the bits are 0
     to_send.bits[FLAGSINTA_INTA_BUS_BIT_POSITION] = 0;  // TODO: Implement INTA
 
