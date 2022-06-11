@@ -1,7 +1,7 @@
 import AceEditor, { IMarker } from "react-ace";
-import 'brace/ext/language_tools'; // after import react-ace
+import "brace/ext/language_tools"; // after import react-ace
 import MppMode from "../MppMode";
-import completer from '../Completer';
+import completer from "../Completer";
 
 import React, { useEffect } from "react";
 import { EtiquetaPos, parseInput } from "../../../lib/traslator";
@@ -12,6 +12,8 @@ import { Button, Popover, Space, Collapse } from "antd";
 import Examples from "./Examples";
 import { setStoredValue, getStoredValue } from "../../../lib/storage";
 import { Text } from "atomize";
+import { useTextFile } from "../../../lib/utils";
+import toast from "react-hot-toast";
 
 const { Panel } = Collapse;
 
@@ -22,7 +24,7 @@ export default function CodeEditor({
   onNewTranslation: (lines: string[] | null) => void;
   onNewOffset: (offset: number) => void;
 }) {
-  const [code, setCode] = React.useState(getStoredValue("code", ""));
+  const [code, setCode] = React.useState<string>(getStoredValue("code", ""));
   const [traslated, setTraslated] = React.useState("");
   const [initOffset, setInitOffset] = React.useState(0);
   const [error, setError] = React.useState<TraslationError[]>([]);
@@ -30,6 +32,8 @@ export default function CodeEditor({
   const [etiPositions, setEtiPositions] = React.useState<EtiquetaPos[]>([]);
 
   const aceEditorRef = React.createRef<AceEditor>();
+
+  const { downloadFile, openFile } = useTextFile();
 
   useEffect(() => {
     setStoredValue("code", code);
@@ -85,6 +89,21 @@ export default function CodeEditor({
 
   function handleSelectExample(code: string) {
     setCode(code);
+  }
+
+  function handleDownloadCode() {
+    toast.success("Downloading code...");
+    // to avoid clousure
+    setCode((code) => {
+      downloadFile("code.mpp.txt", code);
+      return code;
+    });
+  }
+
+  async function handleOpenCode() {
+    const { content, file } = await openFile();
+    setCode(content);
+    toast.success("Code loaded from " + file.name);
   }
   // build markers
 
@@ -175,6 +194,18 @@ export default function CodeEditor({
             width="unset"
             mode="text"
             markers={markers}
+            commands={[
+              {
+                name: "save",
+                bindKey: { win: "Ctrl-S", mac: "Cmd-S" },
+                exec: handleDownloadCode,
+              },
+              {
+                name: "open",
+                bindKey: { win: "Ctrl-O", mac: "Cmd-O" },
+                exec: handleOpenCode,
+              },
+            ]}
           />
 
           <AceEditor
