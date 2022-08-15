@@ -4,9 +4,13 @@ import CodeEditor from "./components/CodeEditor";
 import { execute } from "../../lib/core/index";
 import IconButton from "../../components/IconButton";
 import { CodeOutlined } from "@ant-design/icons";
+import { useSearchParams } from "react-router-dom";
 
 const Coder: React.FC = () => {
-  const [visible, setVisible] = useState(false);
+  const [searchParams] = useSearchParams();
+  const initialCode = searchParams.get('code') || "";
+
+  const [visible, setVisible] = useState(Boolean(initialCode));
   const [canSaveToMem, setCanSaveToMem] = useState(false);
   const [initOffset, setInitOffset] = useState(0);
   const [slots, setSlots] = useState<string[]>([]);
@@ -14,6 +18,7 @@ const Coder: React.FC = () => {
   const showDefaultDrawer = () => {
     setVisible(true);
   };
+  
   const onClose = () => {
     setVisible(false);
   };
@@ -79,6 +84,7 @@ const Coder: React.FC = () => {
         <CodeEditor
           onNewTranslation={onNewTranslation}
           onNewOffset={onNewOffset}
+          initialCode={initialCode}
         />
       </Drawer>
     </>

@@ -13,14 +13,12 @@ import type {
 import initialNodes from "./constants/nodes";
 import initialEdges from "./constants/edges";
 import RegisterNode from "./components/RegisterNode";
-import FloatingEdge from "./components/FloatingEdge";
 import LoadableNode from "./components/LoadableNode";
 import BusNode from "./components/BusNode";
 import MemoryNode from "./components/MemoryNode";
 import ButtonStack from "./components/ButtonStack";
 import Settings from "./components/Settings";
 import Changelog from "./components/Info";
-import { EdgeTypes } from "react-flow-renderer";
 import StateTransition from "./components/StateTransition";
 import DebuggerNode from "./components/DebuggerNode";
 import FlagsNode from "./components/FlagsNode";
@@ -41,9 +39,6 @@ const nodeTypes: NodeTypes = {
   cycleTimeNode: CycleTimeNode as unknown as ReactNode,
 };
 
-const edgeTypes: EdgeTypes = {
-  floating: FloatingEdge as unknown as ReactNode,
-};
 
 function CPUTable() {
   const [nodes, setNodes] = useState(initialNodes);
