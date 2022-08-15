@@ -9,7 +9,7 @@
 </p>
 
 > Mpp is a simulator for the machine ++
-
+### Read the [docs](https://mpp-docs.nullx.me)
 ### ✨ [Demo](https://mpp.nullx.me)
 
 ![demo_welcome](demo/demo_welcome.png)
