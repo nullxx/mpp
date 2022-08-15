@@ -41,6 +41,7 @@ void init_acumm(void) {
 
     register_watcher(&acumm_reg_watcher);
 }
+
 void shutdown_acumm(void) {
     unregister_watcher(&acumm_reg_watcher);
     unsubscribe_for(data_bus_topic_subscription);

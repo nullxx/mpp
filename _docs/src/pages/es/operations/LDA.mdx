@@ -1,0 +1,31 @@
+---
+title: LDA
+description: Cargar valor de memoria en el acumulador.
+layout: ../../../layouts/MainLayout.astro
+---
+
+import Solution from '../../../components/Solution'
+
+Cargar valor de memoria en el acumulador.
+
+**El resultado se ve reflejado el acumulador**
+
+```
+AC = READMEM(DIR)
+```
+
+Siendo DIR una dirección de memoria de 16 bits.
+
+### Comando
+
+```
+LDA 001F
+```
+
+## Comprueba tus conocimientos
+
+Crea un programa que guarde en RB el contenido de la dirección de memoria 0x1324.
+
+**Nota**: debes conocer y utilizar la operación: [`MOV`](MOV)
+
+<Solution title="Solución" sol="LDA 1324\nMOV AC, RB" />

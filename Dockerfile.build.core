@@ -5,9 +5,4 @@ WORKDIR /mpp-cpu
 
 COPY mpp-cpu .
 
-RUN RUNTEST=1 make compile-tests
-RUN make run-tests
-
-RUN make clean # clean because compiled to export will be on another format
-
 RUN make

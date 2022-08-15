@@ -1,0 +1,42 @@
+---
+title: SUB
+description: Restar valores
+layout: ../../../layouts/MainLayout.astro
+---
+
+import Solution from '../../../components/Solution'
+
+Restar al acumulador un determinado valor.
+
+**El resultado se guarda en el acumulador**.
+
+```
+AC = AC - X
+```
+Siendo X el valor a restar
+
+### Restar un registro de propósito general al acumulador
+
+```
+SUB RB
+```
+
+### Restar un valor inmediato al acumulador
+
+```
+SUB 0F
+```
+
+### Restar un el acumulador al acumulador
+
+```
+SUB AC
+```
+
+## Comprueba tus conocimientos
+
+Crea un programa que haga la siguiente operación: `AC = 0x5 - 0x2`
+
+**Nota**: debes conocer y utilizar la operación: [`MOV`](MOV)
+
+<Solution title="Solución" sol={["MOV 05, AC\nSUB 02", "MOV 05, AC\nMOV 02, RB\nSUB RB"]} />

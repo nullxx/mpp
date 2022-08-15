@@ -1,0 +1,42 @@
+---
+title: LFA
+description: Guardar el valor de los flags en el acumulador.
+layout: ../../../layouts/MainLayout.astro
+---
+
+import Solution from '../../../components/Solution'
+
+Guardar el valor de los flags en el acumulador.
+
+```
+AC <= FLAGS
+```
+
+### Ejemplo
+
+Imaginamos la siguiente situación:
+* Flag ZERO = 1
+* Flag CARRY = 1
+
+Al ejecutarse la operación `LFA` tendremos en el acumulador el valor de 0x81.
+
+```
+10000001
+^      ^
+|      |
+FC     FZ
+```
+
+### Comando
+
+```
+LFA
+```
+
+## Comprueba tus conocimientos
+
+Crea un programa que consiga obtener en el acumulador el valor 0x80.
+
+**Nota**: debes conocer y utilizar la operación: [`MOV`](MOV)
+
+<Solution title="Solución" sol="MOV 01, AC\nCMP 02 # FZ = 1\nLFA" />

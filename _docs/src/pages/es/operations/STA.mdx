@@ -1,0 +1,29 @@
+---
+title: STA
+description: Guardar el valor del acumulador en memoria.
+layout: ../../../layouts/MainLayout.astro
+---
+
+import Solution from '../../../components/Solution'
+
+Guardar el valor del acumulador en memoria.
+
+```
+WRITEMEM(DIR)
+```
+
+Siendo DIR una dirección de memoria de 16 bits.
+
+### Comando
+
+```
+STA 001F
+```
+
+## Comprueba tus conocimientos
+
+Crea un programa que guarde el valor 0xFF en la dirección de memoria 0x1324.
+
+**Nota**: debes conocer y utilizar la operación: [`MOV`](MOV)
+
+<Solution title="Solución" sol="MOV FF, AC\nSTA 1324" />

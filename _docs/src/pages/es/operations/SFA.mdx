@@ -1,0 +1,42 @@
+---
+title: SFA
+description: Cargar los flags con el valor del acumulador.
+layout: ../../../layouts/MainLayout.astro
+---
+
+import Solution from '../../../components/Solution'
+
+Cargar los flags con el valor del acumulador.
+
+```
+FLAGS <= AC
+```
+
+### Ejemplo
+
+Imaginamos que el acumulador tiene el valor de 0x81 que en binario se representa como 10000001.
+Al ejecutar la operación `SFA`: 
+* El flag ZERO obtendrá el valor del bit más representativo del acumulador.
+* El flag CARRY obtendrá el valor del bit menos representativo del acumulador.
+
+```
+10000001
+^      ^
+|      |
+FC     FZ
+```
+
+
+### Comando
+
+```
+SFA
+```
+
+## Comprueba tus conocimientos
+
+Crea un programa que carge los flags `ZERO` = 1 Y `FLAGS` = 1.
+
+**Nota**: debes conocer y utilizar la operación: [`MOV`](MOV)
+
+<Solution title="Solución" sol="MOV 81, AC\nSFA" />

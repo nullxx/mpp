@@ -1,0 +1,42 @@
+---
+title: ADD
+description: Sumar valores
+layout: ../../../layouts/MainLayout.astro
+---
+
+import Solution from '../../../components/Solution'
+
+Sumar al acumulador un determinado valor.
+
+**El resultado se guarda en el acumulador**.
+
+```
+AC = AC + X
+```
+Siendo X el valor a sumar
+
+### Sumar un registro de propósito general al acumulador
+
+```
+ADD RB
+```
+
+### Sumar un valor inmediato al acumulador
+
+```
+ADD 0F
+```
+
+### Sumar un el acumulador al acumulador
+
+```
+ADD AC
+```
+
+## Comprueba tus conocimientos
+
+Crea un programa que haga la siguiente operación: `AC = 0x5 + 0x2`
+
+**Nota**: debes conocer y utilizar la operación: [`MOV`](MOV)
+
+<Solution title="Solución" sol={["MOV 05, AC\nADD 02", "MOV 05, AC\nMOV 02, RB\nADD RB"]} />

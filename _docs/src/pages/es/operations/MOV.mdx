@@ -1,0 +1,43 @@
+---
+title: MOV
+description: Mover valor de un registro a otro
+layout: ../../../layouts/MainLayout.astro
+---
+
+import Solution from '../../../components/Solution'
+
+Mover un valor de un registro a otro.
+
+Existen diferentes caminos:
+
+### Mover un valor inmediato a un registro de propósito general
+\* Inmediato: un valor entero de 8 bits elegido por el usuario.
+
+Mover 0xF al registro de propósito general B.
+```
+MOV 0F, RB
+```
+
+### Mover entre registros de propósito general
+
+```
+MOV B, C
+```
+
+### Mover entre un registro de propósito general al acumulador
+
+```
+MOV B, AC
+```
+
+### Mover un valor inmediato al acumulador
+
+```
+MOV 0F, AC
+```
+
+## Comprueba tus conocimientos
+
+Crea un programa que mueva un valor 0xA al registro RB y que posteriormente se mueva desde este último al acumulador
+
+<Solution title="Solución" sol="MOV 0xA, RB\nMOV RB, AC" />
