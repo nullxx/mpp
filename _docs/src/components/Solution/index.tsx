@@ -7,7 +7,7 @@ export default function Solution({
   testCodeText = 'Test code'
 }: {
   title?: string;
-  sol: string | string[];
+  sol: string[];
   testCodeText?: string;
 }) {
   const openCode = (code: string) => {
@@ -42,6 +42,8 @@ export default function Solution({
     );
   };
 
+  if (sol.length === 0) return 'No solution';
+
   return (
     <div className="tab tabs">
       <input type="checkbox" id="chck1" />
@@ -49,7 +51,7 @@ export default function Solution({
         {title}
       </label>
       <div className="tab-content">
-        {Array.isArray(sol)
+        {sol.length > 1
           ? sol.map((sol, i) => (
               <>
                 <span>
@@ -58,7 +60,7 @@ export default function Solution({
                 {renderSolution(sol)}
               </>
             ))
-          : renderSolution(sol)}
+          : renderSolution(sol[0])}
       </div>
     </div>
   );
