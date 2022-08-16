@@ -1,0 +1,27 @@
+---
+title: POP
+description: Desapilar un elemento de la pila
+layout: ../../../layouts/MainLayout.astro
+---
+
+import Solution from '../../../components/Solution'
+
+Desapilar un elemento de la pila
+
+```
+POP
+```
+
+## Operación de desapilar (pop)
+
+Al ejecutar la operación `POP`, suceden varias cosas:
+1. Se copia el valor de la posición de memoria que apunta el SP a la posición del acumulador.
+2. El SP se incrementa en una unidad.
+
+## Comprueba tus conocimientos
+
+Crea un programa que guarde en el acumulador el valor de la posición de memoria 0x8523.
+
+**Nota**: Puedes hacer uso de [`INISP`](/es/operations/INISP) pero no puedes hacer uso de [`LDAX`](/es/operations/LDAX) ni [`LDA`](/es/operations/LDA).
+
+<Solution title="Solución" sol={["INISP 8563\nPOP"]} testCodeText="Probar código" client:load />

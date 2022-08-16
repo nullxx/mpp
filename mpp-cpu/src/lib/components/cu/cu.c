@@ -118,7 +118,7 @@ void run_asyncronus_components(void) {
         run_mem();
         run_alu();
     }
-    run_acumm();
+    // run_acumm();
 }
 
 void run_sync_comp(void (*run_comp_fn)(void)) {
@@ -128,9 +128,10 @@ void run_sync_comp(void (*run_comp_fn)(void)) {
 
 void run_acumm_or_flags(void) {
     for (int i = 0; i < ACUM_FLAGS_RELATION; i++) {
-        run_sync_comp(cll_run_mxfldx);
-        run_sync_comp(run_flags);
-        run_sync_comp(cll_run_flagsinta);
+        run_acumm();
+        cll_run_mxfldx();
+        run_flags();
+        cll_run_flagsinta();
     }
 }
 

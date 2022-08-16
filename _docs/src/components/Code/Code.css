@@ -1,0 +1,9 @@
+.run-code {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.run-code button {
+    cursor: pointer;
+}

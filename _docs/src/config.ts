@@ -49,5 +49,11 @@ export const SIDEBAR = {
 		{ text: 'STAX', link: 'es/operations/STAX'},
 		{ text: 'SFA', link: 'es/operations/SFA'},
 		{ text: 'LFA', link: 'es/operations/LFA'},
+		{ text: 'INISP', link: 'es/operations/INISP'},
+		{ text: 'PUSH', link: 'es/operations/PUSH'},
+		{ text: 'POP', link: 'es/operations/POP'},
+
+		{ text: 'Ejemplos', header: true },
+		{ text: 'Multiplicación', link: 'es/examples/multiplication'},
 	],
 };

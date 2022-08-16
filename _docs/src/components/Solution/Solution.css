@@ -84,13 +84,3 @@ input:checked~.tab-content {
   max-height: 100vh;
   padding: 1em;
 }
-
-.run-code {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-}
-
-.run-code button {
-  cursor: pointer;
-}

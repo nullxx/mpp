@@ -1,0 +1,69 @@
+---
+title: Multiplicación
+description: Ejemplo de multiplicación
+layout: ../../../layouts/MainLayout.astro
+---
+export let a = 5;
+export let b = 3;
+
+import Code from '../../../components/Code/Code';
+import Solution from '../../../components/Solution';
+
+Vamos a realizar la siguiente multiplicación: {a} * {b}
+
+## Código de ejemplo
+
+```java
+int a = 5;
+int b = 3;
+
+int resultado = a;
+
+while (true) {
+    resultado = resultado + a;
+    b = b - 1;
+    if (b == 1) {
+        break;
+    }
+}
+```
+Como se puede ver en el ejemplo vamos a ir acumulando el valor de a en resultado tantas veces como b.
+## 1. Guardar los numeros a multiplicar
+
+En este caso guardaremos ambos números en los registros RB y RC
+
+<Code testCodeText="Probar código" code={`MOV ${a.toString().padStart(2, '0')}, RB\nMOV ${b.toString().padStart(2, '0')}, RC`} client:load />
+
+## 2. Guardar el resultado
+
+Me he ayudado de la pila para guardar el resultado.
+
+#### Y por qué la pila?
+Los ingenieros debemos simplificar, y no por vagería si no por salud. 
+Lo bueno que tiene la pila de la M++ es que el valor recuperado de la pila (`POP`) se guarda en el acumulador.
+Podríamos hacerlo utilizando un registro auxiliar RD pero tendríamos que añadir unos cuantos `MOV`s.
+### Inicializar el puntero de la pila
+
+<Code testCodeText="Probar código" code={`INISP 1234`} client:load />
+
+### Inicializar el resultado
+
+Vamos a inicializarlo a {a}.
+
+<Code testCodeText="Probar código" code={`MOV RB, AC\nPUSH`} client:load />
+
+## 3. Bucle
+
+Vamos recuperando el resultado de la pila y sumandole el valor de RB ({a}). Al igual que decrementamos RC (que contiene las veces que vamos a sumar).
+
+<Code testCodeText="Probar código" code={`TSTART MOV RC, AC\nCMP 01\nBEQ TFIN\nPOP\nADD RB\nPUSH\nMOV RC, AC\nSUB 01\nMOV AC, RC\nJMP TSTART\nTFIN POP`} client:load />
+
+## Código final
+
+<Code testCodeText="Probar código" code={`# ${a}x${b}\nMOV ${a.toString().padStart(2, '0')}, RB\nMOV ${b.toString().padStart(2, '0')}, RC\n\nINISP 1234\nMOV RB, AC\nPUSH\n\nTSTART MOV RC, AC\nCMP 01\nBEQ TFIN\nPOP\nADD RB\nPUSH\nMOV RC, AC\nSUB 01\nMOV AC, RC\nJMP TSTART\nTFIN POP\nFIN`} client:load />
+
+## Mejoras
+
+#### Qué cambio habría que hacer si se pidiera que el resultado debe de inicializarse a 0, en vez de a {a}?
+
+<Solution testCodeText="Probar código" sol={['MOV 05, RB\nMOV 03, RC\n\nINISP 1234\nMOV 0, AC # <====\nPUSH\n\nTSTART MOV RC, AC\nCMP 00 # <====\nBEQ TFIN\nPOP\nADD RB\nPUSH\nMOV RC, AC\nSUB 01\nMOV AC, RC\nJMP TSTART\nTFIN POP\nFIN']} />

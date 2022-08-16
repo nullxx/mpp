@@ -1,48 +1,17 @@
 import "./Solution.css";
 import * as React from "preact";
+import Code from "../Code/Code";
 
 export default function Solution({
   title = "Solution",
   sol,
-  testCodeText = 'Test code'
+  testCodeText = "Test code",
 }: {
   title?: string;
   sol: string[];
   testCodeText?: string;
 }) {
-  const openCode = (code: string) => {
-    // open new url in new tab
-    const url = new URL("https://mpp.nullx.me");
-    url.searchParams.set("code", code);
-    window.open(url.href, "_blank");
-  };
-
-  const renderSolution = (sol: string) => {
-    return (
-      <pre
-        className="shiki github-dark"
-        style={{ backgroundColor: "#0d1117", color: "#c9d1d9" }}
-      >
-        <div className="run-code">
-          <button onClick={() => openCode(sol)}>{testCodeText}</button>
-        </div>
-        <div className="code-container">
-          <code>
-            <div className="line">
-              {sol.split("\\n").map((line, i) => (
-                <span key={i}>
-                  {line}
-                  <br />
-                </span>
-              ))}
-            </div>
-          </code>
-        </div>
-      </pre>
-    );
-  };
-
-  if (sol.length === 0) return 'No solution';
+  if (sol.length === 0) return "No solution";
 
   return (
     <div className="tab tabs">
@@ -57,10 +26,10 @@ export default function Solution({
                 <span>
                   {title} {i + 1}
                 </span>
-                {renderSolution(sol)}
+                <Code code={sol} testCodeText={testCodeText} />
               </>
             ))
-          : renderSolution(sol[0])}
+          : <Code code={sol[0]} testCodeText={testCodeText} />}
       </div>
     </div>
   );

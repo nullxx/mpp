@@ -1,0 +1,32 @@
+---
+title: INISP
+description: Inicializar el puntero de pila
+layout: ../../../layouts/MainLayout.astro
+---
+
+import Solution from '../../../components/Solution'
+
+Inicializar el puntero de pila.
+
+```
+INISP DIR
+```
+Siendo DIR una dirección de memoria.
+
+## La pila (stack)
+
+La pila es un area de memoria que se usa para almacenar datos.
+![](/assets/components/stack.png)
+
+Como se puede observar hay tres cosas a tener en cuenta:
+* El puntero de pila (TOP o SP)
+* Operación de apilar (push)
+* Operación de desapilar (pop)
+
+El puntero de pila indica la posición del último elemento que se ha añadido a la pila.
+
+## Comprueba tus conocimientos
+
+Crea un programa que inicialice el puntero de pila (SP) a la dirección 0x8563.
+
+<Solution title="Solución" sol={["INISP 8563"]} testCodeText="Probar código" client:load />

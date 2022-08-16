@@ -26,7 +26,7 @@ export default function CodeEditor({
   onNewOffset: (offset: number) => void;
   initialCode?: string;
 }) {
-  const [code, setCode] = React.useState<string>(initialCode ?? getStoredValue("code", ""));
+  const [code, setCode] = React.useState<string>(initialCode || getStoredValue("code", ""));
   const [traslated, setTraslated] = React.useState("");
   const [initOffset, setInitOffset] = React.useState(0);
   const [error, setError] = React.useState<TraslationError[]>([]);

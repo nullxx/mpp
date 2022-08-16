@@ -19,9 +19,9 @@ layout: ../../../layouts/MainLayout.astro
 * [LDAX](/es/operations/LDAX)
 * [LFA](/es/operations/LFA)
 * [SFA](/es/operations/SFA)
-* INISP
-* PUSH
-* POP
+* [INISP](/es/operations/INISP)
+* [PUSH](/es/operations/PUSH)
+* [POP](/es/operations/POP)
 * BEQ
 * BC
 * JMP
