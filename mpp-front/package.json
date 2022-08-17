@@ -30,7 +30,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/nullxx/mpp",
-    "directory": "mpp-front"
+    "directory": "mpp-front",
+    "documentation": "https://mpp-docs.nullx.me"
   },
   "homepage": "https://mpp.nullx.me/",
   "author": {
@@ -38,6 +39,7 @@
     "name": "nullx",
     "url": "https://nullx.me"
   },
+  
   "scripts": {
     "postinstall": "npx patch-package",
     "start": "react-scripts start",

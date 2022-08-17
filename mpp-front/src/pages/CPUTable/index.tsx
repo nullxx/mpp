@@ -25,6 +25,7 @@ import FlagsNode from "./components/FlagsNode";
 import CycleTimeNode from "./components/CycleTimeNode";
 import Github from "../../components/Github";
 import Attribution from "../../components/Attribution";
+import Docs from "../../components/Docs";
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -64,6 +65,7 @@ function CPUTable() {
             <Space align="center">
               <h2>M++ Simulator</h2>
               <Github />
+              <Docs />
             </Space>
             <Space>
               <Settings />
