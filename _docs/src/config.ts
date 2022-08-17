@@ -12,9 +12,6 @@ export const KNOWN_LANGUAGES = {
 // Uncomment this to add an "Edit this page" button to every page of documentation.
 export const GITHUB_EDIT_URL = `https://github.com/nullxx/mpp/tree/master/_docs/`;
 
-// Uncomment this to add an "Join our Community" button to every page of documentation.
-// export const COMMUNITY_INVITE_URL = `https://astro.build/chat`;
-
 // Uncomment this to enable site search.
 // See "Algolia" section of the README for more information.
 // export const ALGOLIA = {
