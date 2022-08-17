@@ -7,8 +7,7 @@ export default memo(({ data, isConnectable }: any) => {
   return (
     <div
       style={{
-        border: "1px solid #1a192b",
-        borderRadius: 3,
+        borderRadius: 5,
         padding: 5,
         background: "#fff",
         width: data.width,

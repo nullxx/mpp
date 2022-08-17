@@ -59,26 +59,22 @@ html, body, #root, .App {
 
 .blob {
   animation: pulse 0.1s forwards;
-  background-color: #F0C400;
 }
 
 @keyframes pulse {
   0% {
     /* transform: scale(0.95, 0.95); */
-    box-shadow: 0 0 0 0 #F0C400;
     background-color: #FFFF;
   }
 
   70% {
     /* transform: scale(1, 1); */
     background-color: #f0c4005d;
-    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
   }
 
   100% {
     /* transform: scale(0.95, 0.95); */
     background-color: #f0c40094;
-    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
   }
 }
 
@@ -133,4 +129,13 @@ html, body, #root, .App {
 .code {
   border: 1px dotted #ccc;
   padding: 5px;
+}
+
+.pretty-shadow {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  border-radius: 5px;
+}
+
+.state-transition-step .ant-steps-item-icon {
+  width: 36px;
 }

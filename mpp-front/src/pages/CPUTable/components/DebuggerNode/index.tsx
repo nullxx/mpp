@@ -3,7 +3,9 @@ import { execute, unsubscribeToUIUpdates } from "../../../../lib/core";
 import { Row, Col, Text } from "atomize";
 import { Alert, Tooltip } from "antd";
 
-import NumberBaseInput, { Base } from "../../../../components/NumberBaseInput";
+import NumberBaseInput from "../../../../components/NumberBaseInput";
+import { Base } from "../../../../constants/bases";
+
 import { subscribeToUIUpdates } from "../../../../lib/core/index";
 import { deductOperationOf, NO_OP_NAME } from "../../../../lib/debugger";
 import { useForceUpdate } from "../../../../hook/forceUpdate";
@@ -21,7 +23,7 @@ function DebuggerComponentRow({
 }) {
   return (
     <Row className={focus ? "debuggerPointed" : undefined}>
-      <Col>{range[0].toString(16) + "-" + range[1].toString(16)}</Col>
+      <Col>{range[0].toString(16).toUpperCase() + "-" + range[1].toString(16).toUpperCase()}</Col>
       {operation === NO_OP_NAME ? (
         <Col className={focus ? "debuggerPointedOpNotFound" : undefined}>
           {operation}
@@ -68,11 +70,11 @@ function DebuggerComponent({
 
     const pointerBottom = pointerTop + pointerHeight;
 
-    listScroll.scrollTop = pointerBottom - listScrollHeight; // maybe is better without smooth, because when the program is fast it will be better
-    // listScroll.scrollTo({
-    //   top: pointerBottom - listScrollHeight,
-    //   behavior: "smooth",
-    // });
+    // listScroll.scrollTop = pointerBottom - listScrollHeight; // maybe is better without smooth, because when the program is fast it will be better
+    listScroll.scrollTo({
+      top: pointerBottom - listScrollHeight,
+      behavior: "smooth",
+    });
   }, [memOffset]);
 
   return (
@@ -143,11 +145,9 @@ const DebuggerNode = ({ data }: { data: any }) => {
   return (
     <div
       style={{
-        paddingLeft: 20,
-        paddingRight: 20,
-        border: "1px solid black",
-        backgroundColor: "white",
+        padding: 10,
       }}
+      className="pretty-shadow"
     >
       <Row>
         <Col size="100%">

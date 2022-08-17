@@ -1,25 +1,7 @@
 import { Input, Select } from "antd";
 import React from "react";
+import { Base, bases } from "../constants/bases";
 const { Option } = Select;
-
-export type Base = "DEC" | "HEX" | "BIN";
-const bases: { base: Base; radix: number; regex: RegExp }[] = [
-  {
-    base: "DEC",
-    radix: 10,
-    regex: /^\d+\.?\d*$/,
-  },
-  {
-    base: "HEX",
-    radix: 16,
-    regex: /^[a-fA-F0-9]+$/,
-  },
-  {
-    base: "BIN",
-    radix: 2,
-    regex: /^[0-1]{1,}$/,
-  },
-];
 
 export function getRadix(base: Base) {
   const targetBase = bases.find(({ base: b }) => b === base);

@@ -21,7 +21,7 @@ const nodes: Node[] = [
     draggable: false,
     type: "registerNode",
     data: {
-      label: "B",
+      label: "RB",
       readOnly: true,
       getFunction: "get_register_b",
       helpInfo: "General purpose register. Use it as 'RB' in the code.",
@@ -34,7 +34,7 @@ const nodes: Node[] = [
     draggable: false,
     type: "registerNode",
     data: {
-      label: "C",
+      label: "RC",
       readOnly: true,
       getFunction: "get_register_c",
       helpInfo: "General purpose register. Use it as 'RC' in the code.",
@@ -47,7 +47,7 @@ const nodes: Node[] = [
     draggable: false,
     type: "registerNode",
     data: {
-      label: "D",
+      label: "RD",
       readOnly: true,
       getFunction: "get_register_d",
       helpInfo: "General purpose register. Use it as 'RD' in the code.",
@@ -60,7 +60,7 @@ const nodes: Node[] = [
     draggable: false,
     type: "registerNode",
     data: {
-      label: "E",
+      label: "RE",
       readOnly: true,
       getFunction: "get_register_e",
       helpInfo: "General purpose register. Use it as 'RE' in the code.",

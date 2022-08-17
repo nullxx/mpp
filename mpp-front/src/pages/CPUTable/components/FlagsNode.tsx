@@ -46,11 +46,12 @@ export default function FlagsNode({ data }: { data: any }) {
   return (
     <div
       style={{
-        backgroundColor: "white",
         paddingLeft: 20,
         paddingRight: 20,
+        paddingTop: 10,
+        paddingBottom: 10,
       }}
-      className={changed ? "blob bordered" : "bordered"}
+      className={`${changed ? "blob" : ""} pretty-shadow`}
     >
       <Row>
         <Col size="100%">

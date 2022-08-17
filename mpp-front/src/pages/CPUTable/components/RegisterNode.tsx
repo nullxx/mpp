@@ -42,8 +42,8 @@ export default memo(({ data, isConnectable }: any) => {
 
   return (
     <div
-      className={changed ? "blob bordered" : "bordered"}
-      style={{ borderRadius: 3, padding: 5, background: "white" }}
+      className={`${changed ? "blob" : ""} pretty-shadow`}
+      style={{ padding: 6 }}
     >
       <Row>
         <Col>

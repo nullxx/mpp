@@ -25,9 +25,10 @@ export default function CycleTimeNode() {
       style={{
         paddingLeft: 20,
         paddingRight: 20,
-        border: "1px solid black",
-        backgroundColor: "white",
+        paddingTop: 10,
+        paddingBottom: 10,
       }}
+      className="pretty-shadow"
     >
       <h4>Clock cycle time</h4>
       <Tooltip

@@ -2,28 +2,35 @@ import React from "react";
 import { execute, unsubscribeToUIUpdates } from "../../../lib/core";
 import { Row, Col, Text } from "atomize";
 
-import NumberBaseInput, {
-  Base,
-  getRadix,
-} from "../../../components/NumberBaseInput";
+import NumberBaseInput, { getRadix } from "../../../components/NumberBaseInput";
+import { Base } from "../../../constants/bases";
+
 import { subscribeToUIUpdates } from "../../../lib/core/index";
 import { useForceUpdate } from "../../../hook/forceUpdate";
 import { Tooltip } from "antd";
+import { getStoredValue } from "../../../lib/storage";
+import { SettingType, SettingDefaultValue } from "./Settings";
 
 function MemoryComponentRow({
   offset,
   value,
   style,
+  valueBaseRadix,
 }: {
   offset: string;
   value: string | number;
   style?: React.CSSProperties;
+  valueBaseRadix: number;
 }) {
   if (Number(value) === -1) return null;
+
   return (
     <Row style={style}>
       <Col>{offset}</Col>
-      <Col>{value}</Col>
+      <Col>
+        {Number(value).toString(valueBaseRadix).toUpperCase()}
+        <sub>({valueBaseRadix})</sub>
+      </Col>
     </Row>
   );
 }
@@ -43,20 +50,36 @@ function MemoryComponent({ offset, base }: { offset: number; base: Base }) {
   const currValue = execute("get_memory_value", currOffset);
   const nextValue = execute("get_memory_value", nextOffset);
 
+  const valueBaseRadix = getRadix(
+    getStoredValue(
+      SettingType.MEM_VALUE_BASE,
+      SettingDefaultValue.MEM_VALUE_BASE
+    )
+  );
+
   return (
-    <>
+    <div style={{ overflow: "hidden" }}>
       <Row>
         <Col>Offset</Col>
         <Col>Value</Col>
       </Row>
-      <MemoryComponentRow offset={prevOffsetStr} value={prevValue} />
+      <MemoryComponentRow
+        offset={prevOffsetStr}
+        value={prevValue}
+        valueBaseRadix={valueBaseRadix}
+      />
       <MemoryComponentRow
         offset={currOffsetStr}
         value={currValue}
-        style={{ backgroundColor: "#dedede" }}
+        style={{ backgroundColor: "#f0c40094" }}
+        valueBaseRadix={valueBaseRadix}
       />
-      <MemoryComponentRow offset={nextOffsetStr} value={nextValue} />
-    </>
+      <MemoryComponentRow
+        offset={nextOffsetStr}
+        value={nextValue}
+        valueBaseRadix={valueBaseRadix}
+      />
+    </div>
   );
 }
 
@@ -93,9 +116,9 @@ const MemoryNode = ({ data }: { data: any }) => {
       style={{
         height: data.height,
         width: data.width,
-        border: "1px solid black",
-        backgroundColor: "white",
+        padding: 10,
       }}
+      className="pretty-shadow"
     >
       <Row>
         <Col size="100%">

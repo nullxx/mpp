@@ -65,12 +65,12 @@ function doReplacements(offset: number, operation: string) {
 function replaceInm(offset: number, operation: string) {
   return operation.replace(
     INM_NAME,
-    execute<number>("get_memory_value", offset + 1).toString(16)
+    execute<number>("get_memory_value", offset + 1).toString(16).toUpperCase()
   );
 }
 
 function replaceDir(offset: number, operation: string) {
-  const hdir = execute<number>("get_memory_value", offset + 1).toString(16);
-  const ldir = execute<number>("get_memory_value", offset + 2).toString(16);
+  const hdir = execute<number>("get_memory_value", offset + 1).toString(16).toUpperCase();
+  const ldir = execute<number>("get_memory_value", offset + 2).toString(16).toUpperCase();
   return operation.replace(DIR_NAME, `${hdir}${ldir}`);
 }

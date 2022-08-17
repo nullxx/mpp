@@ -30,7 +30,11 @@ export default function StateTransition({ data }: { data: any }) {
 
   React.useEffect(() => {
     if (divRef.current) {
-      divRef.current.scrollTop = divRef.current.scrollHeight;
+      // divRef.current.scrollTop = divRef.current.scrollHeight;
+      divRef.current.scrollTo({
+        top: divRef.current.scrollHeight,
+        behavior: "smooth",
+      });
     }
   }, [states.length]);
 
@@ -84,13 +88,12 @@ export default function StateTransition({ data }: { data: any }) {
     <div
       ref={divRef}
       style={{
-        border: "1px solid black",
-        backgroundColor: "white",
         maxHeight: 300,
         overflow: "auto",
         width: 220,
         padding: 8,
       }}
+      className="pretty-shadow"
     >
       <Row>
         <Col size="100%">
@@ -113,6 +116,7 @@ export default function StateTransition({ data }: { data: any }) {
                 );
               return (
                 <Step
+                  className="state-transition-step"
                   key={index}
                   title={title}
                   description={state.op}
@@ -124,7 +128,7 @@ export default function StateTransition({ data }: { data: any }) {
         </Col>
       </Row>
       <Row>
-        <Col size="100%">
+        <Col>
           {states.length > 0 ? (
             <IconButton
               icon={<DeleteOutlined />}
