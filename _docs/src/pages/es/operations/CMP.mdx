@@ -5,6 +5,7 @@ layout: ../../../layouts/MainLayout.astro
 ---
 
 import Solution from '../../../components/Solution'
+import states from './states.json';
 
 Comparar dos valores.
 
@@ -41,6 +42,14 @@ SI ((AC - RB) == 0) {
   ZERO = 1
 }
 ```
+
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S2 | {states.S2} |
+| S7 | {states.S7} |
 
 ### Comprobar si el acumulador y un valor inmediato son iguales
 Serán iguales si el indicador del flag `ZERO` es 1.

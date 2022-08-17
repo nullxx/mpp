@@ -1,0 +1,32 @@
+---
+title: CALL
+description: Llamada a una función
+layout: ../../../layouts/MainLayout.astro
+---
+import states from './states.json';
+
+Llamada a una función
+
+```
+CALL DIR
+```
+siendo `DIR` una dirección de memoria.
+
+Una llamada a una función mezcla diferentes conceptos:
+* Uso de la pila para almacenar la dirección de retorno.
+* Salto a una dirección de memoria.
+
+#### Debe de ir acompañado de la instrucción [`RET`](/es/operations/RET).
+
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S16 | {states.S16} |
+| S17 | {states.S17} |
+| S26 | {states.S26} |
+| S28 | {states.S28} |
+| S26 | {states.S26} |
+| S29 | {states.S29} |
+| S20 | {states.S20} |

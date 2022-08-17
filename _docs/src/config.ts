@@ -52,6 +52,12 @@ export const SIDEBAR = {
 		{ text: 'INISP', link: 'es/operations/INISP'},
 		{ text: 'PUSH', link: 'es/operations/PUSH'},
 		{ text: 'POP', link: 'es/operations/POP'},
+		{ text: 'BEQ', link: 'es/operations/BEQ'},
+		{ text: 'BC', link: 'es/operations/BC'},
+		{ text: 'JMP', link: 'es/operations/JMP'},
+		{ text: 'CALL', link: 'es/operations/CALL'},
+		{ text: 'RET', link: 'es/operations/RET'},
+		{ text: 'FIN', link: 'es/operations/FIN'},
 
 		{ text: 'Ejemplos', header: true },
 		{ text: 'Multiplicación', link: 'es/examples/multiplication'},

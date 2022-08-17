@@ -1,0 +1,40 @@
+---
+title: BEQ
+description: Salto condicional si FZ = 1
+layout: ../../../layouts/MainLayout.astro
+---
+
+import Solution from '../../../components/Solution'
+import states from './states.json';
+
+Salto condicional si FZ = 1.
+
+```
+BEQ DIR
+```
+siendo `DIR` una dirección de memoria.
+
+#### Microprograma si FZ = 1
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S16 | {states.S16} |
+| S17 | {states.S17} |
+| S20 | {states.S20} |
+
+#### Microprograma si FZ = 0
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S16 | {states.S16} |
+| S17 | {states.S17} |
+
+## Comprueba tus conocimientos
+
+Crea un programa que haga un salto condicional `BEQ` a la dirección 0x100.
+
+**Nota**: debes conocer y utilizar la operación: [`MOV`](/es/operations/MOV), [`CMP`](/es/operations/CMP)
+
+<Solution title="Solución" sol={["MOV 05, AC\nCMP 05\nBEQ 100"]} testCodeText="Probar código" client:load />

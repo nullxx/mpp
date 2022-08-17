@@ -5,6 +5,7 @@ layout: ../../../layouts/MainLayout.astro
 ---
 
 import Solution from '../../../components/Solution'
+import states from './states.json';
 
 Cargar valor de memoria en el acumulador.
 
@@ -21,6 +22,16 @@ Siendo DIR una dirección de memoria de 16 bits.
 ```
 LDA 001F
 ```
+
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S16 | {states.S16} |
+| S17 | {states.S17} |
+| S18 | {states.S18} |
+| S4 | {states.S4} |
 
 ## Comprueba tus conocimientos
 

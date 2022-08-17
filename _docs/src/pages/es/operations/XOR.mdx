@@ -5,6 +5,7 @@ layout: ../../../layouts/MainLayout.astro
 ---
 
 import Solution from '../../../components/Solution'
+import states from './states.json';
 
 OR-EXCLUSIVA (XOR) entre el valor de un registro y el del acumulador.
 
@@ -16,17 +17,41 @@ OR-EXCLUSIVA (XOR) entre el valor de un registro y el del acumulador.
 XOR 0F
 ```
 
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S15 | {states.S15} |
+| S11 | {states.S11} |
+
 ### OR-EXCLUSIVA de un registro de propósito general y el acumulador
 
 ```
 XOR RB
 ```
 
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S2 | {states.S2} |
+| S11 | {states.S11} |
+
 ### OR-EXCLUSIVA del acumulador y el acumulador
 
 ```
 XOR AC
 ```
+
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S12 | {states.S12} |
+| S11 | {states.S11} |
 
 ## Comprueba tus conocimientos
 

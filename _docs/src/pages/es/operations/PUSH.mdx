@@ -5,6 +5,7 @@ layout: ../../../layouts/MainLayout.astro
 ---
 
 import Solution from '../../../components/Solution'
+import states from './states.json';
 
 Apilar un elemento en la pila
 
@@ -17,6 +18,14 @@ PUSH
 Al ejecutar la operación `PUSH`, suceden varias cosas:
 1. El SP se decrementa en una unidad.
 2. Se copia el valor del acumulador a la posición de memoria que apunta el SP. 
+
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S26 | {states.S26} |
+| S36 | {states.S36} |
 
 ## Comprueba tus conocimientos
 

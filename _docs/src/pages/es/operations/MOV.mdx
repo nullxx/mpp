@@ -5,6 +5,7 @@ layout: ../../../layouts/MainLayout.astro
 ---
 
 import Solution from '../../../components/Solution'
+import states from './states.json';
 
 Mover un valor de un registro a otro.
 
@@ -18,23 +19,55 @@ Mover 0xF al registro de propósito general B.
 MOV 0F, RB
 ```
 
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S15 | {states.S15} |
+| S3 | {states.S3} |
+
 ### Mover entre registros de propósito general
 
 ```
-MOV B, C
+MOV RB, RC
 ```
+
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S2 | {states.S2} |
+| S3 | {states.S3} |
 
 ### Mover entre un registro de propósito general al acumulador
 
 ```
-MOV B, AC
+MOV RB, AC
 ```
+
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S2 | {states.S2} |
+| S4 | {states.S4} |
 
 ### Mover un valor inmediato al acumulador
 
 ```
 MOV 0F, AC
 ```
+
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S15 | {states.S15} |
+| S4 | {states.S4} |
 
 ## Comprueba tus conocimientos
 

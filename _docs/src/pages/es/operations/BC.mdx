@@ -1,0 +1,48 @@
+---
+title: BC
+description: Salto condicional si FC = 1
+layout: ../../../layouts/MainLayout.astro
+---
+
+import Solution from '../../../components/Solution'
+import states from './states.json';
+
+Salto condicional si FC = 1.
+
+```
+BC DIR
+```
+siendo `DIR` una dirección de memoria.
+
+#### Microprograma si FC = 1
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S16 | {states.S16} |
+| S17 | {states.S17} |
+| S20 | {states.S20} |
+
+#### Microprograma si FC = 0
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S16 | {states.S16} |
+| S17 | {states.S17} |
+
+## Comprueba tus conocimientos
+
+Crea un programa que realize lo siguiente:
+```java
+int a = 5;
+int b = 6;
+int resultado = a - b;
+if (resultado < 0) {
+    // salto a dirección de memoria 0x212
+}
+```
+
+**Nota**: debes conocer y utilizar la operación: [`MOV`](/es/operations/MOV), [`SUB`](/es/operations/SUB)
+
+<Solution title="Solución" sol={["MOV 06, RB\nMOV 05, AC\nSUB RB\nBC 212"]} testCodeText="Probar código" client:load />

@@ -5,6 +5,7 @@ layout: ../../../layouts/MainLayout.astro
 ---
 
 import Solution from '../../../components/Solution'
+import states from './states.json';
 
 Cargar valor de memoria en el acumulador.
 
@@ -22,6 +23,16 @@ AC = READMEM(RD-RE)
 ```
 LDAX
 ```
+
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S21 | {states.S21} |
+| S22 | {states.S22} |
+| S18 | {states.S18} |
+| S4 | {states.S4} |
 
 ## Comprueba tus conocimientos
 

@@ -22,9 +22,9 @@ layout: ../../../layouts/MainLayout.astro
 * [INISP](/es/operations/INISP)
 * [PUSH](/es/operations/PUSH)
 * [POP](/es/operations/POP)
-* BEQ
-* BC
-* JMP
-* CALL
-* RET
-* FIN
+* [BEQ](/es/operations/BEQ)
+* [BC](/es/operations/BC)
+* [JMP](/es/operations/JMP)
+* [CALL](/es/operations/CALL)
+* [RET](/es/operations/RET)
+* [FIN](/es/operations/FIN)

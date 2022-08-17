@@ -12,6 +12,7 @@ Esta máquina se estudia en la asignatura Estructura de Computadores en ingenier
 
 En la parte de prácticas se utliza la M++ para resolver diferentes problemas con el objetivo de aprender a [microprogramar](https://es.wikipedia.org/wiki/Microc%C3%B3digo).
 
+![](https://github.com/nullxx/mpp/blob/master/demo/demo_board.png?raw=true)
 
 ### Motivaciones
 

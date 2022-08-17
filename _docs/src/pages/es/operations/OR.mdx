@@ -5,6 +5,7 @@ layout: ../../../layouts/MainLayout.astro
 ---
 
 import Solution from '../../../components/Solution'
+import states from './states.json';
 
 Suma lógica (OR) entre el valor de un registro y el del acumulador.
 
@@ -16,17 +17,41 @@ Suma lógica (OR) entre el valor de un registro y el del acumulador.
 OR 0F
 ```
 
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S15 | {states.S15} |
+| S10 | {states.S10} |
+
 ### Suma lógica de un registro de propósito general y el acumulador
 
 ```
 OR RB
 ```
 
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S12 | {states.S2} |
+| S10 | {states.S10} |
+
 ### Suma lógica del acumulador y el acumulador
 
 ```
 OR AC
 ```
+
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S12 | {states.S12} |
+| S10 | {states.S10} |
 
 ## Comprueba tus conocimientos
 

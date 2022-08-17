@@ -28,9 +28,9 @@ El objetivo era conseguir un diseño fácil de utilizar y sobretodo amigable y b
 
 Cuando un usuario utiliza tu programa cómo una herramienta para realizar algo, lo más que puede hacer el desarrollador es facilitarselo a través de una interfaz accesible.
 
-También traté de hacer la interfaz gráfica en Java, pero tampoco me convencía.
+También se trató de hacer la interfaz gráfica en Java, pero no lograba el objetivo.
 
-Entonces es cuando compienzo el desarrollo de la interfaz gráfica en la web, a través de [React](https://es.wikipedia.org/wiki/React).
+Entonces es cuando se comienza el desarrollo de la interfaz gráfica en la web, a través de [React](https://es.wikipedia.org/wiki/React).
 
 Pero, si el núcleo está desarrollado en [C](https://es.wikipedia.org/wiki/C_(lenguaje_de_programaci%C3%B3n)), ¿cómo puedo utilizarlo en la web?. Tradicionalmente no se podía "importar" ficheros binarios (compilados de [C](https://es.wikipedia.org/wiki/C_(lenguaje_de_programaci%C3%B3n))) en la web. Desde 2015, esto es posible gracias a [WebAssembly](https://en.wikipedia.org/wiki/WebAssembly), un formato de [código binario](https://es.wikipedia.org/wiki/C%C3%B3digo_binario) portable que se ejecuta en el lado del cliente (portable).
 

@@ -5,6 +5,7 @@ layout: ../../../layouts/MainLayout.astro
 ---
 
 import Solution from '../../../components/Solution'
+import states from './states.json';
 
 Guardar el valor del acumulador en memoria.
 
@@ -19,6 +20,16 @@ WRITEMEM(RD-RE)
 ```
 STAX
 ```
+
+#### Microprograma
+| ESTADO | MICRO-OPERACIÓN |
+|:-------|:----------|
+| S0 | {states.S0} |
+| S1 | {states.S1} |
+| S21 | {states.S21} |
+| S22 | {states.S22} |
+| S12 | {states.S12} |
+| S19 | {states.S19} |
 
 ## Comprueba tus conocimientos
 
