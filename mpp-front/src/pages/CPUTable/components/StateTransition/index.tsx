@@ -30,11 +30,7 @@ export default function StateTransition({ data }: { data: any }) {
 
   React.useEffect(() => {
     if (divRef.current) {
-      // divRef.current.scrollTop = divRef.current.scrollHeight;
-      divRef.current.scrollTo({
-        top: divRef.current.scrollHeight,
-        behavior: "smooth",
-      });
+      divRef.current.scrollTop = divRef.current.scrollHeight;
     }
   }, [states.length]);
 

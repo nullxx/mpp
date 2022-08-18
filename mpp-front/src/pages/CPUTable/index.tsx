@@ -40,7 +40,6 @@ const nodeTypes: NodeTypes = {
   cycleTimeNode: CycleTimeNode as unknown as ReactNode,
 };
 
-
 function CPUTable() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
@@ -61,12 +60,13 @@ function CPUTable() {
     <>
       <Layout style={{ height: "100%" }}>
         <Header className="mpp-header">
-          <Row justify="space-between">
+          <Row>
             <Space align="center">
               <h2>M++ Simulator</h2>
               <Github />
               <Docs />
             </Space>
+            <div style={{ flexGrow: 1 }} />
             <Space>
               <Settings />
               <Changelog />

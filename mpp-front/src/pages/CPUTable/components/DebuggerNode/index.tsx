@@ -70,11 +70,8 @@ function DebuggerComponent({
 
     const pointerBottom = pointerTop + pointerHeight;
 
-    // listScroll.scrollTop = pointerBottom - listScrollHeight; // maybe is better without smooth, because when the program is fast it will be better
-    listScroll.scrollTo({
-      top: pointerBottom - listScrollHeight,
-      behavior: "smooth",
-    });
+    listScroll.scrollTop = pointerBottom - listScrollHeight; // maybe is better without smooth, because when the program is fast it will be better
+
   }, [memOffset]);
 
   return (

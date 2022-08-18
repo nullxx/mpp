@@ -10,26 +10,31 @@ import { useForceUpdate } from "../../../hook/forceUpdate";
 import { Tooltip } from "antd";
 import { getStoredValue } from "../../../lib/storage";
 import { SettingType, SettingDefaultValue } from "./Settings";
+import usePrev from "../../../hook/usePrev";
 
 function MemoryComponentRow({
   offset,
   value,
   style,
   valueBaseRadix,
+  hasChanged,
 }: {
   offset: string;
   value: string | number;
   style?: React.CSSProperties;
   valueBaseRadix: number;
+  hasChanged: boolean;
 }) {
   if (Number(value) === -1) return null;
 
   return (
     <Row style={style}>
       <Col>{offset}</Col>
-      <Col>
-        {Number(value).toString(valueBaseRadix).toUpperCase()}
-        <sub>({valueBaseRadix})</sub>
+      <Col style={{ animation: hasChanged ? "wiggle 2s linear 1" : undefined }}>
+        <span>
+          {Number(value).toString(valueBaseRadix).toUpperCase()}
+          <sub>({valueBaseRadix})</sub>
+        </span>
       </Col>
     </Row>
   );
@@ -50,6 +55,13 @@ function MemoryComponent({ offset, base }: { offset: number; base: Base }) {
   const currValue = execute("get_memory_value", currOffset);
   const nextValue = execute("get_memory_value", nextOffset);
 
+  const pPrevOffset = usePrev(prevOffset);
+  const pCurrOffset = usePrev(currOffset);
+  const pNextOffset = usePrev(nextOffset);
+  const pPrevValue = usePrev(prevValue);
+  const pCurrValue = usePrev(currValue);
+  const pNextValue = usePrev(nextValue);
+
   const valueBaseRadix = getRadix(
     getStoredValue(
       SettingType.MEM_VALUE_BASE,
@@ -67,17 +79,20 @@ function MemoryComponent({ offset, base }: { offset: number; base: Base }) {
         offset={prevOffsetStr}
         value={prevValue}
         valueBaseRadix={valueBaseRadix}
+        hasChanged={pPrevOffset === prevOffset && pPrevValue !== prevValue}
       />
       <MemoryComponentRow
         offset={currOffsetStr}
         value={currValue}
         style={{ backgroundColor: "#f0c40094" }}
         valueBaseRadix={valueBaseRadix}
+        hasChanged={pCurrOffset === currOffset && pCurrValue !== currValue}
       />
       <MemoryComponentRow
         offset={nextOffsetStr}
         value={nextValue}
         valueBaseRadix={valueBaseRadix}
+        hasChanged={pNextOffset === nextOffset && pNextValue !== nextValue}
       />
     </div>
   );
