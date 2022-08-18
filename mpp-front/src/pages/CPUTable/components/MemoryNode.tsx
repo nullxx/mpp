@@ -165,13 +165,13 @@ const MemoryNode = ({ data, id }: { data: any; id: string }) => {
       </Row>
       <Row>
         <Col size="100%">
-          {/* <NumberBaseInput
+          <NumberBaseInput
             initialBase={base}
             number={searchValue}
             onChange={onSearch}
             onBaseChange={onBaseChange}
             width={200}
-          /> */}
+          />
         </Col>
       </Row>
       <Row>
