@@ -16,7 +16,7 @@ interface State {
   op: string;
 }
 
-const maxItems = 100;
+const maxItems = 2;
 
 export default function StateTransition({ data }: { data: any }) {
   const [states, setStates] = useState<State[]>([]);
@@ -88,6 +88,7 @@ export default function StateTransition({ data }: { data: any }) {
         overflow: "auto",
         width: 220,
         padding: 8,
+        backgroundColor: "#f5f5f5",
       }}
       className="pretty-shadow"
     >

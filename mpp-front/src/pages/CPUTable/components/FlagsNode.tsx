@@ -50,6 +50,7 @@ export default function FlagsNode({ data }: { data: any }) {
         paddingRight: 20,
         paddingTop: 10,
         paddingBottom: 10,
+        backgroundColor: "#f5f5f5",
       }}
       className={`${changed ? "blob" : ""} pretty-shadow`}
     >

@@ -139,31 +139,38 @@ html, body, #root, .App {
 .state-transition-step .ant-steps-item-icon {
   width: 36px;
 }
+
 @keyframes wiggle {
   0%, 7% {
     /* transform: rotateZ(0); */
     transform: scale(1);
   }
+
   15% {
     /* transform: rotateZ(-15deg); */
     transform: scale(1.1);
   }
+
   20% {
     /* transform: rotateZ(10deg); */
     transform: scale(1.2);
   }
+
   25% {
     /* transform: rotateZ(-10deg); */
     transform: scale(1.3);
   }
+
   30% {
     /* transform: rotateZ(6deg); */
     transform: scale(1.4);
   }
+
   35% {
     /* transform: rotateZ(-4deg); */
     transform: scale(1.5);
   }
+
   40%, 100% {
     /* transform: rotateZ(0); */
     transform: scale(1);
@@ -172,4 +179,28 @@ html, body, #root, .App {
 
 .ant-steps-item-process .ant-steps-item-description {
   font-weight: bold;
+}
+
+.bus {
+  background-image: linear-gradient(0deg, rgb(200, 47, 64) 6.25%, rgb(255, 217, 11) 6.25%, rgb(255, 217, 11) 12.50%, rgb(126, 107, 195) 12.50%, rgb(126, 107, 195) 18.75%, rgb(187, 133, 115) 18.75%, rgb(187, 133, 115) 25%, rgb(90, 202, 103) 25%, rgb(90, 202, 103) 31.25%, rgb(241, 242, 234) 31.25%, rgb(241, 242, 234) 37.50%, rgb(233, 159, 67) 37.50%, rgb(233, 159, 67) 43.75%, rgb(185, 187, 180) 43.75%, rgb(185, 187, 180) 50%, rgb(200, 47, 64) 50%, rgb(200, 47, 64) 56.25%, rgb(255, 217, 11) 56.25%, rgb(255, 217, 11) 62.50%, rgb(126, 107, 195) 62.50%, rgb(126, 107, 195) 68.75%, rgb(187, 133, 115) 68.75%, rgb(187, 133, 115) 75%, rgb(90, 202, 103) 75%, rgb(90, 202, 103) 81.25%, rgb(241, 242, 234) 81.25%, rgb(241, 242, 234) 87.50%, rgb(233, 159, 67) 87.50%, rgb(233, 159, 67) 93.75%, rgb(185, 187, 180) 93.75%, rgb(185, 187, 180) 100%);
+  background-size: 32.00px 32.00px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bus p {
+  background-color: white;
+  margin-right: 5px;
+  padding: 2px;
+}
+
+.react-flow__handle {
+  opacity: 0;
+  /* opacity: 0; to hide all unused handles */
+}
+
+.loadable-node {
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }

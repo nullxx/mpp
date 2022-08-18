@@ -2,22 +2,24 @@ import type { Node } from "../../../lib/ReactFlow";
 
 const nodes: Node[] = [
   {
-    id: "1",
+    id: "registers-bank",
     data: {
       label: "Registers bank",
       width: 400,
       height: 200,
-      loadBit: { label: "REGCAR", value: 0 },
+      controlBusBitLoad: { label: "ACCAR", getFunction: 'get_control_bus_regcar' },
+      controlBusBitRelease: { label: "ACBUS", getFunction: 'get_control_bus_regbus' },
     },
-    position: { x: -200, y: 150 },
+    draggable: false,
+    position: { x: -371, y: 24 },
     className: "light",
     type: "loadableNode",
     isParent: true,
   },
   {
-    id: "1a",
+    id: "rb",
     position: { x: 20, y: 50 },
-    parentNode: "1",
+    parentNode: "registers-bank",
     draggable: false,
     type: "registerNode",
     data: {
@@ -28,9 +30,9 @@ const nodes: Node[] = [
     },
   },
   {
-    id: "1b",
+    id: "rc",
     position: { x: 200, y: 50 },
-    parentNode: "1",
+    parentNode: "registers-bank",
     draggable: false,
     type: "registerNode",
     data: {
@@ -41,9 +43,9 @@ const nodes: Node[] = [
     },
   },
   {
-    id: "1c",
+    id: "rd",
     position: { x: 20, y: 120 },
-    parentNode: "1",
+    parentNode: "registers-bank",
     draggable: false,
     type: "registerNode",
     data: {
@@ -54,9 +56,9 @@ const nodes: Node[] = [
     },
   },
   {
-    id: "1d",
+    id: "re",
     position: { x: 200, y: 120 },
-    parentNode: "1",
+    parentNode: "registers-bank",
     draggable: false,
     type: "registerNode",
     data: {
@@ -69,90 +71,99 @@ const nodes: Node[] = [
 
   {
     id: "2",
-    position: { x: 270, y: 50 },
+    position: { x: -537, y: -227 },
     draggable: false,
     type: "registerNode",
     data: {
       label: "ACUM",
+      handlePos: 'bottom',
       readOnly: true,
       width: 70,
       height: 63,
-      loadBit: { label: "ACCAR", value: 1 },
+      controlBusBitLoad: { label: "ACCAR", getFunction: 'get_control_bus_accar' },
+      controlBusBitRelease: { label: "ACBUS", getFunction: 'get_control_bus_acbus' },
       getFunction: "get_register_acum",
       helpInfo: "Accumulator is a register that is the same length as the processor word (ALU operands). It is used to contain the result of an arithmetic operation or one of the ALU operands.",
     },
   },
 
   {
-    id: "3",
-    position: { x: 270, y: 120 },
+    id: "2op",
+    position: { x: -137, y: -228 },
     draggable: false,
     type: "registerNode",
     data: {
       label: "2OP",
+      handlePos: 'bottom',
       readOnly: true,
       width: 70,
       height: 63,
-      loadBit: { label: "2CAR", value: 0 },
+      controlBusBitLoad: { label: "ACCAR", getFunction: 'get_control_bus_2opcar' },
       getFunction: 'get_register_2op'
     },
   },
   {
-    id: "4",
-    position: { x: 270, y: 190 },
+    id: "pc",
+    position: { x: -751, y: -226 },
     draggable: false,
     type: "registerNode",
     data: {
       label: "PC",
       readOnly: true,
+      handlePos: 'bottom',
       width: 70,
       height: 63,
-      loadBit: { label: "PCCAR", value: 0 },
+      controlBusBitLoad: { label: "PCCAR", getFunction: 'get_control_bus_pccar' },
+      // controlBusBitRelease: { label: "???", getFunction: 'get_control_bus_pcbus??' },
       getFunction: "get_register_pc",
       helpInfo: "Program Counter is a register that contains the address of the next instruction to be executed. It is used to control the execution of the program.",
     },
   },
 
   {
-    id: "5",
-    position: { x: 270, y: 260 },
+    id: "sp",
+    position: { x: -337, y: -229 },
     draggable: false,
     type: "registerNode",
     data: {
       label: "SP",
+      handlePos: 'bottom',
       readOnly: true,
       width: 70,
       height: 63,
+      controlBusBitLoad: { label: "SPCAR", getFunction: 'get_control_bus_spcar' },
       loadBit: { label: "SPCAR", value: 0 },
       getFunction: "get_register_sp",
       helpInfo: "Stack Pointer is a register that contains the address of the top of the stack. It is used to control the execution of the program in some cases (e.g. subrutine call).",
     },
   },
   {
-    id: "6",
-    position: { x: 270, y: 330 },
+    id: "h",
+    position: { x: 66, y: -225 },
     draggable: false,
     type: "registerNode",
     data: {
       label: "H",
+      handlePos: 'bottom',
       readOnly: true,
       width: 70,
       height: 63,
-      loadBit: { label: "HCAR", value: 0 },
+      controlBusBitLoad: { label: "ACCAR", getFunction: 'get_control_bus_hcar' },
       getFunction: "get_register_h",
     },
   },
   {
-    id: "L",
-    position: { x: 270, y: 400 },
+    id: "l",
+    position: { x: 263, y: -226 },
     draggable: false,
     type: "registerNode",
     data: {
       label: "L",
+      handlePos: 'bottom',
       readOnly: true,
       width: 70,
       height: 63,
-      loadBit: { label: "LCAR", value: 0 },
+      controlBusBitLoad: { label: "ACCAR", getFunction: 'get_control_bus_lcar' },
       getFunction: "get_register_l",
     },
   },
@@ -164,14 +175,15 @@ const nodes: Node[] = [
       width: 400,
       height: 120,
     },
-    position: { x: -200, y: 0 },
+    draggable: false,
+    position: { x: -787, y: 62 },
     className: "light",
     type: "loadableNode",
     isParent: true,
   },
 
   {
-    id: "8a",
+    id: "ri",
     position: { x: 20, y: 40 },
     parentNode: "8",
     draggable: false,
@@ -181,7 +193,8 @@ const nodes: Node[] = [
       readOnly: true,
       width: 70,
       height: 63,
-      loadBit: { label: "RICAR", value: 0 },
+      handlePos: 'top',
+      controlBusBitLoad: { label: "RICAR", getFunction: 'get_control_bus_ricar' },
       getFunction: "get_register_ri",
       helpInfo: "Register Instruction is a register that contains the instruction currently being executed. It is used to control the execution of the program.",
     },
@@ -202,19 +215,21 @@ const nodes: Node[] = [
   },
   {
     id: "9",
-    position: { x: -100, y: 360 },
+    position: { x: 50, y: 54 },
     type: "memoryNode",
     draggable: false,
     data: {
       label: "Memory",
       readOnly: false,
+      controlBusBitLoad: { label: "Read (1), Write (0)", getFunction: 'get_control_bus_le' },
+      controlBusBitRelease: { label: "MEMBUS", getFunction: 'get_control_bus_membus' },
       width: 300,
       helpInfo: "Memory is a set of values that contains the instructions and data of the program. If not initialized it is filled randomly.",
     },
   },
   {
     id: "10",
-    position: { x: -700, y: 0 },
+    position: { x: -1028, y: 141 },
     type: "stateTransition",
     data: {
       label: "Transition state",
@@ -223,7 +238,7 @@ const nodes: Node[] = [
   },
   {
     id: "11",
-    position: { x: -460, y: 0 },
+    position: { x: -1027, y: -229 },
     type: "debuggerNode",
     data: {
       label: "Debugger",
@@ -232,7 +247,7 @@ const nodes: Node[] = [
   },
   {
     id: "12",
-    position: { x: -200, y: 390},
+    position: { x: 366, y: 76},
     draggable: false,
     type: "flagsNode",
     data: {
@@ -244,11 +259,22 @@ const nodes: Node[] = [
   },
   {
     id: "13",
-    position: { x: -370, y: 395},
+    position: { x: -777, y: 207 },
     draggable: false,
     type: "cycleTimeNode",
     data: {
-      label: "Flags"
+      label: "Clock cycle time",
+    },
+  },
+  {
+    id: "14",
+    position: { x: -760, y: -100},
+    draggable: false,
+    type: "busNode",
+    data: {
+      label: "Data bus",
+      width: 1200,
+      getFunction: "get_data_bus",
     },
   }
 ];

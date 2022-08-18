@@ -11,6 +11,8 @@ import { Tooltip } from "antd";
 import { getStoredValue } from "../../../lib/storage";
 import { SettingType, SettingDefaultValue } from "./Settings";
 import usePrev from "../../../hook/usePrev";
+import { Handle, Position } from "react-flow-renderer";
+import useUpdateEdges from "../../../hook/useUpdateEdges";
 
 function MemoryComponentRow({
   offset,
@@ -98,11 +100,12 @@ function MemoryComponent({ offset, base }: { offset: number; base: Base }) {
   );
 }
 
-const MemoryNode = ({ data }: { data: any }) => {
+const MemoryNode = ({ data, id }: { data: any; id: string }) => {
   const [searchValue, setSearchValue] = React.useState(0);
   const [base, setBase] = React.useState<Base>("HEX");
 
   const forceUpdate = useForceUpdate();
+  useUpdateEdges({ data, id });
 
   function onUIUpdate() {
     setSearchValue(execute("get_memory_dir_bus"));
@@ -132,9 +135,25 @@ const MemoryNode = ({ data }: { data: any }) => {
         height: data.height,
         width: data.width,
         padding: 10,
+        backgroundColor: "#f5f5f5",
       }}
       className="pretty-shadow"
     >
+      <Handle
+        type="target"
+        position={Position.Top}
+        style={{ background: "#555", position: "absolute", left: "30%" }}
+        onConnect={(params) => console.log("handle onConnect", params)}
+        isConnectable={false}
+      />
+
+      <Handle
+        type="source"
+        position={Position.Top}
+        style={{ background: "#555", position: "absolute", left: "70%" }}
+        onConnect={(params) => console.log("handle onConnect", params)}
+        isConnectable={false}
+      />
       <Row>
         <Col size="100%">
           <Tooltip title={data.helpInfo}>
@@ -146,13 +165,13 @@ const MemoryNode = ({ data }: { data: any }) => {
       </Row>
       <Row>
         <Col size="100%">
-          <NumberBaseInput
+          {/* <NumberBaseInput
             initialBase={base}
             number={searchValue}
             onChange={onSearch}
             onBaseChange={onBaseChange}
             width={200}
-          />
+          /> */}
         </Col>
       </Row>
       <Row>

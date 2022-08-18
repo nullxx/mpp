@@ -33,6 +33,7 @@
         "acumm.h": "c",
         "watcher.h": "c",
         "stdio.h": "c",
-        "mxfldx.h": "c"
+        "mxfldx.h": "c",
+        "linker.h": "c"
     }
 }

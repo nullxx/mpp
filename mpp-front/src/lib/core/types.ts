@@ -29,6 +29,21 @@ export interface MppCore {
   get_register_sp(): number;
   get_register_ri(): number;
 
+  get_data_bus(): number;
+  get_control_bus_pccar(): number;
+  get_control_bus_accar(): number;
+  get_control_bus_acbus(): number;
+  get_control_bus_spcar(): number;
+  get_control_bus_2opcar(): number;
+  get_control_bus_hcar(): number;
+  get_control_bus_lcar(): number;
+  get_control_bus_ricar(): number;
+  get_control_bus_membus(): number;
+  get_control_bus_le(): number;
+
+  get_control_bus_regcar(): number;
+  get_control_bus_regbus(): number;
+
   run_clock_cycle(): number;
   get_state(): number;
   get_next_state(): number;
@@ -116,6 +131,45 @@ export function emptyMppCore(): MppCore & MppCoreExtension {
     },
     get_register_ri: () => {
       throwUninitializedError("get_register_ri");
+    },
+    get_data_bus: () => {
+      throwUninitializedError("get_data_bus");
+    },
+    get_control_bus_ricar: () => {
+      throwUninitializedError("get_control_bus_ricar");
+    },
+    get_control_bus_pccar: () => {
+      throwUninitializedError("get_control_bus_pccar");
+    },
+    get_control_bus_accar: () => {
+      throwUninitializedError("get_control_bus_accar");
+    },
+    get_control_bus_acbus: () => {
+      throwUninitializedError("get_control_bus_acbus");
+    },
+    get_control_bus_spcar: () => {
+      throwUninitializedError("get_control_bus_spcar");
+    },
+    get_control_bus_2opcar: () => {
+      throwUninitializedError("get_control_bus_2opcar");
+    },
+    get_control_bus_hcar: () => {
+      throwUninitializedError("get_control_bus_hcar");
+    },
+    get_control_bus_lcar: () => {
+      throwUninitializedError("get_control_bus_lcar");
+    },
+    get_control_bus_regcar: () => {
+      throwUninitializedError("get_control_bus_regcar");
+    },
+    get_control_bus_regbus: () => {
+      throwUninitializedError("get_control_bus_regbus");
+    },
+    get_control_bus_membus: () => {
+      throwUninitializedError("get_control_bus_membus");
+    },
+    get_control_bus_le: () => {
+      throwUninitializedError("get_control_bus_le");
     },
     run_clock_cycle: () => {
       throwUninitializedError("run_clock_cycle");

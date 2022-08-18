@@ -152,6 +152,71 @@ const exportedMethods: {
     typeArgs: [],
   },
   {
+    name: "get_data_bus",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
+    name: "get_control_bus_pccar",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
+    name: "get_control_bus_accar",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
+    name: "get_control_bus_acbus",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
+    name: "get_control_bus_spcar",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
+    name: "get_control_bus_2opcar",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
+    name: "get_control_bus_hcar",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
+    name: "get_control_bus_lcar",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
+    name: "get_control_bus_ricar",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
+    name: "get_control_bus_regcar",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
+    name: "get_control_bus_regbus",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
+    name: "get_control_bus_membus",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
+    name: "get_control_bus_le",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
     name: "reset_control",
     returnType: null,
     typeArgs: [],

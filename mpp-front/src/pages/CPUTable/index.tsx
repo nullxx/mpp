@@ -1,5 +1,10 @@
-import { useState, useCallback, ReactNode } from "react";
-import Flow, { applyEdgeChanges, applyNodeChanges } from "../../lib/ReactFlow";
+import { useCallback, ReactNode } from "react";
+import Flow, {
+  applyEdgeChanges,
+  applyNodeChanges,
+  useNodesState,
+  useEdgesState,
+} from "../../lib/ReactFlow";
 import { Layout, Row, Space } from "antd";
 
 import type {
@@ -41,8 +46,8 @@ const nodeTypes: NodeTypes = {
 };
 
 function CPUTable() {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+  const [nodes, setNodes] = useNodesState(initialNodes);
+  const [edges, setEdges] = useEdgesState(initialEdges);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>

@@ -19,6 +19,7 @@
 
 #include "mem.h"
 #include "cu.h"
+#include "bus.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -37,6 +38,7 @@ void init(void) {
     init_components();
     init_linker_mem();
     init_linker_cu();
+    init_linker_bus();
 }
 
 #ifdef __EMSCRIPTEN__
@@ -46,6 +48,7 @@ void shutdown(void) {
     log_debug("Shuting down linker");
     shutdown_linker_cu();
     shutdown_linker_mem();
+    shutdown_linker_bus();
     shutdown_components();
 }
 

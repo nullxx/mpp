@@ -1,6 +1,6 @@
 import ReactFlow, {
   Controls,
-  ReactFlowProps
+  ReactFlowProps,
 } from "react-flow-renderer";
 
 export interface Point {
@@ -59,6 +59,8 @@ export {
   Handle,
   Position,
   MarkerType,
+  useNodesState,
+  useEdgesState,
 } from "react-flow-renderer";
 
 export type {
