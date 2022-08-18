@@ -3,7 +3,7 @@ title: SUB
 description: Restar valores
 layout: ../../../layouts/MainLayout.astro
 ---
-
+import Code from '../../../components/Code/Code';
 import Solution from '../../../components/Solution'
 import states from './states.json';
 
@@ -18,9 +18,7 @@ Siendo X el valor a restar
 
 ### Restar un registro de propósito general al acumulador
 
-```
-SUB RB
-```
+<Code code="SUB RB" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |
@@ -32,9 +30,7 @@ SUB RB
 
 ### Restar un valor inmediato al acumulador
 
-```
-SUB 0F
-```
+<Code code="SUB 0F" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |
@@ -46,9 +42,7 @@ SUB 0F
 
 ### Restar un el acumulador al acumulador
 
-```
-SUB AC
-```
+<Code code="SUB AC" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |

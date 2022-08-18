@@ -3,7 +3,7 @@ title: ADD
 description: Sumar valores
 layout: ../../../layouts/MainLayout.astro
 ---
-
+import Code from '../../../components/Code/Code';
 import Solution from '../../../components/Solution'
 import states from './states.json';
 
@@ -14,13 +14,12 @@ Sumar al acumulador un determinado valor.
 ```
 AC = AC + X
 ```
+
 Siendo X el valor a sumar
 
 ### Sumar un registro de propósito general al acumulador
 
-```
-ADD RB
-```
+<Code code="ADD RB" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |
@@ -32,9 +31,7 @@ ADD RB
 
 ### Sumar un valor inmediato al acumulador
 
-```
-ADD 0F
-```
+<Code code="ADD 0F" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |
@@ -46,9 +43,7 @@ ADD 0F
 
 ### Sumar un el acumulador al acumulador
 
-```
-ADD AC
-```
+<Code code="ADD AC" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |

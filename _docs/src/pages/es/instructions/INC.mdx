@@ -3,7 +3,7 @@ title: INC
 description: Incrementar un valor
 layout: ../../../layouts/MainLayout.astro
 ---
-
+import Code from '../../../components/Code/Code';
 import Solution from '../../../components/Solution'
 import states from './states.json';
 
@@ -16,9 +16,7 @@ Siendo REGISTRO el registro cuyo valor tiene que incrementar
 
 ### Incrementar el valor de un registro de propósito general
 
-```
-INC RB
-```
+<Code code="INC RB" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |
@@ -30,9 +28,8 @@ INC RB
 
 ### Incrementar el valor del acumulador.
 
-```
-INC AC
-```
+<Code code="INC AC" />
+
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |

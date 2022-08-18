@@ -1,5 +1,55 @@
 import * as React from "preact";
-import './Code.css';
+import "./Code.css";
+import hljs from "highlight.js/lib/core";
+import "highlight.js/styles/monokai-sublime.css";
+import operations from "./operations.json";
+
+const allInstructions = [
+  ...new Set(operations.map((s) => s.NEMO.split(" ")[0])),
+].join("|");
+
+
+hljs.registerLanguage("mpp", (e) => {
+  const COMMENT = {
+    variants: [hljs.HASH_COMMENT_MODE],
+  };
+
+  return {
+    name: "MPP",
+    case_insensitive: true,
+    aliases: ["mpp"],
+    contains: [
+      {
+        className: "built_in",
+        begin: "AC|RB|RC|RD|RE",
+      },
+      {
+        className: "keyword",
+        begin: `\\b(?:${allInstructions})\\b`,
+      },
+      COMMENT,
+      {
+        className: "number",
+        variants: [
+          {
+            // hex
+            begin: "[#$=]?[0-9a-f]+",
+          },
+        ],
+        relevance: 0,
+      },
+      {
+        className: "symbol",
+        variants: [
+          {
+            begin: "T\\S*",
+          },
+        ],
+        relevance: 0,
+      },
+    ],
+  };
+});
 
 export default function Code({
   code,
@@ -8,6 +58,8 @@ export default function Code({
   code: string;
   testCodeText?: string;
 }) {
+  const colored = hljs.highlight(code, { language: "mpp" }).value;
+
   const openCode = (code: string) => {
     // open new url in new tab
     const url = new URL("https://mpp.nullx.me");
@@ -26,16 +78,7 @@ export default function Code({
         </div>
       )}
       <div className="code-container">
-        <code>
-          <div className="line">
-            {code.split("\\n").map((line, i) => (
-              <span key={i}>
-                {line}
-                <br />
-              </span>
-            ))}
-          </div>
-        </code>
+        <code dangerouslySetInnerHTML={{ __html: colored }} />
       </div>
     </pre>
   );

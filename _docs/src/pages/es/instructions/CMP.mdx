@@ -3,7 +3,7 @@ title: CMP
 description: Comparar valores
 layout: ../../../layouts/MainLayout.astro
 ---
-
+import Code from '../../../components/Code/Code';
 import Solution from '../../../components/Solution'
 import states from './states.json';
 
@@ -26,14 +26,12 @@ SI (RESULTADO < 0) {
 
 Siendo X el valor a comparar
 
-Como se puede ver en el pseudocódigo, para comparar un valor, se utiliza la resta.
+Como se puede ver en el pseudo-código, para comparar un valor, se utiliza la resta.
 
 ### Comprobar si el acumulador y otro registro de propósito general son iguales
 Serán iguales si el indicador del flag `ZERO` es 1.
 
-```
-CMP RB
-```
+<Code code="CMP RB" />
 
 Su pseudo-código sería:
 
@@ -54,9 +52,7 @@ SI ((AC - RB) == 0) {
 ### Comprobar si el acumulador y un valor inmediato son iguales
 Serán iguales si el indicador del flag `ZERO` es 1.
 
-```
-CMP 0F
-```
+<Code code="CMP 0F" />
 
 Su pseudo-código sería:
 
@@ -69,9 +65,7 @@ SI ((AC - 0xF) == 0) {
 ### Comprobar si el valor de un registro de propósito general es mayor que el acumulador
 `RB` será mayor que `AC` si el indicador del flag `CARRY` es 1.
 
-```
-CMP RB
-```
+<Code code="CMP RB" />
 
 Su pseudo-código sería:
 
@@ -84,9 +78,7 @@ SI ((AC - RB) < 0) {
 ### Comprobar si el valor del acumulador es mayor que el de un registro de propósito general
 `AC` será mayor que `RB` si el indicador del flag `CARRY` es 0 y `ZERO` es 0.
 
-```
-CMP RB
-```
+<Code code="CMP RB" />
 
 ## Comprueba tus conocimientos
 

@@ -3,7 +3,7 @@ title: OR
 description: Operación OR
 layout: ../../../layouts/MainLayout.astro
 ---
-
+import Code from '../../../components/Code/Code';
 import Solution from '../../../components/Solution'
 import states from './states.json';
 
@@ -13,9 +13,7 @@ Suma lógica (OR) entre el valor de un registro y el del acumulador.
 
 ### Suma lógica de un valor inmediato y el acumulador
 
-```
-OR 0F
-```
+<Code code="OR 0F" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |
@@ -27,9 +25,7 @@ OR 0F
 
 ### Suma lógica de un registro de propósito general y el acumulador
 
-```
-OR RB
-```
+<Code code="OR RB" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |
@@ -41,9 +37,7 @@ OR RB
 
 ### Suma lógica del acumulador y el acumulador
 
-```
-OR AC
-```
+<Code code="OR AC" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |

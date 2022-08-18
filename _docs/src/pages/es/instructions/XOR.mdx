@@ -3,7 +3,7 @@ title: XOR
 description: Operación XOR
 layout: ../../../layouts/MainLayout.astro
 ---
-
+import Code from '../../../components/Code/Code';
 import Solution from '../../../components/Solution'
 import states from './states.json';
 
@@ -13,9 +13,7 @@ OR-EXCLUSIVA (XOR) entre el valor de un registro y el del acumulador.
 
 ### OR-EXCLUSIVA de un valor inmediato y el acumulador
 
-```
-XOR 0F
-```
+<Code code="XOR 0F" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |
@@ -27,9 +25,7 @@ XOR 0F
 
 ### OR-EXCLUSIVA de un registro de propósito general y el acumulador
 
-```
-XOR RB
-```
+<Code code="XOR RB" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |
@@ -41,9 +37,7 @@ XOR RB
 
 ### OR-EXCLUSIVA del acumulador y el acumulador
 
-```
-XOR AC
-```
+<Code code="XOR AC" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |

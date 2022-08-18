@@ -28,7 +28,6 @@ export const SIDEBAR = {
 		{ text: 'Arquitectura', link: 'es/architecture' },
 		{ text: 'Detalles', link: 'es/about' },
 
-
 		{ text: 'USO', header: true },
 		{ text: 'Instrucciones soportadas', link: 'es/instructions/instructions' },
 		{ text: 'MOV', link: 'es/instructions/MOV'},

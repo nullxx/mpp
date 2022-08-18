@@ -3,7 +3,7 @@ title: AND
 description: Operación AND
 layout: ../../../layouts/MainLayout.astro
 ---
-
+import Code from '../../../components/Code/Code';
 import Solution from '../../../components/Solution'
 import states from './states.json';
 
@@ -13,9 +13,7 @@ Producto lógico (AND) entre el valor de un registro y el del acumulador.
 
 ### Producto lógico de un valor inmediato y el acumulador
 
-```
-AND 0F
-```
+<Code code="AND 0F" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |
@@ -27,9 +25,7 @@ AND 0F
 
 ### Producto lógico de un registro de propósito general y el acumulador
 
-```
-AND RB
-```
+<Code code="AND RB" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |
@@ -41,9 +37,7 @@ AND RB
 
 ### Producto lógico del acumulador y el acumulador
 
-```
-AND AC
-```
+<Code code="AND AC" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |

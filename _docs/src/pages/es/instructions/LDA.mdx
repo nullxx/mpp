@@ -3,7 +3,7 @@ title: LDA
 description: Cargar valor de memoria en el acumulador.
 layout: ../../../layouts/MainLayout.astro
 ---
-
+import Code from '../../../components/Code/Code';
 import Solution from '../../../components/Solution'
 import states from './states.json';
 
@@ -19,9 +19,8 @@ Siendo DIR una dirección de memoria de 16 bits.
 
 ### Comando
 
-```
-LDA 001F
-```
+<Code code="LDA 001F" />
+
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |

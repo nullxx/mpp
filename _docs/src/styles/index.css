@@ -36,11 +36,11 @@ nav ul {
 	padding: 0;
 }
 
-.content > section > * + * {
+.content>section>*+* {
 	margin-top: 1.25rem;
 }
 
-.content > section > :first-child {
+.content>section> :first-child {
 	margin-top: 0;
 }
 
@@ -116,50 +116,50 @@ a {
 	gap: 0.5rem;
 }
 
-article > section :is(ul, ol) > * + * {
+article>section :is(ul, ol)>*+* {
 	margin-top: 0.75rem;
 }
 
-article > section nav :is(ul, ol) > * + * {
+article>section nav :is(ul, ol)>*+* {
 	margin-top: inherit;
 }
 
-article > section li > :is(p, pre, blockquote):not(:first-child) {
+article>section li> :is(p, pre, blockquote):not(:first-child) {
 	margin-top: 1rem;
 }
 
-article > section :is(ul, ol) {
+article>section :is(ul, ol) {
 	padding-left: 1em;
 }
 
-article > section nav :is(ul, ol) {
+article>section nav :is(ul, ol) {
 	padding-left: inherit;
 }
 
-article > section nav {
+article>section nav {
 	margin-top: 1rem;
 	margin-bottom: 2rem;
 }
 
-article > section ::marker {
+article>section ::marker {
 	font-weight: bold;
 	color: var(--theme-text-light);
 }
 
-article > section iframe {
+article>section iframe {
 	width: 100%;
 	height: auto;
 	aspect-ratio: 16 / 9;
 }
 
-a > code {
+a>code {
 	position: relative;
 	color: var(--theme-text-accent);
 	background: transparent;
 	text-underline-offset: var(--padding-block);
 }
 
-a > code::before {
+a>code::before {
 	content: '';
 	position: absolute;
 	top: 0;
@@ -197,18 +197,18 @@ code {
 	font-family: var(--font-mono);
 	font-size: 1.2em;
 	color: inherit;
-	background-color: var(--theme-code-inline-bg);
-	/* padding: var(--padding-block) var(--padding-inline); */
-	/* margin: calc(var(--padding-block) * -1) -0.125em; */
-	/* border-radius: var(--border-radius); */
 	word-break: break-word;
 }
 
-pre.astro-code > code {
+p code {
+	background-color: var(--theme-code-inline-bg);
+}
+
+pre.astro-code>code {
 	all: unset;
 }
 
-pre > code {
+pre>code {
 	font-size: 1em;
 }
 
@@ -247,6 +247,7 @@ th {
 	font-weight: bold;
 	border-bottom: 1px solid var(--theme-text);
 }
+
 td,
 th {
 	padding: 6px;
@@ -325,16 +326,20 @@ h2.heading {
 	border-left-color: var(--theme-accent);
 	color: var(--theme-accent);
 }
+
 .heading-link:focus-within {
 	color: var(--theme-text-light);
 	border-left-color: hsla(var(--color-gray-40), 1);
 }
+
 .heading-link svg {
 	opacity: 0.6;
 }
+
 .heading-link:hover svg {
 	opacity: 0.8;
 }
+
 .heading-link a {
 	display: inline-flex;
 	gap: 0.5em;
@@ -345,6 +350,7 @@ h2.heading {
 .heading-link.depth-3 {
 	padding-left: 2rem;
 }
+
 .heading-link.depth-4 {
 	padding-left: 3rem;
 }

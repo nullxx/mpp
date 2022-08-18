@@ -3,7 +3,7 @@ title: STA
 description: Guardar el valor del acumulador en memoria.
 layout: ../../../layouts/MainLayout.astro
 ---
-
+import Code from '../../../components/Code/Code';
 import Solution from '../../../components/Solution'
 import states from './states.json';
 
@@ -17,9 +17,7 @@ Siendo DIR una dirección de memoria de 16 bits.
 
 ### Comando
 
-```
-STA 001F
-```
+<Code code="STA 001F" />
 
 #### Microprograma
 | ESTADO | MICRO-OPERACIÓN |

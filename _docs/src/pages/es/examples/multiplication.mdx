@@ -66,4 +66,4 @@ Vamos recuperando el resultado de la pila y sumandole el valor de RB ({a}). Al i
 
 #### Qué cambio habría que hacer si se pidiera que el resultado debe de inicializarse a 0, en vez de a {a}?
 
-<Solution testCodeText="Probar código" sol={['MOV 05, RB\nMOV 03, RC\n\nINISP 1234\nMOV 0, AC # <====\nPUSH\n\nTSTART MOV RC, AC\nCMP 00 # <====\nBEQ TFIN\nPOP\nADD RB\nPUSH\nMOV RC, AC\nSUB 01\nMOV AC, RC\nJMP TSTART\nTFIN POP\nFIN']} />
+<Solution testCodeText="Probar código" sol={['MOV 05, RB\nMOV 03, RC\n\nINISP 1234\nMOV 0, AC # <====\nPUSH\n\nTSTART MOV RC, AC\nCMP 00 # <====\nBEQ TFIN\nPOP\nADD RB\nPUSH\nMOV RC, AC\nSUB 01\nMOV AC, RC\nJMP TSTART\nTFIN POP\nFIN']} client:load />
