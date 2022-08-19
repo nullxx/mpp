@@ -40,9 +40,9 @@ export interface MppCore {
   get_control_bus_ricar(): number;
   get_control_bus_membus(): number;
   get_control_bus_le(): number;
-
   get_control_bus_regcar(): number;
   get_control_bus_regbus(): number;
+  get_control_bus_selalu(): number;
 
   run_clock_cycle(): number;
   get_state(): number;
@@ -170,6 +170,9 @@ export function emptyMppCore(): MppCore & MppCoreExtension {
     },
     get_control_bus_le: () => {
       throwUninitializedError("get_control_bus_le");
+    },
+    get_control_bus_selalu: () => {
+      throwUninitializedError("get_control_bus_selalu");
     },
     run_clock_cycle: () => {
       throwUninitializedError("run_clock_cycle");

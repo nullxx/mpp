@@ -7,8 +7,8 @@ import {
   unsubscribeToUIUpdates,
 } from "../../../lib/core/index";
 import { Tooltip } from "antd";
-import { Handle, Position } from "react-flow-renderer";
 import useUpdateEdges from "../../../hook/useUpdateEdges";
+import Handles from "./Handles";
 
 export const DEFAULT_REGISTER_VALUE = 0;
 
@@ -49,45 +49,7 @@ export default memo(({ data, id }: any) => {
       className={`${changed ? "blob" : ""} pretty-shadow`}
       style={{ padding: 6, backgroundColor: "#f5f5f5" }}
     >
-      {data.handlePos === "top" && (
-        <>
-          <Handle
-            type="target"
-            position={Position.Top}
-            style={{ background: "#555", position: "absolute", left: "30%" }}
-            onConnect={(params) => console.log("handle onConnect", params)}
-            isConnectable={false}
-          />
-
-          <Handle
-            type="source"
-            position={Position.Top}
-            style={{ background: "#555", position: "absolute", left: "70%" }}
-            onConnect={(params) => console.log("handle onConnect", params)}
-            isConnectable={false}
-          />
-        </>
-      )}
-
-      {data.handlePos === "bottom" && (
-        <>
-          <Handle
-            type="target"
-            position={Position.Bottom}
-            style={{ background: "#555", position: "absolute", left: "30%" }}
-            onConnect={(params) => console.log("handle onConnect", params)}
-            isConnectable={false}
-          />
-
-          <Handle
-            type="source"
-            position={Position.Bottom}
-            style={{ background: "#555", position: "absolute", left: "70%" }}
-            onConnect={(params) => console.log("handle onConnect", params)}
-            isConnectable={false}
-          />
-        </>
-      )}
+      <Handles data={data} id={id} />
 
       <Row>
         <Col>

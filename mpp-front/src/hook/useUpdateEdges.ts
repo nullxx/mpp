@@ -26,6 +26,14 @@ export default function useUpdateEdges({
       if (!targetEdge) return;
 
       targetEdge.label = `${data.controlBusBitLoad.label}: ${controlBusBitLoadValue}`;
+      let stokeColor = undefined;
+      if (controlBusBitLoadValue === 1) {
+        targetEdge.animated = true;
+        stokeColor = "red";
+      } else {
+        targetEdge.animated = false;
+      }
+      targetEdge.style = { ...targetEdge.style, stroke: stokeColor };
 
       const allEdgesEdited = allEdges.map((edge) => {
         if (edge.id === targetEdge.id) {

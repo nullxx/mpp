@@ -1,0 +1,95 @@
+.circular-progress {
+    border-radius: 50%;
+    height: 12rem;
+    margin: auto;
+    position: relative;
+    width: 12rem;
+}
+
+.circular-progress, .circular-progress::before, .circular-progress::after {
+    border-radius: 50%;
+    height: 12rem;
+    width: 12rem;
+}
+
+.circular-progress::before, .circular-progress::after {
+    left: 0;
+    position: absolute;
+    text-align: center;
+    top: 0;
+}
+
+.circular-progress::before {
+    background-origin: content-box;
+    box-sizing: border-box;
+    font-size: 2rem;
+    line-height: 8rem;
+    padding: 0.5em;
+}
+
+.circular-progress::after {
+    line-height: 13rem;
+}
+
+.html {
+    background: linear-gradient(0deg, orange 50%, rgba(255, 165, 0, 0.2) 50%);
+    transform: rotate(162deg);
+}
+
+.html::after, .html::before {
+    color: orange;
+}
+
+.html::before {
+    background: #111 content-box;
+    content: "HTML5";
+    transform: rotate(-162deg);
+}
+
+.html::after {
+    background: linear-gradient(transparent 50%, #111 50%);
+    content: "90";
+    transform: scale(1.1) rotate(-162deg);
+}
+
+.css {
+    background: linear-gradient(0deg, pink 50%, rgba(255, 192, 203, 0.2) 50%);
+    transform: rotate(162deg);
+}
+
+.css::after, .css::before {
+    color: pink;
+}
+
+.css::before {
+    background: #111 content-box;
+    content: "CSS";
+    transform: rotate(-162deg);
+}
+
+.css::after {
+    background: linear-gradient(transparent 50%, #111 50%);
+    content: "90";
+    transform: scale(1.1) rotate(-162deg);
+}
+
+.js {
+    background: linear-gradient(0deg, lime 50%, rgba(0, 255, 0, 0.2) 50%);
+    transform: rotate(108deg);
+}
+
+.js::after, .js::before {
+    color: lime;
+}
+
+.js::before {
+    background: #111 content-box;
+    content: "JS";
+    transform: rotate(-108deg);
+}
+
+.js::after {
+    background: linear-gradient(transparent 50%, #111 50%);
+    content: "60";
+    transform: scale(1.1) rotate(-108deg);
+}

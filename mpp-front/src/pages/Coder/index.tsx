@@ -55,6 +55,8 @@ const Coder: React.FC = () => {
         />
       </Space>
       <Drawer
+        closable={false}
+        keyboard={false}
         maskClosable={false}
         closeIcon={null}
         title="Code"

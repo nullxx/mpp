@@ -1,4 +1,5 @@
 import ReactFlow, {
+  Background,
   Controls,
   ReactFlowProps,
 } from "react-flow-renderer";
@@ -44,8 +45,8 @@ function Flow({
       edgeTypes={edgeTypes}
       connectionLineComponent={connectionLineComponent}
     >
-      {/* <MiniMap /> */}
-      <Controls />
+      <Background />
+      <Controls showInteractive={false}/>
     </ReactFlow>
   );
 }
@@ -71,5 +72,5 @@ export type {
   NodeChange,
   EdgeChange,
   NodeTypes,
-  ConnectionLineComponentProps
+  ConnectionLineComponentProps,
 } from "react-flow-renderer";

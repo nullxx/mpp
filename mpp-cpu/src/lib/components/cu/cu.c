@@ -60,13 +60,13 @@ static PubSubSubscription *control_bus_topic_subscription = NULL;
  *
  */
 double run_cu_clock_cycle(void) {
+    clock_t start = clock();
     while (1) {
-        clock_t start = clock();
         int clock_tick = get_clock_tick();
         run_cu(clock_tick);
-        clock_t end = clock();
 
         if (clock_tick == 1) {
+            clock_t end = clock();
             double seconds_spent = (double)(end - start) / CLOCKS_PER_SEC;
             return seconds_spent;
         }

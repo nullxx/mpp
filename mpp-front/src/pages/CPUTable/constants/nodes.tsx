@@ -7,8 +7,14 @@ const nodes: Node[] = [
       label: "Registers bank",
       width: 400,
       height: 200,
-      controlBusBitLoad: { label: "ACCAR", getFunction: 'get_control_bus_regcar' },
-      controlBusBitRelease: { label: "ACBUS", getFunction: 'get_control_bus_regbus' },
+      controlBusBitLoad: {
+        label: "REGCAR",
+        getFunction: "get_control_bus_regcar",
+      },
+      controlBusBitRelease: {
+        label: "REGBUS",
+        getFunction: "get_control_bus_regbus",
+      },
     },
     draggable: false,
     position: { x: -371, y: 24 },
@@ -70,36 +76,48 @@ const nodes: Node[] = [
   },
 
   {
-    id: "2",
+    id: "acum",
     position: { x: -537, y: -227 },
     draggable: false,
     type: "registerNode",
     data: {
       label: "ACUM",
-      handlePos: 'bottom',
+      handlePos: ["bottom", "top"],
+      handlesCount: 2,
       readOnly: true,
       width: 70,
       height: 63,
-      controlBusBitLoad: { label: "ACCAR", getFunction: 'get_control_bus_accar' },
-      controlBusBitRelease: { label: "ACBUS", getFunction: 'get_control_bus_acbus' },
+      controlBusBitLoad: {
+        label: "ACCAR",
+        getFunction: "get_control_bus_accar",
+      },
+      controlBusBitRelease: {
+        label: "ACBUS",
+        getFunction: "get_control_bus_acbus",
+      },
       getFunction: "get_register_acum",
-      helpInfo: "Accumulator is a register that is the same length as the processor word (ALU operands). It is used to contain the result of an arithmetic operation or one of the ALU operands.",
+      helpInfo:
+        "Accumulator is a register that is the same length as the processor word (ALU operands). It is used to contain the result of an arithmetic operation or one of the ALU operands.",
     },
   },
 
   {
     id: "2op",
-    position: { x: -137, y: -228 },
+    position: { x: -337, y: -229 },
     draggable: false,
     type: "registerNode",
     data: {
       label: "2OP",
-      handlePos: 'bottom',
+      handlePos: ["bottom", "top"],
+      handlesCount: 2,
       readOnly: true,
       width: 70,
       height: 63,
-      controlBusBitLoad: { label: "ACCAR", getFunction: 'get_control_bus_2opcar' },
-      getFunction: 'get_register_2op'
+      controlBusBitLoad: {
+        label: "2OPCAR",
+        getFunction: "get_control_bus_2opcar",
+      },
+      getFunction: "get_register_2op",
     },
   },
   {
@@ -110,31 +128,40 @@ const nodes: Node[] = [
     data: {
       label: "PC",
       readOnly: true,
-      handlePos: 'bottom',
+      handlePos: ["bottom"],
+      handlesCount: 1,
       width: 70,
       height: 63,
-      controlBusBitLoad: { label: "PCCAR", getFunction: 'get_control_bus_pccar' },
+      controlBusBitLoad: {
+        label: "PCCAR",
+        getFunction: "get_control_bus_pccar",
+      },
       // controlBusBitRelease: { label: "???", getFunction: 'get_control_bus_pcbus??' },
       getFunction: "get_register_pc",
-      helpInfo: "Program Counter is a register that contains the address of the next instruction to be executed. It is used to control the execution of the program.",
+      helpInfo:
+        "Program Counter is a register that contains the address of the next instruction to be executed. It is used to control the execution of the program.",
     },
   },
 
   {
     id: "sp",
-    position: { x: -337, y: -229 },
+    position: { x: -137, y: -228 },
     draggable: false,
     type: "registerNode",
     data: {
       label: "SP",
-      handlePos: 'bottom',
+      handlePos: ["bottom"],
+      handlesCount: 1,
       readOnly: true,
       width: 70,
       height: 63,
-      controlBusBitLoad: { label: "SPCAR", getFunction: 'get_control_bus_spcar' },
-      loadBit: { label: "SPCAR", value: 0 },
+      controlBusBitLoad: {
+        label: "SPCAR",
+        getFunction: "get_control_bus_spcar",
+      },
       getFunction: "get_register_sp",
-      helpInfo: "Stack Pointer is a register that contains the address of the top of the stack. It is used to control the execution of the program in some cases (e.g. subrutine call).",
+      helpInfo:
+        "Stack Pointer is a register that contains the address of the top of the stack. It is used to control the execution of the program in some cases (e.g. subrutine call).",
     },
   },
   {
@@ -144,11 +171,12 @@ const nodes: Node[] = [
     type: "registerNode",
     data: {
       label: "H",
-      handlePos: 'bottom',
+      handlePos: ["bottom"],
+      handlesCount: 1,
       readOnly: true,
       width: 70,
       height: 63,
-      controlBusBitLoad: { label: "ACCAR", getFunction: 'get_control_bus_hcar' },
+      controlBusBitLoad: { label: "HCAR", getFunction: "get_control_bus_hcar" },
       getFunction: "get_register_h",
     },
   },
@@ -159,11 +187,12 @@ const nodes: Node[] = [
     type: "registerNode",
     data: {
       label: "L",
-      handlePos: 'bottom',
+      handlePos: ["bottom"],
+      handlesCount: 1,
       readOnly: true,
       width: 70,
       height: 63,
-      controlBusBitLoad: { label: "ACCAR", getFunction: 'get_control_bus_lcar' },
+      controlBusBitLoad: { label: "LCAR", getFunction: "get_control_bus_lcar" },
       getFunction: "get_register_l",
     },
   },
@@ -193,10 +222,15 @@ const nodes: Node[] = [
       readOnly: true,
       width: 70,
       height: 63,
-      handlePos: 'top',
-      controlBusBitLoad: { label: "RICAR", getFunction: 'get_control_bus_ricar' },
+      handlePos: ["top"],
+      handlesCount: 1,
+      controlBusBitLoad: {
+        label: "RICAR",
+        getFunction: "get_control_bus_ricar",
+      },
       getFunction: "get_register_ri",
-      helpInfo: "Register Instruction is a register that contains the instruction currently being executed. It is used to control the execution of the program.",
+      helpInfo:
+        "Register Instruction is a register that contains the instruction currently being executed. It is used to control the execution of the program.",
     },
   },
   {
@@ -210,21 +244,25 @@ const nodes: Node[] = [
       readOnly: true,
       width: 70,
       height: 63,
-      getFunction: "get_state"
+      getFunction: "get_state",
     },
   },
   {
-    id: "9",
+    id: "memory",
     position: { x: 50, y: 54 },
     type: "memoryNode",
     draggable: false,
     data: {
       label: "Memory",
       readOnly: false,
-      controlBusBitLoad: { label: "Read (1), Write (0)", getFunction: 'get_control_bus_le' },
-      controlBusBitRelease: { label: "MEMBUS", getFunction: 'get_control_bus_membus' },
+      // controlBusBitLoad: { label: "Read (1), Write (0)", getFunction: 'get_control_bus_le' },
+      controlBusBitRelease: {
+        label: "MEMBUS",
+        getFunction: "get_control_bus_membus",
+      },
       width: 300,
-      helpInfo: "Memory is a set of values that contains the instructions and data of the program. If not initialized it is filled randomly.",
+      helpInfo:
+        "Memory is a set of values that contains the instructions and data of the program. If not initialized it is filled randomly.",
     },
   },
   {
@@ -246,15 +284,18 @@ const nodes: Node[] = [
     draggable: false,
   },
   {
-    id: "12",
-    position: { x: 366, y: 76},
+    id: "flags",
+    position: { x: -170, y: -378 },
     draggable: false,
     type: "flagsNode",
     data: {
       label: "Flags",
-      helpInfo: "Flags are used to indicate the status of the last ALU operation.",
-      fzHelpInfo: "FZ is a flag that indicates whether the result of the last ALU operation is zero.",
-      fcHelpInfo: "FC is a flag that indicates whether the result of the last ALU operation has carry.",
+      helpInfo:
+        "Flags are used to indicate the status of the last ALU operation.",
+      fzHelpInfo:
+        "FZ is a flag that indicates whether the result of the last ALU operation is zero.",
+      fcHelpInfo:
+        "FC is a flag that indicates whether the result of the last ALU operation has carry.",
     },
   },
   {
@@ -267,8 +308,19 @@ const nodes: Node[] = [
     },
   },
   {
-    id: "14",
-    position: { x: -760, y: -100},
+    id: "alu",
+    position: { x: -448, y: -383 },
+    draggable: false,
+    type: "aluNode",
+    data: {
+      label: "ALU",
+      handlePos: ["bottom"],
+      handlesCount: 2,
+    },
+  },
+  {
+    id: "databus",
+    position: { x: -760, y: -100 },
     draggable: false,
     type: "busNode",
     data: {
@@ -276,6 +328,6 @@ const nodes: Node[] = [
       width: 1200,
       getFunction: "get_data_bus",
     },
-  }
+  },
 ];
 export default nodes;

@@ -2,9 +2,15 @@ import React from "react";
 import {
   subscribeToUIUpdates,
   unsubscribeToUIUpdates,
-} from "../../../lib/core";
-import { clockCycleTime } from "./RunButtons";
+} from "../../../../lib/core";
+import { clockCycleTime } from "../RunButtons";
 import { Tooltip } from "antd";
+import "./Progress.css";
+import { Progress } from "antd";
+import { red, green, orange } from "@ant-design/colors";
+
+const maxTimeMS = 3;
+
 export default function CycleTimeNode({ data }: any) {
   const [lastCycleTime, setLastCycleTime] = React.useState(clockCycleTime);
 
@@ -39,7 +45,13 @@ export default function CycleTimeNode({ data }: any) {
             : `It took ${lastCycleTime}ms to complete the last clock cycle`
         }
       >
-        <h4>{lastCycleTime === -1 ? "-" : lastCycleTime + "ms"}</h4>
+        <Progress
+          percent={(lastCycleTime / maxTimeMS) * 100}
+          steps={4}
+          format={() => `${lastCycleTime}ms`}
+          success={{ percent: 1000 }}
+          strokeColor={[green[6], orange[3], orange[5], red[6]]}
+        />
       </Tooltip>
     </div>
   );

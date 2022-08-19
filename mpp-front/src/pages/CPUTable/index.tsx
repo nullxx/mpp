@@ -31,6 +31,7 @@ import CycleTimeNode from "./components/CycleTimeNode";
 import Github from "../../components/Github";
 import Attribution from "../../components/Attribution";
 import Docs from "../../components/Docs";
+import ALUNode from "./components/ALUNode";
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -43,9 +44,10 @@ const nodeTypes: NodeTypes = {
   debuggerNode: DebuggerNode as unknown as ReactNode,
   flagsNode: FlagsNode as unknown as ReactNode,
   cycleTimeNode: CycleTimeNode as unknown as ReactNode,
+  aluNode: ALUNode as unknown as ReactNode,
 };
 
-function CPUTable() {
+function CPUTable({ show }: { show: boolean }) {
   const [nodes, setNodes] = useNodesState(initialNodes);
   const [edges, setEdges] = useEdgesState(initialEdges);
 
@@ -63,11 +65,14 @@ function CPUTable() {
 
   return (
     <>
-      <Layout style={{ height: "100%" }}>
+      <Layout
+        style={{ height: "100%" }}
+        className={`${show ? 'blur' : 'no-blur'}`}
+      >
         <Header className="mpp-header">
           <Row>
             <Space align="center">
-              <h2>M++ Simulator</h2>
+              <h1>M++ Simulator</h1>
               <Github />
               <Docs />
             </Space>

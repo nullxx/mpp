@@ -217,6 +217,11 @@ const exportedMethods: {
     typeArgs: [],
   },
   {
+    name: "get_control_bus_selalu",
+    returnType: "number",
+    typeArgs: [],
+  },
+  {
     name: "reset_control",
     returnType: null,
     typeArgs: [],

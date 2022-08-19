@@ -1,13 +1,14 @@
 import { Checkbox, Tooltip } from "antd";
 import { Row, Col, Text } from "atomize";
 import { useEffect, useState } from "react";
+import { Handle, Position } from "react-flow-renderer";
 import {
   execute,
   subscribeToUIUpdates,
   unsubscribeToUIUpdates,
 } from "../../../lib/core";
 
-export default function FlagsNode({ data }: { data: any }) {
+export default function FlagsNode({ data, id }: any) {
   const [fz, setFz] = useState(false);
   const [fc, setFc] = useState(false);
   const [changed, setChanged] = useState(false);
@@ -54,6 +55,30 @@ export default function FlagsNode({ data }: { data: any }) {
       }}
       className={`${changed ? "blob" : ""} pretty-shadow`}
     >
+      <Handle
+        id={`${id}-input-FZ`}
+        type="target"
+        position={Position.Left}
+        style={{
+          background: "#555",
+          position: "absolute",
+          top: "30%",
+        }}
+        isConnectable={false}
+      />
+
+      <Handle
+        id={`${id}-input-FC`}
+        type="target"
+        position={Position.Left}
+        style={{
+          background: "#555",
+          position: "absolute",
+          top: "70%",
+        }}
+        isConnectable={false}
+      />
+
       <Row>
         <Col size="100%">
           <Tooltip title={data.helpInfo}>

@@ -1,5 +1,4 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import { connectBackend } from "./lib/core";
 
@@ -9,9 +8,11 @@ import Welcome from "./pages/Welcome";
 function App() {
   const [coreLoaded, setCoreLoaded] = React.useState(false);
   const [ready, setReady] = React.useState(false);
+  const [showWelcome, setShowWelcome] = React.useState(false);
 
   React.useEffect(() => {
     if (!coreLoaded) return;
+    setTimeout(() => setShowWelcome(true), 100);
     setTimeout(() => setReady(true), 1000);
   }, [coreLoaded]);
 
@@ -27,12 +28,8 @@ function App() {
 
   return (
     <div className="App">
-      {!ready && <Welcome />}
-      {coreLoaded && (
-        <Routes>
-          <Route path="/" element={<CPUTable />} />
-        </Routes>
-      )}
+      {showWelcome && !ready && <Welcome />}
+      {coreLoaded && <CPUTable show={!ready} />}
     </div>
   );
 }

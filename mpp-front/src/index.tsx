@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
 import { Provider as StyletronProvider, DebugEngine } from "styletron-react";
 import { Client as Styletron } from "styletron-engine-atomic";
 import { Toaster } from "react-hot-toast";
@@ -24,13 +23,11 @@ const engine = new Styletron();
 // TODO layout
 root.render(
   <React.StrictMode>
-    <Toaster position="bottom-left"/>
+    <Toaster position="bottom-left" />
     <ErrorBoundary>
-      <BrowserRouter>
-        <StyletronProvider value={engine} debug={debug}>
-            <App />
-        </StyletronProvider>
-      </BrowserRouter>
+      <StyletronProvider value={engine} debug={debug}>
+        <App />
+      </StyletronProvider>
     </ErrorBoundary>
   </React.StrictMode>
 );

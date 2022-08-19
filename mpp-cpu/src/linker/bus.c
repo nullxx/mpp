@@ -34,7 +34,6 @@ EMSCRIPTEN_KEEPALIVE
 #endif
 int get_data_bus(void) { return word_to_int(last_bus_data->next_value); }
 
-
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_KEEPALIVE
 #endif
@@ -95,3 +94,16 @@ EMSCRIPTEN_KEEPALIVE
 #endif
 int get_control_bus_le(void) { return control_bus->next_value.bits[CONTROL_BUS_LE_BIT_POSITION]; }
 
+#ifdef __EMSCRIPTEN__
+EMSCRIPTEN_KEEPALIVE
+#endif
+int get_control_bus_selalu(void) {
+    Word selalu_lb;
+    initialize_word(&selalu_lb, 0);
+
+    selalu_lb.bits[0] = control_bus->next_value.bits[CONTROL_BUS_SELALU_0_BIT_POSITION];
+    selalu_lb.bits[1] = control_bus->next_value.bits[CONTROL_BUS_SELALU_1_BIT_POSITION];
+    selalu_lb.bits[2] = control_bus->next_value.bits[CONTROL_BUS_SELALU_2_BIT_POSITION];
+
+    return word_to_int(selalu_lb);
+}

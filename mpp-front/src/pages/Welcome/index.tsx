@@ -1,4 +1,4 @@
-import { Spin, Space } from "antd";
+import { Spin, Space, Typography } from "antd";
 import Image from "../../assets/icon.png";
 import { animations } from "react-animation";
 import Attribution from "../../components/Attribution";
@@ -11,7 +11,6 @@ export default function Welcome() {
       style={{
         width: "100%",
         height: "100%",
-        backgroundColor: "white",
         position: "absolute",
         left: 0,
         right: 0,
@@ -21,11 +20,12 @@ export default function Welcome() {
         zIndex: 1001,
         alignItems: "center",
         justifyContent: "center",
-        animation: animations.popIn,
-        animationDuration: "100ms",
+        animation: animations.fadeInUp,
+        animationDuration: "1000ms",
       }}
     >
-      <h1>M++ simulator</h1>
+      <Typography.Title>M++ Simulator</Typography.Title>
+
       <img src={Image} alt="M++" height={200} />
       <p>Loading...</p>
       <Spin size="large" />
