@@ -181,25 +181,3 @@ html, body, #root, .App {
 .loadable-node {
   box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
-
-.blur {
-  filter: blur(6px);
-}
-
-.no-blur {
-  animation: no-blur-anim 200ms ease 0s 1 forwards;
-}
-
-@keyframes no-blur-anim {
-  0% {
-    filter: blur(6px);
-  }
-
-  50% {
-    filter: blur(3px);
-  }
-
-  100% {
-    filter: unset;
-  }
-}

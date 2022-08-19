@@ -47,7 +47,7 @@ const nodeTypes: NodeTypes = {
   aluNode: ALUNode as unknown as ReactNode,
 };
 
-function CPUTable({ show }: { show: boolean }) {
+function CPUTable() {
   const [nodes, setNodes] = useNodesState(initialNodes);
   const [edges, setEdges] = useEdgesState(initialEdges);
 
@@ -65,10 +65,7 @@ function CPUTable({ show }: { show: boolean }) {
 
   return (
     <>
-      <Layout
-        style={{ height: "100%" }}
-        className={`${show ? 'blur' : 'no-blur'}`}
-      >
+      <Layout style={{ height: "100%" }}>
         <Header className="mpp-header">
           <Row>
             <Space align="center">

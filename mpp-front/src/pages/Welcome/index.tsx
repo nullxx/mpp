@@ -1,6 +1,5 @@
 import { Spin, Space, Typography } from "antd";
 import Image from "../../assets/icon.png";
-import { animations } from "react-animation";
 import Attribution from "../../components/Attribution";
 
 export default function Welcome() {
@@ -11,6 +10,7 @@ export default function Welcome() {
       style={{
         width: "100%",
         height: "100%",
+        backgroundColor: "white",
         position: "absolute",
         left: 0,
         right: 0,
@@ -20,8 +20,6 @@ export default function Welcome() {
         zIndex: 1001,
         alignItems: "center",
         justifyContent: "center",
-        animation: animations.fadeInUp,
-        animationDuration: "1000ms",
       }}
     >
       <Typography.Title>M++ Simulator</Typography.Title>
