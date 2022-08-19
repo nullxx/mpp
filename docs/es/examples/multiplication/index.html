@@ -1,5 +1,5 @@
-<!DOCTYPE html><link rel="stylesheet" href="/assets/f314e291.7fa53571.css" />
-<link rel="stylesheet" href="/assets/3b2b1cc5.9cc450e5.css" /><html dir="ltr" lang="en-us" class="initial astro-4VHVWRRO">
+<!DOCTYPE html><link rel="stylesheet" href="/assets/c8579ab5.9cc450e5.css" />
+<link rel="stylesheet" href="/assets/93af6877.7fa53571.css" /><html dir="ltr" lang="en-us" class="initial astro-4VHVWRRO">
 	<head>
 		<!-- Global Metadata --><meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
@@ -65,8 +65,8 @@
 			Multiplicación 🚀 Documentación
 		</title>
 		
-	<link rel="stylesheet" href="/assets/f314e291.7fa53571.css" />
-<link rel="stylesheet" href="/assets/3b2b1cc5.9cc450e5.css" /></head>
+	<link rel="stylesheet" href="/assets/c8579ab5.9cc450e5.css" />
+<link rel="stylesheet" href="/assets/93af6877.7fa53571.css" /></head>
 
 	<body class="astro-4VHVWRRO">
 		<header class="astro-VUSTJE5N">
@@ -235,6 +235,10 @@
 								<a href="/es/examples/multiplication" aria-current="page" class="astro-Y6PIJ7ZT">
 									Multiplicación
 								</a>
+							</li><li class="nav-link astro-Y6PIJ7ZT">
+								<a href="/es/examples/malicious-function" aria-current="false" class="astro-Y6PIJ7ZT">
+									Función maliciosa
+								</a>
 							</li>
 					</ul>
 				</div>
@@ -266,7 +270,7 @@
 <p>Como se puede ver en el ejemplo vamos a ir acumulando el valor de a en resultado tantas veces como b.</p>
 <h2 id="1-guardar-los-numeros-a-multiplicar">1. Guardar los numeros a multiplicar</h2>
 <p>En este caso guardaremos ambos números en los registros RB y RC</p>
-<script>(self.Astro=self.Astro||{}).load=a=>{(async()=>await(await a())())()};</script><astro-island uid="Z2lEEeK" component-url="/Code.c71d0418.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;MOV 05, RB\nMOV 03, RC&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-keyword">MOV</span> <span class="hljs-number">05</span>, <span class="hljs-built_in">RB</span>
+<script>(self.Astro=self.Astro||{}).load=a=>{(async()=>await(await a())())()};</script><astro-island uid="Z2lEEeK" component-url="/Code.7be6592c.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;MOV 05, RB\nMOV 03, RC&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-keyword">MOV</span> <span class="hljs-number">05</span>, <span class="hljs-built_in">RB</span>
 <span class="hljs-keyword">MOV</span> <span class="hljs-number">03</span>, <span class="hljs-built_in">RC</span></code></div></pre></astro-island>
 <h2 id="2-guardar-el-resultado">2. Guardar el resultado</h2>
 <p>Me he ayudado de la pila para guardar el resultado.</p>
@@ -275,14 +279,14 @@
 Lo bueno que tiene la pila de la M++ es que el valor recuperado de la pila (<code>POP</code>) se guarda en el acumulador.
 Podríamos hacerlo utilizando un registro auxiliar RD pero tendríamos que añadir unos cuantos <code>MOV</code>s.</p>
 <h3 id="inicializar-el-puntero-de-la-pila">Inicializar el puntero de la pila</h3>
-<astro-island uid="ZrkkEg" component-url="/Code.c71d0418.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;INISP 1234&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-keyword">INISP</span> <span class="hljs-number">1234</span></code></div></pre></astro-island>
+<astro-island uid="ZrkkEg" component-url="/Code.7be6592c.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;INISP 1234&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-keyword">INISP</span> <span class="hljs-number">1234</span></code></div></pre></astro-island>
 <h3 id="inicializar-el-resultado">Inicializar el resultado</h3>
 <p>Vamos a inicializarlo a 5.</p>
-<astro-island uid="Z3tsnu" component-url="/Code.c71d0418.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;MOV RB, AC\nPUSH&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-keyword">MOV</span> <span class="hljs-built_in">RB</span>, <span class="hljs-built_in">AC</span>
+<astro-island uid="Z3tsnu" component-url="/Code.7be6592c.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;MOV RB, AC\nPUSH&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-keyword">MOV</span> <span class="hljs-built_in">RB</span>, <span class="hljs-built_in">AC</span>
 <span class="hljs-keyword">PUSH</span></code></div></pre></astro-island>
 <h2 id="3-bucle">3. Bucle</h2>
 <p>Vamos recuperando el resultado de la pila y sumandole el valor de RB (5). Al igual que decrementamos RC (que contiene las veces que vamos a sumar).</p>
-<astro-island uid="B3n83" component-url="/Code.c71d0418.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;TSTART MOV RC, AC\nCMP 01\nBEQ TFIN\nPOP\nADD RB\nPUSH\nMOV RC, AC\nSUB 01\nMOV AC, RC\nJMP TSTART\nTFIN POP&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-symbol">TSTART</span> <span class="hljs-keyword">MOV</span> <span class="hljs-built_in">RC</span>, <span class="hljs-built_in">AC</span>
+<astro-island uid="B3n83" component-url="/Code.7be6592c.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;TSTART MOV RC, AC\nCMP 01\nBEQ TFIN\nPOP\nADD RB\nPUSH\nMOV RC, AC\nSUB 01\nMOV AC, RC\nJMP TSTART\nTFIN POP&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-symbol">TSTART</span> <span class="hljs-keyword">MOV</span> <span class="hljs-built_in">RC</span>, <span class="hljs-built_in">AC</span>
 <span class="hljs-keyword">CMP</span> <span class="hljs-number">01</span>
 <span class="hljs-keyword">BEQ</span> <span class="hljs-symbol">TFIN</span>
 <span class="hljs-keyword">POP</span>
@@ -294,7 +298,7 @@ Podríamos hacerlo utilizando un registro auxiliar RD pero tendríamos que añad
 <span class="hljs-keyword">JMP</span> <span class="hljs-symbol">TSTART</span>
 <span class="hljs-symbol">TFIN</span> <span class="hljs-keyword">POP</span></code></div></pre></astro-island>
 <h2 id="código-final">Código final</h2>
-<astro-island uid="Z2gN2MN" component-url="/Code.c71d0418.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;# 5x3\nMOV 05, RB\nMOV 03, RC\n\nINISP 1234\nMOV RB, AC\nPUSH\n\nTSTART MOV RC, AC\nCMP 01\nBEQ TFIN\nPOP\nADD RB\nPUSH\nMOV RC, AC\nSUB 01\nMOV AC, RC\nJMP TSTART\nTFIN POP\nFIN&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-comment"># 5x3</span>
+<astro-island uid="Z2gN2MN" component-url="/Code.7be6592c.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;# 5x3\nMOV 05, RB\nMOV 03, RC\n\nINISP 1234\nMOV RB, AC\nPUSH\n\nTSTART MOV RC, AC\nCMP 01\nBEQ TFIN\nPOP\nADD RB\nPUSH\nMOV RC, AC\nSUB 01\nMOV AC, RC\nJMP TSTART\nTFIN POP\nFIN&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-comment"># 5x3</span>
 <span class="hljs-keyword">MOV</span> <span class="hljs-number">05</span>, <span class="hljs-built_in">RB</span>
 <span class="hljs-keyword">MOV</span> <span class="hljs-number">03</span>, <span class="hljs-built_in">RC</span>
 
@@ -316,7 +320,7 @@ Podríamos hacerlo utilizando un registro auxiliar RD pero tendríamos que añad
 <span class="hljs-keyword">FIN</span></code></div></pre></astro-island>
 <h2 id="mejoras">Mejoras</h2>
 <h4 id="qué-cambio-habría-que-hacer-si-se-pidiera-que-el-resultado-debe-de-inicializarse-a-0-en-vez-de-a-a">Qué cambio habría que hacer si se pidiera que el resultado debe de inicializarse a 0, en vez de a 5?</h4>
-<astro-island uid="gO59C" component-url="/index.2efa5c05.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;sol&quot;:[1,&quot;[[0,\&quot;MOV 05, RB\\nMOV 03, RC\\n\\nINISP 1234\\nMOV 0, AC # &lt;====\\nPUSH\\n\\nTSTART MOV RC, AC\\nCMP 00 # &lt;====\\nBEQ TFIN\\nPOP\\nADD RB\\nPUSH\\nMOV RC, AC\\nSUB 01\\nMOV AC, RC\\nJMP TSTART\\nTFIN POP\\nFIN\&quot;]]&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Solution&quot;,&quot;value&quot;:true}" await-children=""><div class="tab tabs"><input type="checkbox" id="chck1" /><label class="tab-label" for="chck1">Solution</label><div class="tab-content"><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-keyword">MOV</span> <span class="hljs-number">05</span>, <span class="hljs-built_in">RB</span>
+<astro-island uid="gO59C" component-url="/index.cf52ece1.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;sol&quot;:[1,&quot;[[0,\&quot;MOV 05, RB\\nMOV 03, RC\\n\\nINISP 1234\\nMOV 0, AC # &lt;====\\nPUSH\\n\\nTSTART MOV RC, AC\\nCMP 00 # &lt;====\\nBEQ TFIN\\nPOP\\nADD RB\\nPUSH\\nMOV RC, AC\\nSUB 01\\nMOV AC, RC\\nJMP TSTART\\nTFIN POP\\nFIN\&quot;]]&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Solution&quot;,&quot;value&quot;:true}" await-children=""><div class="tab tabs"><input type="checkbox" id="chck1" /><label class="tab-label" for="chck1">Solution</label><div class="tab-content"><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-keyword">MOV</span> <span class="hljs-number">05</span>, <span class="hljs-built_in">RB</span>
 <span class="hljs-keyword">MOV</span> <span class="hljs-number">03</span>, <span class="hljs-built_in">RC</span>
 
 <span class="hljs-keyword">INISP</span> <span class="hljs-number">1234</span>

@@ -4,12 +4,12 @@ import {
   StopFilled,
   SendOutlined,
 } from "@ant-design/icons";
-import { execute } from "../../../lib/core";
 import { sleep } from "../../../lib/utils";
 import { SettingDefaultValue, SettingType } from "./Settings";
 import { useState, useEffect, useRef } from "react";
 import { getStoredValue } from "../../../lib/storage";
 import { Space, Button, Tooltip, Collapse, List } from "antd";
+import { getCore } from '../../../lib/core/index';
 
 const { Panel } = Collapse;
 
@@ -62,7 +62,7 @@ export default function RunButtons() {
 
   function handleRunState() {
     setRunning(true);
-    clockCycleTime = execute("run_clock_cycle");
+    clockCycleTime = getCore().run_clock_cycle();
     setRunning(false);
   }
 
@@ -74,8 +74,8 @@ export default function RunButtons() {
     _running.current = true;
     setRunning(true);
     while (_running.current) {
-      clockCycleTime = execute("run_clock_cycle");
-      const nextState = execute("get_next_state");
+      clockCycleTime = getCore().run_clock_cycle();
+      const nextState = getCore().get_next_state();
       if (nextState === 0) break;
       await sleep(cycleTime, isBreak.current.signal);
     }
@@ -91,12 +91,12 @@ export default function RunButtons() {
     _running.current = true;
     setRunning(true);
     const maxRepresentableValue =
-      Math.pow(2, execute("get_memory_value_size_bits")) - 1;
+      Math.pow(2, getCore().get_memory_value_size_bits()) - 1;
     let stoping = false;
     while (_running.current) {
-      clockCycleTime = execute("run_clock_cycle");
+      clockCycleTime = getCore().run_clock_cycle();
       if (stoping) break; // doing this to "execute" FF. S0 -> S1 -> (next) S0. And leave ready for next
-      const riRegister = execute("get_register_ri");
+      const riRegister = getCore().get_register_ri();
       stoping = riRegister === maxRepresentableValue;
       await sleep(cycleTime, isBreak.current.signal);
     }

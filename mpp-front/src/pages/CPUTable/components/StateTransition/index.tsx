@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { execute, unsubscribeToUIUpdates } from "../../../../lib/core";
+import { unsubscribeToUIUpdates } from "../../../../lib/core";
 import { Row, Col, Text } from "atomize";
 import { CheckCircleFilled } from "@ant-design/icons";
-import { subscribeToUIUpdates } from "../../../../lib/core/index";
+import { subscribeToUIUpdates, getCore } from '../../../../lib/core/index';
 import stateDetails from "./constants.json";
 
 import { Steps } from "antd";
@@ -35,8 +35,8 @@ export default function StateTransition({ data }: { data: any }) {
   }, [states.length]);
 
   function onUIUpdate() {
-    const nextStateNumber = execute("get_next_state");
-    const currentStateNumber = execute("get_state");
+    const nextStateNumber = getCore().get_next_state();
+    const currentStateNumber = getCore().get_state();
 
     if (currentStateNumber === prevCurrentState) return;
     if (nextStateNumber === prevNextState) return;

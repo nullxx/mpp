@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Drawer, Button, Space, Popconfirm } from "antd";
 import CodeEditor from "./components/CodeEditor";
-import { execute } from "../../lib/core/index";
+import { getCore } from '../../lib/core/index';
 import IconButton from "../../components/IconButton";
 import { CodeOutlined } from "@ant-design/icons";
 
@@ -23,12 +23,12 @@ const Coder: React.FC = () => {
   };
 
   const handleSaveToMemory = () => {
-    execute("reset_control"); // reset the control to start from the beginning
+    getCore().reset_control(); // reset the control to start from the beginning
 
     for (let i = 0; i < slots.length; i++) {
       const slot = slots[i];
 
-      execute("set_memory_value", initOffset + i, parseInt(slot, 16));
+      getCore().set_memory_value(initOffset + i, parseInt(slot, 16));
     }
     onClose();
   };

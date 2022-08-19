@@ -20,12 +20,12 @@ hljs.registerLanguage("mpp", (e) => {
     aliases: ["mpp"],
     contains: [
       {
-        className: "built_in",
-        begin: "AC|RB|RC|RD|RE",
-      },
-      {
         className: "keyword",
         begin: `\\b(?:${allInstructions})\\b`,
+      },
+      {
+        className: "built_in",
+        begin: "AC|RB|RC|RD|RE",
       },
       COMMENT,
       {

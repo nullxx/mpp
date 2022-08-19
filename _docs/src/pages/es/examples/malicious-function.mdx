@@ -1,0 +1,90 @@
+---
+title: Función maliciosa
+description: Función que modifica la dirección de retorno para se ejecute ella de nuevo
+layout: ../../../layouts/MainLayout.astro
+---
+
+import Code from "../../../components/Code/Code";
+import Solution from "../../../components/Solution";
+
+Función que modifica la dirección de retorno para se ejecute ella de nuevo.
+
+En este ejemplo se trata de hacer algo un poco más complejo jugando con los conocimientos de la M++.
+
+Como ya sabemos, cuando se llama a una función, la ejecución salta a la dirección de memoria
+de dicha función y se ejecuta hasta que se encuentra con la instrucción de retorno ([`RET`](/es/instructions/RET)).
+Es entonces cuando la ejecución vuelve a la siguiente dirección de memoria de la función que la llamó.
+
+Internamente la M++ guarda esta dirección de retorno en la pila (stack) al llamar a la función
+y la recupera para retornar.
+
+#### Pero... y si modifico la pila (stack) antes de retornar? 😈
+
+## Funciones de ayuda
+Necesitaremos realizar restas de numeros de 16 bits, creando la logica de dicha funcionalidad en una función a parte.
+Estas funciones auxiliares van a operar con los registros RD y RE donde guardaremos direcciones de memoria.
+
+Primero las vamos a ver en java.
+
+```java
+void TFSUB_RD() {
+    RD = RD - 1;
+}
+
+void TFSUB_RE() {
+    RE = RE - 1;
+}
+
+void TFSUB() {
+    TFSUB_RE(); // siempre restamos 1 al registro RE
+    if (RE == 0xFF) {
+        // (*) si el registro RE es 0xFF, sabemos que antes de restar 1 al RE estaba en 0x00
+        // por lo que debemos restar 1 al registro RD
+        TFSUB_RD();
+    }
+}
+```
+
+**(\*)** Esto en el codigo de la M++ no es tan literal, ya que en vez de comprobar si el registro RE es 0xFF,
+comprobamos si está activado el flag de carry.
+
+El código en la M++ es:
+
+<Code
+  testCodeText="Probar código"
+  code={`# util functions\nTFSUB CALL TFSUB_RE\nBC TFSUBRD # (*)\nJMP TFSUBRET\n\nTFSUBRD CALL TFSUB_RD\n\nTFSUBRET RET\n\n# RD = RD - 1\nTFSUB_RD MOV RD, AC\nSUB 01\nMOV AC, RD\nRET\n\n# RE = RE - 1\nTFSUB_RE MOV RE, AC\nSUB 01\nMOV AC, RE\nRET`}
+  client:load
+/>
+
+Gracias a estas funciones ya podemos realizar restas de 16 bits.
+
+Los pasos a seguir son:
+* Encontrar la dirección de memoria de retorno.
+* Encontrar la dirección de memoria del que llamó a nuestra función.
+* Sobreescribir la dirección de memoria de retorno en la pila (stack) con la dirección de memoria de la función que llamó a nuestra función.
+* ...creando así una función que decide volver a ejecutarse de nuevo... 😈
+
+## Pero...
+### Y si en vez de hacer todo esto, simplemente llamamos a la función de nuevo?
+
+```java
+int sumar(int a, int b) {
+    return sumar(a, b); // por ejemplo
+}
+```
+
+El resultado va a ser "parecido" pero no lo es.
+
+Ya hemos visto que al llamar a una función guardamos la información de retorno en la pila.
+Si llamamos a la función de nuevo, estaremos acumulando datos en la pila hasta que llegue nos quedemos "sin memoria"
+o lo que es peor, que la propia pila sobrescriba nuestras instrucciónes en memoria 😯.
+
+De la forma planteada inicialmente no hay anidación ya que todo el rato se sobrescribe la dirección de retorno de la pila.
+
+## Código final
+
+<Code
+  testCodeText="Probar código"
+  code={`INISP EEEE # random far address\nCALL TFAUTORECURSIVE\nFIN\n\n\nTFAUTORECURSIVE POP # extract return address\nMOV AC, RE\nPOP\nMOV AC, RD\n# --\n\n# find caller address\nCALL TFSUB\nCALL TFSUB\nCALL TFSUB\n# --\n\n# faking return address\n# - creating recursive call\nMOV RD, AC\nPUSH\nMOV RE, AC\nPUSH\n# --\n\nRET\n\n# util functions\nTFSUB CALL TFSUB_RE\nBC TFSUBRD\nJMP TFSUBRET\n\nTFSUBRD CALL TFSUB_RD\n\nTFSUBRET RET\n\nTFSUB_RD MOV RD, AC\nSUB 01\nMOV AC, RD\nRET\n\nTFSUB_RE MOV RE, AC\nSUB 01\nMOV AC, RE\nRET`}
+  client:load
+/>

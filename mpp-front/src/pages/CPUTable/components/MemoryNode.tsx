@@ -1,11 +1,10 @@
 import React from "react";
-import { execute, unsubscribeToUIUpdates } from "../../../lib/core";
 import { Row, Col, Text } from "atomize";
 
 import NumberBaseInput, { getRadix } from "../../../components/NumberBaseInput";
 import { Base } from "../../../constants/bases";
 
-import { subscribeToUIUpdates } from "../../../lib/core/index";
+import { subscribeToUIUpdates, unsubscribeToUIUpdates, getCore } from '../../../lib/core/index';
 import { useForceUpdate } from "../../../hook/forceUpdate";
 import { Tooltip } from "antd";
 import { getStoredValue } from "../../../lib/storage";
@@ -48,9 +47,9 @@ function MemoryComponent({ offset, base }: { offset: number; base: Base }) {
   const currOffsetStr = Number(offset).toString(radix);
   const nextOffsetStr = Number(offset + 1).toString(radix);
 
-  const prevValue = execute("get_memory_value", prevOffset);
-  const currValue = execute("get_memory_value", currOffset);
-  const nextValue = execute("get_memory_value", nextOffset);
+  const prevValue = getCore().get_memory_value(prevOffset);
+  const currValue = getCore().get_memory_value(currOffset);
+  const nextValue = getCore().get_memory_value(nextOffset);
 
   const valueBaseRadix = getRadix(
     getStoredValue(
@@ -94,8 +93,8 @@ const MemoryNode = ({ data, id }: { data: any; id: string }) => {
   useUpdateEdges({ data, id });
 
   function onUIUpdate() {
-    setSearchValue(execute("get_memory_dir_bus"));
-    setLE(execute("get_control_bus_le"));
+    setSearchValue(getCore().get_memory_dir_bus());
+    setLE(getCore().get_control_bus_le());
     forceUpdate(); // need to update state to force re-render because the searchValue is not changed, but the MemoryComponent could be changed
   }
 

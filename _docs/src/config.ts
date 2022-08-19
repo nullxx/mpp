@@ -57,5 +57,6 @@ export const SIDEBAR = {
 
 		{ text: 'Ejemplos', header: true },
 		{ text: 'Multiplicación', link: 'es/examples/multiplication'},
+		{ text: 'Función maliciosa', link: 'es/examples/malicious-function'},
 	],
 };

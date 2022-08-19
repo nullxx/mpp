@@ -1,12 +1,15 @@
 import React from "react";
-import { execute, unsubscribeToUIUpdates } from "../../../../lib/core";
 import { Row, Col, Text } from "atomize";
 import { Alert, Tooltip } from "antd";
 
 import NumberBaseInput from "../../../../components/NumberBaseInput";
 import { Base } from "../../../../constants/bases";
 
-import { subscribeToUIUpdates } from "../../../../lib/core/index";
+import {
+  subscribeToUIUpdates,
+  unsubscribeToUIUpdates,
+  getCore,
+} from "../../../../lib/core/index";
 import { deductOperationOf, NO_OP_NAME } from "../../../../lib/debugger";
 import { useForceUpdate } from "../../../../hook/forceUpdate";
 
@@ -23,7 +26,11 @@ function DebuggerComponentRow({
 }) {
   return (
     <Row className={focus ? "debuggerPointed" : undefined}>
-      <Col>{range[0].toString(16).toUpperCase() + "-" + range[1].toString(16).toUpperCase()}</Col>
+      <Col>
+        {range[0].toString(16).toUpperCase() +
+          "-" +
+          range[1].toString(16).toUpperCase()}
+      </Col>
       {operation === NO_OP_NAME ? (
         <Col className={focus ? "debuggerPointedOpNotFound" : undefined}>
           {operation}
@@ -71,7 +78,6 @@ function DebuggerComponent({
     const pointerBottom = pointerTop + pointerHeight;
 
     listScroll.scrollTop = pointerBottom - listScrollHeight; // maybe is better without smooth, because when the program is fast it will be better
-
   }, [memOffset]);
 
   return (
@@ -118,7 +124,7 @@ const DebuggerNode = ({ data }: { data: any }) => {
   const forceUpdate = useForceUpdate();
 
   function onUIUpdate() {
-    setSearchValue(execute("get_register_pc"));
+    setSearchValue(getCore().get_register_pc());
     forceUpdate(); // need to update state to force re-render because the searchValue is not changed, but the DebuggerComponent could be changed
   }
 

@@ -7,7 +7,7 @@ import React, { useEffect } from "react";
 import { EtiquetaPos, parseInput } from "../../../lib/traslator";
 import type { TraslationError } from "../../../lib/traslator/index";
 import NumberBaseInput from "../../../components/NumberBaseInput";
-import { execute } from "../../../lib/core/index";
+import { getCore } from '../../../lib/core/index';
 import { Button, Popover, Space, Collapse } from "antd";
 import Examples from "./Examples";
 import { setStoredValue, getStoredValue } from "../../../lib/storage";
@@ -74,7 +74,7 @@ export default function CodeEditor({
   }
 
   function onChangeInitOffset(newValue: number) {
-    const maxOffset = execute("get_memory_size") - 1;
+    const maxOffset = getCore().get_memory_size() - 1;
     let offsetValid = true;
 
     if (newValue < 0 || newValue > maxOffset) {
@@ -88,7 +88,7 @@ export default function CodeEditor({
   }
 
   function handlePCChange() {
-    execute("set_register_pc", initOffset);
+    getCore().set_register_pc(initOffset);
   }
 
   function handleSelectExample(code: string) {
