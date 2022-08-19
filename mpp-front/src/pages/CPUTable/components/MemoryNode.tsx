@@ -143,7 +143,7 @@ const MemoryNode = ({ data, id }: { data: any; id: string }) => {
       />
       <Row>
         <Col>
-          <Tooltip title={data.helpInfo}>
+          <Tooltip title={data.helpInfo} className="tooltip">
             <Text tag="h4" textSize="display4">
               {data.label}
             </Text>

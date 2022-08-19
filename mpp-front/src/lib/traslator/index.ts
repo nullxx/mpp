@@ -34,7 +34,9 @@ interface Marker {
 const ETI_START_NAME = "T";
 const COMMENT_LINE_START = "#";
 
-export interface TraslationError extends Marker {}
+export interface TraslationError extends Marker {
+  message: string;
+}
 export interface Comment extends Marker {}
 
 let setEtiquetas: string[] = [];
@@ -45,14 +47,17 @@ const checkCommentLine = (line: string) => {
     return line.slice(0, startCommentIndex).trimEnd();
   }
   return line;
-}
+};
 
 const parseInput = (text: string, initDir: number) => {
   setEtiquetas = [];
   let results: RegexResponse[] = [];
   const errors: TraslationError[] = [];
   const comments: Comment[] = [];
-  const lines = text.split("\n").map(line => line.trim()).map((line) => checkCommentLine(line));
+  const lines = text
+    .split("\n")
+    .map((line) => line.trim())
+    .map((line) => checkCommentLine(line));
 
   pre(lines);
 
@@ -77,7 +82,13 @@ const parseInput = (text: string, initDir: number) => {
 
     const result = executeRegex(line);
     if (!result || result.result.length === 0) {
-      errors.push({ lineFrom: i, lineTo: i, startCol: 0, endCol: line.length });
+      errors.push({
+        lineFrom: i,
+        lineTo: i,
+        startCol: 0,
+        endCol: line.length,
+        message: "Syntax error",
+      });
       continue;
     }
 
@@ -111,7 +122,7 @@ const pre = (lines: string[]) => {
       }
     }
   }
-}
+};
 
 const post = (results: RegexResponse[], initDir: number) => {
   const etiPositions = calculateEtiquetasPos(results, initDir);

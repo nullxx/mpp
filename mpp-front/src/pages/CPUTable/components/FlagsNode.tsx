@@ -81,7 +81,7 @@ export default function FlagsNode({ data, id }: any) {
 
       <Row>
         <Col size="100%">
-          <Tooltip title={data.helpInfo}>
+          <Tooltip title={data.helpInfo} className="tooltip">
             <Text tag="h4" textSize="display4">
               {data.label}
             </Text>

@@ -5,7 +5,7 @@ import completer from "../Completer";
 
 import React, { useEffect } from "react";
 import { EtiquetaPos, parseInput } from "../../../lib/traslator";
-import { TraslationError } from "../../../lib/traslator/index";
+import type { TraslationError } from "../../../lib/traslator/index";
 import NumberBaseInput from "../../../components/NumberBaseInput";
 import { execute } from "../../../lib/core/index";
 import { Button, Popover, Space, Collapse } from "antd";
@@ -26,7 +26,9 @@ export default function CodeEditor({
   onNewOffset: (offset: number) => void;
   initialCode?: string;
 }) {
-  const [code, setCode] = React.useState<string>(initialCode || getStoredValue("code", ""));
+  const [code, setCode] = React.useState<string>(
+    initialCode || getStoredValue("code", "")
+  );
   const [traslated, setTraslated] = React.useState("");
   const [initOffset, setInitOffset] = React.useState(0);
   const [error, setError] = React.useState<TraslationError[]>([]);
@@ -196,6 +198,12 @@ export default function CodeEditor({
             width="unset"
             mode="text"
             markers={markers}
+            annotations={error.map((e) => ({
+              row: e.lineFrom,
+              column: e.startCol,
+              text: e.message,
+              type: "error",
+            }))}
             commands={[
               {
                 name: "save",
@@ -218,6 +226,7 @@ export default function CodeEditor({
               showLineNumbers: true,
               firstLineNumber: initOffset,
               readOnly: true,
+              fontSize: "14px",
             }}
             height="200px"
             width="unset"

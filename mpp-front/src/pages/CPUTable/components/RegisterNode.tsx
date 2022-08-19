@@ -54,6 +54,7 @@ export default memo(({ data, id }: any) => {
       <Row>
         <Col>
           <Tooltip
+            className={`${data.helpInfo || data.docLink ? "tooltip" : ""}`}
             overlay={
               (data.helpInfo || data.docLink) && (
                 <>
