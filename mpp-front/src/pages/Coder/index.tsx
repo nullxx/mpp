@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Drawer, Button, Space, Popconfirm } from "antd";
+import { Drawer, Space, Popconfirm, Divider } from "antd";
 import CodeEditor from "./components/CodeEditor";
-import { getCore } from '../../lib/core/index';
+import { getCore } from "../../lib/core/index";
 import IconButton from "../../components/IconButton";
-import { CodeOutlined } from "@ant-design/icons";
+import { CodeOutlined, SaveOutlined, CloseOutlined } from "@ant-design/icons";
+import ResizeDrawer from "./components/ResizeDrawer";
+import { useEffect } from "react";
 
 const Coder: React.FC = () => {
   const searchParams = new URLSearchParams(window.location.search);
@@ -13,6 +15,7 @@ const Coder: React.FC = () => {
   const [canSaveToMem, setCanSaveToMem] = useState(false);
   const [initOffset, setInitOffset] = useState(0);
   const [slots, setSlots] = useState<string[]>([]);
+  const [maximize, setMaximize] = useState(false);
 
   const showDefaultDrawer = () => {
     setVisible(true);
@@ -44,6 +47,14 @@ const Coder: React.FC = () => {
     setInitOffset(offset);
   };
 
+  useEffect(() => {
+    const maxOffset = getCore().get_memory_size() - 1;
+    const s = initOffset + slots.length - 1 <= maxOffset;
+    setCanSaveToMem(s);
+  }, [slots, initOffset]);
+
+  const handleResize = setMaximize;
+
   return (
     <>
       <Space>
@@ -55,11 +66,18 @@ const Coder: React.FC = () => {
       </Space>
 
       <Drawer
+        width={maximize ? "100%" : undefined}
         closable={false}
         keyboard={false}
         maskClosable={false}
         closeIcon={null}
-        title="Code"
+        title={
+          <Space align="center">
+            <span>Code</span>
+            <Divider type="vertical" />
+            <ResizeDrawer onResize={handleResize} />
+          </Space>
+        }
         placement="right"
         onClose={onClose}
         visible={visible}
@@ -71,15 +89,15 @@ const Coder: React.FC = () => {
               cancelText="No"
               onConfirm={onClose}
             >
-              <Button>Cancel</Button>
+              <IconButton icon={<CloseOutlined />} danger title="Cancel" />
             </Popconfirm>
-            <Button
+            <IconButton
+              icon={<SaveOutlined />}
               type="primary"
               onClick={handleSaveToMemory}
               disabled={!canSaveToMem}
-            >
-              SAVE
-            </Button>
+              title="Save"
+            />
           </Space>
         }
       >
@@ -87,6 +105,7 @@ const Coder: React.FC = () => {
           onNewTranslation={onNewTranslation}
           onNewOffset={onNewOffset}
           initialCode={initialCode}
+          maximized={maximize}
         />
       </Drawer>
     </>

@@ -7,13 +7,15 @@ import React, { useEffect } from "react";
 import { EtiquetaPos, parseInput } from "../../../lib/traslator";
 import type { TraslationError } from "../../../lib/traslator/index";
 import NumberBaseInput from "../../../components/NumberBaseInput";
-import { getCore } from '../../../lib/core/index';
+import { getCore } from "../../../lib/core/index";
 import { Button, Popover, Space, Collapse } from "antd";
 import Examples from "./Examples";
 import { setStoredValue, getStoredValue } from "../../../lib/storage";
 import { Text } from "atomize";
 import { useTextFile } from "../../../lib/utils";
 import toast from "react-hot-toast";
+import TranslatedEditor from "./TranslatedEditor";
+import { Annotation } from "brace";
 
 const { Panel } = Collapse;
 
@@ -21,10 +23,12 @@ export default function CodeEditor({
   onNewTranslation,
   onNewOffset,
   initialCode,
+  maximized = false,
 }: {
   onNewTranslation: (lines: string[] | null) => void;
   onNewOffset: (offset: number) => void;
   initialCode?: string;
+  maximized?: boolean;
 }) {
   const [code, setCode] = React.useState<string>(
     initialCode || getStoredValue("code", "")
@@ -34,6 +38,7 @@ export default function CodeEditor({
   const [error, setError] = React.useState<TraslationError[]>([]);
   const [offsetValid, setOffsetValid] = React.useState<boolean>(true);
   const [etiPositions, setEtiPositions] = React.useState<EtiquetaPos[]>([]);
+  const [annotations, setAnnotations] = React.useState<Annotation[]>([]);
 
   const aceEditorRef = React.createRef<AceEditor>();
 
@@ -47,9 +52,15 @@ export default function CodeEditor({
 
     const res = parseInput(code, 0);
 
-    const str = res.results.map((r) => r.join("\n")).join("\n");
+    const str = res.results.map((r) => r.result.join("\n")).join("\n");
     setTraslated(str);
     setEtiPositions(res.etiPositions);
+    setAnnotations(res.results.map((r) => ({
+      row: r.originalOffset,
+      column: 0,
+      type: "info",
+      text: r.result.join("\n"),
+    })));
 
     onNewTranslation(
       res.errors.length > 0 || str.length === 0 ? null : str.split("\n")
@@ -68,6 +79,15 @@ export default function CodeEditor({
     aceEditorRef.current.editor.completers = [completer];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!aceEditorRef.current) return;
+
+      // every render, we resize the editor to fit the content
+      aceEditorRef.current.editor.resize();
+    }, 300); // wait for the drawer to expand
+  });
 
   function onChange(newValue: string) {
     setCode(newValue);
@@ -132,11 +152,17 @@ export default function CodeEditor({
   }));
 
   const markers = [...hightlightEtiMarkers, ...errorMarkers];
+  // const annotations = error.map((e) => ({
+  //   row: e.lineFrom,
+  //   column: e.startCol,
+  //   text: e.message,
+  //   type: "error",
+  // }));
 
   // Render editor
   return (
     <>
-      <Space direction="vertical">
+      <Space direction="vertical" style={{ width: "100%" }}>
         <Space align="center" direction="horizontal">
           <NumberBaseInput
             initialBase="HEX"
@@ -190,20 +216,15 @@ export default function CodeEditor({
             setOptions={{
               showLineNumbers: true,
               firstLineNumber: 0,
-              fontSize: "14px",
+              fontSize: `${maximized ? "24" : "14"}px`,
               enableBasicAutocompletion: true,
               enableLiveAutocompletion: true,
             }}
-            height="200px"
+            height={maximized ? undefined : "200px"}
             width="unset"
             mode="text"
             markers={markers}
-            annotations={error.map((e) => ({
-              row: e.lineFrom,
-              column: e.startCol,
-              text: e.message,
-              type: "error",
-            }))}
+            annotations={annotations}
             commands={[
               {
                 name: "save",
@@ -217,21 +238,9 @@ export default function CodeEditor({
               },
             ]}
           />
-
-          <AceEditor
-            value={traslated}
-            name="traslated"
-            editorProps={{ $blockScrolling: true }}
-            setOptions={{
-              showLineNumbers: true,
-              firstLineNumber: initOffset,
-              readOnly: true,
-              fontSize: "14px",
-            }}
-            height="200px"
-            width="unset"
-            mode="text"
-          />
+          {!maximized && (
+            <TranslatedEditor initOffset={initOffset} traslated={traslated} />
+          )}
         </Space>
         <Collapse bordered={false}>
           <Panel header="Examples" key="1">

@@ -51,7 +51,7 @@ const checkCommentLine = (line: string) => {
 
 const parseInput = (text: string, initDir: number) => {
   setEtiquetas = [];
-  let results: RegexResponse[] = [];
+  let results: Result[] = [];
   const errors: TraslationError[] = [];
   const comments: Comment[] = [];
   const lines = text
@@ -100,7 +100,7 @@ const parseInput = (text: string, initDir: number) => {
 
   return {
     errors,
-    results: results.map((s) => s.result),
+    results: results,
     etiPositions,
     comments,
   };
@@ -124,7 +124,7 @@ const pre = (lines: string[]) => {
   }
 };
 
-const post = (results: RegexResponse[], initDir: number) => {
+const post = (results: Result[], initDir: number) => {
   const etiPositions = calculateEtiquetasPos(results, initDir);
 
   for (let i = 0; i < results.length; i++) {
@@ -157,8 +157,9 @@ interface RegexResponse {
   result: string[];
   eti: string;
   instruction: Instruction;
-  originalOffset?: number;
 }
+
+type Result = RegexResponse & { originalOffset: number };
 
 const executeRegex = (line: string): RegexResponse | null => {
   for (let i = 0; i < instructions.length; i++) {
@@ -273,7 +274,7 @@ export interface EtiquetaPos extends Marker {
 }
 
 const calculateEtiquetasPos = (
-  results: RegexResponse[],
+  results: Result[],
   initDir: number
 ): EtiquetaPos[] => {
   const toReturn: EtiquetaPos[] = [];

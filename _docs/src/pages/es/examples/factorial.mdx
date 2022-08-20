@@ -1,0 +1,39 @@
+---
+title: Factorial
+description: Calcular el factorial de un número.
+layout: ../../../layouts/MainLayout.astro
+---
+
+import Code from "../../../components/Code/Code";
+import Solution from "../../../components/Solution";
+
+Calcular el factorial de un número.
+
+Esta es una tarea muy sencilla que se puede resolver de manera recursiva e iterativa.
+
+En este caso vamos a ver la forma recursiva, la más simple de implementar.
+
+```java
+public int factorial(int n) {
+  if (n == 0) {
+    return 1;
+  }
+
+  return n * factorial(n - 1);
+}
+```
+
+## Funciones de ayuda
+
+Vamos a utilizar la función ya programada de [multiplicación](/es/examples/multiplication) que 
+nos permite multiplicar los numeros contenidos en los registros RB y RC.
+
+En el acumulador vamos a guardar tanto el numero a realizar el factorial tanto como el resultado.
+
+## Código final
+
+<Code
+  testCodeText="Probar código"
+  code={`INISP EEEE\n\nMOV 3, AC # 3!\nCALL TFFACTORIAL\nFIN\n\n# define fact(AC)\nTFFACTORIAL CMP 1\nBEQ T_BASE\nPUSH # X\nSUB 01 # AC = X-1\nCALL TFFACTORIAL # fact(X-1)\nMOV AC, RC\nPOP\nMOV AC, RB # X\nCALL TFMULT # X * fact(X-1)\nJMP TFFACTORIAL_RET\n\nT_BASE MOV 1, AC # base case\n\nTFFACTORIAL_RET RET\n\n# define multiply(RB, RC)\nTFMULT MOV RB, AC\nPUSH\n\nTSTART MOV RC, AC\nCMP 01\nBEQ TFIN\nPOP\nADD RB\nPUSH\nMOV RC, AC\nSUB 01\nMOV AC, RC\nJMP TSTART\nTFIN POP\nRET`}
+  client:load
+/>
