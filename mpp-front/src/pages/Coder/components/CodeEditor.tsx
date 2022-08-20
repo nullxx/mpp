@@ -50,7 +50,7 @@ export default function CodeEditor({
     setTraslated("");
     setError([]);
 
-    const res = parseInput(code, 0);
+    const res = parseInput(code, 0); // FIXME Let the user choose the offset
 
     const str = res.results.map((r) => r.result.join("\n")).join("\n");
     setTraslated(str);
@@ -169,6 +169,7 @@ export default function CodeEditor({
             number={initOffset}
             onChange={onChangeInitOffset}
             width={200}
+            disabled
             isError={!offsetValid}
           />
 

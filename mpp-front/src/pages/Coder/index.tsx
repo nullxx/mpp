@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Drawer, Space, Popconfirm, Divider } from "antd";
 import CodeEditor from "./components/CodeEditor";
-import { getCore } from "../../lib/core/index";
+import { getCore } from "../../lib/core";
 import IconButton from "../../components/IconButton";
 import { CodeOutlined, SaveOutlined, CloseOutlined } from "@ant-design/icons";
 import ResizeDrawer from "./components/ResizeDrawer";

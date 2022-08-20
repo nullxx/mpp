@@ -33,6 +33,7 @@ const NumberBaseInput = ({
   width,
   isError,
   max,
+  disabled = false
 }: {
   number: number;
   initialBase: Base;
@@ -42,6 +43,7 @@ const NumberBaseInput = ({
   width?: number | "100%";
   isError?: boolean;
   max?: number;
+  disabled?: boolean;
 }) => {
   const [base, setBase] = React.useState<Base>(initialBase);
   const [formatted, setFormatted] = React.useState(getFormatted(number, base));
@@ -83,7 +85,7 @@ const NumberBaseInput = ({
   };
 
   const selectBefore = (
-    <Select value={base} onChange={handleBaseChange}>
+    <Select value={base} onChange={handleBaseChange} disabled={disabled}>
       {bases.map(({ base, radix }) => (
         <Option key={base} value={base}>
           {base}
@@ -96,6 +98,7 @@ const NumberBaseInput = ({
     <Input
       readOnly={readOnly}
       addonBefore={selectBefore}
+      disabled={disabled}
       value={formatted}
       onChange={onValueChange}
       status={!isValid || isError ? "error" : undefined}
