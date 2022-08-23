@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 
-import type * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import Editor from "@monaco-editor/react";
+import { useCodeMirror } from "@uiw/react-codemirror";
 
 import { parse } from "./src";
 import type { Instruction, Variable } from "./src/lib/instruction";
+import hljs from "highlight.js/lib/core";
+import "../Code/Code"; // for define mpp
 
 export default function Transpiler({ code }: { code: string }) {
   const [input, setInput] = useState<string>(code);
@@ -12,7 +13,19 @@ export default function Transpiler({ code }: { code: string }) {
   const [error, setError] = useState<string | undefined>("");
   const [variables, setVariables] = useState<Variable[]>([]);
 
-  const inputEditor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+  const editor = useRef(null);
+  const { setContainer } = useCodeMirror({
+    container: editor.current,
+    value: input,
+    height: "20rem",
+    onChange(value, viewUpdate) {
+      setInput(value);
+    },
+  });
+
+  useEffect(() => {
+    if (editor.current) setContainer(editor.current);
+  }, [editor.current]);
 
   useEffect(() => {
     setError("");
@@ -33,39 +46,22 @@ export default function Transpiler({ code }: { code: string }) {
   return (
     <>
       <p style={{ color: "red" }}>{error}</p>
-      <div style={{ width: "100%", display: "flex" }}>
-        <Editor
-          height="40vh"
-          width="50%"
-          value={input}
-          onChange={(v) => setInput(v || "")}
-          defaultLanguage="mpp"
-          defaultValue={code}
-          onMount={(e, m) => (inputEditor.current = e)}
-        />
-
-        <Editor
-          height="40vh"
-          width="50%"
-          options={{
-            readOnly: true,
-            lineNumbers: (line) => {
-              const index = line - 1;
-
-              const instructions = output?.slice(0, index) ?? [];
-              const cost = instructions
-                ?.map((i) => i.getCost())
-                .reduce((partialSum, a) => partialSum + a, 0);
-
-              return Number(cost).toString(16).padStart(4, "0").toUpperCase();
-            },
+      <div style={{ display: "flex", height: "20rem" }}>
+        <div ref={editor} style={{ width: "50%" }} />
+        <pre
+          style={{
+            backgroundColor: "#0d1117",
+            color: "#c9d1d9",
+            width: "50%",
+            overflow: "scroll",
           }}
-          value={
-            output === null ? "" : output?.map((i) => i.format()).join("\n")
-          }
-          defaultLanguage="assembly"
-          defaultValue=""
-        />
+          dangerouslySetInnerHTML={{
+            __html: hljs.highlight(
+              output?.map((i) => i.format()).join("\n") ?? "",
+              { language: "mpp" }
+            ).value,
+          }}
+        ></pre>
       </div>
 
       <>

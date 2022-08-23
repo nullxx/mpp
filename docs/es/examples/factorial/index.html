@@ -40,20 +40,20 @@
   gtag('config', 'G-TEL60V1WM9');
 </script> -->
 
-		<!-- Page Metadata --><link rel="canonical" href="https://mpp-docs.nullx.me/es/instructions/BC">
+		<!-- Page Metadata --><link rel="canonical" href="https://mpp-docs.nullx.me/es/examples/factorial">
 
 <!-- OpenGraph Tags -->
-<meta property="og:title" content="BC 🚀 Documentación">
+<meta property="og:title" content="Factorial 🚀 Documentación">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://mpp-docs.nullx.me/es/instructions/BC">
+<meta property="og:url" content="https://mpp-docs.nullx.me/es/examples/factorial">
 <meta property="og:locale" content="es_ES">
-<meta name="description" property="og:description" content="Salto condicional si FC = 1">
+<meta name="description" property="og:description" content="Calcular el factorial de un número.">
 <meta property="og:site_name" content="Documentación">
 
 <!-- Twitter Tags -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="BC 🚀 Documentación">
-<meta name="twitter:description" content="Salto condicional si FC = 1">
+<meta name="twitter:title" content="Factorial 🚀 Documentación">
+<meta name="twitter:description" content="Calcular el factorial de un número.">
 
 <!--
   TODO: Add json+ld data, maybe https://schema.org/APIReference makes sense?
@@ -63,7 +63,7 @@
 -->
 
 		<title>
-			BC 🚀 Documentación
+			Factorial 🚀 Documentación
 		</title>
 		
 	<link rel="stylesheet" href="/assets/cd27ccbf.d719c439.css" />
@@ -207,7 +207,7 @@
 									BEQ
 								</a>
 							</li><li class="nav-link astro-Y6PIJ7ZT">
-								<a href="/es/instructions/BC" aria-current="page" class="astro-Y6PIJ7ZT">
+								<a href="/es/instructions/BC" aria-current="false" class="astro-Y6PIJ7ZT">
 									BC
 								</a>
 							</li><li class="nav-link astro-Y6PIJ7ZT">
@@ -238,7 +238,7 @@
 									Multiplicación
 								</a>
 							</li><li class="nav-link astro-Y6PIJ7ZT">
-								<a href="/es/examples/factorial" aria-current="false" class="astro-Y6PIJ7ZT">
+								<a href="/es/examples/factorial" aria-current="page" class="astro-Y6PIJ7ZT">
 									Factorial
 								</a>
 							</li><li class="nav-link astro-Y6PIJ7ZT">
@@ -277,85 +277,63 @@
 			<div id="grid-main" class="astro-4VHVWRRO">
 				<article id="article" class="content astro-PAZFISYY">
 	<section class="main-section astro-PAZFISYY">
-		<h1 class="content-title astro-PAZFISYY" id="overview">BC</h1>
+		<h1 class="content-title astro-PAZFISYY" id="overview">Factorial</h1>
 		<nav class="block sm:hidden astro-PAZFISYY">
-			<script>(self.Astro=self.Astro||{}).media=(s,a)=>{const t=async()=>{await(await s())()};if(a.value){const e=matchMedia(a.value);e.matches?t():e.addEventListener("change",t,{once:!0})}};</script><astro-island uid="Z1gNKFl" component-url="/TableOfContents.8e2b1258.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;headings&quot;:[1,&quot;[[0,{\&quot;depth\&quot;:[0,4],\&quot;slug\&quot;:[0,\&quot;microprograma-si-fc--1\&quot;],\&quot;text\&quot;:[0,\&quot;Microprograma si FC = 1\&quot;]}],[0,{\&quot;depth\&quot;:[0,4],\&quot;slug\&quot;:[0,\&quot;microprograma-si-fc--0\&quot;],\&quot;text\&quot;:[0,\&quot;Microprograma si FC = 0\&quot;]}],[0,{\&quot;depth\&quot;:[0,2],\&quot;slug\&quot;:[0,\&quot;comprueba-tus-conocimientos\&quot;],\&quot;text\&quot;:[0,\&quot;Comprueba tus conocimientos\&quot;]}]]&quot;],&quot;class&quot;:[0,&quot;astro-PAZFISYY&quot;]}" ssr="" client="media" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;TableOfContents&quot;,&quot;value&quot;:&quot;(max-width: 50em)&quot;}" await-children=""><h2 class="heading">En esta página</h2><ul><li class="heading-link depth-2"><a href="#overview">Vision general</a></li><li class="heading-link depth-2"><a href="#comprueba-tus-conocimientos">Comprueba tus conocimientos</a></li></ul></astro-island>
+			<script>(self.Astro=self.Astro||{}).media=(s,a)=>{const t=async()=>{await(await s())()};if(a.value){const e=matchMedia(a.value);e.matches?t():e.addEventListener("change",t,{once:!0})}};</script><astro-island uid="1FIQ0m" component-url="/TableOfContents.8e2b1258.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;headings&quot;:[1,&quot;[[0,{\&quot;depth\&quot;:[0,2],\&quot;slug\&quot;:[0,\&quot;funciones-de-ayuda\&quot;],\&quot;text\&quot;:[0,\&quot;Funciones de ayuda\&quot;]}],[0,{\&quot;depth\&quot;:[0,2],\&quot;slug\&quot;:[0,\&quot;código-final\&quot;],\&quot;text\&quot;:[0,\&quot;Código final\&quot;]}]]&quot;],&quot;class&quot;:[0,&quot;astro-PAZFISYY&quot;]}" ssr="" client="media" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;TableOfContents&quot;,&quot;value&quot;:&quot;(max-width: 50em)&quot;}" await-children=""><h2 class="heading">En esta página</h2><ul><li class="heading-link depth-2"><a href="#overview">Vision general</a></li><li class="heading-link depth-2"><a href="#funciones-de-ayuda">Funciones de ayuda</a></li><li class="heading-link depth-2"><a href="#código-final">Código final</a></li></ul></astro-island>
 		</nav>
-		<p>Salto condicional si FC = 1.</p>
-<pre class="shiki github-dark" style="background-color:#0d1117;color:#c9d1d9"><div class="code-container"><code><div class="line"><span style="color:undefined">BC DIR</span></div></code></div></pre>
-<p>siendo <code>DIR</code> una dirección de memoria.</p>
-<h4 id="microprograma-si-fc--1">Microprograma si FC = 1</h4>
+		<p>Calcular el factorial de un número.</p>
+<p>Esta es una tarea muy sencilla que se puede resolver de manera recursiva e iterativa.</p>
+<p>En este caso vamos a ver la forma recursiva, la más simple de implementar.</p>
+<pre class="shiki github-dark" style="background-color:#0d1117;color:#c9d1d9"><div class="language-id">java</div><div class="code-container"><code><div class="line"><span style="color:#FF7B72">public</span><span style="color:#C9D1D9"> </span><span style="color:#FF7B72">int</span><span style="color:#C9D1D9"> </span><span style="color:#D2A8FF">factorial</span><span style="color:#C9D1D9">(</span><span style="color:#FF7B72">int</span><span style="color:#C9D1D9"> n) {</span></div><div class="line"><span style="color:#C9D1D9">  </span><span style="color:#FF7B72">if</span><span style="color:#C9D1D9"> (n </span><span style="color:#FF7B72">==</span><span style="color:#C9D1D9"> </span><span style="color:#79C0FF">0</span><span style="color:#C9D1D9">) {</span></div><div class="line"><span style="color:#C9D1D9">    </span><span style="color:#FF7B72">return</span><span style="color:#C9D1D9"> </span><span style="color:#79C0FF">1</span><span style="color:#C9D1D9">;</span></div><div class="line"><span style="color:#C9D1D9">  }</span></div><div class="line"></div><div class="line"><span style="color:#C9D1D9">  </span><span style="color:#FF7B72">return</span><span style="color:#C9D1D9"> n </span><span style="color:#FF7B72">*</span><span style="color:#C9D1D9"> </span><span style="color:#D2A8FF">factorial</span><span style="color:#C9D1D9">(n </span><span style="color:#FF7B72">-</span><span style="color:#C9D1D9"> </span><span style="color:#79C0FF">1</span><span style="color:#C9D1D9">);</span></div><div class="line"><span style="color:#C9D1D9">}</span></div></code></div></pre>
+<h2 id="funciones-de-ayuda">Funciones de ayuda</h2>
+<p>Vamos a utilizar la función ya programada de <a href="/es/examples/multiplication">multiplicación</a> que
+nos permite multiplicar los numeros contenidos en los registros RB y RC.</p>
+<p>En el acumulador vamos a guardar tanto el numero a realizar el factorial tanto como el resultado.</p>
+<h2 id="código-final">Código final</h2>
+<script>(self.Astro=self.Astro||{}).load=a=>{(async()=>await(await a())())()};</script><astro-island uid="Z141qcl" component-url="/Code.d45d47bc.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;INISP EEEE\n\nMOV 3, AC # 3!\nCALL TFFACTORIAL\nFIN\n\n# define fact(AC)\nTFFACTORIAL CMP 1\nBEQ T_BASE\nPUSH # X\nSUB 01 # AC = X-1\nCALL TFFACTORIAL # fact(X-1)\nMOV AC, RC\nPOP\nMOV AC, RB # X\nCALL TFMULT # X * fact(X-1)\nJMP TFFACTORIAL_RET\n\nT_BASE MOV 1, AC # base case\n\nTFFACTORIAL_RET RET\n\n# define multiply(RB, RC)\nTFMULT MOV RB, AC\nPUSH\n\nTSTART MOV RC, AC\nCMP 01\nBEQ TFIN\nPOP\nADD RB\nPUSH\nMOV RC, AC\nSUB 01\nMOV AC, RC\nJMP TSTART\nTFIN POP\nRET&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-keyword">INISP</span> <span class="hljs-number">EEEE</span>
 
+<span class="hljs-keyword">MOV</span> <span class="hljs-number">3</span>, <span class="hljs-built_in">AC</span> <span class="hljs-comment"># 3!</span>
+<span class="hljs-keyword">CALL</span> <span class="hljs-symbol">TFFACTORIAL</span>
+<span class="hljs-keyword">FIN</span>
 
+<span class="hljs-comment"># define fact(AC)</span>
+<span class="hljs-symbol">TFFACTORIAL</span> <span class="hljs-keyword">CMP</span> <span class="hljs-number">1</span>
+<span class="hljs-keyword">BEQ</span> <span class="hljs-symbol">T_BASE</span>
+<span class="hljs-keyword">PUSH</span> <span class="hljs-comment"># X</span>
+<span class="hljs-keyword">SUB</span> <span class="hljs-number">01</span> <span class="hljs-comment"># AC = X-1</span>
+<span class="hljs-keyword">CALL</span> <span class="hljs-symbol">TFFACTORIAL</span> <span class="hljs-comment"># fact(X-1)</span>
+<span class="hljs-keyword">MOV</span> <span class="hljs-built_in">AC</span>, <span class="hljs-built_in">RC</span>
+<span class="hljs-keyword">POP</span>
+<span class="hljs-keyword">MOV</span> <span class="hljs-built_in">AC</span>, <span class="hljs-built_in">RB</span> <span class="hljs-comment"># X</span>
+<span class="hljs-keyword">CALL</span> <span class="hljs-symbol">TFMULT</span> <span class="hljs-comment"># X * fact(X-1)</span>
+<span class="hljs-keyword">JMP</span> <span class="hljs-symbol">TFFACTORIAL_RET</span>
 
+<span class="hljs-symbol">T_BASE</span> <span class="hljs-keyword">MOV</span> <span class="hljs-number">1</span>, <span class="hljs-built_in">AC</span> <span class="hljs-comment"># base case</span>
 
+<span class="hljs-symbol">TFFACTORIAL_RET</span> <span class="hljs-keyword">RET</span>
 
+<span class="hljs-comment"># define multiply(RB, RC)</span>
+<span class="hljs-symbol">TFMULT</span> <span class="hljs-keyword">MOV</span> <span class="hljs-built_in">RB</span>, <span class="hljs-built_in">AC</span>
+<span class="hljs-keyword">PUSH</span>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<table><thead><tr><th align="left">ESTADO</th><th align="left">MICRO-OPERACIÓN</th></tr></thead><tbody><tr><td align="left">S0</td><td align="left">RI ᐊ (PC), PC + 1</td></tr><tr><td align="left">S1</td><td align="left">DECODE</td></tr><tr><td align="left">S16</td><td align="left">H ᐊ (PC), PC ᐊ PC+1</td></tr><tr><td align="left">S17</td><td align="left">L ᐊ (PC), PC ᐊ PC+1</td></tr><tr><td align="left">S20</td><td align="left">PC ᐊ HL</td></tr></tbody></table>
-<h4 id="microprograma-si-fc--0">Microprograma si FC = 0</h4>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<table><thead><tr><th align="left">ESTADO</th><th align="left">MICRO-OPERACIÓN</th></tr></thead><tbody><tr><td align="left">S0</td><td align="left">RI ᐊ (PC), PC + 1</td></tr><tr><td align="left">S1</td><td align="left">DECODE</td></tr><tr><td align="left">S16</td><td align="left">H ᐊ (PC), PC ᐊ PC+1</td></tr><tr><td align="left">S17</td><td align="left">L ᐊ (PC), PC ᐊ PC+1</td></tr></tbody></table>
-<h2 id="comprueba-tus-conocimientos">Comprueba tus conocimientos</h2>
-<p>Crea un programa que realize lo siguiente:</p>
-<pre class="shiki github-dark" style="background-color:#0d1117;color:#c9d1d9"><div class="language-id">java</div><div class="code-container"><code><div class="line"><span style="color:#FF7B72">int</span><span style="color:#FFA657"> </span><span style="color:#C9D1D9">a</span><span style="color:#FFA657"> </span><span style="color:#FF7B72">=</span><span style="color:#C9D1D9"> </span><span style="color:#79C0FF">5</span><span style="color:#C9D1D9">;</span></div><div class="line"><span style="color:#FF7B72">int</span><span style="color:#FFA657"> </span><span style="color:#C9D1D9">b</span><span style="color:#FFA657"> </span><span style="color:#FF7B72">=</span><span style="color:#C9D1D9"> </span><span style="color:#79C0FF">6</span><span style="color:#C9D1D9">;</span></div><div class="line"><span style="color:#FF7B72">int</span><span style="color:#FFA657"> </span><span style="color:#C9D1D9">resultado</span><span style="color:#FFA657"> </span><span style="color:#FF7B72">=</span><span style="color:#C9D1D9"> a </span><span style="color:#FF7B72">-</span><span style="color:#C9D1D9"> b;</span></div><div class="line"><span style="color:#FF7B72">if</span><span style="color:#C9D1D9"> (resultado </span><span style="color:#FF7B72">&lt;</span><span style="color:#C9D1D9"> </span><span style="color:#79C0FF">0</span><span style="color:#C9D1D9">) {</span></div><div class="line"><span style="color:#C9D1D9">    </span><span style="color:#8B949E">// salto a dirección de memoria 0x212</span></div><div class="line"><span style="color:#C9D1D9">}</span></div></code></div></pre>
-<p><strong>Nota</strong>: debes conocer y utilizar la operación: <a href="/es/instructions/MOV"><code>MOV</code></a>, <a href="/es/instructions/SUB"><code>SUB</code></a></p>
-<script>(self.Astro=self.Astro||{}).load=a=>{(async()=>await(await a())())()};</script><astro-island uid="VMMxJ" component-url="/index.6326c696.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;title&quot;:[0,&quot;Solución&quot;],&quot;sol&quot;:[1,&quot;[[0,\&quot;MOV 06, RB\\nMOV 05, AC\\nSUB RB\\nBC 212\&quot;]]&quot;],&quot;testCodeText&quot;:[0,&quot;Probar código&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Solution&quot;,&quot;value&quot;:true}" await-children=""><div class="tab tabs"><input type="checkbox" id="chck1" /><label class="tab-label" for="chck1">Solución</label><div class="tab-content"><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-keyword">MOV</span> <span class="hljs-number">06</span>, <span class="hljs-built_in">RB</span>
-<span class="hljs-keyword">MOV</span> <span class="hljs-number">05</span>, <span class="hljs-built_in">AC</span>
-<span class="hljs-keyword">SUB</span> <span class="hljs-built_in">RB</span>
-<span class="hljs-keyword">BC</span> <span class="hljs-number">212</span></code></div></pre></div></div></astro-island>
+<span class="hljs-symbol">TSTART</span> <span class="hljs-keyword">MOV</span> <span class="hljs-built_in">RC</span>, <span class="hljs-built_in">AC</span>
+<span class="hljs-keyword">CMP</span> <span class="hljs-number">01</span>
+<span class="hljs-keyword">BEQ</span> <span class="hljs-symbol">TFIN</span>
+<span class="hljs-keyword">POP</span>
+<span class="hljs-keyword">ADD</span> <span class="hljs-built_in">RB</span>
+<span class="hljs-keyword">PUSH</span>
+<span class="hljs-keyword">MOV</span> <span class="hljs-built_in">RC</span>, <span class="hljs-built_in">AC</span>
+<span class="hljs-keyword">SUB</span> <span class="hljs-number">01</span>
+<span class="hljs-keyword">MOV</span> <span class="hljs-built_in">AC</span>, <span class="hljs-built_in">RC</span>
+<span class="hljs-keyword">JMP</span> <span class="hljs-symbol">TSTART</span>
+<span class="hljs-symbol">TFIN</span> <span class="hljs-keyword">POP</span>
+<span class="hljs-keyword">RET</span></code></div></pre></astro-island>
 	</section>
 	<nav class="block sm:hidden astro-PAZFISYY">
 		<h2 class="heading astro-BF3DHY7W">Más</h2>
 <ul class="astro-BF3DHY7W">
 	<li class="heading-link depth-2 astro-BF3DHY7W">
-			<a class="edit-on-github astro-BF3DHY7W" href="https://github.com/nullxx/mpp/tree/master/_docs/src/pages/es/instructions/BC.mdx" target="_blank">
+			<a class="edit-on-github astro-BF3DHY7W" href="https://github.com/nullxx/mpp/tree/master/_docs/src/pages/es/examples/factorial.mdx" target="_blank">
 				<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pen" class="svg-inline--fa fa-pen fa-w-16 astro-BF3DHY7W" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="1em" width="1em">
 					<path fill="currentColor" d="M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z" class="astro-BF3DHY7W"></path>
 				</svg>
@@ -376,11 +354,11 @@
 			<aside id="grid-right" class="grid-sidebar astro-4VHVWRRO" title="Table of Contents">
 				<nav class="sidebar-nav astro-VFRMDPNV" aria-labelledby="grid-right">
 	<div class="sidebar-nav-inner astro-VFRMDPNV">
-		<astro-island uid="O7AUd" component-url="/TableOfContents.8e2b1258.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;headings&quot;:[1,&quot;[[0,{\&quot;depth\&quot;:[0,4],\&quot;slug\&quot;:[0,\&quot;microprograma-si-fc--1\&quot;],\&quot;text\&quot;:[0,\&quot;Microprograma si FC = 1\&quot;]}],[0,{\&quot;depth\&quot;:[0,4],\&quot;slug\&quot;:[0,\&quot;microprograma-si-fc--0\&quot;],\&quot;text\&quot;:[0,\&quot;Microprograma si FC = 0\&quot;]}],[0,{\&quot;depth\&quot;:[0,2],\&quot;slug\&quot;:[0,\&quot;comprueba-tus-conocimientos\&quot;],\&quot;text\&quot;:[0,\&quot;Comprueba tus conocimientos\&quot;]}]]&quot;],&quot;class&quot;:[0,&quot;astro-VFRMDPNV&quot;]}" ssr="" client="media" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;TableOfContents&quot;,&quot;value&quot;:&quot;(min-width: 50em)&quot;}" await-children=""><h2 class="heading">En esta página</h2><ul><li class="heading-link depth-2"><a href="#overview">Vision general</a></li><li class="heading-link depth-2"><a href="#comprueba-tus-conocimientos">Comprueba tus conocimientos</a></li></ul></astro-island>
+		<astro-island uid="Z1ivUd1" component-url="/TableOfContents.8e2b1258.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;headings&quot;:[1,&quot;[[0,{\&quot;depth\&quot;:[0,2],\&quot;slug\&quot;:[0,\&quot;funciones-de-ayuda\&quot;],\&quot;text\&quot;:[0,\&quot;Funciones de ayuda\&quot;]}],[0,{\&quot;depth\&quot;:[0,2],\&quot;slug\&quot;:[0,\&quot;código-final\&quot;],\&quot;text\&quot;:[0,\&quot;Código final\&quot;]}]]&quot;],&quot;class&quot;:[0,&quot;astro-VFRMDPNV&quot;]}" ssr="" client="media" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;TableOfContents&quot;,&quot;value&quot;:&quot;(min-width: 50em)&quot;}" await-children=""><h2 class="heading">En esta página</h2><ul><li class="heading-link depth-2"><a href="#overview">Vision general</a></li><li class="heading-link depth-2"><a href="#funciones-de-ayuda">Funciones de ayuda</a></li><li class="heading-link depth-2"><a href="#código-final">Código final</a></li></ul></astro-island>
 		<h2 class="heading astro-BF3DHY7W">Más</h2>
 <ul class="astro-BF3DHY7W">
 	<li class="heading-link depth-2 astro-BF3DHY7W">
-			<a class="edit-on-github astro-BF3DHY7W" href="https://github.com/nullxx/mpp/tree/master/_docs/src/pages/es/instructions/BC.mdx" target="_blank">
+			<a class="edit-on-github astro-BF3DHY7W" href="https://github.com/nullxx/mpp/tree/master/_docs/src/pages/es/examples/factorial.mdx" target="_blank">
 				<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pen" class="svg-inline--fa fa-pen fa-w-16 astro-BF3DHY7W" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="1em" width="1em">
 					<path fill="currentColor" d="M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z" class="astro-BF3DHY7W"></path>
 				</svg>
