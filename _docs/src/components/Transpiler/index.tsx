@@ -5,6 +5,7 @@ import { useCodeMirror } from "@uiw/react-codemirror";
 import { parse } from "./src";
 import type { Instruction, Variable } from "./src/lib/instruction";
 import hljs from "highlight.js/lib/core";
+import "./style.css";
 import "../Code/Code"; // for define mpp
 
 export default function Transpiler({ code }: { code: string }) {
@@ -45,7 +46,8 @@ export default function Transpiler({ code }: { code: string }) {
 
   return (
     <>
-      <p style={{ color: "red" }}>{error}</p>
+      {error && <div className="alert">{error}</div>}
+      <div style={{ height: 5 }} />
       <div style={{ display: "flex", height: "20rem" }}>
         <div ref={editor} style={{ width: "50%" }} />
         <pre
