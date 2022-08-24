@@ -2,11 +2,12 @@ import { useEffect, useState, useRef } from "react";
 
 import { useCodeMirror } from "@uiw/react-codemirror";
 
-import { parse } from "./src";
-import type { Instruction, Variable } from "./src/lib/instruction";
 import hljs from "highlight.js/lib/core";
 import "./style.css";
 import "../Code/Code"; // for define mpp
+import type { Variable } from "../../lib/mpp-compiler/src/lib/generator/_variable";
+import type { Instruction } from "../../lib/mpp-compiler/src/lib/instruction";
+import { parseCode } from "../../lib/mpp-compiler/src";
 
 export default function Transpiler({ code }: { code: string }) {
   const [input, setInput] = useState<string>(code);
@@ -31,7 +32,7 @@ export default function Transpiler({ code }: { code: string }) {
   useEffect(() => {
     setError("");
     try {
-      const { result, variables } = parse(input, 0);
+      const result = parseCode(input, 0);
       let uniqueVariables = [
         ...new Map(variables.map((item) => [item["name"], item])).values(),
       ];
@@ -65,28 +66,6 @@ export default function Transpiler({ code }: { code: string }) {
           }}
         ></pre>
       </div>
-
-      <>
-        <h2>Variables info</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Variable</th>
-              <th>Address</th>
-            </tr>
-          </thead>
-          <tbody>
-            {variables.map((v) => (
-              <tr key={v.name}>
-                <td>{v.name}</td>
-                <td>
-                  {v.address?.toString(16).padStart(4, "0").toUpperCase()}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </>
     </>
   );
 }
