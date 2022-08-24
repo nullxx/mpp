@@ -10,5 +10,9 @@ export default defineConfig({
   integrations: [// Enable Preact to support Preact JSX components.
   preact(), // Enable React for the Algolia search component.
   react(), mdx(), sitemap()],
-  site: `https://mpp-docs.nullx.me`
+  site: `https://mpp-docs.nullx.me`,
+  build: {
+    format: 'file'
+  }
+  
 });
