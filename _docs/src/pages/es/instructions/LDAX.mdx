@@ -4,8 +4,8 @@ description: Cargar valor de memoria en el acumulador.
 layout: ../../../layouts/MainLayout.astro
 ---
 
-import Solution from '../../../components/Solution'
-import states from './states.json';
+import Solution from "../../../components/Solution";
+import states from "./states.json";
 
 Cargar valor de memoria en el acumulador.
 
@@ -17,7 +17,6 @@ A diferencia de la operación [`LDA`](LDA), ésta no espera un valor inmediato, 
 AC = READMEM(RD-RE)
 ```
 
-
 ### Comando
 
 ```
@@ -25,14 +24,15 @@ LDAX
 ```
 
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S21 | {states.S21} |
-| S22 | {states.S22} |
-| S18 | {states.S18} |
-| S4 | {states.S4} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S21    | {states.S21}    |
+| S22    | {states.S22}    |
+| S18    | {states.S18}    |
+| S4     | {states.S4}     |
 
 ## Comprueba tus conocimientos
 
@@ -40,4 +40,9 @@ Crea un programa que guarde en RB el contenido de la dirección de memoria 0x132
 
 **Nota**: debes conocer y utilizar la operación: [`MOV`](/es/instructions/MOV)
 
-<Solution title="Solución" sol={["MOV 13, RD\nMOV 24, RE\nLDAX\nMOV AC, RB"]} testCodeText="Probar código" client:load />
+<Solution
+  title="Solución"
+  sol={["MOV 13, RD\nMOV 24, RE\nLDAX\nMOV AC, RB"]}
+  testCodeText="Probar código"
+  client:load
+/>

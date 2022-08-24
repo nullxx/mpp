@@ -4,15 +4,16 @@ description: Mover valor de un registro a otro
 layout: ../../../layouts/MainLayout.astro
 ---
 
-import Code from '../../../components/Code/Code';
-import Solution from '../../../components/Solution'
-import states from './states.json';
+import Code from "../../../components/Code/Code";
+import Solution from "../../../components/Solution";
+import states from "./states.json";
 
 Mover un valor de un registro a otro.
 
 Existen diferentes caminos:
 
 ### Mover un valor inmediato a un registro de propósito general
+
 \* Inmediato: un valor entero de 8 bits elegido por el usuario.
 
 Mover 0xF al registro de propósito general B.
@@ -20,51 +21,60 @@ Mover 0xF al registro de propósito general B.
 <Code code="MOV 0F, RB" />
 
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S15 | {states.S15} |
-| S3 | {states.S3} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S15    | {states.S15}    |
+| S3     | {states.S3}     |
 
 ### Mover entre registros de propósito general
 
 <Code code="MOV RB, RC" />
 
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S2 | {states.S2} |
-| S3 | {states.S3} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S2     | {states.S2}     |
+| S3     | {states.S3}     |
 
 ### Mover entre un registro de propósito general al acumulador
 
 <Code code="MOV RB, AC" />
 
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S2 | {states.S2} |
-| S4 | {states.S4} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S2     | {states.S2}     |
+| S4     | {states.S4}     |
 
 ### Mover un valor inmediato al acumulador
 
 <Code code="MOV 0F, AC" />
 
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S15 | {states.S15} |
-| S4 | {states.S4} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S15    | {states.S15}    |
+| S4     | {states.S4}     |
 
 ## Comprueba tus conocimientos
 
 Crea un programa que mueva un valor 0xA al registro RB y que posteriormente se mueva desde este último al acumulador
 
-<Solution title="Solución" sol={["MOV 0A, RB\nMOV RB, AC"]} testCodeText="Probar código" client:load />
+<Solution
+  title="Solución"
+  sol={["MOV 0A, RB\nMOV RB, AC"]}
+  testCodeText="Probar código"
+  client:load
+/>

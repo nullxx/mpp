@@ -3,9 +3,10 @@ title: AND
 description: Operación AND
 layout: ../../../layouts/MainLayout.astro
 ---
-import Code from '../../../components/Code/Code';
-import Solution from '../../../components/Solution'
-import states from './states.json';
+
+import Code from "../../../components/Code/Code";
+import Solution from "../../../components/Solution";
+import states from "./states.json";
 
 Producto lógico (AND) entre el valor de un registro y el del acumulador.
 
@@ -16,36 +17,39 @@ Producto lógico (AND) entre el valor de un registro y el del acumulador.
 <Code code="AND 0F" />
 
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S15 | {states.S15} |
-| S9 | {states.S9} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S15    | {states.S15}    |
+| S9     | {states.S9}     |
 
 ### Producto lógico de un registro de propósito general y el acumulador
 
 <Code code="AND RB" />
 
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S2 | {states.S2} |
-| S9 | {states.S9} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S2     | {states.S2}     |
+| S9     | {states.S9}     |
 
 ### Producto lógico del acumulador y el acumulador
 
 <Code code="AND AC" />
 
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S12 | {states.S1} |
-| S9 | {states.S9} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S12    | {states.S1}     |
+| S9     | {states.S9}     |
 
 ## Comprueba tus conocimientos
 
@@ -53,4 +57,9 @@ Crea un programa que haga la siguiente operación: `0x15 AND 0x14`
 
 **Nota**: debes conocer y utilizar la operación: [`MOV`](/es/instructions/MOV)
 
-<Solution title="Solución" sol={["MOV 14, AC\nMOV 15, RB\nAND RB", "MOV 14, AC\nAND 15"]} testCodeText="Probar código" client:load />
+<Solution
+  title="Solución"
+  sol={["MOV 14, AC\nMOV 15, RB\nAND RB", "MOV 14, AC\nAND 15"]}
+  testCodeText="Probar código"
+  client:load
+/>

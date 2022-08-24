@@ -3,15 +3,17 @@ title: INC
 description: Incrementar un valor
 layout: ../../../layouts/MainLayout.astro
 ---
-import Code from '../../../components/Code/Code';
-import Solution from '../../../components/Solution'
-import states from './states.json';
+
+import Code from "../../../components/Code/Code";
+import Solution from "../../../components/Solution";
+import states from "./states.json";
 
 Incrementar el valor de un registro
 
 ```
 REGISTRO = REGISTRO + 1
 ```
+
 Siendo REGISTRO el registro cuyo valor tiene que incrementar
 
 ### Incrementar el valor de un registro de propósito general
@@ -19,28 +21,34 @@ Siendo REGISTRO el registro cuyo valor tiene que incrementar
 <Code code="INC RB" />
 
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S2 | {states.S2} |
-| S8 | {states.S8} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S2     | {states.S2}     |
+| S8     | {states.S8}     |
 
 ### Incrementar el valor del acumulador.
 
 <Code code="INC AC" />
 
-
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S12 | {states.S12} |
-| S13 | {states.S13} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S12    | {states.S12}    |
+| S13    | {states.S13}    |
 
 ## Comprueba tus conocimientos
 
 Crea un programa que haga la siguiente operación: `AC = AC + 1`
 
-<Solution title="Solución" sol={["INC AC"]} testCodeText="Probar código" client:load />
+<Solution
+  title="Solución"
+  sol={["INC AC"]}
+  testCodeText="Probar código"
+  client:load
+/>

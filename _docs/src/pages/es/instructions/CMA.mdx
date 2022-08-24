@@ -4,14 +4,15 @@ description: Complemento del acumulador
 layout: ../../../layouts/MainLayout.astro
 ---
 
-import Solution from '../../../components/Solution'
-import states from './states.json';
+import Solution from "../../../components/Solution";
+import states from "./states.json";
 
 Complemento del acumulador.
 
 **El resultado se ve reflejado el acumulador**
 
 Pseudo-código:
+
 ```
 RESULTADO = NOT(AC)
 ```
@@ -23,11 +24,12 @@ CMA
 ```
 
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S14 | {states.S14} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S14    | {states.S14}    |
 
 ## Comprueba tus conocimientos
 
@@ -35,4 +37,9 @@ Crea un programa que tenga como resultado: `AC = 0x00`
 
 **Nota**: debes conocer y utilizar la operación: [`MOV`](/es/instructions/MOV)
 
-<Solution title="Solución" sol={["MOV FF, AC\nCMA"]} testCodeText="Probar código" client:load />
+<Solution
+  title="Solución"
+  sol={["MOV FF, AC\nCMA"]}
+  testCodeText="Probar código"
+  client:load
+/>

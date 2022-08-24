@@ -60,12 +60,14 @@ El código en la M++ es:
 Gracias a estas funciones ya podemos realizar restas de 16 bits.
 
 Los pasos a seguir son:
-* Encontrar la dirección de memoria de retorno.
-* Encontrar la dirección de memoria del que llamó a nuestra función.
-* Sobreescribir la dirección de memoria de retorno en la pila (stack) con la dirección de memoria de la función que llamó a nuestra función.
-* ...creando así una función que decide volver a ejecutarse de nuevo... 😈
+
+- Encontrar la dirección de memoria de retorno.
+- Encontrar la dirección de memoria del que llamó a nuestra función.
+- Sobreescribir la dirección de memoria de retorno en la pila (stack) con la dirección de memoria de la función que llamó a nuestra función.
+- ...creando así una función que decide volver a ejecutarse de nuevo... 😈
 
 ## Pero...
+
 ### Y si en vez de hacer todo esto, simplemente llamamos a la función de nuevo?
 
 ```java

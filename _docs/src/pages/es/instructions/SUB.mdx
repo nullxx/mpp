@@ -3,9 +3,10 @@ title: SUB
 description: Restar valores
 layout: ../../../layouts/MainLayout.astro
 ---
-import Code from '../../../components/Code/Code';
-import Solution from '../../../components/Solution'
-import states from './states.json';
+
+import Code from "../../../components/Code/Code";
+import Solution from "../../../components/Solution";
+import states from "./states.json";
 
 Restar al acumulador un determinado valor.
 
@@ -14,6 +15,7 @@ Restar al acumulador un determinado valor.
 ```
 AC = AC - X
 ```
+
 Siendo X el valor a restar
 
 ### Restar un registro de propósito general al acumulador
@@ -21,36 +23,39 @@ Siendo X el valor a restar
 <Code code="SUB RB" />
 
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S2 | {states.S2} |
-| S6 | {states.S6} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S2     | {states.S2}     |
+| S6     | {states.S6}     |
 
 ### Restar un valor inmediato al acumulador
 
 <Code code="SUB 0F" />
 
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S15 | {states.S15} |
-| S6 | {states.S6} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S15    | {states.S15}    |
+| S6     | {states.S6}     |
 
 ### Restar un el acumulador al acumulador
 
 <Code code="SUB AC" />
 
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S12 | {states.S12} |
-| S6 | {states.S6} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S12    | {states.S12}    |
+| S6     | {states.S6}     |
 
 ## Comprueba tus conocimientos
 
@@ -58,4 +63,9 @@ Crea un programa que haga la siguiente operación: `AC = 0x5 - 0x2`
 
 **Nota**: debes conocer y utilizar la operación: [`MOV`](/es/instructions/MOV)
 
-<Solution title="Solución" sol={["MOV 05, AC\nSUB 02", "MOV 05, AC\nMOV 02, RB\nSUB RB"]} testCodeText="Probar código" client:load />
+<Solution
+  title="Solución"
+  sol={["MOV 05, AC\nSUB 02", "MOV 05, AC\nMOV 02, RB\nSUB RB"]}
+  testCodeText="Probar código"
+  client:load
+/>

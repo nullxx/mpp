@@ -4,8 +4,8 @@ description: Guardar el valor del acumulador en memoria.
 layout: ../../../layouts/MainLayout.astro
 ---
 
-import Solution from '../../../components/Solution'
-import states from './states.json';
+import Solution from "../../../components/Solution";
+import states from "./states.json";
 
 Guardar el valor del acumulador en memoria.
 
@@ -22,14 +22,15 @@ STAX
 ```
 
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S21 | {states.S21} |
-| S22 | {states.S22} |
-| S12 | {states.S12} |
-| S19 | {states.S19} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S21    | {states.S21}    |
+| S22    | {states.S22}    |
+| S12    | {states.S12}    |
+| S19    | {states.S19}    |
 
 ## Comprueba tus conocimientos
 
@@ -37,4 +38,9 @@ Crea un programa que guarde el valor 0xFF en la dirección de memoria 0x1324.
 
 **Nota**: debes conocer y utilizar la operación: [`MOV`](/es/instructions/MOV)
 
-<Solution title="Solución" sol={["MOV 13, RD\nMOV 24, RE\nMOV FF, AC\nSTAX"]} testCodeText="Probar código" client:load />
+<Solution
+  title="Solución"
+  sol={["MOV 13, RD\nMOV 24, RE\nMOV FF, AC\nSTAX"]}
+  testCodeText="Probar código"
+  client:load
+/>

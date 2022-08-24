@@ -4,27 +4,34 @@ description: Salto
 layout: ../../../layouts/MainLayout.astro
 ---
 
-import Solution from '../../../components/Solution'
-import states from './states.json';
+import Solution from "../../../components/Solution";
+import states from "./states.json";
 
 Salto
 
 ```
 JMP DIR
 ```
+
 siendo `DIR` una dirección de memoria.
 
 #### Microprograma
+
 | ESTADO | MICRO-OPERACIÓN |
-|:-------|:----------|
-| S0 | {states.S0} |
-| S1 | {states.S1} |
-| S16 | {states.S16} |
-| S17 | {states.S17} |
-| S20 | {states.S20} |
+| :----- | :-------------- |
+| S0     | {states.S0}     |
+| S1     | {states.S1}     |
+| S16    | {states.S16}    |
+| S17    | {states.S17}    |
+| S20    | {states.S20}    |
 
 ## Comprueba tus conocimientos
 
 Crea un programa que salte a la dirección de memorial 0x928.
 
-<Solution title="Solución" sol={["JMP 928"]} testCodeText="Probar código" client:load />
+<Solution
+  title="Solución"
+  sol={["JMP 928"]}
+  testCodeText="Probar código"
+  client:load
+/>

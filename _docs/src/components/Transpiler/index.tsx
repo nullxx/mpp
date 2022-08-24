@@ -50,7 +50,7 @@ export default function Transpiler({ code }: { code: string }) {
       {error && <div className="alert">{error}</div>}
       <div style={{ height: 5 }} />
       <div style={{ display: "flex", height: "20rem" }}>
-        <div ref={editor} style={{ width: "50%" }} />
+        <div ref={editor} style={{ width: "50%", color: 'black' }} />
         <pre
           style={{
             backgroundColor: "#0d1117",
