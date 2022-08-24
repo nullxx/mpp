@@ -1,3 +1,6 @@
 [submodule "mpp-cpu/test/_munit"]
 	path = mpp-cpu/test/_munit
 	url = https://github.com/nemequ/munit.git
+[submodule "_docs/src/lib/mpp-compiler"]
+	path = _docs/src/lib/mpp-compiler
+	url = https://github.com/nullxx/mpp-compiler.git
