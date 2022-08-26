@@ -1,6 +1,6 @@
 <!DOCTYPE html><link rel="stylesheet" href="/assets/cd27ccbf.d719c439.css" />
 <link rel="stylesheet" href="/assets/312f6df0.2e601699.css" />
-<link rel="stylesheet" href="/assets/1b4402de.2624e0a3.css" /><html dir="ltr" lang="en-us" class="initial astro-4VHVWRRO">
+<link rel="stylesheet" href="/assets/1b4402de.85e5dab8.css" /><html dir="ltr" lang="en-us" class="initial astro-4VHVWRRO">
 	<head>
 		<!-- Global Metadata --><meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
@@ -68,7 +68,7 @@
 		
 	<link rel="stylesheet" href="/assets/cd27ccbf.d719c439.css" />
 <link rel="stylesheet" href="/assets/312f6df0.2e601699.css" />
-<link rel="stylesheet" href="/assets/1b4402de.2624e0a3.css" /></head>
+<link rel="stylesheet" href="/assets/1b4402de.85e5dab8.css" /></head>
 
 	<body class="astro-4VHVWRRO">
 		<header class="astro-VUSTJE5N">
@@ -292,7 +292,7 @@
 nos permite multiplicar los numeros contenidos en los registros RB y RC.</p>
 <p>En el acumulador vamos a guardar tanto el numero a realizar el factorial tanto como el resultado.</p>
 <h2 id="código-final">Código final</h2>
-<script>(self.Astro=self.Astro||{}).load=a=>{(async()=>await(await a())())()};</script><astro-island uid="Z141qcl" component-url="/Code.4ae7b459.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;INISP EEEE\n\nMOV 3, AC # 3!\nCALL TFFACTORIAL\nFIN\n\n# define fact(AC)\nTFFACTORIAL CMP 1\nBEQ T_BASE\nPUSH # X\nSUB 01 # AC = X-1\nCALL TFFACTORIAL # fact(X-1)\nMOV AC, RC\nPOP\nMOV AC, RB # X\nCALL TFMULT # X * fact(X-1)\nJMP TFFACTORIAL_RET\n\nT_BASE MOV 1, AC # base case\n\nTFFACTORIAL_RET RET\n\n# define multiply(RB, RC)\nTFMULT MOV RB, AC\nPUSH\n\nTSTART MOV RC, AC\nCMP 01\nBEQ TFIN\nPOP\nADD RB\nPUSH\nMOV RC, AC\nSUB 01\nMOV AC, RC\nJMP TSTART\nTFIN POP\nRET&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-keyword">INISP</span> <span class="hljs-number">EEEE</span>
+<script>(self.Astro=self.Astro||{}).load=a=>{(async()=>await(await a())())()};</script><astro-island uid="Z141qcl" component-url="/Code.d22da69d.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;INISP EEEE\n\nMOV 3, AC # 3!\nCALL TFFACTORIAL\nFIN\n\n# define fact(AC)\nTFFACTORIAL CMP 1\nBEQ T_BASE\nPUSH # X\nSUB 01 # AC = X-1\nCALL TFFACTORIAL # fact(X-1)\nMOV AC, RC\nPOP\nMOV AC, RB # X\nCALL TFMULT # X * fact(X-1)\nJMP TFFACTORIAL_RET\n\nT_BASE MOV 1, AC # base case\n\nTFFACTORIAL_RET RET\n\n# define multiply(RB, RC)\nTFMULT MOV RB, AC\nPUSH\n\nTSTART MOV RC, AC\nCMP 01\nBEQ TFIN\nPOP\nADD RB\nPUSH\nMOV RC, AC\nSUB 01\nMOV AC, RC\nJMP TSTART\nTFIN POP\nRET&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-keyword">INISP</span> <span class="hljs-number">EEEE</span>
 
 <span class="hljs-keyword">MOV</span> <span class="hljs-number">3</span>, <span class="hljs-built_in">AC</span> <span class="hljs-comment"># 3!</span>
 <span class="hljs-keyword">CALL</span> <span class="hljs-symbol">TFFACTORIAL</span>

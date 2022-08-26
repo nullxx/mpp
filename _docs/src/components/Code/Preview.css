@@ -40,3 +40,18 @@ video {
   width: var(--super-max-width) !important;
   height: auto !important;
 }
+
+.animate {
+  animation-duration: 0.3s;
+  animation-name: animate-fade;
+  animation-fill-mode: backwards;
+}
+
+@keyframes animate-fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

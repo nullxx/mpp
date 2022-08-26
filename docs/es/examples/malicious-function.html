@@ -1,6 +1,6 @@
 <!DOCTYPE html><link rel="stylesheet" href="/assets/cd27ccbf.d719c439.css" />
 <link rel="stylesheet" href="/assets/312f6df0.2e601699.css" />
-<link rel="stylesheet" href="/assets/1b4402de.2624e0a3.css" /><html dir="ltr" lang="en-us" class="initial astro-4VHVWRRO">
+<link rel="stylesheet" href="/assets/1b4402de.85e5dab8.css" /><html dir="ltr" lang="en-us" class="initial astro-4VHVWRRO">
 	<head>
 		<!-- Global Metadata --><meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
@@ -68,7 +68,7 @@
 		
 	<link rel="stylesheet" href="/assets/cd27ccbf.d719c439.css" />
 <link rel="stylesheet" href="/assets/312f6df0.2e601699.css" />
-<link rel="stylesheet" href="/assets/1b4402de.2624e0a3.css" /></head>
+<link rel="stylesheet" href="/assets/1b4402de.85e5dab8.css" /></head>
 
 	<body class="astro-4VHVWRRO">
 		<header class="astro-VUSTJE5N">
@@ -299,7 +299,7 @@ Estas funciones auxiliares van a operar con los registros RD y RE donde guardare
 <p><strong>(*)</strong> Esto en el codigo de la M++ no es tan literal, ya que en vez de comprobar si el registro RE es 0xFF,
 comprobamos si está activado el flag de carry.</p>
 <p>El código en la M++ es:</p>
-<script>(self.Astro=self.Astro||{}).load=a=>{(async()=>await(await a())())()};</script><astro-island uid="Z2cQe0S" component-url="/Code.4ae7b459.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;# util functions\nTFSUB CALL TFSUB_RE\nBC TFSUBRD # (*)\nJMP TFSUBRET\n\nTFSUBRD CALL TFSUB_RD\n\nTFSUBRET RET\n\n# RD = RD - 1\nTFSUB_RD MOV RD, AC\nSUB 01\nMOV AC, RD\nRET\n\n# RE = RE - 1\nTFSUB_RE MOV RE, AC\nSUB 01\nMOV AC, RE\nRET&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-comment"># util functions</span>
+<script>(self.Astro=self.Astro||{}).load=a=>{(async()=>await(await a())())()};</script><astro-island uid="Z2cQe0S" component-url="/Code.d22da69d.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;# util functions\nTFSUB CALL TFSUB_RE\nBC TFSUBRD # (*)\nJMP TFSUBRET\n\nTFSUBRD CALL TFSUB_RD\n\nTFSUBRET RET\n\n# RD = RD - 1\nTFSUB_RD MOV RD, AC\nSUB 01\nMOV AC, RD\nRET\n\n# RE = RE - 1\nTFSUB_RE MOV RE, AC\nSUB 01\nMOV AC, RE\nRET&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-comment"># util functions</span>
 <span class="hljs-symbol">TFSUB</span> <span class="hljs-keyword">CALL</span> <span class="hljs-symbol">TFSUB_RE</span>
 <span class="hljs-keyword">BC</span> <span class="hljs-symbol">TFSUBRD</span> <span class="hljs-comment"># (*)</span>
 <span class="hljs-keyword">JMP</span> <span class="hljs-symbol">TFSUBRET</span>
@@ -336,7 +336,7 @@ Si llamamos a la función de nuevo, estaremos acumulando datos en la pila hasta 
 o lo que es peor, que la propia pila sobrescriba nuestras instrucciónes en memoria 😯.</p>
 <p>De la forma planteada inicialmente no hay anidación ya que todo el rato se sobrescribe la dirección de retorno de la pila.</p>
 <h2 id="código-final">Código final</h2>
-<astro-island uid="Z10eF9E" component-url="/Code.4ae7b459.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;INISP EEEE # random far address\nCALL TFAUTORECURSIVE\nFIN\n\n\nTFAUTORECURSIVE POP # extract return address\nMOV AC, RE\nPOP\nMOV AC, RD\n# --\n\n# find caller address\nCALL TFSUB\nCALL TFSUB\nCALL TFSUB\n# --\n\n# faking return address\n# - creating recursive call\nMOV RD, AC\nPUSH\nMOV RE, AC\nPUSH\n# --\n\nRET\n\n# util functions\nTFSUB CALL TFSUB_RE\nBC TFSUBRD\nJMP TFSUBRET\n\nTFSUBRD CALL TFSUB_RD\n\nTFSUBRET RET\n\nTFSUB_RD MOV RD, AC\nSUB 01\nMOV AC, RD\nRET\n\nTFSUB_RE MOV RE, AC\nSUB 01\nMOV AC, RE\nRET&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-keyword">INISP</span> <span class="hljs-number">EEEE</span> <span class="hljs-comment"># random far address</span>
+<astro-island uid="Z10eF9E" component-url="/Code.d22da69d.js" component-export="default" renderer-url="/client.0d4c82be.js" props="{&quot;testCodeText&quot;:[0,&quot;Probar código&quot;],&quot;code&quot;:[0,&quot;INISP EEEE # random far address\nCALL TFAUTORECURSIVE\nFIN\n\n\nTFAUTORECURSIVE POP # extract return address\nMOV AC, RE\nPOP\nMOV AC, RD\n# --\n\n# find caller address\nCALL TFSUB\nCALL TFSUB\nCALL TFSUB\n# --\n\n# faking return address\n# - creating recursive call\nMOV RD, AC\nPUSH\nMOV RE, AC\nPUSH\n# --\n\nRET\n\n# util functions\nTFSUB CALL TFSUB_RE\nBC TFSUBRD\nJMP TFSUBRET\n\nTFSUBRD CALL TFSUB_RD\n\nTFSUBRET RET\n\nTFSUB_RD MOV RD, AC\nSUB 01\nMOV AC, RD\nRET\n\nTFSUB_RE MOV RE, AC\nSUB 01\nMOV AC, RE\nRET&quot;]}" ssr="" client="load" before-hydration-url="data:text/javascript;charset=utf-8,//[no before-hydration script]" opts="{&quot;name&quot;:&quot;Code&quot;,&quot;value&quot;:true}" await-children=""><pre class="shiki github-dark" style="background-color: #0d1117; color: #c9d1d9;"><div class="run-code"><button>Probar código</button></div><div class="code-container"><code><span class="hljs-keyword">INISP</span> <span class="hljs-number">EEEE</span> <span class="hljs-comment"># random far address</span>
 <span class="hljs-keyword">CALL</span> <span class="hljs-symbol">TFAUTORECURSIVE</span>
 <span class="hljs-keyword">FIN</span>
 

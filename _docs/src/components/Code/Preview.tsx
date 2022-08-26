@@ -13,8 +13,8 @@ function ClosePreview() {
       version="1.1"
       viewBox="0 0 26 26"
       xmlSpace="preserve"
-      width={26}
-      height={26}
+      width={36}
+      height={36}
     >
       <path
         fill="white"
@@ -43,7 +43,7 @@ export default function Preview({
 
       {open && (
         <>
-          <div className="modal">
+          <div className="modal animate" onClick={() => setOpen(!open)}>
             <div className="modal-header">
               <h2 className="modal-title">{title}</h2>
             </div>
@@ -55,6 +55,7 @@ export default function Preview({
               muted
               playsInline
               controls
+              onClick={(e) => e.stopPropagation()}
             />
             <div className="modal-close" onClick={() => setOpen(false)}>
               <ClosePreview />
