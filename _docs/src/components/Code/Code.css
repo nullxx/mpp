@@ -2,6 +2,8 @@
     position: absolute;
     top: 5px;
     right: 5px;
+    display: flex;
+    gap: 0.3rem;
 }
 
 .run-code button {

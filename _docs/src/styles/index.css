@@ -12,11 +12,13 @@
 :root {
 	--user-font-scale: 1rem - 16px;
 	--max-width: calc(100% - 1rem);
+	--super-max-width: 100%;
 }
 
 @media (min-width: 50em) {
 	:root {
 		--max-width: 46em;
+		--super-max-width: 70%;
 	}
 }
 

@@ -4,7 +4,7 @@ description: Introducción al simulador
 layout: ../../layouts/MainLayout.astro
 ---
 
-### Bienvenido a [mpp](https://mpp.nullx.me)!
+### Bienvenido a <a href="https://mpp.nullx.me" target="_blank">mpp</a>!
 
 Mpp es un simple, rapido, y potente simulador para la maquina plus plus desarrolada por [nullx](https://nullx.me/) pero que fue originalmente diseñada en los 90 por José Mª Angulo Usategui, Javier García Zubía y Ignacio Angulo Martínez.
 

@@ -3,11 +3,11 @@ import "./Code.css";
 import hljs from "highlight.js/lib/core";
 import "highlight.js/styles/monokai-sublime.css";
 import operations from "./operations.json";
+import Preview from "./Preview";
 
 const allInstructions = [
   ...new Set(operations.map((s) => s.NEMO.split(" ")[0])),
 ].join("|");
-
 
 hljs.registerLanguage("mpp", (e) => {
   const COMMENT = {
@@ -54,9 +54,13 @@ hljs.registerLanguage("mpp", (e) => {
 export default function Code({
   code,
   testCodeText,
+  previewText,
+  previewVideoSrc,
 }: {
   code: string;
   testCodeText?: string;
+  previewText: string;
+  previewVideoSrc: string;
 }) {
   const colored = hljs.highlight(code, { language: "mpp" }).value;
 
@@ -72,11 +76,15 @@ export default function Code({
       className="shiki github-dark"
       style={{ backgroundColor: "#0d1117", color: "#c9d1d9" }}
     >
-      {testCodeText && (
-        <div className="run-code">
+      <div className="run-code">
+        {testCodeText && (
           <button onClick={() => openCode(code)}>{testCodeText}</button>
-        </div>
-      )}
+        )}
+        {previewText && (
+          <Preview previewText={previewText} videoSrc={previewVideoSrc}  title={code} />
+        )}
+      </div>
+
       <div className="code-container">
         <code dangerouslySetInnerHTML={{ __html: colored }} />
       </div>
