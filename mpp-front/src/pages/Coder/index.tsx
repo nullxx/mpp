@@ -6,6 +6,7 @@ import IconButton from "../../components/IconButton";
 import { CodeOutlined, SaveOutlined, CloseOutlined } from "@ant-design/icons";
 import ResizeDrawer from "./components/ResizeDrawer";
 import { useEffect } from "react";
+import I18n, { useI18n } from "../../components/i18n";
 
 const Coder: React.FC = () => {
   const searchParams = new URLSearchParams(window.location.search);
@@ -59,7 +60,7 @@ const Coder: React.FC = () => {
     <>
       <Space>
         <IconButton
-          title="Open editor"
+          title={useI18n("openEditor")}
           icon={<CodeOutlined />}
           onClick={showDefaultDrawer}
         />
@@ -84,19 +85,19 @@ const Coder: React.FC = () => {
         extra={
           <Space>
             <Popconfirm
-              title="Are you sure?"
-              okText="Yes"
-              cancelText="No"
+              title={<I18n k="areYouSure" />}
+              okText={<I18n k="words.yes" />}
+              cancelText={<I18n k="words.no" />}
               onConfirm={onClose}
             >
-              <IconButton icon={<CloseOutlined />} danger title="Cancel" />
+              <IconButton icon={<CloseOutlined />} danger title={useI18n('words.cancel')} />
             </Popconfirm>
             <IconButton
               icon={<SaveOutlined />}
               type="primary"
               onClick={handleSaveToMemory}
               disabled={!canSaveToMem}
-              title="Save"
+              title={useI18n('words.save')}
             />
           </Space>
         }

@@ -3,17 +3,21 @@ import { Drawer, Button, Input, Row, Col, Select, Divider } from "antd";
 import { SettingFilled } from "@ant-design/icons";
 import { setStoredValue, getStoredValue } from "../../../lib/storage";
 import { bases } from "../../../constants/bases";
+import I18n from "../../../components/i18n";
+import { getAvailableLanguageNames, setLanguage as setI18nLang, SupportedLanguages } from "../../../lib/i18n";
 
 const { Option } = Select;
 
 export enum SettingType {
   CYCLE_TIME = "settings::cycleTime",
   MEM_VALUE_BASE = "settings::memValueBase",
+  LANGUAGE = "settings::language",
 }
 
 export enum SettingDefaultValue {
   CYCLE_TIME = 500,
   MEM_VALUE_BASE = "HEX",
+  LANGUAGE = "en",
 }
 
 const Settings: React.FC = () => {
@@ -21,11 +25,16 @@ const Settings: React.FC = () => {
   const [cycleTime, setCycleTime] = useState(
     getStoredValue(SettingType.CYCLE_TIME, SettingDefaultValue.CYCLE_TIME)
   );
+  
   const [memValueBase, setMemValueBase] = useState(
     getStoredValue(
       SettingType.MEM_VALUE_BASE,
       SettingDefaultValue.MEM_VALUE_BASE
     )
+  );
+
+  const [language, setLanguage] = useState(
+    getStoredValue(SettingType.LANGUAGE, SettingDefaultValue.LANGUAGE)
   );
 
   const showDrawer = () => {
@@ -51,11 +60,18 @@ const Settings: React.FC = () => {
     setStoredValue(SettingType.MEM_VALUE_BASE, selected, setMemValueBase);
   };
 
+  const handleLanguageChange = (selected: SupportedLanguages) => {
+    setStoredValue(SettingType.LANGUAGE, selected, () => {
+      setLanguage(selected);
+      setI18nLang(selected);
+    });
+  }
+
   return (
     <>
       <Button type="dashed" onClick={showDrawer} icon={<SettingFilled />} />
       <Drawer
-        title="Settings"
+        title={<I18n k="settings.title" />}
         placement="right"
         onClose={onClose}
         visible={visible}
@@ -64,7 +80,7 @@ const Settings: React.FC = () => {
           <Row gutter={8}>
             <Col span={24}>
               <Input
-                addonBefore="Cycle time (ms)"
+                addonBefore={<I18n k="settings.cycleTime" />}
                 value={cycleTime}
                 type="number"
                 max={5000}
@@ -74,15 +90,17 @@ const Settings: React.FC = () => {
             </Col>
           </Row>
         </Input.Group>
-        
+
         <Divider />
 
         <Input.Group size="large">
           <Row gutter={8}>
-          <Col span={24}>
+            <Col span={24}>
               <span className="ant-input-group-wrapper">
                 <span className="ant-input-wrapper ant-input-group">
-                  <span className="ant-input-group-addon">Memory value base</span>
+                  <span className="ant-input-group-addon">
+                    <I18n k="settings.memoryValueBase" />
+                  </span>
                   <Select
                     value={memValueBase}
                     onChange={handleMemValueBaseChange}
@@ -91,6 +109,32 @@ const Settings: React.FC = () => {
                       <Option key={base} value={base}>
                         {base}
                         <sub>({radix})</sub>
+                      </Option>
+                    ))}
+                  </Select>
+                </span>
+              </span>
+            </Col>
+          </Row>
+        </Input.Group>
+
+        <Divider />
+
+        <Input.Group size="large">
+          <Row gutter={8}>
+            <Col span={24}>
+              <span className="ant-input-group-wrapper">
+                <span className="ant-input-wrapper ant-input-group">
+                  <span className="ant-input-group-addon">
+                    <I18n k="settings.language" />
+                  </span>
+                  <Select
+                    value={language}
+                    onChange={handleLanguageChange}
+                  >
+                    {getAvailableLanguageNames().map((lang) => (
+                      <Option key={lang} value={lang}>
+                        {lang}
                       </Option>
                     ))}
                   </Select>

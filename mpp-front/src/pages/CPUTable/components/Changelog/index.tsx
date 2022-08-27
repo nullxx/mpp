@@ -5,6 +5,7 @@ import { Spin, Tabs, Timeline, Steps, Alert } from "antd";
 import constants from "./constants.json";
 
 import { GithubCommit } from "./GithubCommit";
+import I18n from "../../../../components/i18n";
 const { TabPane } = Tabs;
 const { Step } = Steps;
 
@@ -88,8 +89,8 @@ const Changelog: React.FC = () => {
         size={"large"}
         onTabClick={onTabClick}
       >
-        <TabPane tab="Current version" key="currentVersion">
-          <Spin tip="Loading..." spinning={loadingReleased}>
+        <TabPane tab={<I18n k="info.changelog.currentVersion" />} key="currentVersion">
+          <Spin tip={<><I18n k="words.loading" />...</>} spinning={loadingReleased}>
             <h4>Version {constants.currentVersion.name}</h4>
             {releasedVersionsError && (
               <Alert showIcon message="Github error" description={releasedVersionsError.message} type="error" />
@@ -110,8 +111,8 @@ const Changelog: React.FC = () => {
             </Steps>
           </Spin>
         </TabPane>
-        <TabPane tab="Commit history" key="commitHistory">
-          <Spin tip="Loading..." spinning={loadingCommits}>
+        <TabPane tab={<I18n k="info.changelog.commitHistory" />} key="commitHistory">
+          <Spin tip={<><I18n k="words.loading" />...</>} spinning={loadingCommits}>
             <h4>
               from {constants.owner}/{constants.repo}
             </h4>

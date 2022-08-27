@@ -16,6 +16,8 @@ import { useTextFile } from "../../../lib/utils";
 import toast from "react-hot-toast";
 import TranslatedEditor from "./TranslatedEditor";
 import { Annotation } from "brace";
+import { loc } from "../../../lib/i18n";
+import I18n, { useI18n } from "../../../components/i18n";
 
 const { Panel } = Collapse;
 
@@ -116,7 +118,8 @@ export default function CodeEditor({
   }
 
   function handleDownloadCode() {
-    toast.success("Downloading code...");
+    toast.success(`${loc('downloadingCode')}...`)
+
     // to avoid clousure
     setCode((code) => {
       downloadFile("code.mpp.txt", code);
@@ -175,8 +178,8 @@ export default function CodeEditor({
 
           <Popover
             placement="topLeft"
-            title={`PC setted successfully to ${initOffset}`}
-            content="The execution will start from the new offset"
+            title={`${useI18n('pcSetted.title')} ${initOffset}`}
+            content={`${useI18n('pcSetted.description')}`}
             trigger="click"
           >
             <Button
@@ -184,24 +187,24 @@ export default function CodeEditor({
               onClick={handlePCChange}
               disabled={!offsetValid}
             >
-              Set PC to {initOffset}
+              <I18n k="setPCTo" />{initOffset}
             </Button>
           </Popover>
         </Space>
 
         <Space direction="vertical" style={{ width: "100%" }}>
           <Collapse bordered={false}>
-            <Panel header="How to use labels?" key="1">
-              <Text>- You declare them starting with 'T':</Text>
+            <Panel header={<I18n k="howToUseLabels.title" />} key="1">
+              <Text>- <I18n k="howToUseLabels.description.1" />:</Text>
 
               <pre className="code">
                 <span className="eti-marker-color">T1</span> MOV FF, AC
               </pre>
               <Text>
-                They will be colored in{" "}
+              <I18n k="howToUseLabels.description.2" />{" "}
                 <span className="eti-marker-color">yellow</span>.
               </Text>
-              <Text>- You can use them in the code:</Text>
+              <Text>- <I18n k="howToUseLabels.description.3" />:</Text>
               <pre className="code">JMP T1</pre>
             </Panel>
           </Collapse>
@@ -244,7 +247,7 @@ export default function CodeEditor({
           )}
         </Space>
         <Collapse bordered={false}>
-          <Panel header="Examples" key="1">
+          <Panel header={<I18n k="words.examples" />} key="1">
             <Examples onSelect={handleSelectExample} />
           </Panel>
         </Collapse>

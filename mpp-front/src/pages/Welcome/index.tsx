@@ -1,6 +1,7 @@
 import { Spin, Space, Typography } from "antd";
 import Image from "../../assets/icon.png";
 import Attribution from "../../components/Attribution";
+import I18n from "../../components/i18n";
 
 export default function Welcome() {
   return (
@@ -22,10 +23,10 @@ export default function Welcome() {
         justifyContent: "center",
       }}
     >
-      <Typography.Title>M++ Simulator</Typography.Title>
+      <Typography.Title><I18n k="title" /></Typography.Title>
 
       <img src={Image} alt="M++" height={200} />
-      <p>Loading...</p>
+      <p><I18n k="words.loading" />...</p>
       <Spin size="large" />
 
       <Attribution />

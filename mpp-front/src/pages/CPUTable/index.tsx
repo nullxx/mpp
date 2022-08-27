@@ -32,6 +32,7 @@ import Github from "../../components/Github";
 import Attribution from "../../components/Attribution";
 import Docs from "../../components/Docs";
 import ALUNode from "./components/ALUNode";
+import I18n from "../../components/i18n";
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -69,7 +70,7 @@ function CPUTable() {
         <Header className="mpp-header">
           <Row>
             <Space align="center">
-              <h1>M++ Simulator</h1>
+              <h1><I18n k="title" /></h1>
               <Github />
               <Docs />
             </Space>

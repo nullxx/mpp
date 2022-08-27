@@ -1,25 +1,23 @@
 import React from "react";
 import { List, Avatar } from "antd";
+import I18n from "./i18n";
 
 const data = [
   {
-    title: "Ant Design",
-    description:
-      "Ant Design is a React UI library that are useful for building elegant user interfaces.",
+    titleKey: "info.thirdParty.antDesign",
+    descriptionKey: "info.thirdParty.antDesign.description",
     img: "https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg",
     url: "https://ant.design",
   },
   {
-    title: "React Flow",
-    description:
-      "React Flow is highly customizable library for building interactive node-based UIs, editors, flow charts and diagrams.",
+    titleKey: "info.thirdParty.reactFlow",
+    descriptionKey: "info.thirdParty.reactFlow.description",
     img: "https://reactflow.dev/img/logo.svg",
     url: "https://reactflow.dev/",
   },
   {
-    title: "Atomize React",
-    description:
-      "Atomize React is a UI framework that helps developers collaborate with designers and build consistent user interfaces effortlessly.",
+    titleKey: "info.thirdParty.atomizeReact",
+    descriptionKey: "info.thirdParty.atomizeReact.description",
     img: "https://www.saashub.com/images/app/service_logos/66/c18fdeed76cf/large.png?1639983720",
     url: "https://atomizecode.com/",
   },
@@ -34,8 +32,12 @@ export default function ThirdPartyAttribution() {
         <List.Item>
           <List.Item.Meta
             avatar={<Avatar shape="square" src={item.img} />}
-            title={<a href={item.url} target="_blank" rel="noreferrer">{item.title}</a>}
-            description={item.description}
+            title={
+              <a href={item.url} target="_blank" rel="noreferrer">
+                <I18n k={item.titleKey} />
+              </a>
+            }
+            description={<I18n k={item.descriptionKey} />}
           />
         </List.Item>
       )}

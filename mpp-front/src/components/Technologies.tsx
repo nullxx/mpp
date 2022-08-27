@@ -1,24 +1,23 @@
 import React from "react";
 import { List, Avatar } from "antd";
+import I18n from "./i18n";
 
 const data = [
   {
-    title: "React",
-    description: "React is a A JavaScript library for building user interfaces",
+    titleKey: "info.tecnologies.react",
+    descriptionKey: "info.tecnologies.react.description",
     img: "https://miro.medium.com/max/500/1*cPh7ujRIfcHAy4kW2ADGOw.png",
     url: "https://reactjs.org/",
   },
   {
-    title: "WebAssembly",
-    description:
-      "WebAssembly (abbreviated Wasm) is a binary instruction format for a stack-based virtual machine.",
+    titleKey: "info.tecnologies.webassembly",
+    descriptionKey: "info.tecnologies.webassembly.description",
     img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/WebAssembly_Logo.svg/2048px-WebAssembly_Logo.svg.png",
     url: "https://webassembly.org/",
   },
   {
-    title: "C",
-    description:
-      "C is a general-purpose imperative procedural computer programming language.  It was designed to be compiled to provide low-level access to memory and language constructs that map efficiently to machine instructions.",
+    titleKey: "info.tecnologies.c",
+    descriptionKey: "info.tecnologies.c.description",
     img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/C_Programming_Language.svg/695px-C_Programming_Language.svg.png",
     url: "https://en.wikipedia.org/wiki/C_(programming_language)",
   },
@@ -33,8 +32,12 @@ export default function Technologies() {
         <List.Item>
           <List.Item.Meta
             avatar={<Avatar shape="square" src={item.img} />}
-            title={<a href={item.url} target="_blank" rel="noreferrer">{item.title}</a>}
-            description={item.description}
+            title={
+              <a href={item.url} target="_blank" rel="noreferrer">
+                <I18n k={item.titleKey} />
+              </a>
+            }
+            description={<I18n k={item.descriptionKey} />}
           />
         </List.Item>
       )}

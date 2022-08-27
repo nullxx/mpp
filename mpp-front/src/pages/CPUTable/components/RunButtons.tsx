@@ -10,6 +10,7 @@ import { useState, useEffect, useRef } from "react";
 import { getStoredValue } from "../../../lib/storage";
 import { Space, Button, Tooltip, Collapse, List } from "antd";
 import { getCore } from '../../../lib/core/index';
+import I18n, { useI18n } from "../../../components/i18n";
 
 const { Panel } = Collapse;
 
@@ -17,19 +18,19 @@ export let clockCycleTime = -1;
 
 const buttonsInfo = [
   {
-    description: "Run program",
+    description: <I18n k="words.runProgram" />,
     icon: <SendOutlined />
   },
   {
-    description: "Run instruction",
+    description: <I18n k="words.runInstruction" />,
     icon: <ArrowDownOutlined />
   },
   {
-    description: "Run state",
+    description: <I18n k="words.runState" />,
     icon: <VerticalAlignBottomOutlined />
   },
   {
-    description: "Stop",
+    description: <I18n k="words.stop" />,
     icon: <StopFilled />
   },
 ];
@@ -37,7 +38,7 @@ const buttonsInfo = [
 function RunButtonsInfo() {
   return (
     <Collapse bordered={false}>
-      <Panel header="What is this?" key="1">
+      <Panel header={useI18n('whatIsThis')} key="1">
         <List
           itemLayout="horizontal"
           dataSource={buttonsInfo}
@@ -118,7 +119,7 @@ export default function RunButtons() {
   return (
     <Space direction="vertical" size="middle">
       <Space className="runButtons">
-        <Tooltip title="Run program">
+        <Tooltip title={<I18n k="words.runProgram" />}>
           <Button
             type="primary"
             icon={<SendOutlined />}
@@ -128,7 +129,7 @@ export default function RunButtons() {
           />
         </Tooltip>
 
-        <Tooltip title="Run instruction">
+        <Tooltip title={<I18n k="words.runInstruction" />}>
           <Button
             type="primary"
             icon={<ArrowDownOutlined />}
@@ -137,7 +138,7 @@ export default function RunButtons() {
             size={"middle"}
           />
         </Tooltip>
-        <Tooltip title="Run state">
+        <Tooltip title={<I18n k="words.runState" />}>
           <Button
             type="primary"
             icon={<VerticalAlignBottomOutlined />}
@@ -146,7 +147,7 @@ export default function RunButtons() {
             size={"middle"}
           />
         </Tooltip>
-        <Tooltip title="Stop">
+        <Tooltip title={<I18n k="words.stop" />}>
           <Button
             type="primary"
             icon={<StopFilled />}
@@ -156,7 +157,7 @@ export default function RunButtons() {
           />
         </Tooltip>
       </Space>
-      <p style={{ fontSize: 10 }}>Status: {running ? "running" : "stopped"}</p>
+      <p style={{ fontSize: 10 }}><I18n k="words.status" />: {running ? <I18n k="status.running" /> : <I18n k="status.stopped" /> }</p>
       <RunButtonsInfo />
     </Space>
   );

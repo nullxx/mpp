@@ -1,6 +1,7 @@
 import { Button } from "antd";
 
 import packageJSON from "../../package.json";
+import I18n from "./i18n";
 
 export default function Docs() {
   function handleClick() {
@@ -35,7 +36,7 @@ export default function Docs() {
       size="large"
       onClick={handleClick}
     >
-      Documentation
+      <I18n k="words.documentation" />
     </Button>
   );
 }
