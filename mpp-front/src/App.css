@@ -124,6 +124,9 @@ html, body, #root, .App {
 .mpp-header {
   background-color: #f5f5f5;
   user-select: none;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: fit-content;
 }
 
 .code {

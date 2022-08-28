@@ -15,6 +15,8 @@ import type {
   NodeTypes,
 } from "../../lib/ReactFlow";
 
+import icon from "../../assets/icon.png";
+
 import initialNodes from "./constants/nodes";
 import initialEdges from "./constants/edges";
 import RegisterNode from "./components/RegisterNode";
@@ -69,8 +71,11 @@ function CPUTable() {
       <Layout style={{ height: "100%" }}>
         <Header className="mpp-header">
           <Row>
-            <Space align="center">
-              <h1><I18n k="title" /></h1>
+            <Space align="center" style={{ height: "100%" }}>
+              <img src={icon} style={{ width: 30 }} alt="Icon" />
+              <h1 style={{ margin: 0 }}>
+                <I18n k="title" />
+              </h1>
               <Github />
               <Docs />
             </Space>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Drawer, Space, Popconfirm, Divider } from "antd";
+import { Drawer, Space, Popconfirm } from "antd";
 import CodeEditor from "./components/CodeEditor";
 import { getCore } from "../../lib/core";
 import IconButton from "../../components/IconButton";
@@ -75,7 +75,6 @@ const Coder: React.FC = () => {
         title={
           <Space align="center">
             <span>Code</span>
-            <Divider type="vertical" />
             <ResizeDrawer onResize={handleResize} />
           </Space>
         }
