@@ -8,6 +8,7 @@ import { Tooltip } from "antd";
 import "./Progress.css";
 import { Progress } from "antd";
 import { red, green, orange } from "@ant-design/colors";
+import I18n from "../../../../components/i18n";
 
 const maxTimeMS = 3;
 
@@ -37,7 +38,7 @@ export default function CycleTimeNode({ data }: any) {
       }}
       className="pretty-shadow"
     >
-      <h4>{data.label}</h4>
+      <h4><I18n k={data.labelKey} /></h4>
       <Tooltip
         title={
           lastCycleTime === -1

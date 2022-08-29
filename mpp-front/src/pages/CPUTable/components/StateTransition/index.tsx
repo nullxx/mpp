@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { unsubscribeToUIUpdates } from "../../../../lib/core";
 import { Row, Col, Text } from "atomize";
 import { CheckCircleFilled } from "@ant-design/icons";
-import { subscribeToUIUpdates, getCore } from '../../../../lib/core/index';
+import { subscribeToUIUpdates, getCore } from "../../../../lib/core/index";
 import stateDetails from "./constants.json";
 
 import { Steps } from "antd";
 import usePrev from "../../../../hook/usePrev";
 import IconButton from "../../../../components/IconButton";
 import { DeleteOutlined } from "@ant-design/icons";
+import I18n from "../../../../components/i18n";
 const { Step } = Steps;
 
 interface State {
@@ -95,7 +96,7 @@ export default function StateTransition({ data }: { data: any }) {
       <Row>
         <Col size="100%">
           <Text tag="h4" textSize="display4">
-            {data.label}
+            <I18n k={data.labelKey} />
           </Text>
         </Col>
       </Row>
@@ -105,10 +106,10 @@ export default function StateTransition({ data }: { data: any }) {
             {states.map((state: State, index: number, arr) => {
               const title =
                 index === arr.length - 1 ? (
-                  "Next State"
+                  <I18n k="transitionstates.nextState" />
                 ) : (
                   <>
-                    <CheckCircleFilled style={{ color: "green" }} /> Executed
+                    <CheckCircleFilled style={{ color: "green" }} /> <I18n k="transitionstates.executed" />
                   </>
                 );
               return (
@@ -133,7 +134,7 @@ export default function StateTransition({ data }: { data: any }) {
               onClick={handleClear}
             />
           ) : (
-            <sub>No states</sub>
+            <sub><I18n k="transitionstates.noStates" /></sub>
           )}
         </Col>
       </Row>

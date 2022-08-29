@@ -4,13 +4,18 @@ import { Row, Col, Text } from "atomize";
 import NumberBaseInput, { getRadix } from "../../../components/NumberBaseInput";
 import { Base } from "../../../constants/bases";
 
-import { subscribeToUIUpdates, unsubscribeToUIUpdates, getCore } from '../../../lib/core/index';
+import {
+  subscribeToUIUpdates,
+  unsubscribeToUIUpdates,
+  getCore,
+} from "../../../lib/core/index";
 import { useForceUpdate } from "../../../hook/forceUpdate";
 import { Tooltip } from "antd";
 import { getStoredValue } from "../../../lib/storage";
 import { SettingType, SettingDefaultValue } from "./Settings";
 import { Handle, Position } from "react-flow-renderer";
 import useUpdateEdges from "../../../hook/useUpdateEdges";
+import I18n from "../../../components/i18n";
 
 function MemoryComponentRow({
   offset,
@@ -142,9 +147,9 @@ const MemoryNode = ({ data, id }: { data: any; id: string }) => {
       />
       <Row>
         <Col>
-          <Tooltip title={data.helpInfo} className="tooltip">
+          <Tooltip title={<I18n k={data.helpInfoKey} />} className="tooltip">
             <Text tag="h4" textSize="display4">
-              {data.label}
+              <I18n k={data.labelKey} />
             </Text>
           </Tooltip>
         </Col>
@@ -166,7 +171,9 @@ const MemoryNode = ({ data, id }: { data: any; id: string }) => {
         </Col>
       </Row>
       <Row>
-        <Col size="100%">{LE ? "Reading" : "Writting"}</Col>
+        <Col size="100%">
+          {LE ? <I18n k="memory.reading" /> : <I18n k="memory.writting" />}
+        </Col>
       </Row>
     </div>
   );

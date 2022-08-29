@@ -12,6 +12,7 @@ import {
 } from "../../../../lib/core/index";
 import { deductOperationOf, NO_OP_NAME } from "../../../../lib/debugger";
 import { useForceUpdate } from "../../../../hook/forceUpdate";
+import I18n from "../../../../components/i18n";
 
 const maxOffsetPadding = 50;
 
@@ -83,8 +84,12 @@ function DebuggerComponent({
   return (
     <>
       <Row>
-        <Col>Memory range</Col>
-        <Col>Operation</Col>
+        <Col>
+          <I18n k="debugger.memoryRange" />
+        </Col>
+        <Col>
+          <I18n k="debugger.operation" />
+        </Col>
       </Row>
       {pointIndex === -1 && (
         <Row>
@@ -162,7 +167,7 @@ const DebuggerNode = ({ data }: { data: any }) => {
       </Row>
       <Row>
         <Col size="100%">
-          <Tooltip title="Bounds padding">
+          <Tooltip title={<I18n k="debugger.boundsPadding" />}>
             <div>
               <NumberBaseInput
                 initialBase={base}

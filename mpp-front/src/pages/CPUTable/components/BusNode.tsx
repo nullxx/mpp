@@ -7,6 +7,7 @@ import {
   subscribeToUIUpdates,
   unsubscribeToUIUpdates,
 } from "../../../lib/core";
+import I18n from "../../../components/i18n";
 
 const DEFAULT_BUS_VALUE = 0;
 
@@ -57,7 +58,7 @@ export default memo(({ data, isConnectable, id }: any) => {
       <Row>
         <Col>
           <Text tag="p" textSize="display5">
-            {data.label}
+            <I18n k={data.labelKey} />
           </Text>
         </Col>
       </Row>

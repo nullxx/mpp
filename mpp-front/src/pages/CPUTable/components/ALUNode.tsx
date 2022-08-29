@@ -7,6 +7,7 @@ import {
   unsubscribeToUIUpdates,
 } from "../../../lib/core";
 import { Handle, Position } from "../../../lib/ReactFlow";
+import I18n from "../../../components/i18n";
 
 enum SelAluOp {
   SUM = 0b000,
@@ -89,7 +90,7 @@ export default function ALUNode({ data, id }: any) {
       <Row>
         <Col size="100%">
           <Text tag="h4" textSize="display4">
-            {data.label}
+            <I18n k={data.labelKey} />
           </Text>
         </Col>
         <Col display="flex">

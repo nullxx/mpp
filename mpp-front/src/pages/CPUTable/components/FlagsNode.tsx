@@ -2,6 +2,7 @@ import { Checkbox, Tooltip } from "antd";
 import { Row, Col, Text } from "atomize";
 import { useEffect, useState } from "react";
 import { Handle, Position } from "react-flow-renderer";
+import I18n from "../../../components/i18n";
 import {
   execute,
   subscribeToUIUpdates,
@@ -81,20 +82,20 @@ export default function FlagsNode({ data, id }: any) {
 
       <Row>
         <Col size="100%">
-          <Tooltip title={data.helpInfo} className="tooltip">
+          <Tooltip title={<I18n k={data.helpInfoKey} />} className="tooltip">
             <Text tag="h4" textSize="display4">
-              {data.label}
+              <I18n k={data.labelKey} />
             </Text>
           </Tooltip>
         </Col>
       </Row>
       <Row>
-        <Tooltip title={data.fzHelpInfo}>
+        <Tooltip title={<I18n k={data.fzHelpInfoKey} />}>
           <Checkbox checked={fz}>FZ</Checkbox>
         </Tooltip>
       </Row>
       <Row>
-        <Tooltip title={data.fcHelpInfo}>
+        <Tooltip title={<I18n k={data.fcHelpInfoKey} />}>
           <Checkbox checked={fc}>FC</Checkbox>
         </Tooltip>
       </Row>

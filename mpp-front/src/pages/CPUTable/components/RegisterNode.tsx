@@ -9,6 +9,7 @@ import {
 import { Tooltip } from "antd";
 import useUpdateEdges from "../../../hook/useUpdateEdges";
 import Handles from "./Handles";
+import I18n from "../../../components/i18n";
 
 export const DEFAULT_REGISTER_VALUE = 0;
 
@@ -54,14 +55,14 @@ export default memo(({ data, id }: any) => {
       <Row>
         <Col>
           <Tooltip
-            className={`${data.helpInfo || data.docLink ? "tooltip" : ""}`}
+            className={`${data.helpInfoKey || data.docLink ? "tooltip" : ""}`}
             overlay={
-              (data.helpInfo || data.docLink) && (
+              (data.helpInfoKey || data.docLink) && (
                 <>
-                  {data.helpInfo}{" "}
+                  <I18n k={data.helpInfoKey} />{" "}
                   {data.docLink && (
                     <a href={data.docLink} target="_blank" rel="noreferrer">
-                      Check docs
+                      <I18n k="checkDocs" />
                     </a>
                   )}
                 </>
@@ -69,7 +70,7 @@ export default memo(({ data, id }: any) => {
             }
           >
             <Text tag="p" textSize="display5">
-              {data.label}
+            <I18n k={data.labelKey} />
             </Text>
           </Tooltip>
         </Col>

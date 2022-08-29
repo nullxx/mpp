@@ -2,6 +2,7 @@ import React, { memo } from "react";
 import { Text, Row, Col } from "atomize";
 import { Handle, Position } from "react-flow-renderer";
 import useUpdateEdges from "../../../hook/useUpdateEdges";
+import I18n from "../../../components/i18n";
 
 export default memo(({ data, id }: any) => {
   useUpdateEdges({ data, id });
@@ -34,7 +35,7 @@ export default memo(({ data, id }: any) => {
       <Row>
         <Col size="100%">
           <Text tag="h4" textSize="display4">
-            {data.label}
+            <I18n k={data.labelKey} />
           </Text>
         </Col>
       </Row>
