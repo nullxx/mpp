@@ -10,13 +10,15 @@ export default function Docs() {
   }
 
   return (
-    <Tooltip title={<I18n k="words.documentation" />}>
-      <Button
-        shape="circle"
-        icon={<BookTwoTone />}
-        size="large"
-        onClick={handleClick}
-      />
-    </Tooltip>
+    <div className="onboarding-docs">
+      <Tooltip title={<I18n k="words.documentation" />}>
+        <Button
+          shape="circle"
+          icon={<BookTwoTone />}
+          size="large"
+          onClick={handleClick}
+        />
+      </Tooltip>
+    </div>
   );
 }

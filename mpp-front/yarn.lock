@@ -1475,6 +1475,37 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
+"@reactour/mask@*":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@reactour/mask/-/mask-1.0.4.tgz#d5415a76e0f5a8436be964de82fa0579887c7dd5"
+  integrity sha512-znMRiDB5GjXlAUFOcmtFlmwy3w2w4xb10pSZofYdvNSl9VHinuAXqJURDIBfpKTB72vx1Tv6FiX5TPN9Wtedzw==
+  dependencies:
+    "@reactour/utils" "*"
+
+"@reactour/popover@*":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@reactour/popover/-/popover-1.0.5.tgz#a79091988f95e4434e9d2790f7c830b57cb7935b"
+  integrity sha512-d6BMcyXGj3RdSc2huiU6v/wG2XG1ad+lAFmjyFerlZNS1ccp/49HvLUnqxE0Td+86e7RPrdEzpZb5PKtBybPrA==
+  dependencies:
+    "@reactour/utils" "*"
+
+"@reactour/tour@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@reactour/tour/-/tour-3.1.1.tgz#cc0448efe29e66b8f7ad8c36e72b456ec0aaa578"
+  integrity sha512-W7w1L7AfsnZjr/m6p8xDQXWf/0+gaXXgwePzS1i5TwAi9wEfIw0P+N4Q/lbGbdtRB1LExrsvhM8hsuauHya2OA==
+  dependencies:
+    "@reactour/mask" "*"
+    "@reactour/popover" "*"
+    "@reactour/utils" "*"
+
+"@reactour/utils@*":
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/@reactour/utils/-/utils-0.4.6.tgz#2aad759113670d53cdff6781effe867f4d2023d3"
+  integrity sha512-0M3FyzeKJi1ReUCN0+IOUXekqdR03gKJnGOZtZ+ZRbvz39pc/Wt0x/d/n076X1P2W/Pay5tP+i8OL5CIxTWnrA==
+  dependencies:
+    "@rooks/use-mutation-observer" "^4.11.2"
+    resize-observer-polyfill "^1.5.1"
+
 "@rollup/plugin-babel@^5.2.0":
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-babel/-/plugin-babel-5.3.1.tgz#04bc0608f4aa4b2e4b1aebf284344d0f68fda283"
@@ -1511,6 +1542,11 @@
     "@types/estree" "0.0.39"
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
+
+"@rooks/use-mutation-observer@^4.11.2":
+  version "4.11.2"
+  resolved "https://registry.yarnpkg.com/@rooks/use-mutation-observer/-/use-mutation-observer-4.11.2.tgz#a0466c4338e0a4487ea19253c86bcd427c29f4af"
+  integrity sha512-vpsdrZdr6TkB1zZJcHx+fR1YC/pHs2BaqcuYiEGjBVbwY5xcC49+h0hAUtQKHth3oJqXfIX/Ng8S7s5HFHdM/A==
 
 "@rtsao/csstype@2.6.5-forked.0":
   version "2.6.5-forked.0"

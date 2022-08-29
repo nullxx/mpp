@@ -1,4 +1,4 @@
-import { useCallback, ReactNode } from "react";
+import { useCallback, ReactNode, useEffect } from "react";
 import Flow, {
   applyEdgeChanges,
   applyNodeChanges,
@@ -24,8 +24,8 @@ import LoadableNode from "./components/LoadableNode";
 import BusNode from "./components/BusNode";
 import MemoryNode from "./components/MemoryNode";
 import ButtonStack from "./components/ButtonStack";
-import Settings from "./components/Settings";
-import Changelog from "./components/Info";
+import Settings, { SettingDefaultValue, SettingType } from "./components/Settings";
+import Info from "./components/Info";
 import StateTransition from "./components/StateTransition";
 import DebuggerNode from "./components/DebuggerNode";
 import FlagsNode from "./components/FlagsNode";
@@ -35,6 +35,8 @@ import Attribution from "../../components/Attribution";
 import Docs from "../../components/Docs";
 import ALUNode from "./components/ALUNode";
 import I18n from "../../components/i18n";
+import { useTour } from "@reactour/tour";
+import { getStoredValue, setStoredValue } from "../../lib/storage";
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -50,9 +52,11 @@ const nodeTypes: NodeTypes = {
   aluNode: ALUNode as unknown as ReactNode,
 };
 
-function CPUTable() {
+function CPUTable({ hidden }: { hidden: boolean }) {
   const [nodes, setNodes] = useNodesState(initialNodes);
   const [edges, setEdges] = useEdgesState(initialEdges);
+
+  const { setIsOpen } = useTour();
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
@@ -66,6 +70,15 @@ function CPUTable() {
     [setEdges]
   );
 
+  useEffect(() => {
+    if (hidden) return;
+
+    const willOpenOnboarding = getStoredValue(SettingType.ONBOARDING, SettingDefaultValue.ONBOARDING);
+    setIsOpen(willOpenOnboarding);
+    if (willOpenOnboarding) setStoredValue(SettingType.ONBOARDING, !willOpenOnboarding);
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hidden]);
   return (
     <>
       <Layout style={{ height: "100%" }}>
@@ -82,7 +95,7 @@ function CPUTable() {
             <div style={{ flexGrow: 1 }} />
             <Space>
               <Settings />
-              <Changelog />
+              <Info />
             </Space>
           </Row>
         </Header>
@@ -94,6 +107,7 @@ function CPUTable() {
                 height: "100%",
                 border: "1px solid #ccc",
               }}
+              className="onboarding-mainTable"
             >
               <Flow
                 nodes={nodes}

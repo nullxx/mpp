@@ -1,10 +1,15 @@
 import React, { useState } from "react";
-import { Drawer, Button, Input, Row, Col, Select, Divider } from "antd";
+import { Drawer, Button, Input, Row, Col, Select, Divider, Switch } from "antd";
 import { SettingFilled } from "@ant-design/icons";
 import { setStoredValue, getStoredValue } from "../../../lib/storage";
 import { bases } from "../../../constants/bases";
 import I18n from "../../../components/i18n";
-import { getAvailableLanguageNames, setLanguage as setI18nLang, SupportedLanguages } from "../../../lib/i18n";
+import {
+  getAvailableLanguageNames,
+  setLanguage as setI18nLang,
+  SupportedLanguages,
+} from "../../../lib/i18n";
+import { useTour } from "@reactour/tour";
 
 const { Option } = Select;
 
@@ -12,12 +17,14 @@ export enum SettingType {
   CYCLE_TIME = "settings::cycleTime",
   MEM_VALUE_BASE = "settings::memValueBase",
   LANGUAGE = "settings::language",
+  ONBOARDING = "settings::onboarding",
 }
 
 export enum SettingDefaultValue {
   CYCLE_TIME = 500,
   MEM_VALUE_BASE = "HEX",
-  LANGUAGE = "en",
+  LANGUAGE = "es",
+  ONBOARDING = 1, // true
 }
 
 const Settings: React.FC = () => {
@@ -25,7 +32,7 @@ const Settings: React.FC = () => {
   const [cycleTime, setCycleTime] = useState(
     getStoredValue(SettingType.CYCLE_TIME, SettingDefaultValue.CYCLE_TIME)
   );
-  
+
   const [memValueBase, setMemValueBase] = useState(
     getStoredValue(
       SettingType.MEM_VALUE_BASE,
@@ -36,6 +43,12 @@ const Settings: React.FC = () => {
   const [language, setLanguage] = useState(
     getStoredValue(SettingType.LANGUAGE, SettingDefaultValue.LANGUAGE)
   );
+
+  const [onboarding, setOnboarding] = useState<boolean>(
+    getStoredValue(SettingType.ONBOARDING, SettingDefaultValue.ONBOARDING)
+  );
+
+  const { setIsOpen } = useTour();
 
   const showDrawer = () => {
     setVisible(true);
@@ -65,11 +78,24 @@ const Settings: React.FC = () => {
       setLanguage(selected);
       setI18nLang(selected);
     });
-  }
+  };
+
+  const handleOnboardingChange = (checked: boolean) => {
+    setStoredValue(SettingType.ONBOARDING, checked, setOnboarding);
+    setVisible(!checked);
+    setIsOpen(checked);
+    if (checked)
+      setStoredValue(SettingType.ONBOARDING, !checked, setOnboarding);
+  };
 
   return (
     <>
-      <Button type="dashed" onClick={showDrawer} icon={<SettingFilled />} />
+      <Button
+        type="dashed"
+        className="onboarding-settings"
+        onClick={showDrawer}
+        icon={<SettingFilled />}
+      />
       <Drawer
         title={<I18n k="settings.title" />}
         placement="right"
@@ -128,10 +154,7 @@ const Settings: React.FC = () => {
                   <span className="ant-input-group-addon">
                     <I18n k="settings.language" />
                   </span>
-                  <Select
-                    value={language}
-                    onChange={handleLanguageChange}
-                  >
+                  <Select value={language} onChange={handleLanguageChange}>
                     {getAvailableLanguageNames().map((lang) => (
                       <Option key={lang} value={lang}>
                         {lang}
@@ -143,6 +166,15 @@ const Settings: React.FC = () => {
             </Col>
           </Row>
         </Input.Group>
+
+        <Divider />
+
+        <Switch
+          checked={onboarding}
+          onChange={handleOnboardingChange}
+          checkedChildren={<I18n k="settings.onboarding.on" />}
+          unCheckedChildren={<I18n k="settings.onboarding.off" />}
+        />
       </Drawer>
     </>
   );

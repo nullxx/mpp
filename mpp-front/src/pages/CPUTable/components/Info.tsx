@@ -22,6 +22,7 @@ const Info: React.FC = () => {
     <>
       <Button
         type="default"
+        className="onboarding-info"
         onClick={showDrawer}
         icon={<InfoCircleOutlined />}
       />

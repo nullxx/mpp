@@ -58,7 +58,7 @@ const Coder: React.FC = () => {
 
   return (
     <>
-      <Space>
+      <Space className="onboarding-editor">
         <IconButton
           title={useI18n("openEditor")}
           icon={<CodeOutlined />}

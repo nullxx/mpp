@@ -11,6 +11,7 @@ export default function Github() {
   return (
     <Button
       shape="circle"
+      className="onboarding-opensource"
       icon={<GithubFilled />}
       size="large"
       onClick={handleClick}

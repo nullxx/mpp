@@ -118,7 +118,7 @@ export default function RunButtons() {
 
   return (
     <Space direction="vertical" size="middle">
-      <Space className="runButtons">
+      <Space className="runButtons onboarding-runButtons">
         <Tooltip title={<I18n k="words.runProgram" />}>
           <Button
             type="primary"

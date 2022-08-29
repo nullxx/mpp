@@ -11,9 +11,10 @@ export interface LocalizeOptions {
 type LanguageChangeListener = (lang: SupportedLanguages) => void;
 const languageChangeListeners: LanguageChangeListener[] = [];
 
-const availableLanguages: SupportedLanguages[] = ["en", "es"];
+const availableLanguages: SupportedLanguages[] = ["es", "en"]; // availableLanguages must be > 0
 
-let activeLang: SupportedLanguages = getStoredValue("settings::language", "en"); // default 'en'
+const navigatorLang = navigator.language.split("-")[0] ?? availableLanguages[0];
+let activeLang: SupportedLanguages = getStoredValue("settings::language", navigatorLang);
 
 export function setLanguage(language: SupportedLanguages) {
   activeLang = language;

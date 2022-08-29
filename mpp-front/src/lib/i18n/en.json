@@ -34,6 +34,8 @@
   "settings.cycleTime": "Cycle time (ms)",
   "settings.memoryValueBase": "Memory value base",
   "settings.language": "Language",
+  "settings.onboarding.on": "Deactivate onboarding",
+  "settings.onboarding.off": "Activate onboarding",
   "info.title": "Info",
   "info.about.title": "About",
   "info.about.description": "This is a simulator for the machine ++. It is developed by <a href=\"https://nullx.me\" target=\"_blank\">nullx</a> but it was originally designed on the 90's by José Mª Angulo Usategui, Javier García Zubía & Ignacio Angulo Martínez.",
@@ -94,5 +96,12 @@
   "memory.writing": "Writting",
   "debugger.memoryRange": "Memory range",
   "debugger.operation": "Operation",
-  "debugger.boundsPadding": "Bounds padding"
+  "debugger.boundsPadding": "Bounds padding",
+  "tour.docs": "First of all check the documentation",
+  "tour.mainTable": "This is the main part of the simulator, where you can see how each program evolves.",
+  "tour.coder": "Here you can create your programs.",
+  "tour.runButtons": "With these buttons you can run a program at different speeds.",
+  "tour.settings": "Here you can configure the simulator and other parameters.",
+  "tour.info": "Here you can see information about the simulator.",
+  "tour.openSource": "And remember that this software is open source 😋"
 }
