@@ -28,13 +28,14 @@ jobs:
         uses: actions/checkout@v3
       - name: Detect package manager
         id: detect-package-manager
+        working-directory: docs
         run: |
-          if [ -f "${{ github.workspace }}/docs/yarn.lock" ]; then
+          if [ -f "yarn.lock" ]; then
             echo "::set-output name=manager::yarn"
             echo "::set-output name=command::install"
             echo "::set-output name=runner::yarn"
             exit 0
-          elif [ -f "${{ github.workspace }}/docs/package.json" ]; then
+          elif [ -f "package.json" ]; then
             echo "::set-output name=manager::npm"
             echo "::set-output name=command::ci"
             echo "::set-output name=runner::npx --no-install"
@@ -63,13 +64,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-astro-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
       - name: Install dependencies
+        working-directory: docs
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Astro
+        working-directory: docs
         run: ${{ steps.detect-package-manager.outputs.runner }} astro build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ./dist
+          path: ./docs/dist
 
   # Deployment job
   deploy:
