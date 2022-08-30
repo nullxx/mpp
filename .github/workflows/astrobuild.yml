@@ -51,12 +51,6 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v2
 
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./docs
-          destination: ./_site
-
       - name: Restore cache
         uses: actions/cache@v3
         with:
