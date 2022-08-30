@@ -47,11 +47,15 @@ jobs:
           node-version: "16"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
           cache-dependency-path: './docs/package-lock.json'
+
       - name: Setup Pages
         uses: actions/configure-pages@v2
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
         with:
-          source: './docs'
-          static_site_generator: jekyll
+          source: ./docs
+          destination: ./_site
 
       - name: Restore cache
         uses: actions/cache@v3
