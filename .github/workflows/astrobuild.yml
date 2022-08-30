@@ -30,12 +30,7 @@ jobs:
         id: detect-package-manager
         working-directory: docs
         run: |
-          if [ -f "yarn.lock" ]; then
-            echo "::set-output name=manager::yarn"
-            echo "::set-output name=command::install"
-            echo "::set-output name=runner::yarn"
-            exit 0
-          elif [ -f "package.json" ]; then
+          if [ -f "package.json" ]; then
             echo "::set-output name=manager::npm"
             echo "::set-output name=command::ci"
             echo "::set-output name=runner::npx --no-install"
@@ -49,6 +44,7 @@ jobs:
         with:
           node-version: "16"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
+          cache-dependency-path: './docs/package-lock.json'
       - name: Setup Pages
         uses: actions/configure-pages@v2
         with:
