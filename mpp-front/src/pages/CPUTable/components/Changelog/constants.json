@@ -2,11 +2,28 @@
   "repo": "mpp",
   "owner": "nullxx",
   "currentVersion": {
-    "name": "v0.0.23",
+    "name": "v1.1.0",
     "items": [
       {
-        "description": "fix: traslator",
-        "sha": "d9f7ba256a8a2240913ed97b3f362ae7d23b9e35"
+        "sha": "af500534a8e65fa4bc15f2661ddfe8ede0a02041"
+      },
+      {
+        "sha": "2013ec2ab46ae82f310ebce79113c56b9a8b3993"
+      },
+      {
+        "sha": "fcb6c76075c0683f2144036fa4abaddcaaa4b872"
+      },
+      {
+        "sha": "0a91b4aca03dfb356b8a841e9e882bfe87a142c6"
+      },
+      {
+        "sha": "f6295429eb74eb451383cfbc8f540add1963389c"
+      },
+      {
+        "sha": "ec68c733eeb98b4f8462040cf84e6e6d560cee79"
+      },
+      {
+        "sha": "468c47b7bdc7887df81470a56fdc381030ee5933"
       }
     ]
   }
