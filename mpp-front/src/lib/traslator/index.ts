@@ -14,6 +14,11 @@
  * MAYBE I WILL HAVE TO REDO IT ALL OVER AGAIN
  */
 
+
+/**
+ * if you want to redo this check this https://github.com/nullxx/mpp-compiler/blob/master/src/lib/instruction.ts and this https://github.com/nullxx/mpp-compiler/blob/master/src/lib/allocator.ts
+ */
+
 import instructions from "./operations.json";
 
 interface Instruction {

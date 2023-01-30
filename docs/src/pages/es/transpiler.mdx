@@ -43,7 +43,9 @@ donde \<número\> es el numero en dicha base.
 
 ### Operaciones
 
-Solo soportadas la suma (`+`) y la resta (`-`).
+Solo soportadas la suma (`+`), la resta (`-`) y la multiplicación (`*`).
+
+La multiplicación no es una operación nativa del lenguaje, sino que se implementa mediante sumas sucesivas. Por lo tanto, no es recomendable utilizarla para números grandes. Tampoco está optimizada al 100%.
 
 ### Variables
 
@@ -106,9 +108,9 @@ donde \<variable\> es una variable previamente declarada.
 
 Carga en el acumulador el valor de la variable.
 
-## Ejemplo
+## Ejemplo multiplicación (sumas)
 
-En el siguente ejemplo se realiza la implementación de la multiplicación de dos números.
+En el siguente ejemplo se realiza la implementación de la multiplicación de dos números mediante sumas sucesivas.
 
 Dicha operación también está disponible en la sección de ejemplos: [Multiplicación](/es/examples/multiplication)
 
@@ -122,6 +124,27 @@ start: resultado = resultado + num1;
 num2 = num2 - 0d1;
 if (num2 != 0d0): jmp start;
 show resultado;`} />
+
+## Ejemplo factorial
+
+En el siguiente ejemplo se realiza la implementación del algoritmo de factorial.
+
+Dicha operación también está disponible en la sección de ejemplos: [Factorial](/es/examples/factorial), aunque aquí la podremos programar de forma más sencilla por medio del operador de multiplicación ('*').
+
+<br />
+
+<Transpiler client:load code={`n = 0d3;
+
+result = n;
+start: if (n == 0d1): jmp end;
+prev = n - 0d1;
+result = result * prev;
+n = prev;
+jmp start;
+
+end:
+show result;`} />
+
 
 ## ¡A programar!
 

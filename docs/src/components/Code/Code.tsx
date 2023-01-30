@@ -59,7 +59,7 @@ export default function Code({
 }: {
   code: string;
   testCodeText?: string;
-  previewText: string;
+  previewText?: string;
   previewVideoSrc: string;
 }) {
   const colored = hljs.highlight(code, { language: "mpp" }).value;
