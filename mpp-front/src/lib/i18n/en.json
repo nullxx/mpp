@@ -6,6 +6,8 @@
   "words.cancel": "Cancel",
   "words.save": "Save",
   "words.examples": "Examples",
+  "words.continue": "Continue",
+  "appendedFin": "FIN instruction appended",
   "checkDocs": "Check docs",
   "setPCTo": "Set PC to ",
   "areYouSure": "Are you sure?",
@@ -106,5 +108,6 @@
   "tour.runButtons": "With these buttons you can run a program at different speeds.",
   "tour.settings": "Here you can configure the simulator and other parameters.",
   "tour.info": "Here you can see information about the simulator.",
-  "tour.openSource": "And remember that this software is open source 😋"
+  "tour.openSource": "And remember that this software is open source 😋",
+  "status.runningTooLong": "The program has been running for too long. (remember that it could be that an infinite loop has been reached) What do you want to do?"
 }

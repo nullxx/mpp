@@ -21,7 +21,7 @@ import toast from "react-hot-toast";
 const { Panel } = Collapse;
 
 export let clockCycleTime = -1;
-
+const maxTimeInmediate = 1000;
 const buttonsInfo = [
   {
     description: <I18n k="words.runProgram" />,
@@ -100,7 +100,8 @@ export default function RunButtons() {
           color: "#fff",
         },
       });
-      await sleep(1000, isBreak.current.signal);
+
+      await sleep(100, isBreak.current.signal); // wait for the toast to be rendered
     }
 
     const start = new Date().getTime();
@@ -123,15 +124,54 @@ export default function RunButtons() {
       stoping = riRegister === maxRepresentableValue;
       await sleep(cycleTime, isBreak.current.signal);
 
-      if (new Date().getTime() - lastCheck > 1000 && isRuningInmediate) {
-        // ask for user for confirmation
-        const shouldContinue = window.confirm(
-          "The program is taking too long to run. Do you want to continue?"
-        );
+      if (new Date().getTime() - lastCheck > maxTimeInmediate && isRuningInmediate) {
+        const shouldContinue = await new Promise((resolve) => {
+          toast(
+            (t) => (
+              <div style={{display: 'block'}}>
+                <b><I18n k="status.runningTooLong" capitalize /></b>
+                <div style={{ height: 10 }} />
+                <div style={{ display: "flex", gap: 10 }}>
+                  <div style={{ flex: 1 }} />
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      toast.dismiss(t.id);
+                      resolve(true);
+                    }}
+                  >
+                    <SendOutlined />
+                    {" "}
+                    <I18n k="words.continue" />
+                  </Button>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      toast.dismiss(t.id);
+                      resolve(false);
+                    }}
+                    danger
+                  >
+                    <StopFilled />
+                    {" "}
+                    <I18n k="words.stop" />
+                  </Button>
+                </div>
+              </div>
+            ),
+            {
+              duration: Infinity,
+              position: 'top-right'
+            }
+          );
+        });
+
         if (!shouldContinue) {
           stoping = true;
           break;
         }
+
+        await sleep(100, isBreak.current.signal); // wait for the toast to be dismissed
         lastCheck = new Date().getTime();
       }
     }

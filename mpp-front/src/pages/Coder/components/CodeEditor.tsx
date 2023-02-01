@@ -32,8 +32,19 @@ export default function CodeEditor({
   initialCode?: string;
   maximized?: boolean;
 }) {
+
+  let appended = false;
+  let initCode = getStoredValue("code", "");
+  if (initialCode && initialCode.length > 0) {
+    initCode = initialCode;
+    
+    if (!/FIN(\s)$/i.test(initCode)) {
+      initCode += '\nFIN';
+      appended = true;
+    }
+  }
   const [code, setCode] = React.useState<string>(
-    initialCode || getStoredValue("code", "")
+    initCode
   );
   const [traslated, setTraslated] = React.useState("");
   const [initOffset, setInitOffset] = React.useState(0);
@@ -242,6 +253,9 @@ export default function CodeEditor({
               },
             ]}
           />
+          {appended && (
+            <I18n k="appendedFin" />
+          )}
           {!maximized && (
             <TranslatedEditor initOffset={initOffset} traslated={traslated} />
           )}

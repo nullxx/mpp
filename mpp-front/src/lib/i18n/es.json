@@ -5,7 +5,9 @@
   "downloadingCode": "Descargando código",
   "words.cancel": "Cancelar",
   "words.save": "Guardar",
+  "words.continue": "Continuar",
   "words.examples": "Ejemplos",
+  "appendedFin": "Se ha añadido instrucción de finalización (FIN)",
   "checkDocs": "Ver documentaión",
   "setPCTo": "Establecer PC a ",
   "areYouSure": "¿Estás seguro?",
@@ -106,5 +108,6 @@
   "tour.runButtons": "Con estos botones podrás ejecutar un programa a diferentes velocidades.",
   "tour.settings": "Aquí podrás configurar el simulador y otros parámetros.",
   "tour.info": "Aquí podrás ver información sobre el simulador.",
-  "tour.openSource": "Y recuerda que este software es de código abierto 😋"
+  "tour.openSource": "Y recuerda que este software es de código abierto 😋",
+  "status.runningTooLong": "El programa lleva ejecutandose demasiado tiempo. (recuerde que podría ser que se ha alcanzado un bucle infinito) ¿Qué desea hacer?"
 }
