@@ -1,7 +1,7 @@
 import { useState, useEffect, memo } from "react";
 import { loc, LocalizeOptions, onLanguageChange } from "../lib/i18n";
 
-function I18n({ k, options }: { k: string; options?: LocalizeOptions }) {
+function I18n({ k, options, capitalize = false }: { k: string; options?: LocalizeOptions; capitalize?: boolean }) {
   const [text, setText] = useState("");
 
   useEffect(() => {
@@ -18,6 +18,10 @@ function I18n({ k, options }: { k: string; options?: LocalizeOptions }) {
     return del;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (capitalize) {
+    return <>{text.charAt(0).toUpperCase() + text.slice(1)}</>;
+  }
 
   return <>{text}</>;
 }

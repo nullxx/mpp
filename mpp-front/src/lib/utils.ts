@@ -1,4 +1,5 @@
 export function sleep(ms: number, signal: AbortSignal) {
+  if (ms === 0) return Promise.resolve();
   return new Promise<void>((resolve) => {
     const abort = () => {
       clearTimeout(timeout);

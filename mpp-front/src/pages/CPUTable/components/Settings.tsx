@@ -18,6 +18,7 @@ export enum SettingType {
   MEM_VALUE_BASE = "settings::memValueBase",
   LANGUAGE = "settings::language",
   ONBOARDING = "settings::onboarding",
+  MEASURE_RUN_TIME = "settings::measureRunTime",
 }
 
 export enum SettingDefaultValue {
@@ -25,6 +26,30 @@ export enum SettingDefaultValue {
   MEM_VALUE_BASE = "HEX",
   LANGUAGE = "es",
   ONBOARDING = 1, // true
+  MEASURE_RUN_TIME = 1, // true
+}
+
+const listeners = new Map<SettingType, Set<(value: any) => void>>();
+export function addChangeListener(
+  type: SettingType,
+  callback: (value: any) => void
+) {
+  if (!listeners.has(type)) {
+    listeners.set(type, new Set());
+  }
+
+  listeners.get(type)?.add(callback);
+}
+
+export function removeChangeListener(
+  type: SettingType,
+  callback: (value: any) => void
+) {
+  listeners.get(type)?.delete(callback);
+}
+
+export function notifyChange(type: SettingType, value: any) {
+  listeners.get(type)?.forEach((callback) => callback(value));
 }
 
 const Settings: React.FC = () => {
@@ -48,6 +73,13 @@ const Settings: React.FC = () => {
     getStoredValue(SettingType.ONBOARDING, SettingDefaultValue.ONBOARDING)
   );
 
+  const [measureRunTime, setMeasureRunTime] = useState<boolean>(
+    getStoredValue(
+      SettingType.MEASURE_RUN_TIME,
+      SettingDefaultValue.MEASURE_RUN_TIME
+    )
+  );
+
   const { setIsOpen } = useTour();
 
   const showDrawer = () => {
@@ -67,10 +99,14 @@ const Settings: React.FC = () => {
       e.target.valueAsNumber,
       setCycleTime
     );
+
+    notifyChange(SettingType.CYCLE_TIME, e.target.valueAsNumber);
   };
 
   const handleMemValueBaseChange = (selected: string) => {
     setStoredValue(SettingType.MEM_VALUE_BASE, selected, setMemValueBase);
+
+    notifyChange(SettingType.MEM_VALUE_BASE, selected);
   };
 
   const handleLanguageChange = (selected: SupportedLanguages) => {
@@ -78,6 +114,8 @@ const Settings: React.FC = () => {
       setLanguage(selected);
       setI18nLang(selected);
     });
+
+    notifyChange(SettingType.LANGUAGE, selected);
   };
 
   const handleOnboardingChange = (checked: boolean) => {
@@ -86,6 +124,13 @@ const Settings: React.FC = () => {
     setIsOpen(checked);
     if (checked)
       setStoredValue(SettingType.ONBOARDING, !checked, setOnboarding);
+    
+    notifyChange(SettingType.ONBOARDING, checked);
+  };
+
+  const handleMeasureRunTimeChange = (checked: boolean) => {
+    setStoredValue(SettingType.MEASURE_RUN_TIME, checked, setMeasureRunTime);
+    notifyChange(SettingType.MEASURE_RUN_TIME, checked);
   };
 
   return (
@@ -116,6 +161,12 @@ const Settings: React.FC = () => {
             </Col>
           </Row>
         </Input.Group>
+
+        {cycleTime === 0 && (
+          <p>
+            <I18n k="settings.cycleTimeZeroMsg" />
+          </p>
+        )}
 
         <Divider />
 
@@ -174,6 +225,15 @@ const Settings: React.FC = () => {
           onChange={handleOnboardingChange}
           checkedChildren={<I18n k="settings.onboarding.on" />}
           unCheckedChildren={<I18n k="settings.onboarding.off" />}
+        />
+
+        <Divider />
+
+        <Switch
+          checked={measureRunTime}
+          onChange={handleMeasureRunTimeChange}
+          checkedChildren={<I18n k="settings.measureRunTime.on" />}
+          unCheckedChildren={<I18n k="settings.measureRunTime.off" />}
         />
       </Drawer>
     </>
