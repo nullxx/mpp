@@ -2,7 +2,7 @@ import React from "react";
 
 import _CodeMirror from "@uiw/react-codemirror";
 
-const CodeMirror = (_CodeMirror as any).default;
+const CodeMirror = Object.hasOwnProperty.call(_CodeMirror, "default") ? (_CodeMirror as any).default : _CodeMirror;
 
 export default function CodeEditor({
   code,
