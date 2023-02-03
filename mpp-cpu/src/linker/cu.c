@@ -11,6 +11,7 @@
 #include "../lib/components/cu/cu.h"
 
 #include <stdio.h>
+#include <stdint.h>
 
 #include "../lib/pubsub.h"
 #include "linker.h"
@@ -135,9 +136,9 @@ static int get_processed_state(void) {
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_KEEPALIVE
 #endif
-double run_clock_cycle(void) {
+double run_clock_cycle(uint8_t update_ui) {
     double time = run_cu_clock_cycle();
-    get_update_ui_fn()();
+    if (update_ui) get_update_ui_fn()();
     return time;
 }
 

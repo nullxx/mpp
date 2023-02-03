@@ -139,7 +139,7 @@ const exportedMethods: {
   {
     name: "run_clock_cycle",
     returnType: "number",
-    typeArgs: [],
+    typeArgs: ["number"],
   },
   {
     name: "get_state",

@@ -44,7 +44,7 @@ export interface MppCore {
   get_control_bus_regbus(): number;
   get_control_bus_selalu(): number;
 
-  run_clock_cycle(): number;
+  run_clock_cycle(updateUI: boolean): number;
   get_state(): number;
   get_next_state(): number;
   reset_control(): void;

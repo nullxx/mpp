@@ -14,14 +14,14 @@ import {
 import { useState, useEffect, useRef } from "react";
 import { getStoredValue } from "../../../lib/storage";
 import { Space, Button, Tooltip, Collapse, List } from "antd";
-import { getCore } from "../../../lib/core/index";
+import { getCore, notifyUpdateToSubscribers } from "../../../lib/core/index";
 import I18n, { useI18n } from "../../../components/i18n";
 import toast from "react-hot-toast";
 
 const { Panel } = Collapse;
 
 export let clockCycleTime = -1;
-const maxTimeInmediate = 1000;
+const maxTimeInmediate = 10 * 1000;
 const buttonsInfo = [
   {
     description: <I18n k="words.runProgram" />,
@@ -67,7 +67,7 @@ export default function RunButtons() {
 
   function handleRunState() {
     setRunning(true);
-    clockCycleTime = getCore().run_clock_cycle();
+    clockCycleTime = getCore().run_clock_cycle(true);
     setRunning(false);
   }
 
@@ -79,7 +79,7 @@ export default function RunButtons() {
     _running.current = true;
     setRunning(true);
     while (_running.current) {
-      clockCycleTime = getCore().run_clock_cycle();
+      clockCycleTime = getCore().run_clock_cycle(true);
       const nextState = getCore().get_next_state();
       if (nextState === 0) break;
       await sleep(cycleTime, isBreak.current.signal);
@@ -104,7 +104,7 @@ export default function RunButtons() {
       await sleep(100, isBreak.current.signal); // wait for the toast to be rendered
     }
 
-    const start = new Date().getTime();
+    let start = new Date().getTime();
 
     const cycleTime = getStoredValue(
       SettingType.CYCLE_TIME,
@@ -117,14 +117,16 @@ export default function RunButtons() {
 
     let lastCheck = start;
     while (_running.current) {
-      // n++;
-      clockCycleTime = getCore().run_clock_cycle();
+      clockCycleTime = getCore().run_clock_cycle(!isRuningInmediate);
       if (stoping) break; // doing this to "execute" FF. S0 -> S1 -> (next) S0. And leave ready for next
       const riRegister = getCore().get_register_ri();
       stoping = riRegister === maxRepresentableValue;
       await sleep(cycleTime, isBreak.current.signal);
 
-      if (new Date().getTime() - lastCheck > maxTimeInmediate && isRuningInmediate) {
+      const now = new Date().getTime();
+      if (now - lastCheck > maxTimeInmediate && isRuningInmediate) {
+        notifyUpdateToSubscribers();
+
         const shouldContinue = await new Promise((resolve) => {
           toast(
             (t) => (
@@ -161,21 +163,31 @@ export default function RunButtons() {
             ),
             {
               duration: Infinity,
-              position: 'top-right'
+              position: 'bottom-right',
+              style: {
+                background: "#fffeae",
+              }
             }
           );
         });
 
         if (!shouldContinue) {
+          start += (new Date().getTime() - now)
           stoping = true;
           break;
         }
 
         await sleep(100, isBreak.current.signal); // wait for the toast to be dismissed
         lastCheck = new Date().getTime();
+        start += (new Date().getTime() - now)
       }
     }
-    if (isRuningInmediate) toast.dismiss(t);
+
+    if (isRuningInmediate) {
+      notifyUpdateToSubscribers();
+      toast.dismiss(t);
+    }
+
     const end = new Date().getTime();
     setRunning(false);
     _running.current = false;
