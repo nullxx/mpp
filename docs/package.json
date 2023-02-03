@@ -24,6 +24,6 @@
     "@astrojs/react": "^1.0.0",
     "@astrojs/sitemap": "^1.0.0",
     "@types/react": "^17.0.45",
-    "astro": "^1.0.5"
+    "astro": "^2.0.4"
   }
 }

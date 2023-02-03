@@ -1,4 +1,4 @@
-import * as React from "preact";
+import * as React from "react";
 import "./Code.css";
 import hljs from "highlight.js/lib/core";
 import "highlight.js/styles/monokai-sublime.css";
@@ -56,11 +56,13 @@ export default function Code({
   testCodeText,
   previewText,
   previewVideoSrc,
+  bgColor,
 }: {
   code: string;
   testCodeText?: string;
   previewText?: string;
-  previewVideoSrc: string;
+  previewVideoSrc?: string;
+  bgColor?: string;
 }) {
   const colored = hljs.highlight(code, { language: "mpp" }).value;
 
@@ -74,13 +76,13 @@ export default function Code({
   return (
     <pre
       className="shiki github-dark"
-      style={{ backgroundColor: "#0d1117", color: "#c9d1d9" }}
+      style={{ backgroundColor: bgColor ?? "#0d1117", color: "#c9d1d9", overflow: 'scroll' }}
     >
       <div className="run-code">
         {testCodeText && (
           <button onClick={() => openCode(code)}>{testCodeText}</button>
         )}
-        {previewText && (
+        {previewText && previewVideoSrc &&  (
           <Preview previewText={previewText} videoSrc={previewVideoSrc}  title={code} />
         )}
       </div>

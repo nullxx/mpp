@@ -4,15 +4,16 @@ import Code from "../Code/Code";
 
 export default function Solution({
   title = "Solution",
-  sol,
+  sol = [],
   testCodeText = "Test code",
 }: {
   title?: string;
-  sol: string[];
+  sol?: string[];
   testCodeText?: string;
 }) {
-  if (sol.length === 0) return "No solution";
+  if (sol.length === 0) return <p>No solution</p>;
 
+  return <p>hola</p>
   return (
     <div className="tab tabs">
       <input type="checkbox" id="chck1" />
