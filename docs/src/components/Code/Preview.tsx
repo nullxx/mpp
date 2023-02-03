@@ -1,5 +1,4 @@
-import React from "preact";
-import { useState } from "preact/hooks";
+import { useState } from "react";
 
 import "./Preview.css";
 

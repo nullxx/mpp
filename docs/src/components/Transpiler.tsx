@@ -17,7 +17,7 @@ export default function Transpiler({ code }: { code: string }) {
       <div style={{ display: "flex", height: "35rem", gap: "2px" }}>
         <CodeEditor
           code={code}
-          onChange={(value) => {
+          onChange={(value: string) => {
             let newError = null;
             try {
               const result = parseCode(value, 0);
