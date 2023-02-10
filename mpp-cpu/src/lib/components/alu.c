@@ -106,10 +106,6 @@ void run_alu(void) {
 
     const int result_bits = get_used_bits(int_to_word(result));
 
-    // if result == 0 => fz
-    int fz = result == 0;
-    publish_message_to(ALU_FZ_OUTPUT_BUS_TOPIC, int_to_word(fz));
-
     // if result doesn't fit data bus => fc
     int fc = result_bits > DATA_BUS_SIZE_BITS;
     publish_message_to(ALU_FC_OUTPUT_BUS_TOPIC, int_to_word(fc));
@@ -123,6 +119,11 @@ void run_alu(void) {
 
         result = word_to_int(word_result);
     }
+
+    // after the result is recalculated (if needed (fc == 1)) check for FZ
+    // if result == 0 => fz
+    int fz = result == 0;
+    publish_message_to(ALU_FZ_OUTPUT_BUS_TOPIC, int_to_word(fz));
 
     if (word_to_int(alubus_lb) == 1) {
         publish_message_to(DATA_BUS_TOPIC, int_to_word(result));
