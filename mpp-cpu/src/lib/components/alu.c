@@ -49,18 +49,22 @@ void run_alu(void) {
     int sel_alu = word_to_int(selalu_lb);
     int bus_acumm_output = word_to_int(last_bus_acumm_output->next_value);
     int bus_op2_output = word_to_int(last_bus_op2_output->next_value);
+    uint8_t is_fc_working = 0;
     int result = 0;
+
 
     switch (sel_alu) {
         case SUM: {
             // A+B
             result = bus_acumm_output + bus_op2_output;
+            is_fc_working = 1;
             break;
         }
 
         case SUB: {
             // A-B
             result = bus_acumm_output - bus_op2_output;
+            is_fc_working = 1;
             break;
         }
 
@@ -106,11 +110,13 @@ void run_alu(void) {
 
     const int result_bits = get_used_bits(int_to_word(result));
 
-    // if result doesn't fit data bus => fc
-    int fc = result_bits > DATA_BUS_SIZE_BITS;
-    publish_message_to(ALU_FC_OUTPUT_BUS_TOPIC, int_to_word(fc));
+    int has_overflow = result_bits > DATA_BUS_SIZE_BITS;
+    if (is_fc_working) {
+        // if result doesn't fit data bus => fc
+        publish_message_to(ALU_FC_OUTPUT_BUS_TOPIC, int_to_word(has_overflow));
+    } 
 
-    if (fc) {
+    if (has_overflow) {
         // get rid of the extra higher bits
         Word word_result = int_to_word(result);
         for (int i = WORD_SIZE_BIT - 1; i >= DATA_BUS_SIZE_BITS; i--) {
