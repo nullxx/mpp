@@ -17,7 +17,6 @@
 #include "../constants.h"
 #include "../electronic/bus.h"
 #include "../error.h"
-#include "../logger.h"
 #include "../pubsub.h"
 #include "../utils.h"
 #include "components.h"
@@ -111,10 +110,8 @@ void run_alu(void) {
     const int result_bits = get_used_bits(int_to_word(result));
 
     int has_overflow = result_bits > DATA_BUS_SIZE_BITS;
-    if (is_fc_working) {
-        // if result doesn't fit data bus => fc
-        publish_message_to(ALU_FC_OUTPUT_BUS_TOPIC, int_to_word(has_overflow));
-    } 
+
+    publish_message_to(ALU_FC_OUTPUT_BUS_TOPIC, int_to_word(has_overflow && is_fc_working));
 
     if (has_overflow) {
         // get rid of the extra higher bits

@@ -254,7 +254,7 @@ static void test_run_alu_not(void) {
     run_alu();
 
     assert_int(word_to_int(data_bus->next_value), ==, 0xFE);
-    assert_int(word_to_int(alu_fc_output_bus->next_value), ==, 1);
+    assert_int(word_to_int(alu_fc_output_bus->next_value), ==, 0); // not does not set carry
     assert_int(word_to_int(alu_fz_output_bus->next_value), ==, 0);
 
     // ----
@@ -267,7 +267,7 @@ static void test_run_alu_not(void) {
     run_alu();
 
     assert_int(word_to_int(data_bus->next_value), ==, 0xFF);
-    assert_int(word_to_int(alu_fc_output_bus->next_value), ==, 1);
+    assert_int(word_to_int(alu_fc_output_bus->next_value), ==, 0); // not does not set carry
     assert_int(word_to_int(alu_fz_output_bus->next_value), ==, 0);
 }
 
@@ -331,8 +331,8 @@ static void test_run_alu_increment(void) {
     run_alu();
 
     assert_int(word_to_int(data_bus->next_value), ==, 0x00);
-    assert_int(word_to_int(alu_fc_output_bus->next_value), ==, 1);
-    assert_int(word_to_int(alu_fz_output_bus->next_value), ==, 0);
+    assert_int(word_to_int(alu_fc_output_bus->next_value), ==, 0); // increment does not set carry
+    assert_int(word_to_int(alu_fz_output_bus->next_value), ==, 1);
 }
 
 static void teardown(void) {
