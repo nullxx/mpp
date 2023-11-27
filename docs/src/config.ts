@@ -9,7 +9,7 @@ export const KNOWN_LANGUAGES = {
 };
 
 // Uncomment this to add an "Edit this page" button to every page of documentation.
-export const GITHUB_EDIT_URL = `https://github.com/nullxx/mpp/tree/master/_docs/`;
+export const GITHUB_EDIT_URL = `https://github.com/nullxx/mpp/tree/master/docs/`;
 
 // Uncomment this to enable site search.
 // See "Algolia" section of the README for more information.
