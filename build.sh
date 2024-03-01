@@ -20,13 +20,12 @@ docker build --no-cache -t $FRONT_CONTAINER_NAME $FRONT_CONTAINER_NAME -f $FRONT
 docker cp $(docker create --rm $FRONT_CONTAINER_NAME):/app/build/. ./mpp-front/build-out
 
 # build the server for all platforms
-docker buildx build --platform $TARGET_PLATFORMS --no-cache -t $FRONT_CONTAINER_NAME $FRONT_CONTAINER_NAME -f $FRONT_CONTAINER_NAME/Dockerfile.final --load
+docker buildx build --platform $TARGET_PLATFORMS --push --no-cache -t $REPO:$VERSION $FRONT_CONTAINER_NAME -f $FRONT_CONTAINER_NAME/Dockerfile.final
 
 # push to tag and latest
-docker tag $FRONT_CONTAINER_NAME $REPO:latest && docker push $REPO:latest
-docker tag $FRONT_CONTAINER_NAME $REPO:$VERSION && docker push $REPO:$VERSION
+docker tag $REPO:$VERSION $REPO:latest && docker push $REPO:latest
 
 # remove dirt
 docker rmi $(docker images "$CORE_CONTAINER_NAME" -a -q) -f &> /dev/null
-docker rmi $(docker images "$REPO:$VERSION" -a -q) -f &> /dev/null
+docker rmi $(docker images "$REPO:latest" -a -q) -f &> /dev/null
 rm -rf ./mpp-front/build-out &> /dev/null
