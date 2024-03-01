@@ -1,4 +1,4 @@
-FROM emscripten/emsdk:latest AS core-build
+FROM --platform=amd64 emscripten/emsdk:latest AS build-core
 
 RUN mkdir -p /mpp-cpu
 WORKDIR /mpp-cpu

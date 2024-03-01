@@ -1,0 +1,51 @@
+name: Release Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Install Docker
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install docker.io -y
+
+    - name: Build Docker image
+      run: |
+        docker build -t my_image .
+        
+    - name: Run the script
+      run: |
+        docker run my_image bash script.sh
+
+  create-release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Get version from VERSION file
+      id: get_version
+      run: echo "::set-output name=version::$(cat VERSION)"
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.get_version.outputs.version }}
+        release_name: Release ${{ steps.get_version.outputs.version }}
+        draft: false
+        prerelease: false
