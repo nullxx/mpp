@@ -1,4 +1,4 @@
-name: Release Workflow
+name: Release
 
 on:
   push:
@@ -13,11 +13,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       
-    - name: Install Docker
-      if: runner.os == 'Linux'
-      run: |
-        sudo apt-get update
-        sudo apt-get install docker.io -y
+    # - name: Install Docker
+    #   if: runner.os == 'Linux'
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install docker.io -y
 
     - name: Build Docker image
       run: |
