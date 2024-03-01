@@ -21,11 +21,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t my_image .
-        
-    - name: Run the script
-      run: |
-        docker run my_image bash script.sh
+        bash build.sh
 
   create-release:
     needs: build
