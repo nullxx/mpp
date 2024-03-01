@@ -26,6 +26,6 @@ docker buildx build --platform $TARGET_PLATFORMS --push --no-cache -t $REPO:$VER
 docker tag $REPO:$VERSION $REPO:latest && docker push $REPO:latest
 
 # remove dirt
-docker rmi $(docker images "$CORE_CONTAINER_NAME" -a -q) -f &> /dev/null
-docker rmi $(docker images "$REPO:latest" -a -q) -f &> /dev/null
-rm -rf ./mpp-front/build-out &> /dev/null
+# docker rmi $(docker images "$CORE_CONTAINER_NAME" -a -q) -f &> /dev/null
+# docker rmi $(docker images "$REPO:latest" -a -q) -f &> /dev/null
+# rm -rf ./mpp-front/build-out &> /dev/null
