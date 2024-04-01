@@ -37,7 +37,7 @@ export default function CodeEditor({
   let initCode = getStoredValue("code", "");
   if (initialCode && initialCode.length > 0) {
     initCode = initialCode;
-    
+
     if (!/FIN(\s)$/i.test(initCode)) {
       initCode += '\nFIN';
       appended = true;
@@ -212,8 +212,7 @@ export default function CodeEditor({
                 <span className="eti-marker-color">T1</span> MOV FF, AC
               </pre>
               <Text>
-              <I18n k="howToUseLabels.description.2" />{" "}
-                <span className="eti-marker-color">yellow</span>.
+                <I18n k="howToUseLabels.description.2" evalu />
               </Text>
               <Text>- <I18n k="howToUseLabels.description.3" />:</Text>
               <pre className="code">JMP T1</pre>

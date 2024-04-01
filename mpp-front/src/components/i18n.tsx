@@ -1,18 +1,18 @@
 import { useState, useEffect, memo } from "react";
 import { loc, LocalizeOptions, onLanguageChange } from "../lib/i18n";
 
-function I18n({ k, options, capitalize = false }: { k: string; options?: LocalizeOptions; capitalize?: boolean }) {
+function I18n({ k, options, capitalize = false, format, evalu = false }: { k: string; options?: LocalizeOptions; capitalize?: boolean; format?: (text: string) => string, evalu?: boolean }) {
   const [text, setText] = useState("");
 
   useEffect(() => {
     const out = loc(k, options);
-    setText(out);
+    setText(format ? format(out) : out);
   }, [k, options]);
 
   useEffect(() => {
     const del = onLanguageChange(() => {
       const out = loc(k, options);
-      setText(out);
+      setText(format ? format(out) : out);
     });
 
     return del;
@@ -20,9 +20,11 @@ function I18n({ k, options, capitalize = false }: { k: string; options?: Localiz
   }, []);
 
   if (capitalize) {
+    if (evalu) return <div dangerouslySetInnerHTML={{ __html: text.charAt(0).toUpperCase() + text.slice(1) }} />;
     return <>{text.charAt(0).toUpperCase() + text.slice(1)}</>;
   }
 
+  if (evalu) return <div dangerouslySetInnerHTML={{ __html: text }} />;
   return <>{text}</>;
 }
 

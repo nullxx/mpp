@@ -1,9 +1,10 @@
 import en from './en.json';
 import es from './es.json';
+import eu from './eu.json';
 
 import { getStoredValue } from "../storage";
 
-export type SupportedLanguages = "en" | "es";
+export type SupportedLanguages = "eu" | "en" | "es";
 export interface LocalizeOptions {
   lang: SupportedLanguages;
 }
@@ -11,7 +12,7 @@ export interface LocalizeOptions {
 type LanguageChangeListener = (lang: SupportedLanguages) => void;
 const languageChangeListeners: LanguageChangeListener[] = [];
 
-const availableLanguages: SupportedLanguages[] = ["es", "en"]; // availableLanguages must be > 0
+const availableLanguages: SupportedLanguages[] = ["eu", "es", "en"]; // availableLanguages must be > 0
 
 const navigatorLang = navigator.language.split("-")[0] ?? availableLanguages[0];
 let activeLang: SupportedLanguages = getStoredValue("settings::language", navigatorLang);
@@ -27,6 +28,8 @@ export function getLanguage() {
 
 function getLanguageData(lang: SupportedLanguages): any {
   switch (lang) {
+    case "eu":
+      return eu;
     case "en":
       return en;
     case "es":
