@@ -16,7 +16,7 @@
 ### ✨ [Demo](https://mpp.nullx.me)
 
 This project is the base and reference for the following ones:
-- [M++ on real hardware](https://github.com/nullxx/ms)
+- [M++ on real hardware](https://github.com/nullxx/mpp-pynq)
 - [MS Simulator](https://github.com/nullxx/ms)
 
 ## Screenshots
